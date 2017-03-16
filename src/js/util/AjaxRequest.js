@@ -75,7 +75,7 @@ export class AjaxRequest {
     // ESLint prefers for(;;) more than while(true)
     for(;;){
       const funcName = prefix + Math.random().toString(16).slice(2)
-      if(window.funcName === undefined){
+      if(typeof window[funcName] === 'undefined'){
         return funcName
       }
     }
@@ -83,14 +83,14 @@ export class AjaxRequest {
 
   request(url, options = {}) {
     let requestURL = url
-    let method = (options.method === undefined ? this.defaultOptions.method : options.method)
-    const async = (options.async === undefined ? this.defaultOptions.async : options.async)
+    let method = (typeof options.method === 'undefined' ? this.defaultOptions.method : options.method)
+    const async = (typeof options.async === 'undefined' ? this.defaultOptions.async : options.async)
     let data = this.defaultOptions.data
-    const user = (options.user === undefined ? this.defaultOptions.user : options.user)
-    const password = (options.password === undefined ? this.defaultOptions.password : options.password)
-    const mimeType = (options.mimeType === undefined ? this.defaultOptions.mimeType : options.mimeType)
-    const header = (options.requestHeader === undefined ? this.defaultOptions.requestHeader : options.requestHeader)
-    const isJSONP = (options.isJSONP === undefined ? this.defaultOptions.isJSONP : options.isJSONP)
+    const user = (typeof options.user === 'undefined' ? this.defaultOptions.user : options.user)
+    const password = (typeof options.password === 'undefined' ? this.defaultOptions.password : options.password)
+    const mimeType = (typeof options.mimeType === 'undefined' ? this.defaultOptions.mimeType : options.mimeType)
+    const header = (typeof options.requestHeader === 'undefined' ? this.defaultOptions.requestHeader : options.requestHeader)
+    const isJSONP = (typeof options.isJSONP === 'undefined' ? this.defaultOptions.isJSONP : options.isJSONP)
 
     if(method !== 'POST' && method !== 'GET'){
       method = 'POST'

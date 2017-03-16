@@ -56,6 +56,7 @@ module.exports = {
       Buffer: false
     },
     externals: {
+      jscenekit: 'jscenekit',
       fs: 'fs'
     }
   },

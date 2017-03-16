@@ -48,6 +48,8 @@ export default class MMDPMDReader extends MMDReader {
    *
    * @access public
    * @constructor
+   * @param {Buffer} data -
+   * @param {string} directoryPath -
    */
   constructor(data, directoryPath) {
     const isBinary = true
@@ -167,7 +169,6 @@ export default class MMDPMDReader extends MMDReader {
 
   _readPMDHeader() {
     this._pmdMagic = this.readString(3)
-    console.log(`pmdMagic: ${this._pmdMagic}`)
     this._version = this.readFloat()
     this._modelName = this.readString(20)
     this._comment = this.readString(256)
@@ -249,11 +250,13 @@ export default class MMDPMDReader extends MMDReader {
       const indexCount = this.readUnsignedInt()
       const textureFile = this.readString(20)
 
-      console.log(`textureFileName: ${textureFile}`)
       if(textureFile !== ''){
         const fileName = this.directoryPath + textureFile
-        // TODO: impelement loading texture file
-        //material.diffuse.contents = new CGImage(fileName)
+        const image = new Image()
+        image.onload = () => {
+          material.diffuse.contents = image
+        }
+        image.src = fileName
       }
       material.isDoubleSided = true
 
@@ -296,6 +299,8 @@ export default class MMDPMDReader extends MMDReader {
       bonePositionArray.push(position)
       this._boneArray.push(boneNode)
       this._boneHash.set(boneNode.name, boneNode)
+
+      //console.log(`${i} ${boneNode.name}: ${position.x}, ${position.y}, ${position.z}`)
     }
 
     // set parent node
@@ -308,6 +313,8 @@ export default class MMDPMDReader extends MMDReader {
         this._boneArray[parentNo].addChildNode(bone)
         const parentPos = bonePositionArray[parentNo]
         bone.position = bonePos.sub(parentPos)
+
+        //console.log(`parent ${this._boneArray[parentNo].name} ${parentPos.y}, bone ${bone.name} ${bonePos.y}: pos: ${bone.position.y}`)
       }else{
         this._rootBone.addChildNode(bone)
         bone.position = bonePos
@@ -317,6 +324,8 @@ export default class MMDPMDReader extends MMDReader {
     // calc initial matrix
     for(let i=0; i<boneCount; i++){
       const bonePos = bonePositionArray[i]
+      //const boneName = this._boneArray[i].name
+      //console.log(`inverseMatrix ${i} ${boneName}: ${-bonePos.x}, ${-bonePos.y}, ${-bonePos.z}`)
       const matrix = SCNMatrix4.matrixWithTranslation(-bonePos.x, -bonePos.y, -bonePos.z)
       this._boneInverseMatrixArray.push(matrix)
     }
@@ -348,12 +357,12 @@ export default class MMDPMDReader extends MMDReader {
       ik.weight = weight
       ik.boneArray = []
 
-      console.log(`targetBoneNo: ${targetBoneNo} ${ik.targetBone.name}, ikBoneNo: ${ikBoneNo} ${ik.ikBone.name}`)
+      //console.log(`targetBoneNo: ${targetBoneNo} ${ik.targetBone.name}, ikBoneNo: ${ikBoneNo} ${ik.ikBone.name}`)
       for(let j=0; j<numLink; j++){
         const linkNo = this.readUnsignedShort()
         const bone = this._boneArray[linkNo]
         
-        console.log(`linkNo: ${linkNo}, ${bone.name}`)
+        //console.log(`linkNo: ${linkNo}, ${bone.name}`)
         ik.boneArray.push(bone)
       }
       this._workingNode.ikArray.push(ik)
@@ -399,7 +408,7 @@ export default class MMDPMDReader extends MMDReader {
       for(let i=1; i<this._faceCount; i++){
         const name = this.readString(20)
         const faceVertex = zeroArray.splice(0)
-        console.log(`faceName: ${name}`)
+        //console.log(`faceName: ${name}`)
 
         const numVertices = this.readUnsignedInt()
 
@@ -668,15 +677,15 @@ export default class MMDPMDReader extends MMDReader {
       2, // componentsPerVector
       4, // bytesPerComponent
       0, // dataOffset
-      4 // dataStride
+      8 // dataStride
     )
 
     let indexPos = 0
     for(let i=0; i<this._materialCount; i++){
       const count = this._materialIndexCountArray[i]
       const triangles = count / 3
-      const length = count * 2
-      const data = indexData.slice(indexPos, indexPos + length)
+      //const length = count * 2
+      const data = indexData.slice(indexPos, indexPos + count)
       const element = new SCNGeometryElement(
         data, // data
         SCNGeometryPrimitiveType.triangles, // primitiveType
@@ -684,7 +693,7 @@ export default class MMDPMDReader extends MMDReader {
         2 // bytesPerIndex
       )
       this._elementArray.push(element)
-      indexPos += length
+      indexPos += count
     }
 
     const program = new MMDProgram()

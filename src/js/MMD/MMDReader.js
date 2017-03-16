@@ -49,8 +49,16 @@ export default class MMDReader {
     }
   }
 
-  readString(length) {
-    return this._reader.readString(length)
+  skip(length, noAssert = false) {
+    this._reader.skip(length, noAssert)
+  }
+
+  readString(length, encoding) {
+    return this._reader.readString(length, encoding)
+  }
+
+  readInteger(length, signed) {
+    return this._reader.readInteger(length, signed)
   }
 
   readUnsignedByte() {
@@ -65,11 +73,23 @@ export default class MMDReader {
     return this._reader.readUnsignedInt()
   }
 
+  readInt() {
+    return this._reader.readInt()
+  }
+
   readFloat() {
     return this._reader.readFloat()
   }
 
+  readDouble() {
+    return this._reader.readDouble()
+  }
+
   get pos() {
     return this._reader._pos
+  }
+
+  getAvailableDataLength() {
+    return this._reader.getAvailableDataLength()
   }
 } 

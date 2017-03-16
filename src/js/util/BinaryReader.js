@@ -60,11 +60,14 @@ export default class BinaryReader {
   /**
    * @access public
    * @param {number} length - length of data to skip
+   * @param {boolean} noAssert -
    * @returns {void}
    */
-  skip(length) {
+  skip(length, noAssert = false) {
     this._pos += length
-    this._check()
+    if(!noAssert){
+      this._check()
+    }
   }
 
   /**
@@ -242,5 +245,9 @@ export default class BinaryReader {
     }
 
     throw new Error(`unsupported encoding: ${encoding}`)
+  }
+
+  getAvailableDataLength() {
+    return this.buffer.length - this._pos
   }
 }
