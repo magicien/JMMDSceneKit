@@ -1,4 +1,5 @@
 import MMDIKConstraint from './MMD/MMDIKConstraint'
+import MMDIKController from './MMD/MMDIKController'
 import MMDNode from './MMD/MMDNode'
 import MMDPMDReader from './MMD/MMDPMDReader'
 import MMDProgram from './MMD/MMDProgram'
@@ -16,6 +17,7 @@ import TextRequest from './util/TextRequest'
 
 /*global exports*/
 exports.MMDIKConstraint = MMDIKConstraint
+exports.MMDIKController = MMDIKController
 exports.MMDNode = MMDNode
 exports.MMDPMDReader = MMDPMDReader
 exports.MMDProgram = MMDProgram

@@ -384,7 +384,7 @@ export default class MMDPMDReader extends MMDReader {
     // read base face
     if(this._faceCount > 0){
       const baseName = this.readString(20) // must be 'base'
-      const baseFaceVertex = zeroArray.splice(0)
+      const baseFaceVertex = zeroArray.slice()
 
       const baseNumVertices = this.readUnsignedInt()
       const baseType = this.readUnsignedByte()
@@ -407,7 +407,7 @@ export default class MMDPMDReader extends MMDReader {
 
       for(let i=1; i<this._faceCount; i++){
         const name = this.readString(20)
-        const faceVertex = zeroArray.splice(0)
+        const faceVertex = zeroArray.slice()
         //console.log(`faceName: ${name}`)
 
         const numVertices = this.readUnsignedInt()

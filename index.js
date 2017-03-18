@@ -51,59 +51,63 @@ module.exports =
 
 	var _MMDIKConstraint2 = _interopRequireDefault(_MMDIKConstraint);
 
-	var _MMDNode = __webpack_require__(2);
+	var _MMDIKController = __webpack_require__(2);
+
+	var _MMDIKController2 = _interopRequireDefault(_MMDIKController);
+
+	var _MMDNode = __webpack_require__(3);
 
 	var _MMDNode2 = _interopRequireDefault(_MMDNode);
 
-	var _MMDPMDReader = __webpack_require__(4);
+	var _MMDPMDReader = __webpack_require__(5);
 
 	var _MMDPMDReader2 = _interopRequireDefault(_MMDPMDReader);
 
-	var _MMDProgram = __webpack_require__(5);
+	var _MMDProgram = __webpack_require__(6);
 
 	var _MMDProgram2 = _interopRequireDefault(_MMDProgram);
 
-	var _MMDReader = __webpack_require__(6);
+	var _MMDReader = __webpack_require__(7);
 
 	var _MMDReader2 = _interopRequireDefault(_MMDReader);
 
-	var _MMDSceneSource = __webpack_require__(13);
+	var _MMDSceneSource = __webpack_require__(14);
 
 	var _MMDSceneSource2 = _interopRequireDefault(_MMDSceneSource);
 
-	var _MMDVMDReader = __webpack_require__(14);
+	var _MMDVMDReader = __webpack_require__(15);
 
 	var _MMDVMDReader2 = _interopRequireDefault(_MMDVMDReader);
 
-	var _BinaryParser = __webpack_require__(17);
+	var _BinaryParser = __webpack_require__(18);
 
 	var _BinaryParser2 = _interopRequireDefault(_BinaryParser);
 
-	var _ecl = __webpack_require__(9);
+	var _ecl = __webpack_require__(10);
 
 	var _ecl2 = _interopRequireDefault(_ecl);
 
-	var _AjaxRequest = __webpack_require__(12);
+	var _AjaxRequest = __webpack_require__(13);
 
 	var _AjaxRequest2 = _interopRequireDefault(_AjaxRequest);
 
-	var _BinaryReader = __webpack_require__(7);
+	var _BinaryReader = __webpack_require__(8);
 
 	var _BinaryReader2 = _interopRequireDefault(_BinaryReader);
 
-	var _BinaryRequest = __webpack_require__(18);
+	var _BinaryRequest = __webpack_require__(19);
 
 	var _BinaryRequest2 = _interopRequireDefault(_BinaryRequest);
 
-	var _Buffer = __webpack_require__(8);
+	var _Buffer = __webpack_require__(9);
 
 	var _Buffer2 = _interopRequireDefault(_Buffer);
 
-	var _TextReader = __webpack_require__(10);
+	var _TextReader = __webpack_require__(11);
 
 	var _TextReader2 = _interopRequireDefault(_TextReader);
 
-	var _TextRequest = __webpack_require__(11);
+	var _TextRequest = __webpack_require__(12);
 
 	var _TextRequest2 = _interopRequireDefault(_TextRequest);
 
@@ -111,6 +115,7 @@ module.exports =
 
 	/*global exports*/
 	exports.MMDIKConstraint = _MMDIKConstraint2.default;
+	exports.MMDIKController = _MMDIKController2.default;
 	exports.MMDNode = _MMDNode2.default;
 	exports.MMDPMDReader = _MMDPMDReader2.default;
 	exports.MMDProgram = _MMDProgram2.default;
@@ -161,9 +166,115 @@ module.exports =
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _MMDNode = __webpack_require__(3);
+
+	var _MMDNode2 = _interopRequireDefault(_MMDNode);
+
+	__webpack_require__(4);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var _sharedController = null;
+
+	/**
+	 *
+	 * @access public
+	 * @implements {SCNSceneRendererDelegate}
+	 */
+
+	var MMDIKController = function () {
+	  _createClass(MMDIKController, null, [{
+	    key: 'sharedController',
+	    get: function get() {
+	      if (_sharedController === null) {
+	        _sharedController = new MMDIKController();
+	      }
+	      return _sharedController;
+	    }
+
+	    /**
+	     *
+	     * @access private
+	     * @constructor
+	     */
+
+	  }]);
+
+	  function MMDIKController() {
+	    _classCallCheck(this, MMDIKController);
+	  }
+
+	  /**
+	   * update IK constraint for the given renderer
+	   * @access public
+	   * @param {SCNSceneRenderer} renderer -
+	   * @returns {void}
+	   */
+
+
+	  _createClass(MMDIKController, [{
+	    key: 'rendererDidApplyAnimationsAtTime',
+
+
+	    /**
+	     * apply IK constraint after animations are applied
+	     * @access public
+	     * @param {SCNSceneRenderer} renderer -
+	     * @param {TimeInterval} time -
+	     */
+	    value: function rendererDidApplyAnimationsAtTime(renderer, time) {
+	      MMDIKController.updateIK(renderer);
+	    }
+	  }], [{
+	    key: 'updateIK',
+	    value: function updateIK(renderer) {
+	      if (renderer.scene) {
+	        MMDIKController.applyIKRecursive(renderer.scene.rootNode);
+	      }
+	    }
+
+	    /**
+	     * apply IK constraint recursively
+	     * @access public
+	     * @param {SCNNode} node -
+	     * @returns {void}
+	     */
+
+	  }, {
+	    key: 'applyIKRecursive',
+	    value: function applyIKRecursive(node) {
+	      if (node instanceof _MMDNode2.default) {
+	        node.updateIK();
+	      }
+
+	      node.childNodes.forEach(function (childNode) {
+	        MMDIKController.applyIKRecursive(childNode);
+	      });
+	    }
+	  }]);
+
+	  return MMDIKController;
+	}();
+
+	exports.default = MMDIKController;
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-	var _jscenekit = __webpack_require__(3);
+	var _jscenekit = __webpack_require__(4);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -185,6 +296,7 @@ module.exports =
 	};
 
 	var _MMDAnimationCompletionBlockKey = 'MMDAnimationCompletionBlockKey';
+	var _faceWeightsPattern = /faceWeights\[(\d+)\]/;
 
 	/**
 	 *
@@ -406,12 +518,19 @@ module.exports =
 	  _createClass(MMDNode, [{
 	    key: 'clone',
 	    value: function clone() {
-	      var newNode = new MMDNode();
+	      //console.log('MMDNode.clone() ' + this.name)
+	      var newNode = _get(MMDNode.prototype.__proto__ || Object.getPrototypeOf(MMDNode.prototype), 'clone', this).call(this);
 	      // TODO: copy values of SCNNode
 	      this.copyValuesRecursive(this, newNode);
 
 	      return newNode;
 	    }
+
+	    /*
+	    copy() {
+	      return this.clone()
+	    }
+	    */
 
 	    /**
 	     *
@@ -422,7 +541,66 @@ module.exports =
 
 	  }, {
 	    key: 'copySCNNodeValues',
-	    value: function copySCNNodeValues(node) {}
+	    value: function copySCNNodeValues(node) {
+	      this.name = node.name;
+	      this.light = node.light;
+	      this.camera = node.camera;
+	      this.geometry = node.geometry;
+	      this.morpher = node.morpher;
+	      this.skinner = node.skinner;
+	      this.categoryBitMask = node.categoryBitMask;
+	      this.isPaused = node.isPaused;
+	      this.transform = node.transform;
+	      this.constraints = node.constraints ? node.constraints.slice() : null;
+	      this.isHidden = node.isHidden;
+	      this.opacity = node.opacity;
+	      this.renderingOrder = node.renderingOrder;
+	      this.castsShadow = node.castsShadow;
+	      this.movabilityHint = node.movabilityHint;
+	      this.filters = node.filters ? node.filters.slice() : null;
+	      this.rendererDelegate = node.rendererDelegate;
+
+	      if (node.physicsBody) {
+	        var body = node.physicsBody;
+	        var newBody = null;
+	        switch (body.type) {
+	          case _jscenekit.SCNPhysicsBody.Type.static:
+	            newBody = _jscenekit.SCNPhysicsBody.static();
+	            break;
+	          case _jscenekit.SCNPhysicsBody.Type.dynamic:
+	            newBody = _jscenekit.SCNPhysicsBody.dynamic();
+	            break;
+	          case _jscenekit.SCNPhysicsBody.Type.kinematic:
+	            newBody = _jscenekit.SCNPhysicsBody.kinematic();
+	            break;
+	          default:
+	            throw new Error('unknown physics body type: ' + body.type);
+	        }
+	        newBody.physicsShape = body.physicsShape;
+	        newBody.velocityFactor = body.velocityFactor;
+	        newBody.angularVelocityFactor = body.angularVelocityFactor;
+	        newBody.isAffectedByGravity = body.isAffectedByGravity;
+	        newBody.mass = body.mass;
+	        newBody.charge = body.charge;
+	        newBody.friction = body.friction;
+	        newBody.rollingFriction = body.rollingFriction;
+	        newBody.restitution = body.restitution;
+	        newBody.damping = body.damping;
+	        newBody.angularDamping = body.angularDamping;
+	        newBody.momentOfInertia = body.momentOfInertia;
+	        newBody.usesDefaultMomentOfInertia = body.usesDefaultMomentOfInertia;
+	        newBody.cateogryBitMask = body.categoryBitMask;
+	        newBody.contactTestBitMask = body.contactTestBitMask;
+	        newBody.collisionBitMask = body.collisionBitMask;
+	        newBody.velocity = body.velocity;
+	        newBody.angularVelocity = body.angularVelocity;
+	        newBody.allowsResting = body.allowsResting;
+
+	        this.physicsBody = newBody;
+	      }
+
+	      this.physicsField = node.physicsField;
+	    }
 
 	    /**
 	     *
@@ -492,10 +670,43 @@ module.exports =
 	    }
 	  }, {
 	    key: 'valueForUndefinedKey',
-	    value: function valueForUndefinedKey(key) {}
-	  }, {
-	    key: 'setValueForUndefinedKey',
-	    value: function setValueForUndefinedKey(value, key) {}
+	    value: function valueForUndefinedKey(key) {
+	      //console.log('MMDNode.valueForUndefinedKey: ' + key)
+	      if (key.startsWith('/')) {
+	        var searchKey = key.substring(1);
+	        var node = this.childNodeWithNameRecursively(searchKey, true);
+	        if (node) {
+	          return node;
+	        }
+
+	        console.warn('valueForUndefinedKey ' + key + ' not found.');
+	        //return this.dummyNode
+	        return null;
+	      }
+
+	      var result = key.match(_faceWeightsPattern);
+	      if (result) {
+	        var index = result[1];
+	        var value = this.faceWeights[index];
+	        return value;
+	      }
+
+	      if (key === 'kPivotKey') {
+	        return null;
+	      }
+
+	      return _get(MMDNode.prototype.__proto__ || Object.getPrototypeOf(MMDNode.prototype), 'valueForUndefinedKey', this).call(this, key);
+	    }
+
+	    /*
+	    setValueForUndefinedKey(value, key) {
+	      console.log('MMDNode.setValueForUndefinedKey: ' + key)
+	    }
+	     setValueForKeyPath(value, keyPath) {
+	      console.log('MMDNode.setValueForKeyPath: ' + keyPath)
+	      super.setValueForKeyPath(value, keyPath)
+	    }
+	    */
 
 	    /**
 	     *
@@ -512,7 +723,7 @@ module.exports =
 	        this.preparedAnimation = new Map();
 	      }
 	      if (animation instanceof _jscenekit.CAAnimationGroup) {
-	        var convertedAnimation = this.convertAnimation(animation);
+	        var convertedAnimation = this._convertAnimation(animation);
 	        convertedAnimation.delegate = this;
 	        this.preparedAnimation.set(key, convertedAnimation);
 	      } else {
@@ -542,30 +753,36 @@ module.exports =
 
 	    /**
 	     *
-	     * @access public
+	     * @access private
 	     * @param {CAAnimationGroup} animation -
 	     * @returns {CAAnimationGroup} -
 	     */
 
 	  }, {
-	    key: 'convertAnimation',
-	    value: function convertAnimation(animation) {
+	    key: '_convertAnimation',
+	    value: function _convertAnimation(animation) {
 	      var _this2 = this;
 
+	      console.log('_convertAnimation start');
 	      var geometryNode = this.childNodeWithNameRecursively('Geometry', true);
 	      var newGroup = animation.copy();
 	      newGroup.animations = [];
 
 	      var animations = animation.animations;
+	      console.log('animations');
 	      if (animations) {
+	        console.log('if(animations): true');
 	        animations.forEach(function (anim) {
+	          console.log('anim: ' + anim.keyPath);
 	          var hasEffector = false;
 	          var newAnim = anim.copy();
 
 	          if (newAnim instanceof _jscenekit.CAKeyframeAnimation) {
+	            console.log('newAnim: ' + newAnim.keyPath);
 	            var boneNameKey = newAnim.keyPath.split('.')[0];
 	            var boneName = boneNameKey.substring(1);
 	            var bone = _this2.childNodeWithNameRecursively(boneName, true);
+	            console.log('boneName: ' + boneName + ', bone: ' + bone);
 
 	            if (boneNameKey === 'morpher') {
 	              if (newAnim.keyPath.startsWith('morpher.weights.')) {
@@ -592,18 +809,24 @@ module.exports =
 	                  var origValue = newAnim.values[_i];
 	                  var newValue = origValue + bone.position.x;
 	                  newAnim.values[_i] = newValue;
+
+	                  console.log('convert ' + newAnim.keyPath + ': ' + origValue + ' => ' + newValue);
 	                }
 	              } else if (newAnim.keyPath.endsWith('.translation.y')) {
 	                for (var _i2 = 0; _i2 < newAnim.values.length; _i2++) {
 	                  var _origValue = newAnim.values[_i2];
 	                  var _newValue = _origValue + bone.position.y;
 	                  newAnim.values[_i2] = _newValue;
+
+	                  console.log('convert ' + newAnim.keyPath + ': ' + _origValue + ' => ' + _newValue);
 	                }
 	              } else if (newAnim.keyPath.endsWith('.translation.z')) {
 	                for (var _i3 = 0; _i3 < newAnim.values.length; _i3++) {
 	                  var _origValue2 = newAnim.values[_i3];
 	                  var _newValue2 = _origValue2 + bone.position.z;
 	                  newAnim.values[_i3] = _newValue2;
+
+	                  console.log('convert ' + newAnim.keyPath + ': ' + _origValue2 + ' => ' + _newValue2);
 	                }
 	              }
 
@@ -628,6 +851,7 @@ module.exports =
 	          }
 	        }); // animations.forEach
 	      } // animations
+	      console.log('_convertAnimation end');
 	      return newGroup;
 	    }
 
@@ -643,11 +867,11 @@ module.exports =
 	    key: 'addAnimationForKey',
 	    value: function addAnimationForKey(animation, key) {
 	      if (animation instanceof _jscenekit.CAAnimationGroup) {
-	        var convertedAnimation = this.convertAnimation(animation);
-	        _get(MMDNode.prototype.__proto__ || Object.getPrototypeOf(MMDNode.prototype), 'addAnimation', this).call(this, convertedAnimation, key);
+	        var convertedAnimation = this._convertAnimation(animation);
+	        _get(MMDNode.prototype.__proto__ || Object.getPrototypeOf(MMDNode.prototype), 'addAnimationForKey', this).call(this, convertedAnimation, key);
 	      } else {
 	        animation.delegate = this;
-	        _get(MMDNode.prototype.__proto__ || Object.getPrototypeOf(MMDNode.prototype), 'addAnimation', this).call(this, animation, key);
+	        _get(MMDNode.prototype.__proto__ || Object.getPrototypeOf(MMDNode.prototype), 'addAnimationForKey', this).call(this, animation, key);
 	      }
 	    }
 
@@ -659,9 +883,100 @@ module.exports =
 
 	  }, {
 	    key: 'updateIK',
-	    value: function updateIK() {}
-	    // TODO: implement
+	    value: function updateIK() {
+	      var _this3 = this;
 
+	      if (this.ikArray !== null) {
+	        var zeroThreshold = 0.0000001;
+	        this.ikArray.forEach(function (ik) {
+	          var ikBone = ik.ikBone;
+	          var targetBone = ik.targetBone;
+
+	          for (var i = 0; i < ik.iteration; i++) {
+	            for (var index = 0; index < ik.boneArray.length; index++) {
+	              var bone = ik.boneArray[index];
+
+	              var bonePosition = _this3._getWorldPosition(bone.presentation);
+	              var targetPosition = _this3._getWorldPosition(targetBone.presentation);
+	              var ikPosition = _this3._getWorldPosition(ikBone.presentation);
+
+	              var v1 = bonePosition.sub(targetPosition);
+	              var v2 = bonePosition.sub(ikPosition);
+
+	              v1 = v1.normalize();
+	              v2 = v2.normalize();
+
+	              var diff = v1.sub(v2);
+	              var x2 = diff.x * diff.x;
+	              var y2 = diff.y * diff.y;
+	              var z2 = diff.z * diff.z;
+	              if (x2 + y2 + z2 < zeroThreshold) {
+	                break;
+	              }
+
+	              var v = v1.cross(v2);
+	              v = _this3._inverseCross(v, bone.parent.presentation.worldTransform);
+	              v = v.normalize();
+
+	              if (bone.isKnee) {
+	                if (v.x > 0) {
+	                  v.x = 1.0;
+	                } else {
+	                  v.x = -1.0;
+	                }
+	                v.y = 0;
+	                v.z = 0;
+	              }
+
+	              var innerProduct = v1.dot(v2);
+	              if (innerProduct > 1) {
+	                innerProduct = 1;
+	              } else if (innerProduct < -1) {
+	                innerProduct = -1;
+	              }
+
+	              var ikRot = 0.5 * Math.acos(innerProduct);
+	              var maxRot = ik.weight * (index + 1) * 2;
+	              if (ikRot > maxRot) {
+	                ikRot = maxRot;
+	              }
+
+	              var ikSin = Math.sin(ikRot);
+	              var ikCos = Math.cos(ikRot);
+	              var quat = new _jscenekit.SCNVector4();
+
+	              // create quaternion
+	              quat.x = v.x * ikSin;
+	              quat.y = v.y * ikSin;
+	              quat.z = v.z * ikSin;
+	              quat.w = ikCos;
+
+	              var orgRot = bone.presentation.rotation;
+	              orgRot.w = orgRot.w * 2.0;
+	              var orgQuat = orgRot.rotationToQuat();
+	              //console.log(`${this.name} orgQuat ${orgQuat.float32Array()}`)
+	              quat = quat.cross(orgQuat);
+
+	              if (bone.isKnee) {
+	                //if(bone.eulerAngles.x < 0){
+	                // FIXME: don't use presentation node
+	                if (bone.presentation.eulerAngles.x < 0) {
+	                  quat.x = -quat.x;
+	                  //bone.rotation = quat.quatToRotation()
+	                  var rot = quat.quatToRotation();
+	                  rot.w = rot.w * 0.5;
+	                  //bone.rotation = rot
+	                  // FIXME: don't use presentation node
+	                  bone.presentation.rotation = rot;
+	                  //console.log(`${bone.name} quatToRotation ${bone.rotation.float32Array()}`)
+	                }
+	              }
+	            } // boneArray
+	          } // iteration
+	        }); // ikArray
+	      }
+	      this.updateEffector();
+	    }
 
 	    /**
 	     *
@@ -671,9 +986,44 @@ module.exports =
 
 	  }, {
 	    key: 'updateEffector',
-	    value: function updateEffector() {}
-	    // TODO: implement
-
+	    value: function updateEffector() {
+	      if (this.rotateEffector !== null) {
+	        var rot = this.rotateEffector.presentation.rotation;
+	        if (this.rotateEffectRate === 1.0) {
+	          // FIXME: don't use presentation node
+	          //this.rotation = rot
+	          this.presentation.rotation = rot;
+	        } else {
+	          rot.w = rot.w * 2.0;
+	          var quat = rot.rotationToQuat();
+	          //console.log(`${this.name} quat ${quat.float32Array()}`)
+	          var pRot = this.presentation.rotation;
+	          pRot.w = pRot.w * 2.0;
+	          var orgQuat = pRot.rotationToQuat();
+	          //console.log(`${this.name} orgQuat ${orgQuat.float32Array()}`)
+	          var newQuat = this.slerp(orgQuat, quat, this.rotateEffectRate);
+	          //this.rotation = newQuat.quatToRotation()
+	          var newRot = newQuat.quatToRotation();
+	          newRot.w = newRot.w * 0.5;
+	          //this.rotation = newRot
+	          // FIXME: don't use presentation
+	          this.presentaion.rotation = newRot;
+	          //console.log(`${this.name} newQuat.quatToRotation ${this.rotation.float32Array()}`)
+	        }
+	      }
+	      if (this.translateEffector !== null) {
+	        var pos = this.translateEffector.position;
+	        if (this.translateEffectRate === 1.0) {
+	          // FIXME: don't use presentation node
+	          //this.position = pos
+	          this.presentation.position = pos;
+	        } else {
+	          // FIXME: don't use presentation node
+	          //this.position = pos.mul(this.translateEffectRate)
+	          this.presentation.position = pos.mul(this.translateEffectRate);
+	        }
+	      }
+	    }
 
 	    /**
 	     * 
@@ -763,6 +1113,13 @@ module.exports =
 	    // CAAnimationDelegate //
 	    /////////////////////////
 
+	    /**
+	     * @access public
+	     * @param {CAAnimation} anim -
+	     * @param {boolean} finished -
+	     * @returns {void}
+	     */
+
 	  }, {
 	    key: 'animationDidStop',
 	    value: function animationDidStop(anim, finished) {
@@ -773,6 +1130,14 @@ module.exports =
 	        }
 	      }
 	    }
+
+	    /**
+	     * @access public
+	     * @param {function} block -
+	     * @param {string} key -
+	     * @returns {void}
+	     */
+
 	  }, {
 	    key: 'setCompletionHandler',
 	    value: function setCompletionHandler(block, key) {
@@ -780,6 +1145,55 @@ module.exports =
 	      if (anim) {
 	        anim.setValueForKey(block, _MMDAnimationCompletionBlockKey);
 	      }
+	    }
+	  }, {
+	    key: '_getWorldPosition',
+
+
+	    /**
+	     *
+	     * @access private
+	     * @param {SCNNode} node -
+	     * @returns {SCNVector3} -
+	     */
+	    value: function _getWorldPosition() {
+	      var node = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+	      var m = null;
+	      if (node === null) {
+	        m = this.worldTransform;
+	      } else {
+	        m = node.worldTransform;
+	      }
+	      return new _jscenekit.SCNVector3(m.m41, m.m42, m.m43);
+	    }
+
+	    /**
+	     * @access private
+	     * @param {SCNVector3} v1 -
+	     * @param {SCNMatrix4} mat -
+	     * @param {boolean} [includeTranslation = false] -
+	     * @returns {SCNVector3} -
+	     */
+
+	  }, {
+	    key: '_inverseCross',
+	    value: function _inverseCross(v1, mat) {
+	      var includeTranslation = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+	      var v = new _jscenekit.SCNVector3();
+
+	      v.x = v1.x * mat.m11 + v1.y * mat.m12 + v1.z * mat.m13;
+	      v.y = v1.x * mat.m21 + v1.y * mat.m22 + v1.z * mat.m23;
+	      v.z = v1.x * mat.m31 + v1.y * mat.m32 + v1.z * mat.m33;
+
+	      if (includeTranslation) {
+	        v.x += mat.m14;
+	        v.y += mat.m24;
+	        v.z += mat.m34;
+	      }
+
+	      return v;
 	    }
 	  }], [{
 	    key: 'Type',
@@ -794,13 +1208,13 @@ module.exports =
 	exports.default = MMDNode;
 
 /***/ },
-/* 3 */
+/* 4 */
 /***/ function(module, exports) {
 
 	module.exports = require("jscenekit");
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -811,15 +1225,15 @@ module.exports =
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _MMDNode = __webpack_require__(2);
+	var _MMDNode = __webpack_require__(3);
 
 	var _MMDNode2 = _interopRequireDefault(_MMDNode);
 
-	var _MMDProgram = __webpack_require__(5);
+	var _MMDProgram = __webpack_require__(6);
 
 	var _MMDProgram2 = _interopRequireDefault(_MMDProgram);
 
-	var _MMDReader2 = __webpack_require__(6);
+	var _MMDReader2 = __webpack_require__(7);
 
 	var _MMDReader3 = _interopRequireDefault(_MMDReader2);
 
@@ -827,7 +1241,7 @@ module.exports =
 
 	var _MMDIKConstraint2 = _interopRequireDefault(_MMDIKConstraint);
 
-	var _jscenekit = __webpack_require__(3);
+	var _jscenekit = __webpack_require__(4);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1203,7 +1617,7 @@ module.exports =
 	      // read base face
 	      if (this._faceCount > 0) {
 	        var baseName = this.readString(20); // must be 'base'
-	        var baseFaceVertex = zeroArray.splice(0);
+	        var baseFaceVertex = zeroArray.slice();
 
 	        var baseNumVertices = this.readUnsignedInt();
 	        var baseType = this.readUnsignedByte();
@@ -1226,7 +1640,7 @@ module.exports =
 
 	        for (var _i3 = 1; _i3 < this._faceCount; _i3++) {
 	          var name = this.readString(20);
-	          var faceVertex = zeroArray.splice(0);
+	          var faceVertex = zeroArray.slice();
 	          //console.log(`faceName: ${name}`)
 
 	          var numVertices = this.readUnsignedInt();
@@ -1569,7 +1983,7 @@ module.exports =
 	exports.default = MMDPMDReader;
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1578,7 +1992,7 @@ module.exports =
 	  value: true
 	});
 
-	var _jscenekit = __webpack_require__(3);
+	var _jscenekit = __webpack_require__(4);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1611,7 +2025,7 @@ module.exports =
 	exports.default = MMDProgram;
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1622,11 +2036,11 @@ module.exports =
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _BinaryReader = __webpack_require__(7);
+	var _BinaryReader = __webpack_require__(8);
 
 	var _BinaryReader2 = _interopRequireDefault(_BinaryReader);
 
-	var _TextReader = __webpack_require__(10);
+	var _TextReader = __webpack_require__(11);
 
 	var _TextReader2 = _interopRequireDefault(_TextReader);
 
@@ -1752,7 +2166,7 @@ module.exports =
 	exports.default = MMDReader;
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -1763,11 +2177,11 @@ module.exports =
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _Buffer = __webpack_require__(8);
+	var _Buffer = __webpack_require__(9);
 
 	var _Buffer2 = _interopRequireDefault(_Buffer);
 
-	var _ecl = __webpack_require__(9);
+	var _ecl = __webpack_require__(10);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2073,7 +2487,7 @@ module.exports =
 	exports.default = BinaryReader;
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2261,7 +2675,7 @@ module.exports =
 	exports.default = _Buffer;
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2549,7 +2963,7 @@ module.exports =
 	exports.JCT8836 = JCT8836;
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2560,7 +2974,7 @@ module.exports =
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _TextRequest = __webpack_require__(11);
+	var _TextRequest = __webpack_require__(12);
 
 	var _TextRequest2 = _interopRequireDefault(_TextRequest);
 
@@ -2790,7 +3204,7 @@ module.exports =
 	exports.default = TextReader;
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2802,7 +3216,7 @@ module.exports =
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _AjaxRequest2 = __webpack_require__(12);
+	var _AjaxRequest2 = __webpack_require__(13);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2855,7 +3269,7 @@ module.exports =
 	exports.default = new TextRequest();
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -3052,7 +3466,7 @@ module.exports =
 	exports.default = new AjaxRequest();
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3063,21 +3477,21 @@ module.exports =
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _jscenekit = __webpack_require__(3);
+	var _jscenekit = __webpack_require__(4);
 
-	var _MMDNode = __webpack_require__(2);
+	var _MMDNode = __webpack_require__(3);
 
 	var _MMDNode2 = _interopRequireDefault(_MMDNode);
 
-	var _MMDPMDReader = __webpack_require__(4);
+	var _MMDPMDReader = __webpack_require__(5);
 
 	var _MMDPMDReader2 = _interopRequireDefault(_MMDPMDReader);
 
-	var _MMDVMDReader = __webpack_require__(14);
+	var _MMDVMDReader = __webpack_require__(15);
 
 	var _MMDVMDReader2 = _interopRequireDefault(_MMDVMDReader);
 
-	var _fs = __webpack_require__(16);
+	var _fs = __webpack_require__(17);
 
 	var _fs2 = _interopRequireDefault(_fs);
 
@@ -3119,11 +3533,12 @@ module.exports =
 	  /**
 	   * Initializes a scene source for reading the scene graph from a specified file.
 	   * @access public
+	   * @constructor
 	   * @param {string|Buffer|ArrayBuffer} data -
 	   * @param {?Map<SCNSceneSource.LoadingOption, Object>} [options = null] - A dictionary containing options that affect scene loading. See Scene Loading Options for available keys and values. Pass nil to use default options.
+	   * @param {string} directoryPath -
 	   * @param {MMDNode[]} models -
 	   * @param {CAAnimation[]} motions -
-	   * @returns {void}
 	   * @desc If you have the contents of a scene file but not the file itself (for example, if your app downloads scene files from the network), use the init(data:options:) method instead.
 	   * @see https://developer.apple.com/reference/scenekit/scnscenesource/1522629-init
 	   */
@@ -3138,7 +3553,7 @@ module.exports =
 	    _this._workingNode = null;
 	    _this._workingAnimationGroup = null;
 
-	    if (data === undefined) {
+	    if (typeof data === 'undefined') {
 	      return _possibleConstructorReturn(_this);
 	    }
 	    _this._loadData(data, options);
@@ -3268,6 +3683,7 @@ module.exports =
 	  }, {
 	    key: 'getMotion',
 	    value: function getMotion() {
+	      //console.log('getMotion: workingAnimationGroup.animations.length: ' + this._workingAnimationGroup.animations.length)
 	      return this._workingAnimationGroup;
 	    }
 
@@ -3391,7 +3807,7 @@ module.exports =
 	exports.default = MMDSceneSource;
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3402,17 +3818,17 @@ module.exports =
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _MMDNode = __webpack_require__(2);
+	var _MMDNode = __webpack_require__(3);
 
 	var _MMDNode2 = _interopRequireDefault(_MMDNode);
 
-	var _MMDReader2 = __webpack_require__(6);
+	var _MMDReader2 = __webpack_require__(7);
 
 	var _MMDReader3 = _interopRequireDefault(_MMDReader2);
 
-	var _constants = __webpack_require__(15);
+	var _constants = __webpack_require__(16);
 
-	var _jscenekit = __webpack_require__(3);
+	var _jscenekit = __webpack_require__(4);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3698,6 +4114,7 @@ module.exports =
 
 	      var duration = this._frameLength / this.fps;
 
+	      console.log('_createAnimations');
 	      this._animationHash.forEach(function (motion, key) {
 	        // normalize keyTimes
 	        var motionLength = motion.keyTimes[motion.keyTimes.length - 1];
@@ -3711,6 +4128,7 @@ module.exports =
 	        motion.isRemovedOnCompletion = false;
 	        motion.fillMode = _jscenekit.kCAFillModeForwards;
 
+	        console.log('animations.push ' + key);
 	        _this2._workingAnimationGroup.animations.push(motion);
 	      });
 
@@ -4150,7 +4568,7 @@ module.exports =
 	exports.default = MMDVMDReader;
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4162,13 +4580,13 @@ module.exports =
 	exports.MMD_CAMERA_ROTZ_NODE_NAME = 'MMD_CAMERA_ROTZ_NODE';
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports) {
 
 	module.exports = require("fs");
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -4336,7 +4754,7 @@ module.exports =
 	};
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4346,7 +4764,7 @@ module.exports =
 	});
 	exports.BinaryRequest = undefined;
 
-	var _AjaxRequest2 = __webpack_require__(12);
+	var _AjaxRequest2 = __webpack_require__(13);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 

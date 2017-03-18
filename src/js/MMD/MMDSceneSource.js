@@ -38,11 +38,12 @@ export default class MMDSceneSource extends SCNSceneSource {
   /**
    * Initializes a scene source for reading the scene graph from a specified file.
    * @access public
+   * @constructor
    * @param {string|Buffer|ArrayBuffer} data -
    * @param {?Map<SCNSceneSource.LoadingOption, Object>} [options = null] - A dictionary containing options that affect scene loading. See Scene Loading Options for available keys and values. Pass nil to use default options.
+   * @param {string} directoryPath -
    * @param {MMDNode[]} models -
    * @param {CAAnimation[]} motions -
-   * @returns {void}
    * @desc If you have the contents of a scene file but not the file itself (for example, if your app downloads scene files from the network), use the init(data:options:) method instead.
    * @see https://developer.apple.com/reference/scenekit/scnscenesource/1522629-init
    */
@@ -55,7 +56,7 @@ export default class MMDSceneSource extends SCNSceneSource {
     this._workingNode = null
     this._workingAnimationGroup = null
 
-    if(data === undefined){
+    if(typeof data === 'undefined'){
       return
     }
     this._loadData(data, options)
@@ -231,6 +232,7 @@ export default class MMDSceneSource extends SCNSceneSource {
   }
 
   getMotion() {
+    //console.log('getMotion: workingAnimationGroup.animations.length: ' + this._workingAnimationGroup.animations.length)
     return this._workingAnimationGroup
   }
 

@@ -4,6 +4,7 @@ import {
   CAAnimationGroup,
   CAKeyframeAnimation,
   SCNNode,
+  SCNPhysicsBody,
   SCNVector3,
   SCNVector4
 } from 'jscenekit'
@@ -22,6 +23,7 @@ const _MMDNodeType = {
 }
 
 const _MMDAnimationCompletionBlockKey = 'MMDAnimationCompletionBlockKey'
+const _faceWeightsPattern = /faceWeights\[(\d+)\]/
 
 /**
  *
@@ -231,12 +233,19 @@ export default class MMDNode extends SCNNode {
    * @returns {MMDNode} -
    */
   clone() {
-    const newNode = new MMDNode()
+    //console.log('MMDNode.clone() ' + this.name)
+    const newNode = super.clone()
     // TODO: copy values of SCNNode
     this.copyValuesRecursive(this, newNode)
 
     return newNode
   }
+
+  /*
+  copy() {
+    return this.clone()
+  }
+  */
 
   /**
    *
@@ -245,6 +254,64 @@ export default class MMDNode extends SCNNode {
    * @returns {void}
    */
   copySCNNodeValues(node) {
+    this.name = node.name
+    this.light = node.light
+    this.camera = node.camera
+    this.geometry = node.geometry
+    this.morpher = node.morpher
+    this.skinner = node.skinner
+    this.categoryBitMask = node.categoryBitMask
+    this.isPaused = node.isPaused
+    this.transform = node.transform
+    this.constraints = node.constraints ? node.constraints.slice() : null
+    this.isHidden = node.isHidden
+    this.opacity = node.opacity
+    this.renderingOrder = node.renderingOrder
+    this.castsShadow = node.castsShadow
+    this.movabilityHint = node.movabilityHint
+    this.filters = node.filters ? node.filters.slice() : null
+    this.rendererDelegate = node.rendererDelegate
+
+    if(node.physicsBody){
+      const body = node.physicsBody
+      let newBody = null
+      switch(body.type){
+        case SCNPhysicsBody.Type.static:
+          newBody = SCNPhysicsBody.static()
+          break
+        case SCNPhysicsBody.Type.dynamic:
+          newBody = SCNPhysicsBody.dynamic()
+          break
+        case SCNPhysicsBody.Type.kinematic:
+          newBody = SCNPhysicsBody.kinematic()
+          break
+        default:
+          throw new Error(`unknown physics body type: ${body.type}`)
+      }
+      newBody.physicsShape = body.physicsShape
+      newBody.velocityFactor = body.velocityFactor
+      newBody.angularVelocityFactor = body.angularVelocityFactor
+      newBody.isAffectedByGravity = body.isAffectedByGravity
+      newBody.mass = body.mass
+      newBody.charge = body.charge
+      newBody.friction = body.friction
+      newBody.rollingFriction = body.rollingFriction
+      newBody.restitution = body.restitution
+      newBody.damping = body.damping
+      newBody.angularDamping = body.angularDamping
+      newBody.momentOfInertia = body.momentOfInertia
+      newBody.usesDefaultMomentOfInertia = body.usesDefaultMomentOfInertia
+      newBody.cateogryBitMask = body.categoryBitMask
+      newBody.contactTestBitMask = body.contactTestBitMask
+      newBody.collisionBitMask = body.collisionBitMask
+      newBody.velocity = body.velocity
+      newBody.angularVelocity = body.angularVelocity
+      newBody.allowsResting = body.allowsResting
+
+      this.physicsBody = newBody
+    }
+
+    this.physicsField = node.physicsField
   }
 
   /**
@@ -309,10 +376,43 @@ export default class MMDNode extends SCNNode {
   }
 
   valueForUndefinedKey(key) {
+    //console.log('MMDNode.valueForUndefinedKey: ' + key)
+    if(key.startsWith('/')){
+      const searchKey = key.substring(1)
+      const node = this.childNodeWithNameRecursively(searchKey, true)
+      if(node){
+        return node
+      }
+
+      console.warn(`valueForUndefinedKey ${key} not found.`)
+      //return this.dummyNode
+      return null
+    }
+
+    const result = key.match(_faceWeightsPattern)
+    if(result){
+      const index = result[1]
+      const value = this.faceWeights[index]
+      return value
+    }
+
+    if(key === 'kPivotKey'){
+      return null
+    }
+
+    return super.valueForUndefinedKey(key)
   }
 
+  /*
   setValueForUndefinedKey(value, key) {
+    console.log('MMDNode.setValueForUndefinedKey: ' + key)
   }
+
+  setValueForKeyPath(value, keyPath) {
+    console.log('MMDNode.setValueForKeyPath: ' + keyPath)
+    super.setValueForKeyPath(value, keyPath)
+  }
+  */
 
   /**
    *
@@ -326,7 +426,7 @@ export default class MMDNode extends SCNNode {
       this.preparedAnimation = new Map()
     }
     if(animation instanceof CAAnimationGroup){
-      const convertedAnimation = this.convertAnimation(animation)
+      const convertedAnimation = this._convertAnimation(animation)
       convertedAnimation.delegate = this
       this.preparedAnimation.set(key, convertedAnimation)
     }else{
@@ -353,25 +453,31 @@ export default class MMDNode extends SCNNode {
 
   /**
    *
-   * @access public
+   * @access private
    * @param {CAAnimationGroup} animation -
    * @returns {CAAnimationGroup} -
    */
-  convertAnimation(animation) {
+  _convertAnimation(animation) {
+    console.log('_convertAnimation start')
     const geometryNode = this.childNodeWithNameRecursively('Geometry', true)
     const newGroup = animation.copy()
     newGroup.animations = []
 
     const animations = animation.animations
+    console.log('animations')
     if(animations){
+      console.log('if(animations): true')
       animations.forEach((anim) => {
+        console.log('anim: ' + anim.keyPath)
         let hasEffector = false
         const newAnim = anim.copy()
 
         if(newAnim instanceof CAKeyframeAnimation){
+          console.log('newAnim: ' + newAnim.keyPath)
           const boneNameKey = newAnim.keyPath.split('.')[0]
           const boneName = boneNameKey.substring(1)
           const bone = this.childNodeWithNameRecursively(boneName, true)
+          console.log('boneName: ' + boneName + ', bone: ' + bone)
 
           if(boneNameKey === 'morpher'){
             if(newAnim.keyPath.startsWith('morpher.weights.')){
@@ -398,18 +504,24 @@ export default class MMDNode extends SCNNode {
                 const origValue = newAnim.values[i]
                 const newValue = origValue + bone.position.x
                 newAnim.values[i] = newValue
+
+                console.log(`convert ${newAnim.keyPath}: ${origValue} => ${newValue}`)
               }
             }else if(newAnim.keyPath.endsWith('.translation.y')){
               for(let i=0; i<newAnim.values.length; i++){
                 const origValue = newAnim.values[i]
                 const newValue = origValue + bone.position.y
                 newAnim.values[i] = newValue
+
+                console.log(`convert ${newAnim.keyPath}: ${origValue} => ${newValue}`)
               }
             }else if(newAnim.keyPath.endsWith('.translation.z')){
               for(let i=0; i<newAnim.values.length; i++){
                 const origValue = newAnim.values[i]
                 const newValue = origValue + bone.position.z
                 newAnim.values[i] = newValue
+
+                console.log(`convert ${newAnim.keyPath}: ${origValue} => ${newValue}`)
               }
             }
 
@@ -434,6 +546,7 @@ export default class MMDNode extends SCNNode {
         }
       }) // animations.forEach
     } // animations
+    console.log('_convertAnimation end')
     return newGroup
   }
 
@@ -446,11 +559,11 @@ export default class MMDNode extends SCNNode {
    */
   addAnimationForKey(animation, key) {
     if(animation instanceof CAAnimationGroup){
-      const convertedAnimation = this.convertAnimation(animation)
-      super.addAnimation(convertedAnimation, key)
+      const convertedAnimation = this._convertAnimation(animation)
+      super.addAnimationForKey(convertedAnimation, key)
     }else{
       animation.delegate = this
-      super.addAnimation(animation, key)
+      super.addAnimationForKey(animation, key)
     }
   }
 
@@ -460,7 +573,96 @@ export default class MMDNode extends SCNNode {
    * @returns {void}
    */
   updateIK() {
-    // TODO: implement
+    if(this.ikArray !== null){
+      const zeroThreshold = 0.0000001
+      this.ikArray.forEach((ik) => {
+        const ikBone = ik.ikBone
+        const targetBone = ik.targetBone
+
+        for(let i=0; i<ik.iteration; i++){
+          for(let index=0; index<ik.boneArray.length; index++){
+            const bone = ik.boneArray[index]
+
+            const bonePosition = this._getWorldPosition(bone.presentation)
+            const targetPosition = this._getWorldPosition(targetBone.presentation)
+            const ikPosition = this._getWorldPosition(ikBone.presentation)
+
+            let v1 = bonePosition.sub(targetPosition)
+            let v2 = bonePosition.sub(ikPosition)
+
+            v1 = v1.normalize()
+            v2 = v2.normalize()
+
+            const diff = v1.sub(v2)
+            const x2 = diff.x * diff.x
+            const y2 = diff.y * diff.y
+            const z2 = diff.z * diff.z
+            if(x2 + y2 + z2 < zeroThreshold){
+              break
+            }
+
+            let v = v1.cross(v2)
+            v = this._inverseCross(v, bone.parent.presentation.worldTransform)
+            v = v.normalize()
+
+            if(bone.isKnee){
+              if(v.x > 0){
+                v.x = 1.0
+              }else{
+                v.x = -1.0
+              }
+              v.y = 0
+              v.z = 0
+            }
+
+            let innerProduct = v1.dot(v2)
+            if(innerProduct > 1){
+              innerProduct = 1
+            }else if(innerProduct < -1){
+              innerProduct = -1
+            }
+
+            let ikRot = 0.5 * Math.acos(innerProduct)
+            const maxRot = ik.weight * (index + 1) * 2
+            if(ikRot > maxRot){
+              ikRot = maxRot
+            }
+
+            const ikSin = Math.sin(ikRot)
+            const ikCos = Math.cos(ikRot)
+            let quat = new SCNVector4()
+
+            // create quaternion
+            quat.x = v.x * ikSin
+            quat.y = v.y * ikSin
+            quat.z = v.z * ikSin
+            quat.w = ikCos
+
+            const orgRot = bone.presentation.rotation
+            orgRot.w = orgRot.w * 2.0
+            const orgQuat = orgRot.rotationToQuat()
+            //console.log(`${this.name} orgQuat ${orgQuat.float32Array()}`)
+            quat = quat.cross(orgQuat)
+
+            if(bone.isKnee){
+              //if(bone.eulerAngles.x < 0){
+              // FIXME: don't use presentation node
+              if(bone.presentation.eulerAngles.x < 0){
+                quat.x = -quat.x
+                //bone.rotation = quat.quatToRotation()
+                const rot = quat.quatToRotation()
+                rot.w = rot.w * 0.5
+                //bone.rotation = rot
+                // FIXME: don't use presentation node
+                bone.presentation.rotation = rot
+                //console.log(`${bone.name} quatToRotation ${bone.rotation.float32Array()}`)
+              }
+            }
+          } // boneArray
+        } // iteration
+      }) // ikArray
+    }
+    this.updateEffector()
   }
 
   /**
@@ -469,7 +671,42 @@ export default class MMDNode extends SCNNode {
    * @returns {void}
    */
   updateEffector() {
-    // TODO: implement
+    if(this.rotateEffector !== null){
+      const rot = this.rotateEffector.presentation.rotation
+      if(this.rotateEffectRate === 1.0){
+        // FIXME: don't use presentation node
+        //this.rotation = rot
+        this.presentation.rotation = rot
+      }else{
+        rot.w = rot.w * 2.0
+        const quat = rot.rotationToQuat()
+        //console.log(`${this.name} quat ${quat.float32Array()}`)
+        const pRot = this.presentation.rotation
+        pRot.w = pRot.w * 2.0
+        const orgQuat = pRot.rotationToQuat()
+        //console.log(`${this.name} orgQuat ${orgQuat.float32Array()}`)
+        const newQuat = this.slerp(orgQuat, quat, this.rotateEffectRate)
+        //this.rotation = newQuat.quatToRotation()
+        const newRot = newQuat.quatToRotation()
+        newRot.w = newRot.w * 0.5
+        //this.rotation = newRot
+        // FIXME: don't use presentation
+        this.presentaion.rotation = newRot
+        //console.log(`${this.name} newQuat.quatToRotation ${this.rotation.float32Array()}`)
+      }
+    }
+    if(this.translateEffector !== null){
+      const pos = this.translateEffector.position
+      if(this.translateEffectRate === 1.0){
+        // FIXME: don't use presentation node
+        //this.position = pos
+        this.presentation.position = pos
+      }else{
+        // FIXME: don't use presentation node
+        //this.position = pos.mul(this.translateEffectRate)
+        this.presentation.position = pos.mul(this.translateEffectRate)
+      }
+    }
   }
 
   /**
@@ -545,6 +782,12 @@ export default class MMDNode extends SCNNode {
   // CAAnimationDelegate //
   /////////////////////////
 
+  /**
+   * @access public
+   * @param {CAAnimation} anim -
+   * @param {boolean} finished -
+   * @returns {void}
+   */
   animationDidStop(anim, finished) {
     if(finished){
       const block = anim.valueForKey(_MMDAnimationCompletionBlockKey)
@@ -554,6 +797,12 @@ export default class MMDNode extends SCNNode {
     }
   }
 
+  /**
+   * @access public
+   * @param {function} block -
+   * @param {string} key -
+   * @returns {void}
+   */
   setCompletionHandler(block, key) {
     const anim = this.preparedAnimation.get(key)
     if(anim){
@@ -563,6 +812,45 @@ export default class MMDNode extends SCNNode {
 
   static get Type() {
     return _MMDNodeType
+  }
+
+  /**
+   *
+   * @access private
+   * @param {SCNNode} node -
+   * @returns {SCNVector3} -
+   */
+  _getWorldPosition(node = null) {
+    let m = null
+    if(node === null){
+      m = this.worldTransform
+    }else{
+      m = node.worldTransform
+    }
+    return new SCNVector3(m.m41, m.m42, m.m43)
+  }
+
+  /**
+   * @access private
+   * @param {SCNVector3} v1 -
+   * @param {SCNMatrix4} mat -
+   * @param {boolean} [includeTranslation = false] -
+   * @returns {SCNVector3} -
+   */
+  _inverseCross(v1, mat, includeTranslation = false) {
+    const v = new SCNVector3()
+
+    v.x = v1.x * mat.m11 + v1.y * mat.m12 + v1.z * mat.m13
+    v.y = v1.x * mat.m21 + v1.y * mat.m22 + v1.z * mat.m23
+    v.z = v1.x * mat.m31 + v1.y * mat.m32 + v1.z * mat.m33
+
+    if(includeTranslation){
+      v.x += mat.m14
+      v.y += mat.m24
+      v.z += mat.m34
+    }
+
+    return v
   }
 }
 

@@ -303,6 +303,7 @@ export default class MMDVMDReader extends MMDReader {
   _createAnimations() {
     const duration = this._frameLength / this.fps
 
+    console.log('_createAnimations')
     this._animationHash.forEach((motion, key) => {
       // normalize keyTimes
       const motionLength = motion.keyTimes[motion.keyTimes.length - 1]
@@ -316,6 +317,7 @@ export default class MMDVMDReader extends MMDReader {
       motion.isRemovedOnCompletion = false
       motion.fillMode = kCAFillModeForwards
 
+      console.log('animations.push ' + key)
       this._workingAnimationGroup.animations.push(motion)
     })
 
