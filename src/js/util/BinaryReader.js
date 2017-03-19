@@ -27,7 +27,7 @@ export default class BinaryReader {
      * @access private
      * @type {boolean}
      */
-    this.eof = true
+    this._eof = true
 
     /**
      *

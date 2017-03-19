@@ -8,6 +8,7 @@ import {
 import MMDNode from './MMDNode'
 import MMDPMDReader from './MMDPMDReader'
 import MMDVMDReader from './MMDVMDReader'
+import MMDXReader from './MMDXReader'
 
 const _MMDFileType = {
   pmm: Symbol(),
@@ -124,18 +125,13 @@ export default class MMDSceneSource extends SCNSceneSource {
       if(vmdMotion){
         this._workingAnimationGroup = vmdMotion
       }
+    }else if(this._fileType === _MMDFileType.x){
+      const xNode = MMDXReader.getNode(data, this._directoryPath)
+      if(xNode){
+        this._workingNode = xNode
+      }
     }
     /*
-    if(this._fileType === _MMDFileType.pmd){
-      const pmdNode = MMDPMDReader.getNode(data, this._directoryPath)
-      if(pmdNode){
-        this._workingNode = pmdNode
-      }
-    }else if(this._fileType === _MMDFileType.vmd){
-      const vmdAnimation = MMDVMDReader.getAnimation(data)
-      if(vmdAnimation){
-        this.workingAnimationGroup = vmdAnimation
-      }
     }else if(this._fileType === _MMDFileType.vpd){
       const vpdAnimation = MMDVPDReader.getAnimation(data)
       if(vpdAnimation){
@@ -147,11 +143,6 @@ export default class MMDSceneSource extends SCNSceneSource {
         pmmScene.rootNode.childNodes.forEach((node) => {
           this.workingScene.rootNode.addChildNode(node)
         })
-      }
-    }else if(this._fileType === _MMDFileType.x){
-      const xNode = MMDXReader.getNode(data, this._directoryPath)
-      if(xNode){
-        this._workingNode = xNode
       }
     }else if(this._fileType === _MMDFileType.vac){
       const vacNode = MMDVACReader.getNode(data, this._directoryPath)

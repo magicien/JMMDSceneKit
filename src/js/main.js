@@ -6,6 +6,7 @@ import MMDProgram from './MMD/MMDProgram'
 import MMDReader from './MMD/MMDReader'
 import MMDSceneSource from './MMD/MMDSceneSource'
 import MMDVMDReader from './MMD/MMDVMDReader'
+import MMDXReader from './MMD/MMDXReader'
 import BinaryParser from './third_party/BinaryParser'
 import ecl from './third_party/ecl'
 import AjaxRequest from './util/AjaxRequest'
@@ -24,6 +25,7 @@ exports.MMDProgram = MMDProgram
 exports.MMDReader = MMDReader
 exports.MMDSceneSource = MMDSceneSource
 exports.MMDVMDReader = MMDVMDReader
+exports.MMDXReader = MMDXReader
 exports.BinaryParser = BinaryParser
 exports.ecl = ecl
 exports.AjaxRequest = AjaxRequest

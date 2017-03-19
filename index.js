@@ -71,15 +71,19 @@ module.exports =
 
 	var _MMDReader2 = _interopRequireDefault(_MMDReader);
 
-	var _MMDSceneSource = __webpack_require__(14);
+	var _MMDSceneSource = __webpack_require__(12);
 
 	var _MMDSceneSource2 = _interopRequireDefault(_MMDSceneSource);
 
-	var _MMDVMDReader = __webpack_require__(15);
+	var _MMDVMDReader = __webpack_require__(13);
 
 	var _MMDVMDReader2 = _interopRequireDefault(_MMDVMDReader);
 
-	var _BinaryParser = __webpack_require__(18);
+	var _MMDXReader = __webpack_require__(15);
+
+	var _MMDXReader2 = _interopRequireDefault(_MMDXReader);
+
+	var _BinaryParser = __webpack_require__(17);
 
 	var _BinaryParser2 = _interopRequireDefault(_BinaryParser);
 
@@ -87,7 +91,7 @@ module.exports =
 
 	var _ecl2 = _interopRequireDefault(_ecl);
 
-	var _AjaxRequest = __webpack_require__(13);
+	var _AjaxRequest = __webpack_require__(18);
 
 	var _AjaxRequest2 = _interopRequireDefault(_AjaxRequest);
 
@@ -107,7 +111,7 @@ module.exports =
 
 	var _TextReader2 = _interopRequireDefault(_TextReader);
 
-	var _TextRequest = __webpack_require__(12);
+	var _TextRequest = __webpack_require__(20);
 
 	var _TextRequest2 = _interopRequireDefault(_TextRequest);
 
@@ -122,6 +126,7 @@ module.exports =
 	exports.MMDReader = _MMDReader2.default;
 	exports.MMDSceneSource = _MMDSceneSource2.default;
 	exports.MMDVMDReader = _MMDVMDReader2.default;
+	exports.MMDXReader = _MMDXReader2.default;
 	exports.BinaryParser = _BinaryParser2.default;
 	exports.ecl = _ecl2.default;
 	exports.AjaxRequest = _AjaxRequest2.default;
@@ -1276,6 +1281,7 @@ module.exports =
 	    var isBigEndian = false;
 	    var encoding = 'sjis';
 
+	    /** @type {MMDNode} */
 	    var _this = _possibleConstructorReturn(this, (MMDPMDReader.__proto__ || Object.getPrototypeOf(MMDPMDReader)).call(this, data, directoryPath, isBinary, isBigEndian, encoding));
 
 	    _this._workingNode = null;
@@ -1343,6 +1349,12 @@ module.exports =
 
 	  _createClass(MMDPMDReader, [{
 	    key: '_loadPMDFile',
+
+
+	    /**
+	     * @access private
+	     * @returns {MMDNode} -
+	     */
 	    value: function _loadPMDFile() {
 	      this._workingNode = new _MMDNode2.default();
 
@@ -2215,7 +2227,7 @@ module.exports =
 	     * @access private
 	     * @type {boolean}
 	     */
-	    this.eof = true;
+	    this._eof = true;
 
 	    /**
 	     *
@@ -2974,18 +2986,25 @@ module.exports =
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _TextRequest = __webpack_require__(12);
+	var _Buffer = __webpack_require__(9);
 
-	var _TextRequest2 = _interopRequireDefault(_TextRequest);
+	var _Buffer2 = _interopRequireDefault(_Buffer);
+
+	var _ecl = __webpack_require__(10);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+	var _integerPattern = new RegExp(/^(-|\+)?\d+;?/);
+	var _floatPattern = new RegExp(/^(-|\+)?(\d)*\.(\d)*;?/);
+	var _wordPattern = new RegExp(/^\w+/);
+
 	/**
 	 * TextReader class
 	 * @access public
 	 */
+
 	var TextReader = function () {
 	  /**
 	   * constructor
@@ -2999,202 +3018,339 @@ module.exports =
 
 	    _classCallCheck(this, TextReader);
 
-	    this.position = 0;
-	    this.eof = true;
-	    this.data = null;
+	    /**
+	     * @access private
+	     * @type {number}
+	     */
+	    this._pos = 0;
+
+	    this._partialText = '';
+	    this._partialOffset = 0;
+	    this._partialStep = 200;
+	    this._partialMinLength = 100;
+
+	    /**
+	     * @access private
+	     * @type {boolean}
+	     */
+	    this._eof = true;
+
+	    /**
+	     *
+	     * @access public
+	     * @type {Buffer}
+	     */
+	    this.buffer = null;
+
+	    if (data instanceof _Buffer2.default) {
+	      this.buffer = data;
+	    } else {
+	      this.buffer = _Buffer2.default.from(data);
+	    }
+
+	    /**
+	     *
+	     * @access public
+	     * @type {boolean}
+	     */
+	    //this.bigEndian = bigEndian
+
+	    /**
+	     *
+	     * @access public
+	     * @type {string}
+	     */
 	    this.encoding = encoding;
 
-	    if (encoding === 'sjis') {
-	      this.encoding = 'shift_jis';
-	    }
-
-	    var obj = this;
-	    if (data instanceof File) {
-	      this.url = data.name;
-	      var reader = new FileReader();
-	      reader.onloadend = function () {
-	        obj._onload(reader.result);
-	      };
-	      reader.readAsText(data, this._encoding);
-	    } else {
-	      this.url = data;
-
-	      _TextRequest2.default.getWithCharset(data, this.encoding).then(function (value) {
-	        obj._onload(value);
-	      }).catch(function (e) {
-	        obj._onerror(e);
-	      });
-	    }
+	    // prepare buffered text
+	    this._addPartialText();
 	  }
 
+	  /**
+	   * @access public
+	   * @param {number} length - length of data to skip
+	   * @param {boolean} noAssert -
+	   * @returns {void}
+	   */
+
+
 	  _createClass(TextReader, [{
-	    key: '_onload',
-	    value: function _onload(textData) {
-	      this.position = 0;
+	    key: 'skip',
+	    value: function skip(length) {
+	      var noAssert = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
-	      this.data = textData;
-	      this.eof = false;
-
-	      if (this.onloadFunc) {
-	        this.onloadFunc(this);
+	      this._moveIndex(length);
+	      if (!noAssert) {
+	        this._check();
 	      }
-	    }
-	  }, {
-	    key: '_onerror',
-	    value: function _onerror(error) {
-	      if (this.onerrorFunc) {
-	        this.onerrorFunc(error);
-	      }
-	    }
-	  }, {
-	    key: 'getText',
-	    value: function getText() {
-	      return this.data;
 	    }
 
-	    // FIXME: implementation
+	    /**
+	     *
+	     * @access public
+	     * @param {number} length - length of data to read
+	     * @param {?string} [encoding = null] -
+	     * @returns {string} -
+	     */
 
-	  }, {
-	    key: 'hasBytesAvailable',
-	    value: function hasBytesAvailable() {
-	      return !this.eof;
-	    }
-	  }, {
-	    key: 'readData',
-	    value: function readData(length) {
-	      /*
-	      if(this.eof){
-	        return null
-	      }
-	      const dataStr = String.fromCharCode.apply(String, this.data.slice(this.position, this.position + length))
-	       this.position += length
-	      if(this.position >= this.data.length){
-	        this.eof = true
-	      }
-	       return dataStr
-	      */
-	    }
-	  }, {
-	    key: 'readInteger',
-	    value: function readInteger(length, signed) {
-	      /*
-	      if(this.eof){
-	        return null
-	      }
-	       const value = this.parser.decodeInt(this.readData(length), length * 8, signed)
-	       return value
-	      */
-	    }
-	  }, {
-	    key: 'readByte',
-	    value: function readByte() {
-	      /*
-	      return this.readInteger(1, true)
-	      */
-	    }
-	  }, {
-	    key: 'readUnsignedByte',
-	    value: function readUnsignedByte() {
-	      /*
-	      return this.readInteger(1, false)
-	      */
-	    }
-	  }, {
-	    key: 'readShort',
-	    value: function readShort() {
-	      /*
-	      return this.readInteger(2, true)
-	      */
-	    }
-	  }, {
-	    key: 'readUnsignedShort',
-	    value: function readUnsignedShort() {
-	      //return this.readInteger(2, false)
-	    }
-	  }, {
-	    key: 'readInt',
-	    value: function readInt() {
-	      //return this.readInteger(4, true)
-	    }
-	  }, {
-	    key: 'readUnsignedInt',
-	    value: function readUnsignedInt() {
-	      //return this.readInteger(4, false)
-	    }
-	  }, {
-	    key: 'readFloat',
-	    value: function readFloat() {
-	      /*
-	      if(this.eof){
-	        return null
-	      }
-	      const floatSize = 4
-	      const value = this.parser.toFloat(this.readData(floatSize))
-	       return value
-	      */
-	    }
-	  }, {
-	    key: 'readDouble',
-	    value: function readDouble() {
-	      /*
-	      if(this.eof){
-	        return null
-	      }
-	      const doubleSize = 8
-	      const value = this.parser.toDouble(this.readData(doubleSize))
-	       return value
-	      */
-	    }
 	  }, {
 	    key: 'readString',
 	    value: function readString(length) {
-	      /*
-	      if(this.eof){
-	        return null
-	      }
-	       const escapeString = ''
-	      for(var i=0 i<length i++){
-	        const charCode = this.data[this.position + i]
-	        if(charCode == 0){
-	          break
-	        }
-	        else if(charCode < 16){
-	          escapeString += '%0' + charCode.toString(16)
-	        }else{
-	          escapeString += '%' + charCode.toString(16)
-	        }
-	      }
-	        
-	      this.position += length 
-	      if(this.position >= this.data.length)
-	        this.eof = true
-	       const value
-	      if(this.encoding == 'sjis'){
-	        value = UnescapeSJIS(escapeString)
-	      }else if(this.encoding == 'euc-jp'){
-	        value = UnescapeEUCJP(escapeString)
-	      }else if(this.encoding == 'jis-7'){
-	        value = UnescapeJIS7(escapeString)
-	      }else if(this.encoding == 'jis-8'){
-	        value = UnescapeJIS8(escapeString)
-	      }else if(this.encoding == 'unicode'){
-	        value = UnescapeUnicode(escapeString)
-	      }else if(this.encoding == 'utf7'){
-	        value = UnescapeUTF7(escapeString)
-	      }else if(this.encoding == 'utf-8'){
-	        value = UnescapeUTF8(escapeString)
-	      }else if(this.encoding == 'utf-16'){
-	        value = UnescapeUTF16LE(escapeString)
-	      }
-	       return value
-	      */
+	      var encoding = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+	      var str = this._partialText.substring(0, length);
+
+	      this._moveIndex(str.length);
 	    }
-	  }], [{
-	    key: 'open',
-	    value: function open(url, encoding) {
-	      return new Promise(function (resolve, reject) {
-	        return new TextReader(url, encoding, resolve, reject);
-	      });
+
+	    /**
+	     *
+	     * @access public
+	     * @param {number} length - 
+	     * @param {boolean} signed -
+	     * @returns {number} -
+	     */
+
+	  }, {
+	    key: 'readInteger',
+	    value: function readInteger(length, signed) {
+	      var str = this._getString(_integerPattern);
+	      var val = parseInt(str[0], 10);
+	      return val;
+	    }
+
+	    /**
+	     *
+	     * @access public
+	     * @returns {number} -
+	     */
+
+	  }, {
+	    key: 'readUnsignedByte',
+	    value: function readUnsignedByte() {
+	      return this.readInteger(1, false);
+	    }
+
+	    /**
+	     *
+	     * @access public
+	     * @returns {number} -
+	     */
+
+	  }, {
+	    key: 'readUnsignedShort',
+	    value: function readUnsignedShort() {
+	      return this.readInteger(2, false);
+	    }
+
+	    /**
+	     *
+	     * @access public
+	     * @returns {number} -
+	     */
+
+	  }, {
+	    key: 'readUnsignedInt',
+	    value: function readUnsignedInt() {
+	      return this.readInteger(4, false);
+	    }
+
+	    /**
+	     *
+	     * @access public
+	     * @returns {number} -
+	     */
+
+	  }, {
+	    key: 'readInt',
+	    value: function readInt() {
+	      return this.readInteger(4, true);
+	    }
+
+	    /**
+	     *
+	     * @access public
+	     * @returns {number} -
+	     */
+
+	  }, {
+	    key: 'readFloat',
+	    value: function readFloat() {
+	      var str = this._getString(_floatPattern);
+	      var val = parseFloat(str[0]);
+	      return val;
+	    }
+
+	    /**
+	     *
+	     * @access public
+	     * @returns {number} -
+	     */
+
+	  }, {
+	    key: 'readDouble',
+	    value: function readDouble() {
+	      return this.readFloat();
+	    }
+
+	    /**
+	     *
+	     * @access public
+	     * @param {number} length -
+	     * @returns {Buffer} -
+	     */
+
+	  }, {
+	    key: 'readData',
+	    value: function readData(length) {
+	      var start = this._pos;
+	      this._pos += length;
+	      return this.buffer.slice(start, this._pos);
+	    }
+	  }, {
+	    key: 'readWord',
+	    value: function readWord() {
+	      var str = this._getString(_wordPattern);
+	      return str !== null ? str[0] : null;
+	    }
+	  }, {
+	    key: 'readPattern',
+	    value: function readPattern(pattern) {
+	      return this._getString(pattern);
+	    }
+
+	    /**
+	     *
+	     * @access private
+	     * @returns {void}
+	     */
+
+	  }, {
+	    key: '_check',
+	    value: function _check() {}
+
+	    /**
+	     *
+	     * @access private
+	     * @param {number[]} data - length of data to convert
+	     * @param {?string} [encoding = null] -
+	     * @returns {string} -
+	     */
+
+	  }, {
+	    key: '_convert',
+	    value: function _convert(data, encoding) {
+	      var length = data.length;
+	      var escapeString = '';
+	      for (var i = 0; i < length; i++) {
+	        var charCode = data.charCodeAt(i);
+	        if (charCode === 0) {
+	          break;
+	        } else if (charCode < 16) {
+	          escapeString += '%0' + charCode.toString(16);
+	        } else {
+	          escapeString += '%' + charCode.toString(16);
+	        }
+	      }
+
+	      if (encoding === 'sjis') {
+	        return (0, _ecl.UnescapeSJIS)(escapeString);
+	      } else if (encoding === 'euc-jp') {
+	        return (0, _ecl.UnescapeEUCJP)(escapeString);
+	      } else if (encoding === 'jis-7') {
+	        return (0, _ecl.UnescapeJIS7)(escapeString);
+	      } else if (encoding === 'jis-8') {
+	        return (0, _ecl.UnescapeJIS8)(escapeString);
+	      } else if (encoding === 'unicode') {
+	        return (0, _ecl.UnescapeUnicode)(escapeString);
+	      } else if (encoding === 'utf7') {
+	        return (0, _ecl.UnescapeUTF7)(escapeString);
+	      } else if (encoding === 'utf-8') {
+	        return (0, _ecl.UnescapeUTF8)(escapeString);
+	      } else if (encoding === 'utf-16') {
+	        return (0, _ecl.UnescapeUTF16LE)(escapeString);
+	      }
+
+	      throw new Error('unsupported encoding: ' + encoding);
+	    }
+	  }, {
+	    key: 'getAvailableDataLength',
+	    value: function getAvailableDataLength() {
+	      return this.buffer.length - this._pos;
+	    }
+
+	    /**
+	     *
+	     * @access private
+	     * @param {number} len -
+	     * @returns {void}
+	     */
+
+	  }, {
+	    key: '_moveIndex',
+	    value: function _moveIndex(len) {
+	      this._partialText = this._partialText.substring(len);
+	      if (this._partialText.length < this._partialMinLength) {
+	        this._addPartialText();
+	      }
+	    }
+	  }, {
+	    key: '_skipSpace',
+	    value: function _skipSpace() {
+	      var i = 0;
+	      var code = this._partialText.charCodeAt(i);
+
+	      //  9: Horizontal Tab
+	      // 10: Line Feed
+	      // 11: Vertical Tab
+	      // 12: New Page
+	      // 13: Carriage Return
+	      // 32: Space
+	      while (code === 32 || 9 <= code && code <= 13) {
+	        i++;
+	        code = this._partialText.charCodeAt(i);
+
+	        if (i >= this._partialText.length) {
+	          this._addPartialText();
+	        }
+	      }
+	      if (i > 0) {
+	        this._moveIndex(i);
+	      }
+	    }
+	  }, {
+	    key: '_addPartialText',
+	    value: function _addPartialText() {
+	      if (this._partialOffset >= this.buffer.length) {
+	        return;
+	      }
+
+	      var newOffset = this._partialOffset + this._partialStep;
+	      if (newOffset > this.buffer.length) {
+	        newOffset = this.buffer.length;
+	      }
+
+	      if (_Buffer2.default.isEncoding(this.encoding)) {
+	        this._partialText += this.buffer.toString(this.encoding, this._partialOffset, newOffset);
+	      } else {
+	        var data = this.buffer.toString('binary', this._partialOffset, newOffset);
+	        this._partialText += this._convert(data, this.encoding);
+	      }
+	      this._partialOffset = newOffset;
+	    }
+	  }, {
+	    key: '_getString',
+	    value: function _getString(pattern) {
+	      this._skipSpace();
+
+	      var str = this._partialText.match(pattern);
+	      if (str === null) {
+	        return null;
+	      }
+
+	      this._moveIndex(str[0].length);
+
+	      return str;
 	    }
 	  }]);
 
@@ -3205,268 +3361,6 @@ module.exports =
 
 /***/ },
 /* 12 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.TextRequest = undefined;
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _AjaxRequest2 = __webpack_require__(13);
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	/**
-	 * TextRequest class
-	 * @access public
-	 */
-	var TextRequest = exports.TextRequest = function (_AjaxRequest) {
-	  _inherits(TextRequest, _AjaxRequest);
-
-	  /**
-	   * constructor
-	   * @access public
-	   * @constructor
-	   */
-	  function TextRequest() {
-	    _classCallCheck(this, TextRequest);
-
-	    var _this = _possibleConstructorReturn(this, (TextRequest.__proto__ || Object.getPrototypeOf(TextRequest)).call(this));
-
-	    _this.defaultOptions.mimeType = 'text/plain; charset=utf-8';
-	    return _this;
-	  }
-
-	  _createClass(TextRequest, [{
-	    key: 'getWithCharset',
-	    value: function getWithCharset(url, charset) {
-	      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
-	      options.mimeType = 'text/plain; charset=' + charset;
-	      return this.get(url, options);
-	    }
-	  }, {
-	    key: 'postWithCharset',
-	    value: function postWithCharset(url, charset) {
-	      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
-	      options.mimeType = 'text/plain; charset=' + charset;
-	      return this.post(url, options);
-	    }
-	  }]);
-
-	  return TextRequest;
-	}(_AjaxRequest2.AjaxRequest);
-
-	exports.default = new TextRequest();
-
-/***/ },
-/* 13 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	/**
-	 * AjaxRequest class
-	 * @access public
-	 */
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var AjaxRequest = exports.AjaxRequest = function () {
-	  /**
-	   * constructor
-	   * @access public
-	   * @constructor
-	   */
-	  function AjaxRequest() {
-	    _classCallCheck(this, AjaxRequest);
-
-	    this.defaultOptions = {
-	      method: 'POST',
-	      async: true,
-	      data: null,
-	      user: null,
-	      password: null,
-	      mimeType: null,
-	      isJSONP: false,
-	      requestHeader: {}
-	    };
-
-	    this.jsonpScripts = [];
-	    this.jsonpCallbackPrefix = 'jsonpCallback_';
-	  }
-
-	  _createClass(AjaxRequest, [{
-	    key: 'get',
-	    value: function get(url) {
-	      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-	      options.method = 'GET';
-	      return this.request(url, options);
-	    }
-	  }, {
-	    key: 'post',
-	    value: function post(url) {
-	      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-	      options.method = 'POST';
-	      return this.request(url, options);
-	    }
-	  }, {
-	    key: 'jsonp',
-	    value: function jsonp(url) {
-	      var callbackParam = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'callback';
-	      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
-	      var requestURL = url;
-	      var script = document.createElement('script');
-	      var callbackFuncName = this._getNewFuncName(this.jsonpCallbackPrefix);
-
-	      if (!options.data) {
-	        options.data = {};
-	      }
-	      options.data[callbackParam] = callbackFuncName;
-
-	      var queryArray = [];
-	      options.data.forEach(function (key, value) {
-	        queryArray.push(encodeURI(key) + '=' + encodeURI(value));
-	      });
-	      requestURL += '?' + queryArray.join('&');
-
-	      var promise = new Promise(function (resolve, reject) {
-	        window[callbackFuncName] = resolve;
-	        script.addEventListener('error', reject);
-	      }).catch(function (error) {
-	        delete window[callbackFuncName];
-	        document.head.removeChild(script);
-	        return Promise.reject(error);
-	      }).then(function (result) {
-	        delete window[callbackFuncName];
-	        document.head.removeChild(script);
-	        return Promise.resolve(result);
-	      });
-
-	      script.src = requestURL;
-	      document.head.appendChild(script);
-
-	      return promise;
-	    }
-	  }, {
-	    key: '_getNewFuncName',
-	    value: function _getNewFuncName() {
-	      var prefix = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-
-	      // ESLint prefers for(;;) more than while(true)
-	      for (;;) {
-	        var funcName = prefix + Math.random().toString(16).slice(2);
-	        if (typeof window[funcName] === 'undefined') {
-	          return funcName;
-	        }
-	      }
-	    }
-	  }, {
-	    key: 'request',
-	    value: function request(url) {
-	      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-	      var requestURL = url;
-	      var method = typeof options.method === 'undefined' ? this.defaultOptions.method : options.method;
-	      var async = typeof options.async === 'undefined' ? this.defaultOptions.async : options.async;
-	      var data = this.defaultOptions.data;
-	      var user = typeof options.user === 'undefined' ? this.defaultOptions.user : options.user;
-	      var password = typeof options.password === 'undefined' ? this.defaultOptions.password : options.password;
-	      var mimeType = typeof options.mimeType === 'undefined' ? this.defaultOptions.mimeType : options.mimeType;
-	      var header = typeof options.requestHeader === 'undefined' ? this.defaultOptions.requestHeader : options.requestHeader;
-	      var isJSONP = typeof options.isJSONP === 'undefined' ? this.defaultOptions.isJSONP : options.isJSONP;
-
-	      if (method !== 'POST' && method !== 'GET') {
-	        method = 'POST';
-	      }
-
-	      if (options.data) {
-	        var dataArray = [];
-	        if (options.data instanceof Map) {
-	          options.data.forEach(function (key, value) {
-	            dataArray.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
-	          });
-	        } else {
-	          Object.keys(options.data).forEach(function (key) {
-	            var value = options.data[key];
-	            dataArray.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
-	          });
-	        }
-
-	        if (method === 'POST') {
-	          data = dataArray.join('&').replace(/%20/g, '+');
-	        } else {
-	          requestURL += '?' + dataArray.join('&').replace(/%20/g, '+');
-	        }
-	      }
-
-	      if (method === 'POST' && typeof header['Content-Type'] === 'undefined') {
-	        header['Content-Type'] = 'application/x-www-form-urlencoded';
-	      }
-
-	      return new Promise(function (resolve, reject) {
-	        var xhr = new XMLHttpRequest();
-
-	        if (mimeType) {
-	          xhr.overrideMimeType(mimeType);
-	        }
-
-	        if (user) {
-	          xhr.open(method, url, async, user, password);
-	        } else {
-	          xhr.open(method, url, async);
-	        }
-
-	        if (header) {
-	          for (var key in header) {
-	            // Reflect is not yet implemented...
-	            //if(Reflect.apply({}.hasOwnProperty, header, [key])){
-	            if ({}.hasOwnProperty.call(header, key)) {
-	              xhr.setRequestHeader(key, header[key]);
-	            }
-	          }
-	        }
-
-	        xhr.onload = function () {
-	          if (xhr.readyState === 4 && xhr.status === 200) {
-	            resolve(xhr.response);
-	          } else {
-	            reject(new Error(xhr.statusText));
-	          }
-	        };
-	        xhr.onerror = function () {
-	          reject(new Error(xhr.statusText));
-	        };
-	        xhr.send(data);
-	      });
-	    }
-	  }]);
-
-	  return AjaxRequest;
-	}();
-
-	exports.default = new AjaxRequest();
-
-/***/ },
-/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3487,11 +3381,15 @@ module.exports =
 
 	var _MMDPMDReader2 = _interopRequireDefault(_MMDPMDReader);
 
-	var _MMDVMDReader = __webpack_require__(15);
+	var _MMDVMDReader = __webpack_require__(13);
 
 	var _MMDVMDReader2 = _interopRequireDefault(_MMDVMDReader);
 
-	var _fs = __webpack_require__(17);
+	var _MMDXReader = __webpack_require__(15);
+
+	var _MMDXReader2 = _interopRequireDefault(_MMDXReader);
+
+	var _fs = __webpack_require__(16);
 
 	var _fs2 = _interopRequireDefault(_fs);
 
@@ -3590,18 +3488,13 @@ module.exports =
 	        if (vmdMotion) {
 	          this._workingAnimationGroup = vmdMotion;
 	        }
+	      } else if (this._fileType === _MMDFileType.x) {
+	        var xNode = _MMDXReader2.default.getNode(data, this._directoryPath);
+	        if (xNode) {
+	          this._workingNode = xNode;
+	        }
 	      }
 	      /*
-	      if(this._fileType === _MMDFileType.pmd){
-	        const pmdNode = MMDPMDReader.getNode(data, this._directoryPath)
-	        if(pmdNode){
-	          this._workingNode = pmdNode
-	        }
-	      }else if(this._fileType === _MMDFileType.vmd){
-	        const vmdAnimation = MMDVMDReader.getAnimation(data)
-	        if(vmdAnimation){
-	          this.workingAnimationGroup = vmdAnimation
-	        }
 	      }else if(this._fileType === _MMDFileType.vpd){
 	        const vpdAnimation = MMDVPDReader.getAnimation(data)
 	        if(vpdAnimation){
@@ -3613,11 +3506,6 @@ module.exports =
 	          pmmScene.rootNode.childNodes.forEach((node) => {
 	            this.workingScene.rootNode.addChildNode(node)
 	          })
-	        }
-	      }else if(this._fileType === _MMDFileType.x){
-	        const xNode = MMDXReader.getNode(data, this._directoryPath)
-	        if(xNode){
-	          this._workingNode = xNode
 	        }
 	      }else if(this._fileType === _MMDFileType.vac){
 	        const vacNode = MMDVACReader.getNode(data, this._directoryPath)
@@ -3807,7 +3695,7 @@ module.exports =
 	exports.default = MMDSceneSource;
 
 /***/ },
-/* 15 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3826,7 +3714,7 @@ module.exports =
 
 	var _MMDReader3 = _interopRequireDefault(_MMDReader2);
 
-	var _constants = __webpack_require__(16);
+	var _constants = __webpack_require__(14);
 
 	var _jscenekit = __webpack_require__(4);
 
@@ -4568,7 +4456,7 @@ module.exports =
 	exports.default = MMDVMDReader;
 
 /***/ },
-/* 16 */
+/* 14 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4580,13 +4468,770 @@ module.exports =
 	exports.MMD_CAMERA_ROTZ_NODE_NAME = 'MMD_CAMERA_ROTZ_NODE';
 
 /***/ },
-/* 17 */
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _MMDNode = __webpack_require__(3);
+
+	var _MMDNode2 = _interopRequireDefault(_MMDNode);
+
+	var _MMDReader2 = __webpack_require__(7);
+
+	var _MMDReader3 = _interopRequireDefault(_MMDReader2);
+
+	var _jscenekit = __webpack_require__(4);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _headerPattern = new RegExp(/^xof (\d\d\d\d)([ \w][ \w][ \w][ \w])(\d\d\d\d)/);
+	var _commaOrSemicolonPattern = new RegExp(/^,|;/);
+	var _uuidPattern = new RegExp(/^<[\w-]+>/);
+	var _leftBracePattern = new RegExp(/^{/);
+	var _rightBracePattern = new RegExp(/^}/);
+	var _memberPattern = new RegExp(/^((array\s+\w+\s+\w+\[(\d+|\w+)\]|\w+\s+\w+)\s*;|\[[\w.]+\])/);
+	var _filenamePattern = new RegExp(/^"(.*)";?/);
+
+	/**
+	 *
+	 * @access public
+	 * @extends {MMDReader}
+	 */
+
+	var MMDXReader = function (_MMDReader) {
+	  _inherits(MMDXReader, _MMDReader);
+
+	  /**
+	   *
+	   * @access public
+	   * @constructor
+	   * @param {Buffer} data -
+	   * @param {string} directoryPath -
+	   */
+	  function MMDXReader(data, directoryPath) {
+	    _classCallCheck(this, MMDXReader);
+
+	    // TODO: implement binary x file reader
+	    var isBinary = false;
+	    var isBigEndian = false;
+	    var encoding = 'sjis';
+
+	    var _this = _possibleConstructorReturn(this, (MMDXReader.__proto__ || Object.getPrototypeOf(MMDXReader)).call(this, data, directoryPath, isBinary, isBigEndian, encoding));
+
+	    _this._workingNode = null;
+	    _this._workingGeometry = null;
+	    _this._workingGeometryNode = null;
+
+	    // header info
+	    _this._version = '';
+	    _this._format = '';
+	    _this._floatSize = '';
+
+	    // vertex
+	    _this._vertexCount = 0;
+	    _this._rawVertexArray = [];
+	    _this._vertexArray = [];
+
+	    // face
+	    _this._indexCount = 0;
+	    _this._rawVertexIndexArray = [];
+	    _this._indexArray = [];
+
+	    // material
+	    _this._rawMaterialIndexArray = [];
+	    _this._materialArray = [];
+
+	    // normal
+	    _this._rawNormalArray = [];
+	    _this._rawNormalIndexArray = [];
+	    _this._vertexNormalMap = [];
+	    _this._normalMap = [];
+	    _this._rawSortedNormalArray = [];
+	    _this._normalArray = [];
+
+	    // texcoord
+	    _this._rawTexcoordArray = [];
+	    _this._texcoordArray = [];
+
+	    _this._elementArray = [];
+	    return _this;
+	  }
+
+	  _createClass(MMDXReader, [{
+	    key: '_loadXFile',
+
+
+	    /**
+	     * @access private
+	     * @returns {MMDNode} -
+	     */
+	    value: function _loadXFile() {
+	      this._workingNode = new _MMDNode2.default();
+
+	      if (!this._XFileHeader()) {
+	        throw new Error('MMDXReader: header format error');
+	      }
+
+	      var end = false;
+	      while (!end) {
+	        var result = this._XObjectLong();
+
+	        if (result === null) {
+	          end = true;
+	        } else {
+	          end = !result;
+	        }
+	      }
+
+	      this._splitFaceNormals();
+
+	      this._workingGeometry = this._createGeometry();
+	      this._workingGeometryNode = new _jscenekit.SCNNode(this._workingGeometry);
+	      this._workingGeometryNode.name = 'Geometry';
+	      this._workingGeometryNode.castsShadow = true;
+
+	      this._workingNode.addChildNode(this._workingGeometryNode);
+	      this._workingNode.castsShadow = true;
+
+	      return this._workingNode;
+	    }
+	  }, {
+	    key: '_commaOrSemicolon',
+	    value: function _commaOrSemicolon() {
+	      // FIXME: don't access private property and method
+	      //return this._reader.readPattern(_commaOrSemicolonPattern)
+	      var code = this._reader._partialText.charCodeAt(0);
+	      if (code === 44 || code === 59) {
+	        this._reader._moveIndex(1);
+	      }
+	    }
+	  }, {
+	    key: '_UUID',
+	    value: function _UUID() {
+	      return this._reader.readPattern(_uuidPattern);
+	    }
+	  }, {
+	    key: '_leftBrace',
+	    value: function _leftBrace() {
+	      return this._reader.readPattern(_leftBracePattern);
+	    }
+	  }, {
+	    key: '_rightBrace',
+	    value: function _rightBrace() {
+	      return this._reader.readPattern(_rightBracePattern);
+	    }
+	  }, {
+	    key: '_member',
+	    value: function _member() {
+	      return this._reader.readPattern(_memberPattern);
+	    }
+	  }, {
+	    key: '_filename',
+	    value: function _filename() {
+	      var str = this._reader.readPattern(_filenamePattern);
+	      return str[1];
+	    }
+	  }, {
+	    key: '_integerArray',
+	    value: function _integerArray() {
+	      var n = this._reader.readInteger();
+	      var arr = [];
+	      for (var i = 0; i < n; i++) {
+	        arr.push(this._reader.readInteger());
+	        this._commaOrSemicolon();
+	      }
+	      return arr;
+	    }
+	  }, {
+	    key: '_floatArray',
+	    value: function _floatArray() {
+	      var n = this._reader.readInteger();
+	      var arr = [];
+	      for (var i = 0; i < n; i++) {
+	        arr.push(this._reader.readFloat());
+	        this._commaOrSemicolon();
+	      }
+	      return arr;
+	    }
+	  }, {
+	    key: '_vector3',
+	    value: function _vector3() {
+	      var invertZSign = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
+	      var v = new _jscenekit.SCNVector3();
+	      v.x = this._reader.readFloat();
+	      v.y = this._reader.readFloat();
+	      v.z = this._reader.readFloat();
+
+	      if (invertZSign) {
+	        v.z = -v.z;
+	      }
+
+	      this._commaOrSemicolon();
+
+	      return v;
+	    }
+	  }, {
+	    key: '_vector4',
+	    value: function _vector4() {
+	      var v = new _jscenekit.SCNVector4();
+	      v.x = this._reader.readFloat();
+	      v.y = this._reader.readFloat();
+	      v.z = this._reader.readFloat();
+	      v.w = this._reader.readFloat();
+	      this._commaOrSemicolon();
+
+	      return v;
+	    }
+	  }, {
+	    key: '_splitFaceNormals',
+	    value: function _splitFaceNormals() {
+	      var numFaces = this._rawVertexIndexArray.length;
+
+	      // set texcoord
+	      if (this._rawTexcoordArray.length === 0) {
+	        for (var i = 0; i < numFaces; i++) {
+	          this._rawTexcoordArray.push([0, 0]);
+	        }
+	      }
+
+	      // create normal
+	      if (this._rawNormalArray.length === 0) {
+	        for (var _i = 0; _i < numFaces; _i++) {
+	          var vertexIndex = this._rawVertexIndexArray[_i];
+	          var angles = vertexIndex.length;
+	          var normal = this._calcNormal(this._rawVertexArray[vertexIndex[0]], this._rawVertexArray[vertexIndex[1]], this._rawVertexArray[vertexIndex[angles - 1]]);
+	          this._rawNormalArray.splice(_i, 0, normal);
+
+	          var normalIndex = [];
+	          this._rawNormalIndexArray.splice(_i, 0, normalIndex);
+	        }
+	      }
+
+	      // flatten arrays
+	      var flatVertexIndexArray = [];
+	      var flatNormalIndexArray = [];
+	      var flatMaterialIndexArray = [];
+
+	      this._vertexCount = 0;
+	      this._indexCount = 0;
+
+	      for (var _i2 = 0; _i2 < numFaces; _i2++) {
+	        var _vertexIndex = this._rawVertexIndexArray[_i2];
+	        var _normalIndex = this._rawNormalIndexArray[_i2];
+	        var materialIndex = this._rawMaterialIndexArray[_i2];
+
+	        var _angles = _vertexIndex.length;
+
+	        for (var j = 2; j < _angles; j++) {
+	          flatVertexIndexArray.push(_vertexIndex[0]);
+	          flatVertexIndexArray.push(_vertexIndex[j]);
+	          flatVertexIndexArray.push(_vertexIndex[j - 1]);
+
+	          flatNormalIndexArray.push(_normalIndex[0]);
+	          flatNormalIndexArray.push(_normalIndex[j]);
+	          flatNormalIndexArray.push(_normalIndex[j - 1]);
+
+	          flatMaterialIndexArray.push(materialIndex);
+	          flatMaterialIndexArray.push(materialIndex);
+	          flatMaterialIndexArray.push(materialIndex);
+
+	          this._indexCount += 1;
+	        }
+	      }
+
+	      // make map of vertex to normal
+	      var vertexCount = this._rawVertexArray.length;
+
+	      var flatArrayCount = flatVertexIndexArray.length;
+	      for (var _i3 = 0; _i3 < flatArrayCount; _i3++) {
+	        var _vertexIndex2 = flatVertexIndexArray[_i3];
+	        var _normalIndex2 = flatNormalIndexArray[_i3];
+	        var _materialIndex = flatMaterialIndexArray[_i3];
+
+	        var vertexToNormal = this._vertexNormalMap[_vertexIndex2];
+	        var newVertexIndex = typeof vertexToNormal === 'undefined' ? null : vertexToNormal[_normalIndex2];
+
+	        if (typeof vertexToNormal === 'undefined') {
+	          // new
+	          this._vertexNormalMap[_vertexIndex2] = [];
+	          this._vertexNormalMap[_vertexIndex2][_normalIndex2] = _vertexIndex2;
+	          this._normalMap[_vertexIndex2] = _normalIndex2;
+	        } else if (typeof newVertexIndex === 'undefined' || newVertexIndex === null) {
+	          // conflict: add vertex data at index(vertexCount)
+	          this._rawVertexArray.push(this._rawVertexArray[_vertexIndex2]);
+	          this._rawTexcoordArray.push(this._rawTexcoordArray[_vertexIndex2]);
+	          this._vertexNormalMap[_vertexIndex2][_normalIndex2] = vertexCount;
+	          this._normalMap[vertexCount] = _normalIndex2;
+	          flatVertexIndexArray[_i3] = vertexCount;
+	          vertexCount += 1;
+	        } else {
+	          // reuse
+	          flatVertexIndexArray[_i3] = newVertexIndex;
+	        }
+	      }
+
+	      // create normal data
+	      for (var _i4 = 0; _i4 < vertexCount; _i4++) {
+	        var _normalIndex3 = this._normalMap[_i4];
+	        if (typeof _normalIndex3 === 'undefined') {
+	          _normalIndex3 = 0;
+	        }
+
+	        this._rawSortedNormalArray.push(this._rawNormalArray[_normalIndex3]);
+	      }
+
+	      // create vertex data
+	      this._vertexCount = this._rawVertexArray.length;
+	      this._vertexArray = [];
+	      for (var _i5 = 0; _i5 < this._vertexCount; _i5++) {
+	        this._vertexArray.push(this._rawVertexArray[_i5].x);
+	        this._vertexArray.push(this._rawVertexArray[_i5].y);
+	        this._vertexArray.push(this._rawVertexArray[_i5].z);
+	      }
+
+	      this._normalArray = [];
+	      for (var _i6 = 0; _i6 < this._vertexCount; _i6++) {
+	        this._normalArray.push(this._rawSortedNormalArray[_i6].x);
+	        this._normalArray.push(this._rawSortedNormalArray[_i6].y);
+	        this._normalArray.push(this._rawSortedNormalArray[_i6].z);
+	      }
+
+	      this._texcoordArray = [];
+	      var texCount = this._rawTexcoordArray.length;
+	      for (var _i7 = 0; _i7 < texCount; _i7++) {
+	        this._texcoordArray.push(this._rawTexcoordArray[_i7][0]);
+	        this._texcoordArray.push(this._rawTexcoordArray[_i7][1]);
+	      }
+
+	      // create index data
+	      this._indexArray = [];
+	      var materialCount = this._materialArray.length;
+	      for (var _i8 = 0; _i8 < materialCount; _i8++) {
+	        this._indexArray.push([]);
+	      }
+	      var materialIndexCount = flatMaterialIndexArray.length;
+	      for (var _i9 = 0; _i9 < materialIndexCount; _i9++) {
+	        var _materialIndex2 = flatMaterialIndexArray[_i9];
+	        var _vertexIndex3 = flatVertexIndexArray[_i9];
+
+	        this._indexArray[_materialIndex2].push(_vertexIndex3);
+	      }
+	    }
+	  }, {
+	    key: '_createGeometry',
+	    value: function _createGeometry() {
+	      var vertexSource = new _jscenekit.SCNGeometrySource(this._vertexArray, // data
+	      _jscenekit.SCNGeometrySource.Semantic.vertex, // semantic
+	      this._vertexCount, // vectorCount
+	      true, // usesFloatComponents
+	      3, // componentsPerVector
+	      4, // bytesPerComponent
+	      0, // dataOffset
+	      12 // dataStride
+	      );
+
+	      var normalSource = new _jscenekit.SCNGeometrySource(this._normalArray, // data
+	      _jscenekit.SCNGeometrySource.Semantic.normal, // semantic
+	      this._vertexCount, // vectorCount
+	      true, // usesFloatComponents
+	      3, // componentsPerVector
+	      4, // bytesPerComponent
+	      0, // dataOffset
+	      12 // dataStride
+	      );
+
+	      var texcoordSource = new _jscenekit.SCNGeometrySource(this._texcoordArray, // data
+	      _jscenekit.SCNGeometrySource.Semantic.texcoord, // semantic
+	      this._vertexCount, // vectorCount
+	      true, // usesFloatComponents
+	      2, // componentsPerVector
+	      4, // bytesPerComponent
+	      0, // dataOffset
+	      8 // dataStride
+	      );
+
+	      this._elementArray = [];
+	      var newMaterialArray = [];
+	      var materialCount = this._materialArray.length;
+	      console.log('materialCount: ' + materialCount);
+	      for (var i = 0; i < materialCount; i++) {
+	        var indexArray = this._indexArray[i];
+	        var indexCount = indexArray.length / 3;
+	        console.log('indexCount: ' + indexCount);
+
+	        if (indexCount > 0) {
+	          var indices = [];
+	          var element = new _jscenekit.SCNGeometryElement(indexArray, // data
+	          _jscenekit.SCNGeometryPrimitiveType.triangles, // primitiveType
+	          indexCount, // primitiveCount
+	          4 // bytesPerIndex
+	          );
+	          this._elementArray.push(element);
+	          newMaterialArray.push(this._materialArray[i]);
+	        }
+	      }
+
+	      var geometry = new _jscenekit.SCNGeometry([vertexSource, normalSource, texcoordSource], this._elementArray);
+	      geometry.materials = newMaterialArray;
+	      geometry.name = 'Geometry';
+
+	      return geometry;
+	    }
+	  }, {
+	    key: '_calcNormal',
+	    value: function _calcNormal(v1, v2, v3) {
+	      var a = v3.sub(v1);
+	      var b = v2.sub(v1);
+	      var n = a.cross(b).normalize();
+	      return n;
+	    }
+
+	    /**
+	     * @access private
+	     * @returns {boolean} - returns true if it's a valid header.
+	     */
+
+	  }, {
+	    key: '_XFileHeader',
+	    value: function _XFileHeader() {
+	      var str = this._reader.readPattern(_headerPattern);
+	      this._version = str[1];
+	      this._format = str[2];
+	      this._floatSize = str[3];
+	      //console.log(`version ${this.version} format ${this.format} floatSize ${this.floatSize}`)
+	      return true;
+	    }
+
+	    /**
+	     * @access private
+	     * @returns {?Object} -
+	     */
+
+	  }, {
+	    key: '_XObjectLong',
+	    value: function _XObjectLong() {
+	      var id = this._reader.readWord();
+
+	      if (id === null) {
+	        return null;
+	      }
+	      console.log('********** id: ' + id + ' **********');
+
+	      switch (id) {
+	        case 'template':
+	          return this._Template();
+	        case 'Header':
+	          return this._Header();
+	        case 'Mesh':
+	          return this._Mesh();
+	        case 'MeshMaterialList':
+	          return this._MeshMaterialList();
+	        case 'MeshNormals':
+	          return this._MeshNormals();
+	        case 'MeshTextureCoords':
+	          return this._MeshTextureCoords();
+	        case 'MeshVertexColors':
+	          return this._MeshVertexColors();
+	        default:
+	          throw new Error('MMDXReader: unknown type: ' + id);
+	      }
+	    }
+	  }, {
+	    key: '_ColorRGB',
+	    value: function _ColorRGB() {
+	      var color = new _jscenekit.SKColor();
+	      color.red = this._reader.readFloat();
+	      color.green = this._reader.readFloat();
+	      color.blue = this._reader.readFloat();
+	      color.alpha = 1.0;
+	      this._commaOrSemicolon();
+
+	      return color;
+	    }
+	  }, {
+	    key: '_ColorRGBA',
+	    value: function _ColorRGBA() {
+	      var color = new _jscenekit.SKColor();
+	      color.red = this._reader.readFloat();
+	      color.green = this._reader.readFloat();
+	      color.blue = this._reader.readFloat();
+	      color.alpha = this._reader.readFloat();
+	      this._commaOrSemicolon();
+
+	      return color;
+	    }
+	  }, {
+	    key: '_IndexedColor',
+	    value: function _IndexedColor() {
+	      var index = this._reader.readInteger();
+	      var color = this._ColorRGBA();
+	      // TODO: retain index info
+	      // color.index = index
+	      return color;
+	    }
+	  }, {
+	    key: '_Coords2d',
+	    value: function _Coords2d() {
+	      var v = [];
+	      v.push(this._reader.readFloat());
+	      v.push(this._reader.readFloat());
+	      this._commaOrSemicolon();
+
+	      return v;
+	    }
+	  }, {
+	    key: '_Template',
+	    value: function _Template() {
+	      this._reader.readWord();
+	      this._leftBrace();
+	      this._UUID();
+	      var member = null;
+	      do {
+	        member = this._member();
+	        //console.log(`member: ${member}`)
+	      } while (member !== null);
+	      this._rightBrace();
+
+	      return true;
+	    }
+	  }, {
+	    key: '_Header',
+	    value: function _Header() {
+	      this._leftBrace();
+	      this._reader.readInteger(); // major
+	      this._reader.readInteger(); // minor
+	      this._reader.readInteger(); // flags
+	      this._rightBrace();
+	      return true;
+	    }
+	  }, {
+	    key: '_Material',
+	    value: function _Material() {
+	      var material = new _jscenekit.SCNMaterial();
+
+	      this._leftBrace();
+
+	      material.diffuse.contents = this._ColorRGBA();
+	      material.ambient.contents = material.diffuse.contents;
+	      material.shininess = this._reader.readFloat();
+	      material.specular.contents = this._ColorRGB();
+	      material.emission.contents = this._ColorRGB();
+
+	      var name = this._reader.readWord();
+	      if (name === 'TextureFilename') {
+	        var textureFilePath = this._TextureFilename();
+	        if (textureFilePath !== null) {
+	          /*
+	          const texture = this._loadTexture(textureFilePath)
+	          if(texture !== null){
+	            // FIXME: use mmd shader
+	            material.emission.contents = texture
+	            material.emission.wrapS = SCNWrapMode.repeat
+	            material.emission.wrapT = SCNWrapMode.repeat
+	            material.diffuse.contents = texture
+	            material.diffuse.wrapS = SCNWrapMode.repeat
+	            material.diffuse.wrapT = SCNWrapMode.repeat
+	             // DEBUG
+	            //material.diffuse.contents = new SKColor(0, 0.5, 0, 1.0)
+	          }
+	          */
+	          this._loadTexture(textureFilePath).then(function (texture) {
+	            material.emission.contents = texture;
+	            material.emission.wrapS = _jscenekit.SCNWrapMode.repeat;
+	            material.emission.wrapT = _jscenekit.SCNWrapMode.repeat;
+	            material.diffuse.contents = texture;
+	            material.diffuse.wrapS = _jscenekit.SCNWrapMode.repeat;
+	            material.diffuse.wrapT = _jscenekit.SCNWrapMode.repeat;
+	          });
+	        }
+	      }
+
+	      this._rightBrace();
+
+	      return material;
+	    }
+	  }, {
+	    key: '_Mesh',
+	    value: function _Mesh() {
+	      this._leftBrace();
+
+	      // vertices
+	      var rawVertexCount = this._reader.readInteger();
+	      console.log('vertexCount: ' + rawVertexCount);
+
+	      for (var i = 0; i < rawVertexCount; i++) {
+	        var pos = this._vector3(true);
+	        this._rawVertexArray.push(pos);
+	        this._commaOrSemicolon();
+	      }
+
+	      // faces
+	      this._indexCount = 0;
+	      var nFaces = this._reader.readInteger();
+	      console.log('num faces: ' + nFaces);
+
+	      for (var _i10 = 0; _i10 < nFaces; _i10++) {
+	        var face = this._integerArray();
+	        this._rawVertexIndexArray.push(face);
+	      }
+
+	      this._rightBrace();
+
+	      return true;
+	    }
+	  }, {
+	    key: '_MeshMaterialList',
+	    value: function _MeshMaterialList() {
+	      this._leftBrace();
+
+	      // materials
+	      var nMaterials = this._reader.readInteger();
+	      console.log('materials: ' + nMaterials);
+
+	      // face materials
+	      var nFaceIndices = this._reader.readInteger();
+	      console.log('face indices: ' + nFaceIndices);
+
+	      for (var i = 0; i < nFaceIndices; i++) {
+	        var materialNo = this._reader.readInteger();
+	        this._commaOrSemicolon();
+	        this._rawMaterialIndexArray.push(materialNo);
+	      }
+
+	      // materials
+	      var name = this._reader.readWord();
+	      while (name === 'Material') {
+	        var material = this._Material();
+	        this._materialArray.push(material);
+	        name = this._reader.readWord();
+	      }
+
+	      this._rightBrace();
+
+	      return true;
+	    }
+	  }, {
+	    key: '_MeshNormals',
+	    value: function _MeshNormals() {
+	      this._leftBrace();
+
+	      var nNormals = this._reader.readInteger();
+	      console.log('mesh normals: ' + nNormals);
+
+	      for (var i = 0; i < nNormals; i++) {
+	        var normal = this._vector3(true);
+	        this._rawNormalArray.push(normal);
+	      }
+
+	      var nFaceNormals = this._reader.readInteger();
+	      console.log('normal indices: ' + nFaceNormals);
+
+	      for (var _i11 = 0; _i11 < nFaceNormals; _i11++) {
+	        var faceNormals = this._integerArray();
+	        this._rawNormalIndexArray.push(faceNormals);
+	      }
+
+	      this._rightBrace();
+
+	      return true;
+	    }
+	  }, {
+	    key: '_MeshTextureCoords',
+	    value: function _MeshTextureCoords() {
+	      this._leftBrace();
+
+	      // suppose to be the same number as vertexCount
+	      var nTextureCoords = this._reader.readInteger();
+	      console.log('textureCoords: ' + nTextureCoords);
+
+	      for (var i = 0; i < nTextureCoords; i++) {
+	        var texcoord = this._Coords2d();
+	        this._rawTexcoordArray.push(texcoord);
+	      }
+
+	      this._rightBrace();
+
+	      return true;
+	    }
+	  }, {
+	    key: '_MeshVertexColors',
+	    value: function _MeshVertexColors() {
+	      this._leftBrace();
+
+	      var nVertexColors = this._reader.readInteger();
+	      for (var i = 0; i < nVertexColors; i++) {
+	        var v = this._IndexedColor();
+	        // TODO: implement
+	      }
+
+	      this._rightBrace();
+
+	      return true;
+	    }
+	  }, {
+	    key: '_TextureFilename',
+	    value: function _TextureFilename() {
+	      this._leftBrace();
+
+	      var name = this._filename();
+	      var filePath = name.replace('\\\\', '/');
+	      console.log('filePath: ' + filePath);
+
+	      this._rightBrace();
+
+	      return filePath;
+	    }
+	  }, {
+	    key: '_loadTexture',
+	    value: function _loadTexture(path) {
+	      var _this2 = this;
+
+	      var promise = new Promise(function (resolve, reject) {
+	        console.error('TODO: implement _loadTexture');
+	        var fileName = _this2.directoryPath + path;
+	        var image = new Image();
+	        image.onload = function () {
+	          resolve(image);
+	        };
+	        image.src = fileName;
+	      });
+	      return promise;
+	    }
+	  }], [{
+	    key: 'getNode',
+	    value: function getNode(data, directoryPath) {
+	      var reader = new MMDXReader(data, directoryPath);
+	      return reader._loadXFile();
+	    }
+	  }]);
+
+	  return MMDXReader;
+	}(_MMDReader3.default);
+
+	exports.default = MMDXReader;
+
+/***/ },
+/* 16 */
 /***/ function(module, exports) {
 
 	module.exports = require("fs");
 
 /***/ },
-/* 18 */
+/* 17 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -4754,6 +5399,203 @@ module.exports =
 	};
 
 /***/ },
+/* 18 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	/**
+	 * AjaxRequest class
+	 * @access public
+	 */
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var AjaxRequest = exports.AjaxRequest = function () {
+	  /**
+	   * constructor
+	   * @access public
+	   * @constructor
+	   */
+	  function AjaxRequest() {
+	    _classCallCheck(this, AjaxRequest);
+
+	    this.defaultOptions = {
+	      method: 'POST',
+	      async: true,
+	      data: null,
+	      user: null,
+	      password: null,
+	      mimeType: null,
+	      isJSONP: false,
+	      requestHeader: {}
+	    };
+
+	    this.jsonpScripts = [];
+	    this.jsonpCallbackPrefix = 'jsonpCallback_';
+	  }
+
+	  _createClass(AjaxRequest, [{
+	    key: 'get',
+	    value: function get(url) {
+	      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+	      options.method = 'GET';
+	      return this.request(url, options);
+	    }
+	  }, {
+	    key: 'post',
+	    value: function post(url) {
+	      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+	      options.method = 'POST';
+	      return this.request(url, options);
+	    }
+	  }, {
+	    key: 'jsonp',
+	    value: function jsonp(url) {
+	      var callbackParam = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'callback';
+	      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+	      var requestURL = url;
+	      var script = document.createElement('script');
+	      var callbackFuncName = this._getNewFuncName(this.jsonpCallbackPrefix);
+
+	      if (!options.data) {
+	        options.data = {};
+	      }
+	      options.data[callbackParam] = callbackFuncName;
+
+	      var queryArray = [];
+	      options.data.forEach(function (key, value) {
+	        queryArray.push(encodeURI(key) + '=' + encodeURI(value));
+	      });
+	      requestURL += '?' + queryArray.join('&');
+
+	      var promise = new Promise(function (resolve, reject) {
+	        window[callbackFuncName] = resolve;
+	        script.addEventListener('error', reject);
+	      }).catch(function (error) {
+	        delete window[callbackFuncName];
+	        document.head.removeChild(script);
+	        return Promise.reject(error);
+	      }).then(function (result) {
+	        delete window[callbackFuncName];
+	        document.head.removeChild(script);
+	        return Promise.resolve(result);
+	      });
+
+	      script.src = requestURL;
+	      document.head.appendChild(script);
+
+	      return promise;
+	    }
+	  }, {
+	    key: '_getNewFuncName',
+	    value: function _getNewFuncName() {
+	      var prefix = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+
+	      // ESLint prefers for(;;) more than while(true)
+	      for (;;) {
+	        var funcName = prefix + Math.random().toString(16).slice(2);
+	        if (typeof window[funcName] === 'undefined') {
+	          return funcName;
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'request',
+	    value: function request(url) {
+	      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+	      var requestURL = url;
+	      var method = typeof options.method === 'undefined' ? this.defaultOptions.method : options.method;
+	      var async = typeof options.async === 'undefined' ? this.defaultOptions.async : options.async;
+	      var data = this.defaultOptions.data;
+	      var user = typeof options.user === 'undefined' ? this.defaultOptions.user : options.user;
+	      var password = typeof options.password === 'undefined' ? this.defaultOptions.password : options.password;
+	      var mimeType = typeof options.mimeType === 'undefined' ? this.defaultOptions.mimeType : options.mimeType;
+	      var header = typeof options.requestHeader === 'undefined' ? this.defaultOptions.requestHeader : options.requestHeader;
+	      var isJSONP = typeof options.isJSONP === 'undefined' ? this.defaultOptions.isJSONP : options.isJSONP;
+
+	      if (method !== 'POST' && method !== 'GET') {
+	        method = 'POST';
+	      }
+
+	      if (options.data) {
+	        var dataArray = [];
+	        if (options.data instanceof Map) {
+	          options.data.forEach(function (key, value) {
+	            dataArray.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+	          });
+	        } else {
+	          Object.keys(options.data).forEach(function (key) {
+	            var value = options.data[key];
+	            dataArray.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+	          });
+	        }
+
+	        if (method === 'POST') {
+	          data = dataArray.join('&').replace(/%20/g, '+');
+	        } else {
+	          requestURL += '?' + dataArray.join('&').replace(/%20/g, '+');
+	        }
+	      }
+
+	      if (method === 'POST' && typeof header['Content-Type'] === 'undefined') {
+	        header['Content-Type'] = 'application/x-www-form-urlencoded';
+	      }
+
+	      return new Promise(function (resolve, reject) {
+	        var xhr = new XMLHttpRequest();
+
+	        if (mimeType) {
+	          xhr.overrideMimeType(mimeType);
+	        }
+
+	        if (user) {
+	          xhr.open(method, url, async, user, password);
+	        } else {
+	          xhr.open(method, url, async);
+	        }
+
+	        if (header) {
+	          for (var key in header) {
+	            // Reflect is not yet implemented...
+	            //if(Reflect.apply({}.hasOwnProperty, header, [key])){
+	            if ({}.hasOwnProperty.call(header, key)) {
+	              xhr.setRequestHeader(key, header[key]);
+	            }
+	          }
+	        }
+
+	        xhr.onload = function () {
+	          if (xhr.readyState === 4 && xhr.status === 200) {
+	            resolve(xhr.response);
+	          } else {
+	            reject(new Error(xhr.statusText));
+	          }
+	        };
+	        xhr.onerror = function () {
+	          reject(new Error(xhr.statusText));
+	        };
+	        xhr.send(data);
+	      });
+	    }
+	  }]);
+
+	  return AjaxRequest;
+	}();
+
+	exports.default = new AjaxRequest();
+
+/***/ },
 /* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -4764,7 +5606,7 @@ module.exports =
 	});
 	exports.BinaryRequest = undefined;
 
-	var _AjaxRequest2 = __webpack_require__(13);
+	var _AjaxRequest2 = __webpack_require__(18);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4797,6 +5639,71 @@ module.exports =
 	}(_AjaxRequest2.AjaxRequest);
 
 	exports.default = new BinaryRequest();
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.TextRequest = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _AjaxRequest2 = __webpack_require__(18);
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	/**
+	 * TextRequest class
+	 * @access public
+	 */
+	var TextRequest = exports.TextRequest = function (_AjaxRequest) {
+	  _inherits(TextRequest, _AjaxRequest);
+
+	  /**
+	   * constructor
+	   * @access public
+	   * @constructor
+	   */
+	  function TextRequest() {
+	    _classCallCheck(this, TextRequest);
+
+	    var _this = _possibleConstructorReturn(this, (TextRequest.__proto__ || Object.getPrototypeOf(TextRequest)).call(this));
+
+	    _this.defaultOptions.mimeType = 'text/plain; charset=utf-8';
+	    return _this;
+	  }
+
+	  _createClass(TextRequest, [{
+	    key: 'getWithCharset',
+	    value: function getWithCharset(url, charset) {
+	      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+	      options.mimeType = 'text/plain; charset=' + charset;
+	      return this.get(url, options);
+	    }
+	  }, {
+	    key: 'postWithCharset',
+	    value: function postWithCharset(url, charset) {
+	      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+	      options.mimeType = 'text/plain; charset=' + charset;
+	      return this.post(url, options);
+	    }
+	  }]);
+
+	  return TextRequest;
+	}(_AjaxRequest2.AjaxRequest);
+
+	exports.default = new TextRequest();
 
 /***/ }
 /******/ ]);

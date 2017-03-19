@@ -1,6 +1,12 @@
 'use strict'
 
-import TextRequest from './TextRequest'
+import Buffer from './Buffer'
+import {UnescapeSJIS, UnescapeEUCJP, UnescapeJIS7, UnescapeJIS8, 
+        UnescapeUnicode, UnescapeUTF7, UnescapeUTF8, UnescapeUTF16LE} from '../third_party/ecl'
+
+const _integerPattern = new RegExp(/^(-|\+)?\d+;?/)
+const _floatPattern = new RegExp(/^(-|\+)?(\d)*\.(\d)*;?/)
+const _wordPattern = new RegExp(/^\w+/)
 
 /**
  * TextReader class
@@ -15,150 +21,192 @@ export default class TextReader {
    * @param {string} encoding -
    */
   constructor(data, encoding = 'utf-8') {
-    this.position = 0
-    this.eof = true
-    this.data = null
+    /**
+     * @access private
+     * @type {number}
+     */
+    this._pos = 0
+
+    this._partialText = ''
+    this._partialOffset = 0
+    this._partialStep = 200
+    this._partialMinLength = 100
+
+    /**
+     * @access private
+     * @type {boolean}
+     */
+    this._eof = true
+
+    /**
+     *
+     * @access public
+     * @type {Buffer}
+     */
+    this.buffer = null
+
+    if(data instanceof Buffer){
+      this.buffer = data
+    }else{
+      this.buffer = Buffer.from(data)
+    }
+
+    /**
+     *
+     * @access public
+     * @type {boolean}
+     */
+    //this.bigEndian = bigEndian
+
+    /**
+     *
+     * @access public
+     * @type {string}
+     */
     this.encoding = encoding
 
-    if(encoding === 'sjis'){
-      this.encoding = 'shift_jis'
-    }
+    // prepare buffered text
+    this._addPartialText()
+  }
 
-    const obj = this
-    if(data instanceof File){
-      this.url = data.name
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        obj._onload(reader.result)
-      }
-      reader.readAsText(data, this._encoding)
-    }else{
-      this.url = data
-
-      TextRequest.getWithCharset(data, this.encoding)
-        .then((value) => { obj._onload(value) })
-        .catch((e) => { obj._onerror(e) })
+  /**
+   * @access public
+   * @param {number} length - length of data to skip
+   * @param {boolean} noAssert -
+   * @returns {void}
+   */
+  skip(length, noAssert = false) {
+    this._moveIndex(length)
+    if(!noAssert){
+      this._check()
     }
   }
 
-  _onload(textData) {
-    this.position = 0
+  /**
+   *
+   * @access public
+   * @param {number} length - length of data to read
+   * @param {?string} [encoding = null] -
+   * @returns {string} -
+   */
+  readString(length, encoding = null) {
+    const str = this._partialText.substring(0, length)
 
-    this.data = textData
-    this.eof = false
-    
-    if(this.onloadFunc){
-      this.onloadFunc(this)
-    }
+    this._moveIndex(str.length)
   }
 
-  _onerror(error) {
-    if(this.onerrorFunc){
-      this.onerrorFunc(error)
-    }
-  }
-
-  getText() {
-    return this.data
-  }
-
-  // FIXME: implementation
-  hasBytesAvailable() {
-    return !this.eof
-  }
-
-  readData(length) {
-    /*
-    if(this.eof){
-      return null
-    }
-    const dataStr = String.fromCharCode.apply(String, this.data.slice(this.position, this.position + length))
-
-    this.position += length
-    if(this.position >= this.data.length){
-      this.eof = true
-    }
-
-    return dataStr
-    */
-  }
-
+  /**
+   *
+   * @access public
+   * @param {number} length - 
+   * @param {boolean} signed -
+   * @returns {number} -
+   */
   readInteger(length, signed) {
-    /*
-    if(this.eof){
-      return null
-    }
-
-    const value = this.parser.decodeInt(this.readData(length), length * 8, signed)
-
-    return value
-    */
+    const str = this._getString(_integerPattern)
+    const val = parseInt(str[0], 10)
+    return val
   }
-    
-  readByte() {
-    /*
-    return this.readInteger(1, true)
-    */
-  }
-      
+
+  /**
+   *
+   * @access public
+   * @returns {number} -
+   */
   readUnsignedByte() {
-    /*
     return this.readInteger(1, false)
-    */
   }
 
-  readShort() {
-    /*
-    return this.readInteger(2, true)
-    */
-  }
-
+  /**
+   *
+   * @access public
+   * @returns {number} -
+   */
   readUnsignedShort() {
-    //return this.readInteger(2, false)
+    return this.readInteger(2, false)
   }
 
-  readInt() {
-    //return this.readInteger(4, true)
-  }
-
+  /**
+   *
+   * @access public
+   * @returns {number} -
+   */
   readUnsignedInt() {
-    //return this.readInteger(4, false)
+    return this.readInteger(4, false)
   }
 
+  /**
+   *
+   * @access public
+   * @returns {number} -
+   */
+  readInt() {
+    return this.readInteger(4, true)
+  }
+
+  /**
+   *
+   * @access public
+   * @returns {number} -
+   */
   readFloat() {
-    /*
-    if(this.eof){
-      return null
-    }
-    const floatSize = 4
-    const value = this.parser.toFloat(this.readData(floatSize))
-
-    return value
-    */
+    const str = this._getString(_floatPattern)
+    const val = parseFloat(str[0])
+    return val
   }
 
+  /**
+   *
+   * @access public
+   * @returns {number} -
+   */
   readDouble() {
-    /*
-    if(this.eof){
-      return null
-    }
-    const doubleSize = 8
-    const value = this.parser.toDouble(this.readData(doubleSize))
-
-    return value
-    */
+    return this.readFloat()
   }
 
-  readString(length) {
-    /*
-    if(this.eof){
-      return null
-    }
+  /**
+   *
+   * @access public
+   * @param {number} length -
+   * @returns {Buffer} -
+   */
+  readData(length) {
+    const start = this._pos
+    this._pos += length
+    return this.buffer.slice(start, this._pos)
+  }
 
-    const escapeString = ''
-    for(var i=0 i<length i++){
-      const charCode = this.data[this.position + i]
-      if(charCode == 0){
+  readWord() {
+    const str = this._getString(_wordPattern)
+    return (str !== null ? str[0] : null)
+  }
+
+  readPattern(pattern) {
+    return this._getString(pattern)
+  }
+
+
+  /**
+   *
+   * @access private
+   * @returns {void}
+   */
+  _check() {
+  }
+
+  /**
+   *
+   * @access private
+   * @param {number[]} data - length of data to convert
+   * @param {?string} [encoding = null] -
+   * @returns {string} -
+   */
+  _convert(data, encoding) {
+    const length = data.length
+    let escapeString = ''
+    for(let i=0; i<length; i++){
+      const charCode = data.charCodeAt(i)
+      if(charCode === 0){
         break
       }
       else if(charCode < 16){
@@ -168,37 +216,97 @@ export default class TextReader {
       }
     }
       
-    this.position += length 
-    if(this.position >= this.data.length)
-      this.eof = true
-
-    const value
-    if(this.encoding == 'sjis'){
-      value = UnescapeSJIS(escapeString)
-    }else if(this.encoding == 'euc-jp'){
-      value = UnescapeEUCJP(escapeString)
-    }else if(this.encoding == 'jis-7'){
-      value = UnescapeJIS7(escapeString)
-    }else if(this.encoding == 'jis-8'){
-      value = UnescapeJIS8(escapeString)
-    }else if(this.encoding == 'unicode'){
-      value = UnescapeUnicode(escapeString)
-    }else if(this.encoding == 'utf7'){
-      value = UnescapeUTF7(escapeString)
-    }else if(this.encoding == 'utf-8'){
-      value = UnescapeUTF8(escapeString)
-    }else if(this.encoding == 'utf-16'){
-      value = UnescapeUTF16LE(escapeString)
+    if(encoding === 'sjis'){
+      return UnescapeSJIS(escapeString)
+    }else if(encoding === 'euc-jp'){
+      return UnescapeEUCJP(escapeString)
+    }else if(encoding === 'jis-7'){
+      return UnescapeJIS7(escapeString)
+    }else if(encoding === 'jis-8'){
+      return UnescapeJIS8(escapeString)
+    }else if(encoding === 'unicode'){
+      return UnescapeUnicode(escapeString)
+    }else if(encoding === 'utf7'){
+      return UnescapeUTF7(escapeString)
+    }else if(encoding === 'utf-8'){
+      return UnescapeUTF8(escapeString)
+    }else if(encoding === 'utf-16'){
+      return UnescapeUTF16LE(escapeString)
     }
 
-    return value
-    */
+    throw new Error(`unsupported encoding: ${encoding}`)
   }
 
-  static open(url, encoding) {
-    return new Promise((resolve, reject) => {
-      return new TextReader(url, encoding, resolve, reject)
-    })
+  getAvailableDataLength() {
+    return this.buffer.length - this._pos
+  }
+
+  /**
+   *
+   * @access private
+   * @param {number} len -
+   * @returns {void}
+   */
+  _moveIndex(len) {
+    this._partialText = this._partialText.substring(len)
+    if(this._partialText.length < this._partialMinLength){
+      this._addPartialText()
+    }
+  }
+
+  _skipSpace() {
+    let i = 0
+    let code = this._partialText.charCodeAt(i)
+
+    //  9: Horizontal Tab
+    // 10: Line Feed
+    // 11: Vertical Tab
+    // 12: New Page
+    // 13: Carriage Return
+    // 32: Space
+    while(code === 32 || (9 <= code && code <= 13)){
+      i++
+      code = this._partialText.charCodeAt(i)
+
+      if(i >= this._partialText.length){
+        this._addPartialText()
+      }
+    }
+    if(i>0){
+      this._moveIndex(i)
+    }
+  }
+
+  _addPartialText() {
+    if(this._partialOffset >= this.buffer.length){
+      return
+    }
+
+    let newOffset = this._partialOffset + this._partialStep
+    if(newOffset > this.buffer.length){
+      newOffset = this.buffer.length
+    }
+
+    if(Buffer.isEncoding(this.encoding)){
+      this._partialText += this.buffer.toString(this.encoding, this._partialOffset, newOffset)
+    }else{
+      const data = this.buffer.toString('binary', this._partialOffset, newOffset)
+      this._partialText += this._convert(data, this.encoding)
+    }
+    this._partialOffset = newOffset
+  }
+
+  _getString(pattern) {
+    this._skipSpace()
+
+    const str = this._partialText.match(pattern)
+    if(str === null){
+      return null
+    }
+
+    this._moveIndex(str[0].length)
+
+    return str
   }
 }
 

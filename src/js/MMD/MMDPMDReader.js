@@ -57,6 +57,7 @@ export default class MMDPMDReader extends MMDReader {
     const encoding = 'sjis'
     super(data, directoryPath, isBinary, isBigEndian, encoding)
 
+    /** @type {MMDNode} */
     this._workingNode = null
 
     // header
@@ -124,6 +125,10 @@ export default class MMDPMDReader extends MMDReader {
     return reader._loadPMDFile()
   }
  
+  /**
+   * @access private
+   * @returns {MMDNode} -
+   */
   _loadPMDFile() {
     this._workingNode = new MMDNode()
 
