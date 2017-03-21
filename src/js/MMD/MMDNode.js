@@ -586,6 +586,7 @@ export default class MMDNode extends SCNNode {
             const bonePosition = this._getWorldPosition(bone.presentation)
             const targetPosition = this._getWorldPosition(targetBone.presentation)
             const ikPosition = this._getWorldPosition(ikBone.presentation)
+            //console.log(`IK it ${i} bone ${bone.name} target ${targetPosition.float32Array()} ik ${ikPosition.float32Array()}`)
 
             let v1 = bonePosition.sub(targetPosition)
             let v2 = bonePosition.sub(ikPosition)
@@ -638,26 +639,27 @@ export default class MMDNode extends SCNNode {
             quat.z = v.z * ikSin
             quat.w = ikCos
 
-            const orgRot = bone.presentation.rotation
-            orgRot.w = orgRot.w * 2.0
-            const orgQuat = orgRot.rotationToQuat()
+            const orgQuat = this._rotationToQuat(bone.presentation.rotation)
+            //console.log(`${this.name} rot ${bone.presentation.rotation.float32Array()}`)
             //console.log(`${this.name} orgQuat ${orgQuat.float32Array()}`)
             quat = quat.cross(orgQuat)
 
+            // FIXME: don't use presentation node
+            //bone.presentation.rotation = this._quatToRotation(quat)
+            bone.rotation = this._quatToRotation(quat)
+
             if(bone.isKnee){
-              //if(bone.eulerAngles.x < 0){
               // FIXME: don't use presentation node
-              if(bone.presentation.eulerAngles.x < 0){
+              //if(bone.presentation.eulerAngles.x < 0){
+              if(bone.eulerAngles.x < 0){
                 quat.x = -quat.x
-                //bone.rotation = quat.quatToRotation()
-                const rot = quat.quatToRotation()
-                rot.w = rot.w * 0.5
-                //bone.rotation = rot
                 // FIXME: don't use presentation node
-                bone.presentation.rotation = rot
+                //bone.presentation.rotation = rot
+                bone.rotation = this._quatToRotation(quat)
                 //console.log(`${bone.name} quatToRotation ${bone.rotation.float32Array()}`)
               }
             }
+            //console.log(`after ${this.name} rot ${bone.presentation.rotation.float32Array()}`)
           } // boneArray
         } // iteration
       }) // ikArray
@@ -675,21 +677,14 @@ export default class MMDNode extends SCNNode {
       const rot = this.rotateEffector.presentation.rotation
       if(this.rotateEffectRate === 1.0){
         // FIXME: don't use presentation node
-        //this.rotation = rot
         this.presentation.rotation = rot
       }else{
-        rot.w = rot.w * 2.0
-        const quat = rot.rotationToQuat()
+        const quat = this._rotationToQuat(rot)
         //console.log(`${this.name} quat ${quat.float32Array()}`)
-        const pRot = this.presentation.rotation
-        pRot.w = pRot.w * 2.0
-        const orgQuat = pRot.rotationToQuat()
+        const orgQuat = this._rotationToQuat(this.presentation.rotation)
         //console.log(`${this.name} orgQuat ${orgQuat.float32Array()}`)
         const newQuat = this.slerp(orgQuat, quat, this.rotateEffectRate)
-        //this.rotation = newQuat.quatToRotation()
-        const newRot = newQuat.quatToRotation()
-        newRot.w = newRot.w * 0.5
-        //this.rotation = newRot
+        const newRot = this._quatToRotation(newQuat)
         // FIXME: don't use presentation
         this.presentaion.rotation = newRot
         //console.log(`${this.name} newQuat.quatToRotation ${this.rotation.float32Array()}`)
@@ -699,11 +694,9 @@ export default class MMDNode extends SCNNode {
       const pos = this.translateEffector.position
       if(this.translateEffectRate === 1.0){
         // FIXME: don't use presentation node
-        //this.position = pos
         this.presentation.position = pos
       }else{
         // FIXME: don't use presentation node
-        //this.position = pos.mul(this.translateEffectRate)
         this.presentation.position = pos.mul(this.translateEffectRate)
       }
     }
@@ -851,6 +844,56 @@ export default class MMDNode extends SCNNode {
     }
 
     return v
+  }
+
+  _rotationToQuat(rot) {
+    const quat = new SCNVector4()
+    if(rot.x === 0 && rot.y === 0 && rot.z === 0){
+      quat.x = 0
+      quat.y = 0
+      quat.z = 0
+      quat.w = 1.0
+    }else{
+      const r = 1.0 / Math.sqrt(rot.x * rot.x + rot.y * rot.y + rot.z * rot.z)
+      const cosW = Math.cos(rot.w)
+      const sinW = Math.sin(rot.w) * r
+      quat.x = rot.x * sinW
+      quat.y = rot.y * sinW
+      quat.z = rot.z * sinW
+      quat.w = cosW
+    }
+    return quat
+  }
+
+  _quatToRotation(quat) {
+    const rot = new SCNVector4()
+
+    if(quat.x === 0 && quat.y === 0 && quat.z === 0){
+      rot.x = 0
+      rot.y = 0
+      rot.z = 0
+      rot.w = 0
+    }else{
+      rot.x = quat.x
+      rot.y = quat.y
+      rot.z = quat.z
+
+      let qw = quat.w
+      if(quat.w > 1){
+        qw = 1
+      }else if(quat.w < -1){
+        qw = -1
+      }
+      const w = Math.acos(qw)
+
+      if(isNaN(w)){
+        rot.w = 0
+      }else{
+        rot.w = w
+      }
+    }
+
+    return rot
   }
 }
 

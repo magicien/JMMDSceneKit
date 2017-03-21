@@ -904,6 +904,7 @@ module.exports =
 	              var bonePosition = _this3._getWorldPosition(bone.presentation);
 	              var targetPosition = _this3._getWorldPosition(targetBone.presentation);
 	              var ikPosition = _this3._getWorldPosition(ikBone.presentation);
+	              //console.log(`IK it ${i} bone ${bone.name} target ${targetPosition.float32Array()} ik ${ikPosition.float32Array()}`)
 
 	              var v1 = bonePosition.sub(targetPosition);
 	              var v2 = bonePosition.sub(ikPosition);
@@ -956,26 +957,27 @@ module.exports =
 	              quat.z = v.z * ikSin;
 	              quat.w = ikCos;
 
-	              var orgRot = bone.presentation.rotation;
-	              orgRot.w = orgRot.w * 2.0;
-	              var orgQuat = orgRot.rotationToQuat();
+	              var orgQuat = _this3._rotationToQuat(bone.presentation.rotation);
+	              //console.log(`${this.name} rot ${bone.presentation.rotation.float32Array()}`)
 	              //console.log(`${this.name} orgQuat ${orgQuat.float32Array()}`)
 	              quat = quat.cross(orgQuat);
 
+	              // FIXME: don't use presentation node
+	              //bone.presentation.rotation = this._quatToRotation(quat)
+	              bone.rotation = _this3._quatToRotation(quat);
+
 	              if (bone.isKnee) {
-	                //if(bone.eulerAngles.x < 0){
 	                // FIXME: don't use presentation node
-	                if (bone.presentation.eulerAngles.x < 0) {
+	                //if(bone.presentation.eulerAngles.x < 0){
+	                if (bone.eulerAngles.x < 0) {
 	                  quat.x = -quat.x;
-	                  //bone.rotation = quat.quatToRotation()
-	                  var rot = quat.quatToRotation();
-	                  rot.w = rot.w * 0.5;
-	                  //bone.rotation = rot
 	                  // FIXME: don't use presentation node
-	                  bone.presentation.rotation = rot;
+	                  //bone.presentation.rotation = rot
+	                  bone.rotation = _this3._quatToRotation(quat);
 	                  //console.log(`${bone.name} quatToRotation ${bone.rotation.float32Array()}`)
 	                }
 	              }
+	              //console.log(`after ${this.name} rot ${bone.presentation.rotation.float32Array()}`)
 	            } // boneArray
 	          } // iteration
 	        }); // ikArray
@@ -996,21 +998,14 @@ module.exports =
 	        var rot = this.rotateEffector.presentation.rotation;
 	        if (this.rotateEffectRate === 1.0) {
 	          // FIXME: don't use presentation node
-	          //this.rotation = rot
 	          this.presentation.rotation = rot;
 	        } else {
-	          rot.w = rot.w * 2.0;
-	          var quat = rot.rotationToQuat();
+	          var quat = this._rotationToQuat(rot);
 	          //console.log(`${this.name} quat ${quat.float32Array()}`)
-	          var pRot = this.presentation.rotation;
-	          pRot.w = pRot.w * 2.0;
-	          var orgQuat = pRot.rotationToQuat();
+	          var orgQuat = this._rotationToQuat(this.presentation.rotation);
 	          //console.log(`${this.name} orgQuat ${orgQuat.float32Array()}`)
 	          var newQuat = this.slerp(orgQuat, quat, this.rotateEffectRate);
-	          //this.rotation = newQuat.quatToRotation()
-	          var newRot = newQuat.quatToRotation();
-	          newRot.w = newRot.w * 0.5;
-	          //this.rotation = newRot
+	          var newRot = this._quatToRotation(newQuat);
 	          // FIXME: don't use presentation
 	          this.presentaion.rotation = newRot;
 	          //console.log(`${this.name} newQuat.quatToRotation ${this.rotation.float32Array()}`)
@@ -1020,11 +1015,9 @@ module.exports =
 	        var pos = this.translateEffector.position;
 	        if (this.translateEffectRate === 1.0) {
 	          // FIXME: don't use presentation node
-	          //this.position = pos
 	          this.presentation.position = pos;
 	        } else {
 	          // FIXME: don't use presentation node
-	          //this.position = pos.mul(this.translateEffectRate)
 	          this.presentation.position = pos.mul(this.translateEffectRate);
 	        }
 	      }
@@ -1199,6 +1192,58 @@ module.exports =
 	      }
 
 	      return v;
+	    }
+	  }, {
+	    key: '_rotationToQuat',
+	    value: function _rotationToQuat(rot) {
+	      var quat = new _jscenekit.SCNVector4();
+	      if (rot.x === 0 && rot.y === 0 && rot.z === 0) {
+	        quat.x = 0;
+	        quat.y = 0;
+	        quat.z = 0;
+	        quat.w = 1.0;
+	      } else {
+	        var r = 1.0 / Math.sqrt(rot.x * rot.x + rot.y * rot.y + rot.z * rot.z);
+	        var cosW = Math.cos(rot.w);
+	        var sinW = Math.sin(rot.w) * r;
+	        quat.x = rot.x * sinW;
+	        quat.y = rot.y * sinW;
+	        quat.z = rot.z * sinW;
+	        quat.w = cosW;
+	      }
+	      return quat;
+	    }
+	  }, {
+	    key: '_quatToRotation',
+	    value: function _quatToRotation(quat) {
+	      var rot = new _jscenekit.SCNVector4();
+
+	      if (quat.x === 0 && quat.y === 0 && quat.z === 0) {
+	        rot.x = 0;
+	        rot.y = 0;
+	        rot.z = 0;
+	        rot.w = 0;
+	      } else {
+	        rot.x = quat.x;
+	        rot.y = quat.y;
+	        rot.z = quat.z;
+
+	        var qw = quat.w;
+	        if (quat.w > 1) {
+	          qw = 1;
+	        } else if (quat.w < -1) {
+	          qw = -1;
+	        }
+	        var w = Math.acos(qw);
+
+	        if (isNaN(w)) {
+	          rot.w = 0;
+	        } else {
+	          rot.w = w;
+	        }
+	      }
+
+	      return rot;
 	    }
 	  }], [{
 	    key: 'Type',
