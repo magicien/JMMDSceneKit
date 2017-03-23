@@ -1744,6 +1744,7 @@ module.exports =
 	        faceGeometry.name = this._faceNameArray[i];
 
 	        morpher.targets.push(faceGeometry);
+	        morpher._weights.push(0);
 	      }
 	      var geometryNode = this._workingNode.childNodeWithName('Geometry', true);
 
@@ -4062,6 +4063,22 @@ module.exports =
 	        motion.fillMode = _jscenekit.kCAFillModeForwards;
 
 	        console.log('animations.push ' + key);
+	        _this2._workingAnimationGroup.animations.push(motion);
+	      });
+
+	      this._faceAnimationHash.forEach(function (motion, key) {
+	        // normalize keyTimes
+	        var motionLength = motion.keyTimes[motion.keyTimes.length - 1];
+	        for (var num = 0; num < motion.keyTimes.length; num++) {
+	          var keyTime = motion.keyTimes[num] / motionLength;
+	          motion.keyTimes[num] = keyTime;
+	        }
+
+	        motion.duration = motionLength / _this2.fps;
+	        motion.usesSceneTimeBase = false;
+	        motion.isRemovedOnCompletion = false;
+	        motion.fillMode = _jscenekit.kCAFillModeForwards;
+
 	        _this2._workingAnimationGroup.animations.push(motion);
 	      });
 

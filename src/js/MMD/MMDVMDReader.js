@@ -321,6 +321,22 @@ export default class MMDVMDReader extends MMDReader {
       this._workingAnimationGroup.animations.push(motion)
     })
 
+    this._faceAnimationHash.forEach((motion, key) => {
+      // normalize keyTimes
+      const motionLength = motion.keyTimes[motion.keyTimes.length - 1]
+      for(let num=0; num<motion.keyTimes.length; num++){
+        const keyTime = motion.keyTimes[num] / motionLength
+        motion.keyTimes[num] = keyTime
+      }
+
+      motion.duration = motionLength / this.fps
+      motion.usesSceneTimeBase = false
+      motion.isRemovedOnCompletion = false
+      motion.fillMode = kCAFillModeForwards
+
+      this._workingAnimationGroup.animations.push(motion)
+    })
+
     this._workingAnimationGroup.duration = duration
     this._workingAnimationGroup.usesSceneTimeBase = false
     this._workingAnimationGroup.isRemovedOnCompletion = false

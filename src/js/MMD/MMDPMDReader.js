@@ -459,6 +459,7 @@ export default class MMDPMDReader extends MMDReader {
       faceGeometry.name = this._faceNameArray[i]
 
       morpher.targets.push(faceGeometry)
+      morpher._weights.push(0)
     }
     const geometryNode = this._workingNode.childNodeWithName('Geometry', true)
 
