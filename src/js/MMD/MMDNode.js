@@ -3,6 +3,7 @@
 import {
   CAAnimationGroup,
   CAKeyframeAnimation,
+  NSObject,
   SCNNode,
   SCNPhysicsBody,
   SCNVector3,
@@ -24,6 +25,13 @@ const _MMDNodeType = {
 
 const _MMDAnimationCompletionBlockKey = 'MMDAnimationCompletionBlockKey'
 const _faceWeightsPattern = /faceWeights\[(\d+)\]/
+
+class DummyNode extends NSObject {
+  valueForUndefinedKey(key) {
+    return this
+  }
+}
+const _dummyNode = new DummyNode()
 
 /**
  *
@@ -384,9 +392,8 @@ export default class MMDNode extends SCNNode {
         return node
       }
 
-      console.warn(`valueForUndefinedKey ${key} not found.`)
-      //return this.dummyNode
-      return null
+      //console.warn(`valueForUndefinedKey ${key} not found.`)
+      return _dummyNode
     }
 
     const result = key.match(_faceWeightsPattern)

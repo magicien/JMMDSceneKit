@@ -63,6 +63,10 @@ module.exports =
 
 	var _MMDPMDReader2 = _interopRequireDefault(_MMDPMDReader);
 
+	var _MMDPMXReader = __webpack_require__(12);
+
+	var _MMDPMXReader2 = _interopRequireDefault(_MMDPMXReader);
+
 	var _MMDProgram = __webpack_require__(6);
 
 	var _MMDProgram2 = _interopRequireDefault(_MMDProgram);
@@ -71,19 +75,19 @@ module.exports =
 
 	var _MMDReader2 = _interopRequireDefault(_MMDReader);
 
-	var _MMDSceneSource = __webpack_require__(12);
+	var _MMDSceneSource = __webpack_require__(13);
 
 	var _MMDSceneSource2 = _interopRequireDefault(_MMDSceneSource);
 
-	var _MMDVMDReader = __webpack_require__(13);
+	var _MMDVMDReader = __webpack_require__(14);
 
 	var _MMDVMDReader2 = _interopRequireDefault(_MMDVMDReader);
 
-	var _MMDXReader = __webpack_require__(15);
+	var _MMDXReader = __webpack_require__(16);
 
 	var _MMDXReader2 = _interopRequireDefault(_MMDXReader);
 
-	var _BinaryParser = __webpack_require__(17);
+	var _BinaryParser = __webpack_require__(21);
 
 	var _BinaryParser2 = _interopRequireDefault(_BinaryParser);
 
@@ -91,7 +95,7 @@ module.exports =
 
 	var _ecl2 = _interopRequireDefault(_ecl);
 
-	var _AjaxRequest = __webpack_require__(18);
+	var _AjaxRequest = __webpack_require__(22);
 
 	var _AjaxRequest2 = _interopRequireDefault(_AjaxRequest);
 
@@ -99,7 +103,7 @@ module.exports =
 
 	var _BinaryReader2 = _interopRequireDefault(_BinaryReader);
 
-	var _BinaryRequest = __webpack_require__(19);
+	var _BinaryRequest = __webpack_require__(23);
 
 	var _BinaryRequest2 = _interopRequireDefault(_BinaryRequest);
 
@@ -107,11 +111,19 @@ module.exports =
 
 	var _Buffer2 = _interopRequireDefault(_Buffer);
 
+	var _File = __webpack_require__(17);
+
+	var _File2 = _interopRequireDefault(_File);
+
+	var _FileReader = __webpack_require__(18);
+
+	var _FileReader2 = _interopRequireDefault(_FileReader);
+
 	var _TextReader = __webpack_require__(11);
 
 	var _TextReader2 = _interopRequireDefault(_TextReader);
 
-	var _TextRequest = __webpack_require__(20);
+	var _TextRequest = __webpack_require__(24);
 
 	var _TextRequest2 = _interopRequireDefault(_TextRequest);
 
@@ -122,6 +134,7 @@ module.exports =
 	exports.MMDIKController = _MMDIKController2.default;
 	exports.MMDNode = _MMDNode2.default;
 	exports.MMDPMDReader = _MMDPMDReader2.default;
+	exports.MMDPMXReader = _MMDPMXReader2.default;
 	exports.MMDProgram = _MMDProgram2.default;
 	exports.MMDReader = _MMDReader2.default;
 	exports.MMDSceneSource = _MMDSceneSource2.default;
@@ -133,6 +146,8 @@ module.exports =
 	exports.BinaryReader = _BinaryReader2.default;
 	exports.BinaryRequest = _BinaryRequest2.default;
 	exports.Buffer = _Buffer2.default;
+	exports.File = _File2.default;
+	exports.FileReader = _FileReader2.default;
 	exports.TextReader = _TextReader2.default;
 	exports.TextRequest = _TextRequest2.default;
 
@@ -275,9 +290,9 @@ module.exports =
 	  value: true
 	});
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _jscenekit = __webpack_require__(4);
 
@@ -302,6 +317,27 @@ module.exports =
 
 	var _MMDAnimationCompletionBlockKey = 'MMDAnimationCompletionBlockKey';
 	var _faceWeightsPattern = /faceWeights\[(\d+)\]/;
+
+	var DummyNode = function (_NSObject) {
+	  _inherits(DummyNode, _NSObject);
+
+	  function DummyNode() {
+	    _classCallCheck(this, DummyNode);
+
+	    return _possibleConstructorReturn(this, (DummyNode.__proto__ || Object.getPrototypeOf(DummyNode)).apply(this, arguments));
+	  }
+
+	  _createClass(DummyNode, [{
+	    key: 'valueForUndefinedKey',
+	    value: function valueForUndefinedKey(key) {
+	      return this;
+	    }
+	  }]);
+
+	  return DummyNode;
+	}(_jscenekit.NSObject);
+
+	var _dummyNode = new DummyNode();
 
 	/**
 	 *
@@ -328,189 +364,189 @@ module.exports =
 	     *
 	     * @type {SCNPhysicsBehaviors[]}
 	     */
-	    var _this = _possibleConstructorReturn(this, (MMDNode.__proto__ || Object.getPrototypeOf(MMDNode)).call(this));
+	    var _this2 = _possibleConstructorReturn(this, (MMDNode.__proto__ || Object.getPrototypeOf(MMDNode)).call(this));
 
-	    _this.physicsBehaviors = [];
+	    _this2.physicsBehaviors = [];
 
 	    /**
 	     *
 	     * @type {Symbol}
 	     */
-	    _this.type = MMDNode.Type.unknown;
+	    _this2.type = MMDNode.Type.unknown;
 
 	    /**
 	     *
 	     * @type {boolean}
 	     */
-	    _this.isKnee = false;
+	    _this2.isKnee = false;
 
 	    /**
 	     *
 	     * @type {MMDIKConstraint}
 	     */
-	    _this.ikConstraint = null;
+	    _this2.ikConstraint = null;
 
 	    /**
 	     *
 	     * @type {MMDIKConstraint[]}
 	     */
-	    _this.ikArray = null;
+	    _this2.ikArray = null;
 
 	    /**
 	     *
 	     * @type {SCNPhysicsBehavior[]}
 	     */
-	    _this.joints = null;
+	    _this2.joints = null;
 
 	    /**
 	     *
 	     * @type {number}
 	     */
-	    _this.vertexCount = 0;
+	    _this2.vertexCount = 0;
 
 	    /**
 	     *
 	     * @type {number[]}
 	     */
-	    _this.vertexArray = null;
+	    _this2.vertexArray = null;
 
 	    /**
 	     *
 	     * @type {number[]}
 	     */
-	    _this.normalArray = null;
+	    _this2.normalArray = null;
 
 	    /**
 	     *
 	     * @type {number[]}
 	     */
-	    _this.texcoordArray = null;
+	    _this2.texcoordArray = null;
 
 	    /**
 	     *
 	     * @type {number[]}
 	     */
-	    _this.boneIndicesArray = null;
+	    _this2.boneIndicesArray = null;
 
 	    /**
 	     *
 	     * @type {number[]}
 	     */
-	    _this.boneWeightsArray = null;
+	    _this2.boneWeightsArray = null;
 
 	    /**
 	     *
 	     * @type {number}
 	     */
-	    _this.indexCount = 0;
+	    _this2.indexCount = 0;
 
 	    /**
 	     *
 	     * @type {number[]}
 	     */
-	    _this.indexArray = null;
+	    _this2.indexArray = null;
 
 	    /**
 	     *
 	     * @type {number}
 	     */
-	    _this.materialCount = 0;
+	    _this2.materialCount = 0;
 
 	    /**
 	     *
 	     * @type {SCNMaterial[]}
 	     */
-	    _this.materialArray = null;
+	    _this2.materialArray = null;
 
 	    /**
 	     *
 	     * @type {number[]}
 	     */
-	    _this.materialIndexCountArray = null;
+	    _this2.materialIndexCountArray = null;
 
 	    /**
 	     *
 	     * @type {?SCNGeometryElement[]}
 	     */
-	    _this.elementArray = null;
+	    _this2.elementArray = null;
 
 	    /**
 	     *
 	     * @type {MMDNode[]}
 	     */
-	    _this.boneArray = null;
+	    _this2.boneArray = null;
 
 	    /**
 	     *
 	     * @type {SCNMatrix4[]}
 	     */
-	    _this.boneInverseMatrixArray = null;
+	    _this2.boneInverseMatrixArray = null;
 
 	    /**
 	     *
 	     * @type {MMDNode}
 	     */
-	    _this.rootBone = null;
+	    _this2.rootBone = null;
 
 	    /**
 	     *
 	     * @type {?MMDNode}
 	     */
-	    _this.rotateEffector = null;
+	    _this2.rotateEffector = null;
 
 	    /**
 	     *
 	     * @type {number}
 	     */
-	    _this.rotateEffectRate = 0;
+	    _this2.rotateEffectRate = 0;
 
 	    /**
 	     *
 	     * @type {?MMDNode}
 	     */
-	    _this.translateEffector = null;
+	    _this2.translateEffector = null;
 
 	    /**
 	     *
 	     * @type {number}
 	     */
-	    _this.translateEffectRate = 0;
+	    _this2.translateEffectRate = 0;
 
 	    /**
 	     *
 	     * @type {?number[]}
 	     */
-	    _this.faceIndexArray = null;
+	    _this2.faceIndexArray = null;
 
 	    /**
 	     *
 	     * @type {?number[][]}
 	     */
-	    _this.faceDataArray = null;
+	    _this2.faceDataArray = null;
 
 	    /**
 	     *
 	     * @type {number[]}
 	     */
-	    _this.faceWeights = null;
+	    _this2.faceWeights = null;
 
 	    /**
 	     *
 	     * @type {SCNMorpher}
 	     */
-	    _this.geometryMorpher = null;
+	    _this2.geometryMorpher = null;
 
 	    /**
 	     *
 	     * @type {?Map}
 	     */
-	    _this.preparedAnimation = null;
+	    _this2.preparedAnimation = null;
 
 	    if (mmdNode !== null) {
-	      _this.copySCNNodeValues(mmdNode);
-	      _this.copyValues(mmdNode);
+	      _this2.copySCNNodeValues(mmdNode);
+	      _this2.copyValues(mmdNode);
 	    }
-	    return _this;
+	    return _this2;
 	  }
 
 	  /**
@@ -684,9 +720,8 @@ module.exports =
 	          return node;
 	        }
 
-	        console.warn('valueForUndefinedKey ' + key + ' not found.');
-	        //return this.dummyNode
-	        return null;
+	        //console.warn(`valueForUndefinedKey ${key} not found.`)
+	        return _dummyNode;
 	      }
 
 	      var result = key.match(_faceWeightsPattern);
@@ -766,7 +801,7 @@ module.exports =
 	  }, {
 	    key: '_convertAnimation',
 	    value: function _convertAnimation(animation) {
-	      var _this2 = this;
+	      var _this3 = this;
 
 	      console.log('_convertAnimation start');
 	      var geometryNode = this.childNodeWithNameRecursively('Geometry', true);
@@ -786,7 +821,7 @@ module.exports =
 	            console.log('newAnim: ' + newAnim.keyPath);
 	            var boneNameKey = newAnim.keyPath.split('.')[0];
 	            var boneName = boneNameKey.substring(1);
-	            var bone = _this2.childNodeWithNameRecursively(boneName, true);
+	            var bone = _this3.childNodeWithNameRecursively(boneName, true);
 	            console.log('boneName: ' + boneName + ', bone: ' + bone);
 
 	            if (boneNameKey === 'morpher') {
@@ -889,7 +924,7 @@ module.exports =
 	  }, {
 	    key: 'updateIK',
 	    value: function updateIK() {
-	      var _this3 = this;
+	      var _this4 = this;
 
 	      if (this.ikArray !== null) {
 	        var zeroThreshold = 0.0000001;
@@ -901,9 +936,9 @@ module.exports =
 	            for (var index = 0; index < ik.boneArray.length; index++) {
 	              var bone = ik.boneArray[index];
 
-	              var bonePosition = _this3._getWorldPosition(bone.presentation);
-	              var targetPosition = _this3._getWorldPosition(targetBone.presentation);
-	              var ikPosition = _this3._getWorldPosition(ikBone.presentation);
+	              var bonePosition = _this4._getWorldPosition(bone.presentation);
+	              var targetPosition = _this4._getWorldPosition(targetBone.presentation);
+	              var ikPosition = _this4._getWorldPosition(ikBone.presentation);
 	              //console.log(`IK it ${i} bone ${bone.name} target ${targetPosition.float32Array()} ik ${ikPosition.float32Array()}`)
 
 	              var v1 = bonePosition.sub(targetPosition);
@@ -921,7 +956,7 @@ module.exports =
 	              }
 
 	              var v = v1.cross(v2);
-	              v = _this3._inverseCross(v, bone.parent.presentation.worldTransform);
+	              v = _this4._inverseCross(v, bone.parent.presentation.worldTransform);
 	              v = v.normalize();
 
 	              if (bone.isKnee) {
@@ -957,14 +992,14 @@ module.exports =
 	              quat.z = v.z * ikSin;
 	              quat.w = ikCos;
 
-	              var orgQuat = _this3._rotationToQuat(bone.presentation.rotation);
+	              var orgQuat = _this4._rotationToQuat(bone.presentation.rotation);
 	              //console.log(`${this.name} rot ${bone.presentation.rotation.float32Array()}`)
 	              //console.log(`${this.name} orgQuat ${orgQuat.float32Array()}`)
 	              quat = quat.cross(orgQuat);
 
 	              // FIXME: don't use presentation node
 	              //bone.presentation.rotation = this._quatToRotation(quat)
-	              bone.rotation = _this3._quatToRotation(quat);
+	              bone.rotation = _this4._quatToRotation(quat);
 
 	              if (bone.isKnee) {
 	                // FIXME: don't use presentation node
@@ -973,7 +1008,7 @@ module.exports =
 	                  quat.x = -quat.x;
 	                  // FIXME: don't use presentation node
 	                  //bone.presentation.rotation = rot
-	                  bone.rotation = _this3._quatToRotation(quat);
+	                  bone.rotation = _this4._quatToRotation(quat);
 	                  //console.log(`${bone.name} quatToRotation ${bone.rotation.float32Array()}`)
 	                }
 	              }
@@ -1531,14 +1566,16 @@ module.exports =
 	        var edge = _this2.readUnsignedByte();
 	        var indexCount = _this2.readUnsignedInt();
 	        var textureFile = _this2.readString(20);
+	        if (textureFile.indexOf('*') >= 0) {
+	          textureFile = textureFile.split('*')[0];
+	        }
 
 	        if (textureFile !== '') {
-	          var fileName = _this2.directoryPath + textureFile;
-	          var image = new Image();
-	          image.onload = function () {
-	            material.diffuse.contents = image;
-	          };
-	          image.src = fileName;
+	          _this2.loadTexture(textureFile).then(function (texture) {
+	            material.diffuse.contents = texture;
+	            material.diffuse.wrapS = _jscenekit.SCNWrapMode.repeat;
+	            material.diffuse.wrapT = _jscenekit.SCNWrapMode.repeat;
+	          });
 	        }
 	        material.isDoubleSided = true;
 
@@ -1942,7 +1979,7 @@ module.exports =
 	      12 // dataStride
 	      );
 
-	      this._texcoordSource = new _jscenekit.SCNGeometrySource(normalData, // data
+	      this._texcoordSource = new _jscenekit.SCNGeometrySource(texcoordData, // data
 	      _jscenekit.SCNGeometrySource.Semantic.texcoord, // semantic
 	      this._vertexCount, // vectorCount
 	      true, // usesFloatComponents
@@ -2007,7 +2044,7 @@ module.exports =
 	      }
 	      geometryNode.castsShadow = true;
 
-	      this._workingNode.name = 'rootNode';
+	      this._workingNode.name = this._modelName;
 	      this._workingNode.castsShadow = true;
 	      this._workingNode.addChildNode(geometryNode);
 
@@ -2210,6 +2247,21 @@ module.exports =
 	    key: 'getAvailableDataLength',
 	    value: function getAvailableDataLength() {
 	      return this._reader.getAvailableDataLength();
+	    }
+	  }, {
+	    key: 'loadTexture',
+	    value: function loadTexture(filePath) {
+	      var _this = this;
+
+	      var promise = new Promise(function (resolve, reject) {
+	        var fileName = _this.directoryPath + filePath;
+	        var image = new Image();
+	        image.onload = function () {
+	          resolve(image);
+	        };
+	        image.src = fileName;
+	      });
+	      return promise;
 	    }
 	  }, {
 	    key: 'pos',
@@ -3417,6 +3469,1376 @@ module.exports =
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _MMDNode = __webpack_require__(3);
+
+	var _MMDNode2 = _interopRequireDefault(_MMDNode);
+
+	var _MMDProgram = __webpack_require__(6);
+
+	var _MMDProgram2 = _interopRequireDefault(_MMDProgram);
+
+	var _MMDReader2 = __webpack_require__(7);
+
+	var _MMDReader3 = _interopRequireDefault(_MMDReader2);
+
+	var _MMDIKConstraint = __webpack_require__(1);
+
+	var _MMDIKConstraint2 = _interopRequireDefault(_MMDIKConstraint);
+
+	var _jscenekit = __webpack_require__(4);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _BoneNodeTypes = [_MMDNode2.default.Type.rotate, _MMDNode2.default.Type.rotateTranslate, _MMDNode2.default.Type.ik, _MMDNode2.default.Type.unknown, _MMDNode2.default.Type.ikChild, _MMDNode2.default.Type.rotateChild, _MMDNode2.default.Type.hidden, _MMDNode2.default.Type.twist, _MMDNode2.default.Type.roll];
+
+	/**
+	 *
+	 * @access public
+	 * @extends {MMDReader}
+	 */
+
+	var MMDPMXReader = function (_MMDReader) {
+	  _inherits(MMDPMXReader, _MMDReader);
+
+	  /**
+	   *
+	   * @access public
+	   * @constructor
+	   * @param {Buffer} data -
+	   * @param {string} directoryPath -
+	   */
+	  function MMDPMXReader(data, directoryPath) {
+	    _classCallCheck(this, MMDPMXReader);
+
+	    var isBinary = true;
+	    var isBigEndian = false;
+	    var encoding = 'sjis';
+
+	    // initialize working variables
+	    var _this = _possibleConstructorReturn(this, (MMDPMXReader.__proto__ || Object.getPrototypeOf(MMDPMXReader)).call(this, data, directoryPath, isBinary, isBigEndian, encoding));
+
+	    _this._workingNode = null;
+
+	    // header info
+	    _this._pmxMagic = '';
+	    _this._version = 0.0;
+	    _this._encoding = '';
+
+	    _this._numUV = 0;
+	    _this._indexSize = 0;
+	    _this._textureIndexSize = 0;
+	    _this._materialIndexSize = 0;
+	    _this._boneIndexSize = 0;
+	    _this._morphIndexSize = 0;
+	    _this._physicsBodyIndexSize = 0;
+
+	    _this._modelName = '';
+	    _this._englishModelName = '';
+	    _this._comment = '';
+	    _this._englishComment = '';
+
+	    // vertex data
+	    _this._vertexCount = 0;
+	    _this._vertexArray = [];
+	    _this._normalArray = [];
+	    _this._texcoordArray = [];
+
+	    _this._boneIndicesArray = [];
+	    _this._boneWeightsArray = [];
+	    _this._edgeArray = [];
+
+	    // index data
+	    _this._indexCount = 0;
+	    _this._indexArray = [];
+
+	    // texture data
+	    _this._textureCount = 0;
+	    _this._textureArray = [];
+
+	    // material data
+	    _this._materialCount = 0;
+	    _this._materialArray = [];
+	    _this._materialShapeArray = [];
+	    _this._materialIndexCountArray = [];
+	    _this._separatedIndexArray = [];
+
+	    // bone data
+	    _this._boneCount = 0;
+	    _this._rootBone = new _MMDNode2.default();
+	    _this._boneArray = [];
+	    _this._boneInverseMatrixArray = [];
+
+	    // morphing data
+	    _this._faceCount = 0;
+	    _this._faceNameArray = [];
+	    _this._faceVertexArray = [];
+
+	    // data sources
+	    _this._vertexSource = null;
+	    _this._normalSource = null;
+	    _this._texcoordSource = null;
+	    _this._elementArray = [];
+	    return _this;
+	  }
+
+	  _createClass(MMDPMXReader, [{
+	    key: '_loadPMXFile',
+
+
+	    /**
+	     * @access private
+	     * @returns {MMDNode} -
+	     */
+	    value: function _loadPMXFile() {
+	      this._workingNode = new _MMDNode2.default();
+
+	      // read contents of file
+	      this.readPMXHeader();
+	      if (this.pmxMagic !== 'PMX ') {
+	        throw new Error('PMX file magic error: ' + this.pmxMagic);
+	      }
+
+	      // read basic data
+	      this._readVertex();
+	      this._readIndex();
+	      this._readTexture();
+	      this._readMaterial();
+	      this._readBone();
+	      this._readFace();
+	      this._readDisplayInfo();
+
+	      // create geometry for shader
+	      this._createGeometry();
+	      this._readConstraint();
+
+	      if (this._version > 2.0) {
+	        this._readSoftBody();
+	      }
+
+	      return this._workingNode;
+	    }
+	  }, {
+	    key: '_readPascalString',
+	    value: function _readPascalString() {
+	      var strlen = this.readUnsignedInt();
+	      return this.readString(strlen, this._encoding);
+	    }
+	  }, {
+	    key: '_readPMXHeader',
+	    value: function _readPMXHeader() {
+	      this._pmxMagic = this.readString(4);
+	      this._version = this.readFloat();
+
+	      var numData = this.readUnsignedByte();
+
+	      var encodingNo = this.readUnsignedByte();
+	      switch (encodingNo) {
+	        case 0:
+	          this._encoding = 'utf16le';
+	          break;
+	        case 1:
+	          this._encoding = 'utf8';
+	          break;
+	        default:
+	          throw new Error('unknown encoding number: ' + encodingNo);
+	      }
+
+	      this._numUV = this.readUnsignedByte();
+	      this._indexSize = this.readUnsignedByte();
+	      this._textureIndexSize = this.readUnsignedByte();
+	      this._materialIndexSize = this.readUnsignedByte();
+	      this._boneIndexSize = this.readUnsignedByte();
+	      this._morphIndexSize = this.readUnsignedByte();
+	      this._physicsBodyIndexSize = this.readUnsignedByte();
+
+	      this._modelName = this._readPascalString();
+	      this._englishModelName = this._readPascalString();
+	      this._comment = this._readPascalString();
+	      this._englishComment = this._readPascalString();
+	    }
+	  }, {
+	    key: '_readVertex',
+	    value: function _readVertex() {
+	      var vertexCount = this.readInt();
+	      this._vertexCount = vertexCount;
+
+	      var noBone = 0;
+	      switch (this._boneIndexSize) {
+	        case 1:
+	          noBone = 0xFF;
+	          break;
+	        case 2:
+	          noBone = 0xFFFF;
+	          break;
+	        case 4:
+	          noBone = 0xFFFFFFFF;
+	          break;
+	        default:
+	          throw new Error('unknown bone index size: ' + this._boneIndexSize);
+	      }
+
+	      for (var i = 0; i < vertexCount; i++) {
+	        this._vertexArray.push(this.readFloat());
+	        this._vertexArray.push(this.readFloat());
+	        this._vertexArray.push(-this.readFloat());
+
+	        this._normalArray.push(this.readFloat());
+	        this._normalArray.push(this.readFloat());
+	        this._normalArray.push(-this.readFloat());
+
+	        this._texcoordArray.push(this.readFloat());
+	        this._texcoordArray.push(this.readFloat());
+
+	        for (var j = 0; j < this._numUV; j++) {
+	          // FIXME: use additional UV
+	          this.readFloat();
+	          this.readFloat();
+	          this.readFloat();
+	          this.readFloat();
+	        }
+
+	        var weightType = this.readUnsignedByte();
+	        var weight1 = 0.0;
+	        var weight2 = 0.0;
+	        var weight3 = 0.0;
+	        var weight4 = 0.0;
+	        var boneNo1 = 0;
+	        var boneNo2 = 0;
+	        var boneNo3 = 0;
+	        var boneNo4 = 0;
+
+	        switch (weightType) {
+	          case 0:
+	            // BDEF1
+	            boneNo1 = this.readInteger(this._boneIndexSize);
+	            weight1 = 1.0;
+	            break;
+	          case 1:
+	            // BDEF2
+	            boneNo1 = this.readInteger(this._boneIndexSize);
+	            boneNo2 = this.readInteger(this._boneIndexSize);
+	            weight1 = this.readFloat();
+	            weight2 = 1.0 - weight1;
+	            break;
+	          case 2:
+	            // BDEF4
+	            boneNo1 = this.readInteger(this._boneIndexSize);
+	            boneNo2 = this.readInteger(this._boneIndexSize);
+	            boneNo3 = this.readInteger(this._boneIndexSize);
+	            boneNo4 = this.readInteger(this._boneIndexSize);
+	            weight1 = this.readFloat();
+	            weight2 = this.readFloat();
+	            weight3 = this.readFloat();
+	            weight4 = this.readFloat();
+	            break;
+	          case 3:
+	            // SDEF
+	            boneNo1 = this.readInteger(this._boneIndexSize);
+	            boneNo2 = this.readInteger(this._boneIndexSize);
+	            weight1 = this.readFloat();
+	            weight2 = 1.0 - weight1;
+
+	            // FIXME: use SDEF-C
+	            this.readFloat();
+	            this.readFloat();
+	            this.readFloat();
+
+	            // FIXME: use SDEF-R0
+	            this.readFloat();
+	            this.readFloat();
+	            this.readFloat();
+
+	            // FIXME: use SDEF-R1
+	            this.readFloat();
+	            this.readFloat();
+	            this.readFloat();
+	            break;
+	          case 4:
+	            // QDEF
+	            boneNo1 = this.readInteger(this._boneIndexSize);
+	            boneNo2 = this.readInteger(this._boneIndexSize);
+	            boneNo3 = this.readInteger(this._boneIndexSize);
+	            boneNo4 = this.readInteger(this._boneIndexSize);
+	            weight1 = this.readFloat();
+	            weight2 = this.readFloat();
+	            weight3 = this.readFloat();
+	            weight4 = this.readFloat();
+	            break;
+	          default:
+	            throw new Error('unknown skin weight type: ' + weightType);
+	        }
+
+	        if (boneNo1 === noBone) {
+	          boneNo1 = 0;
+	          weight1 = 0;
+	        }
+	        if (boneNo2 === noBone) {
+	          boneNo2 = 0;
+	          weight2 = 0;
+	        }
+	        if (boneNo3 === noBone) {
+	          boneNo3 = 0;
+	          weight3 = 0;
+	        }
+	        if (boneNo4 === noBone) {
+	          boneNo4 = 0;
+	          weight4 = 0;
+	        }
+
+	        // the first weight must not be 0 in SceneKit...
+	        if (weight1 === 0.0) {
+	          if (weight2 !== 0.0) {
+	            this._boneIndicesArray.push(boneNo2);
+	            this._boneIndicesArray.push(boneNo1);
+	            this._boneIndicesArray.push(boneNo3);
+	            this._boneIndicesArray.push(boneNo4);
+
+	            this._boneWeightsArray.push(weight2);
+	            this._boneWeightsArray.push(weight1);
+	            this._boneWeightsArray.push(weight3);
+	            this._boneWeightsArray.push(weight4);
+	          } else if (weight3 !== 0.0) {
+	            this._boneIndicesArray.push(boneNo3);
+	            this._boneIndicesArray.push(boneNo1);
+	            this._boneIndicesArray.push(boneNo2);
+	            this._boneIndicesArray.push(boneNo4);
+
+	            this._boneWeightsArray.push(weight3);
+	            this._boneWeightsArray.push(weight1);
+	            this._boneWeightsArray.push(weight2);
+	            this._boneWeightsArray.push(weight4);
+	          } else if (weight4 !== 0.0) {
+	            this._boneIndicesArray.push(boneNo4);
+	            this._boneIndicesArray.push(boneNo1);
+	            this._boneIndicesArray.push(boneNo2);
+	            this._boneIndicesArray.push(boneNo3);
+
+	            this._boneWeightsArray.push(weight4);
+	            this._boneWeightsArray.push(weight1);
+	            this._boneWeightsArray.push(weight2);
+	            this._boneWeightsArray.push(weight3);
+	          } else {
+	            throw new Error('bad data definition: all bone weights are 0.');
+	          }
+	        } else {
+	          this._boneIndicesArray.push(boneNo1);
+	          this._boneIndicesArray.push(boneNo2);
+	          this._boneIndicesArray.push(boneNo3);
+	          this._boneIndicesArray.push(boneNo4);
+
+	          this._boneWeightsArray.push(weight1);
+	          this._boneWeightsArray.push(weight2);
+	          this._boneWeightsArray.push(weight3);
+	          this._boneWeightsArray.push(weight4);
+	        }
+
+	        this._edgeArray.push(this.readFloat());
+	      }
+	    }
+	  }, {
+	    key: '_readIndex',
+	    value: function _readIndex() {
+	      var indexCount = this.readUnsignedInt();
+	      this._indexCount = indexCount;
+
+	      for (var i = 0; i < indexCount; i++) {
+	        this._indexArray.push(this.readInteger(this._indexSize));
+	      }
+	    }
+	  }, {
+	    key: '_readTexture',
+	    value: function _readTexture() {
+	      var textureCount = this._readUnsignedInt();
+	      this._textureCount = textureCount;
+
+	      for (var i = 0; i < textureCount; i++) {
+	        var textureFile = this._readPascalString();
+	        var fileName = this.directoryPath + textureFile;
+	        var image = new Image();
+	        image.src = fileName;
+	        this._textureArray.push(image);
+	      }
+	    }
+	  }, {
+	    key: '_readMaterial',
+	    value: function _readMaterial() {
+	      var materialCount = this.readUnsignedInt();
+	      this._materialCount = materialCount;
+
+	      var indexPos = 0;
+
+	      for (var i = 0; i < materialCount; i++) {
+	        var material = new _jscenekit.SCNMaterial();
+	        material.name = this._readPascalString();
+
+	        var englishName = this._readPascalString();
+
+	        material.diffuse.contents = new _jscenekit.SKColor(this.readFloat(), this.readFloat(), this.readFloat(), this.readFloat());
+	        material.specular.contents = new _jscenekit.SKColor(this.readFloat(), this.readFloat(), this.readFloat(), 1.0);
+	        material.shininess = this.readFloat();
+	        material.ambient.contents = new _jscenekit.SKColor(0, 0, 0, 1);
+	        material.emission.contents = new _jscenekit.SKColor(this.readFloat(), this.readFloat(), this.readFloat(), 1.0);
+
+	        var bitFlag = this.readUnsignedByte();
+	        var edgeColor = new _jscenekit.SKColor(this.readFloat(), this.readFloat(), this.readFloat(), this.readFloat());
+
+	        var noCulling = (bitFlag && 0x01) !== 0;
+	        var floorShadow = (bitFlag && 0x02) !== 0;
+	        var shadowMap = (bitFlag && 0x04) !== 0;
+	        var selfShadow = (bitFlag && 0x08) !== 0;
+	        var drawEdge = (bitFlag && 0x10) !== 0;
+	        var vertexColor = (bitFlag && 0x20) !== 0;
+	        var drawPoint = (bitFlag && 0x40) !== 0;
+	        var drawLine = (bitFlag && 0x80) !== 0;
+
+	        var edgeSize = this.readFloat();
+	        var textureNo = this.readInteger(this._textureIndexSize);
+	        var sphereTextureNo = this.readInteger(this._textureIndexSize);
+	        var sphereMode = this.readUnsignedByte();
+	        var toonFlag = this.readUnsignedByte();
+	        var toonTextureNo = 0;
+
+	        if (textureNo < this._textureArray.length) {
+	          var texture = this._textureArray[textureNo];
+	          //material.diffuse.contents = this._createTexture(texture, material.diffuse.contents)
+	          //material.emission.contents = this._createTexture(texture, material.emission.contents)
+	          material.multiply.contents = texture;
+	        }
+
+	        if (toonFlag === 0) {
+	          toonTextureNo = this.readInteger(this._textureIndexSize);
+	        } else if (toonFlag === 1) {
+	          toonTextureNo = this.readUnsignedByte();
+	        } else {
+	          throw new Error('unknown toon flag: ' + toonFlag);
+	        }
+
+	        if (noCulling) {
+	          material.isDoubleSided = true;
+	        } else {
+	          material.isDoubleSided = false;
+	        }
+
+	        // FIXME: use floorShadow, shadowMap property
+	        // FIXME: use drawEdge property
+	        // FIXME: use vertexColor
+
+	        var shape = _jscenekit.SCNGeometryPrimitiveType.triangles;
+	        if (drawPoint) {
+	          shape = _jscenekit.SCNGeometryPrimitiveType.point;
+	        } else if (drawLine) {
+	          shape = _jscenekit.SCNGeometryPrimitiveType.line;
+	        }
+	        this._materialShapeArray.push(shape);
+
+	        var text = this._readPascalString();
+	        var materialIndexCount = this.readUnsignedInt();
+
+	        // create index data
+	        var orgArray = this._indexArray.slice(indexPos, indexPos + materialIndexCount);
+	        var newArray = [];
+	        indexPos += materialIndexCount;
+
+	        var arrayPos = 0;
+	        var newIndexCount = 0;
+	        if (shape === _jscenekit.SCNGeometryPrimitiveType.point) {
+	          while (arrayPos < materialIndexCount) {
+	            var index1 = orgArray[arrayPos + 0];
+	            var index2 = orgArray[arrayPos + 1];
+	            var index3 = orgArray[arrayPos + 2];
+
+	            if (index1 === index2 && index2 === index3) {
+	              newArray.push(index1);
+	              newIndexCount += 1;
+	            } else {
+	              newArray.push(index1);
+	              newArray.push(index2);
+	              newArray.push(index3);
+	              newIndexCount += 3;
+	            }
+	            arrayPos += 3;
+	          }
+	        } else if (shape === _jscenekit.SCNGeometryPrimitiveType.line) {
+	          while (arrayPos < materialIndexCount) {
+	            var _index = orgArray[arrayPos + 0];
+	            var _index2 = orgArray[arrayPos + 1];
+	            var _index3 = orgArray[arrayPos + 2];
+
+	            if (_index === _index3) {
+	              newArray.append(_index);
+	              newArray.append(_index2);
+	              newIndexCount += 1;
+	            } else {
+	              newArray.append(_index);
+	              newArray.append(_index2);
+
+	              newArray.append(_index2);
+	              newArray.append(_index3);
+
+	              newArray.append(_index3);
+	              newArray.append(_index);
+
+	              newIndexCount += 3;
+	            }
+	            arrayPos += 3;
+	          }
+	        } else if (shape === _jscenekit.SCNGeometryPrimitiveType.triangles) {
+	          while (arrayPos < materialIndexCount) {
+	            var _index4 = orgArray[arrayPos + 0];
+	            var _index5 = orgArray[arrayPos + 1];
+	            var _index6 = orgArray[arrayPos + 2];
+
+	            newArray.append(_index4);
+	            newArray.append(_index6);
+	            newArray.append(_index5);
+
+	            newIndexCount += 1;
+	            arrayPos += 3;
+	          }
+	        }
+
+	        this._materialIndexCountArray.push(newIndexCount);
+	        this._materialArray.push(material);
+	        this._separatedIndexArray.push(newArray);
+	      }
+	    }
+	  }, {
+	    key: '_readBone',
+	    value: function _readBone() {
+	      var bonePositionArray = [];
+	      var parentNoArray = [];
+
+	      var boneCount = this.readUnsignedInt();
+	      this._boneCount = boneCount;
+	      this._rootBone.position = new _jscenekit.SCNVector3(0, 0, 0);
+	      this._rootBone.name = 'rootBone';
+
+	      for (var i = 0; i < boneCount; i++) {
+	        var boneNode = new _MMDNode2.default();
+	        this._boneArray.push(boneNode);
+	      }
+
+	      for (var _i = 0; _i < boneCount; _i++) {
+	        var _boneNode = this._boneArray[_i];
+	        _boneNode.name = this._readPascalString();
+	        var englishName = this._readPascalString();
+
+	        if (_boneNode.name.startsWith('右ひざ') || _boneNode.name.startsWith('左ひざ')) {
+	          _boneNode.isKnee = true;
+	        }
+
+	        var x = this.readFloat();
+	        var y = this.readFloat();
+	        var z = this.readFloat();
+
+	        var position = new _jscenekit.SCNVector3(x, y, z);
+	        bonePositionArray.push(position);
+
+	        parentNoArray.push(this.readInteger(this._boneIndexSize));
+	        var level = this.readInt();
+	        var flags = this.readUnsignedShort();
+
+	        var hasChildBoneIndex = (flags & 0x0001) !== 0;
+	        var isRotatable = (flags & 0x0002) !== 0;
+	        var isMovable = (flags & 0x0004) !== 0;
+	        var isVisible = (flags & 0x0008) !== 0;
+	        var isControllable = (flags & 0x0010) !== 0;
+	        var isIKBone = (flags & 0x0020) !== 0;
+	        // 0x0040: ?
+	        var isLocalValue = (flags & 0x0080) !== 0;
+	        var hasRotationValue = (flags & 0x0100) !== 0;
+	        var hasTranslationValue = (flags & 0x0200) !== 0;
+	        var hasFixAxis = (flags & 0x0400) !== 0;
+	        var hasLocalAxis = (flags & 0x0800) !== 0;
+	        var isDeformable = (flags & 0x1000) !== 0;
+	        var hasDeformableParent = (flags & 0x2000) !== 0;
+
+	        if (hasChildBoneIndex) {
+	          var childBoneNo = this.readInteger(this._boneIndexSize);
+	        } else {
+	          this.readFloat();
+	          this.readFloat();
+	          this.readFloat();
+	        }
+
+	        console.log(_i + ': ' + _boneNode.name);
+	        if (hasRotationValue || hasTranslationValue) {
+	          var boneIndex = this.readInteger(this._boneIndexSize);
+	          var rate = this.readFloat();
+	          var bone = this._boneArray[boneIndex];
+	          console.log('   rotation/translation: [' + boneIndex + '] ' + bone.name + ' ' + rate);
+
+	          if (hasRotationValue) {
+	            _boneNode.rotateEffector = bone;
+	            _boneNode.rotateEffectRate = rate;
+	          }
+	          if (hasTranslationValue) {
+	            _boneNode.translateEffector = bone;
+	            _boneNode.translateEffectRate = rate;
+	          }
+	        }
+
+	        if (hasFixAxis) {
+	          var _x = this.readFloat();
+	          var _y = this.readFloat();
+	          var _z = this.readFloat();
+	        }
+
+	        if (hasLocalAxis) {
+	          var xAxisX = this.readFloat();
+	          var xAxisY = this.readFloat();
+	          var xAxisZ = this.readFloat();
+
+	          var zAxisX = this.readFloat();
+	          var zAxisY = this.readFloat();
+	          var zAxisZ = this.readFloat();
+	        }
+
+	        if (hasDeformableParent) {
+	          var parentBoneKey = this.readInt();
+	        }
+
+	        if (isIKBone) {
+	          var ik = new _MMDIKConstraint2.default();
+
+	          var targetBoneNo = this.readInteger(this._boneIndexSize);
+	          var targetBone = this._boneArray[targetBoneNo];
+
+	          var iteration = this.readInt();
+	          var weight = this.readFloat();
+	          var numLink = this.readInt();
+
+	          ik.ikBone = _boneNode;
+	          ik.targetBone = targetBone;
+	          ik.iteration = iteration;
+	          ik.weight = weight * 0.25 * Math.PI;
+	          ik.boneArray = [];
+
+	          console.log('targetBoneNo: ' + targetBoneNo + ' ' + targetBone.name + ' ikBone: ' + ik.ikBone.name);
+
+	          var linkBoneNoArray = [];
+	          for (var j = 0; j < numLink; j++) {
+	            var linkNo = this.readUnsignedShort();
+	            var _bone = this._boneArray[linkNo];
+
+	            var limitFlag = this.readUnsignedByte();
+	            if (limitFlag === 1) {
+	              // TODO: constraint
+	              var minX = this.readFloat();
+	              var minY = this.readFloat();
+	              var minZ = this.readFloat();
+	              var maxX = this.readFloat();
+	              var maxY = this.readFloat();
+	              var maxZ = this.readFloat();
+	            }
+
+	            ik.boneArray.push(_bone);
+	          }
+
+	          this._workingNode.ikArray.push(ik);
+	        }
+	      }
+
+	      // set parent node
+	      var noParent = 0;
+	      if (this._boneIndexSize === 1) {
+	        noParent = 0xFF;
+	      } else if (this._boneIndexSize === 2) {
+	        noParent = 0xFFFF;
+	      } else if (this._boneIndexSize === 4) {
+	        noParent = 0xFFFFFFFF;
+	      }
+
+	      for (var _i2 = 0; _i2 < this._boneCount; _i2++) {
+	        var _bone2 = this._boneArray[_i2];
+	        var parentNo = parentNoArray[_i2];
+	        var bonePos = bonePositionArray[_i2];
+
+	        if (parentNo !== noParent) {
+	          this._boneArray[parentNo].addChildNode(_bone2);
+
+	          var parentPos = bonePositionArray[parentNo];
+	          _bone2._position.x = bonePos.x - parentPos.x;
+	          _bone2._position.y = bonePos.y - parentPos.y;
+	          _bone2._position.z = bonePos.z - parentPos.z;
+	        } else {
+	          this._rootBone.addChildNode(_bone2);
+	          _bone2._position = bonePos;
+	        }
+	      }
+
+	      // calc initial matrix
+	      for (var _i3 = 0; _i3 < this._boneCount; _i3++) {
+	        var _bonePos = bonePositionArray[_i3];
+	        var matrix = _jscenekit.SCNMatrix4.matrixWithTranslation(-_bonePos.x, -_bonePos.y, -_bonePos.z);
+	        this._boneInverseMatrixArray.push(matrix);
+	      }
+
+	      this._boneArray.push(this._rootBone);
+	      this._boneInverseMatrixArray.push(_jscenekit.SCNMatrix4.matrixWithTranslation(0, 0, 0));
+
+	      this._workingNode.addChildNode(this._rootBone);
+	    }
+	  }, {
+	    key: '_readFace',
+	    value: function _readFace() {
+	      var faceCount = this.readUnsignedInt();
+	      this._faceCount = faceCount;
+
+	      for (var i = 0; i < faceCount; i++) {
+	        var name = this._readPascalString();
+	        var englishName = this._readPascalString();
+	        var panelNo = this.readUnsignedByte();
+	        var type = this.readUnsignedByte();
+	        var offsetCount = this.readInt();
+
+	        switch (type) {
+	          case 0:
+	            // group morph
+	            this._readGroupMorph(offsetCount);
+	            break;
+	          case 1:
+	            // vertex morph
+	            this._readVertexMorph(offsetCount);
+	            this._faceNameArray.push(name);
+	            break;
+	          case 2:
+	            // bone morph
+	            this._readBoneMorph(offsetCount);
+	            break;
+	          case 3:
+	            // UV morph
+	            this._readUVMorph(offsetCount, 0);
+	            break;
+	          case 4:
+	            // additional UV - 1
+	            this._readUVMorph(offsetCount, 1);
+	            break;
+	          case 5:
+	            // additional UV - 2
+	            this._readUVMorph(offsetCount, 2);
+	            break;
+	          case 6:
+	            // additional UV - 3
+	            this._readUVMorph(offsetCount, 3);
+	            break;
+	          case 7:
+	            // additional UV - 4
+	            this._readUVMorph(offsetCount, 4);
+	            break;
+	          case 8:
+	            // material morph
+	            this._readMaterialMorph(offsetCount);
+	            break;
+	          case 9:
+	            // flip morph
+	            this._readFlipMorph(offsetCount);
+	            break;
+	          case 10:
+	            // impulse morph
+	            this._readImpulseMorph(offsetCount);
+	            break;
+	          default:
+	            // unknown type
+	            throw new Error('unknown face type: ' + type);
+	        }
+	      }
+	    }
+	  }, {
+	    key: '_readVertexMorph',
+	    value: function _readVertexMorph(count) {
+	      var faceVertex = [];
+
+	      for (var i = 0; i < count; i++) {
+	        var index = this.readInteger(this._indexSize);
+	        var vertexIndex = index * 3;
+
+	        var x = this.readFloat();
+	        var y = this.readFloat();
+	        var z = -this.readFloat();
+
+	        faceVertex[vertexIndex + 0] = x;
+	        faceVertex[vertexIndex + 1] = y;
+	        faceVertex[vertexIndex + 2] = z;
+	      }
+
+	      this._faceVertexArray.push(faceVertex);
+	    }
+	  }, {
+	    key: '_readUVMorph',
+	    value: function _readUVMorph(count, textureNo) {
+	      for (var i = 0; i < count; i++) {
+	        var index = this.readInteger(this._indexSize);
+	        var x = this.readFloat();
+	        var y = this.readFloat();
+	        var z = this.readFloat();
+	        var w = this.readFloat();
+	      }
+	    }
+	  }, {
+	    key: '_readBoneMorph',
+	    value: function _readBoneMorph(count) {
+	      for (var i = 0; i < count; i++) {
+	        var index = this.readInteger(this._boneIndexSize);
+	        var posX = this.readFloat();
+	        var posY = this.readFloat();
+	        var posZ = -this.readFloat();
+
+	        var quatX = this.readFloat();
+	        var quatY = this.readFloat();
+	        var quatZ = this.readFloat();
+	        var quatW = this.readFloat();
+	      }
+	    }
+	  }, {
+	    key: '_readMaterialMorph',
+	    value: function _readMaterialMorph(count) {
+	      for (var i = 0; i < count; i++) {
+	        var index = this.readInteger(this._materialIndexSize);
+	        var addColor = this.readUnsignedByte();
+	        var diffuseColor = new _jscenekit.SKColor(this.readFloat(), this.readFloat(), this.readFloat(), this.readFloat());
+	        var specularColor = new _jscenekit.SKColor(this.readFloat(), this.readFloat(), this.readFloat(), 1.0);
+	        var shininess = this.readFloat();
+	        var ambientColor = new _jscenekit.SKColor(this.readFloat(), this.readFloat(), this.readFloat(), 1.0);
+	        var edgeColor = new _jscenekit.SKColor(this.readFloat(), this.readFloat(), this.readFloat(), 1.0);
+	        var edgeSize = this.readFloat();
+	        var textureColor = new _jscenekit.SKColor(this.readFloat(), this.readFloat(), this.readFloat(), this.readFloat());
+	        var sphereColor = new _jscenekit.SKColor(this.readFloat(), this.readFloat(), this.readFloat(), this.readFloat());
+	        var toonColor = new _jscenekit.SKColor(this.readFloat(), this.readFloat(), this.readFloat(), this.readFloat());
+	      }
+	    }
+	  }, {
+	    key: '_readGroupMorph',
+	    value: function _readGroupMorph(count) {
+	      for (var i = 0; i < count; i++) {
+	        var morphIndex = this.readInteger(this._morphIndexSize);
+	        var rate = this.readFloat();
+	      }
+	    }
+	  }, {
+	    key: '_readFlipMorph',
+	    value: function _readFlipMorph(count) {
+	      for (var i = 0; i < count; i++) {
+	        var morphIndex = this.readInteger(this._morphIndexSize);
+	        var rate = this.readFloat();
+	      }
+	    }
+	  }, {
+	    key: '_readImpulseMorph',
+	    value: function _readImpulseMorph(count) {
+	      for (var i = 0; i < count; i++) {
+	        var morphIndex = this.readInteger(this._morphIndexSize);
+	        var isLocal = this.readUnsignedByte();
+
+	        var vx = this.readFloat();
+	        var vy = this.readFloat();
+	        var vz = -this.readFloat();
+
+	        var torqueX = this.readFloat();
+	        var torqueY = this.readFloat();
+	        var torqueZ = this.readFloat();
+	      }
+	    }
+	  }, {
+	    key: '_createFaceMorph',
+	    value: function _createFaceMorph() {
+	      var morpher = new _jscenekit.SCNMorpher();
+	      morpher.calculationMode = _jscenekit.SCNMorpherCalculationMode.additive;
+
+	      var count = this._faceVertexArray.length;
+	      for (var i = 0; i < count; i++) {
+	        var faceVertexData = this._faceVertexArray[i];
+	        var faceVertexSource = new _jscenekit.SCNGeometrySource(faceVertexData, // data
+	        _jscenekit.SCNGeometrySource.Semantic.vertex, // semantic
+	        this._vertexCount, // vectorCount
+	        true, // usesFloatComponents
+	        3, // componentsPerVector
+	        4, // bytesPerComponent
+	        0, // dataOffset
+	        12 // dataStride
+	        );
+	        var faceGeometry = new _jscenekit.SCNGeometry([faceVertexSource, this._normalSource], []);
+	        morpher.targets.push(faceGeometry);
+	      }
+	      var geometryNode = this._workingNode.childNodeWithNameRecursively('Geometry', true);
+	      geometryNode.morpher = morpher;
+	      this._workingNode.geometryMorpher = morpher;
+	    }
+	  }, {
+	    key: '_readDisplayInfo',
+	    value: function _readDisplayInfo() {
+	      var displayCount = this.readUnsignedInt();
+
+	      for (var i = 0; i < displayCount; i++) {
+	        var infoName = this._readPascalString();
+	        var englishInfoName = this._readPascalString();
+	        var flag = this.readUnsignedByte();
+	        var infoCount = this.readInt();
+
+	        for (var j = 0; j < infoCount; j++) {
+	          var type = this.readUnsignedByte();
+
+	          if (type === 0) {
+	            var boneIndex = this.readInteger(this._boneIndexSize);
+	          } else if (type === 1) {
+	            var morphIndex = this.readInteger(this._morphIndexSize);
+	          } else {
+	            throw new Error('unknown display info type: ' + type);
+	          }
+	        }
+	      }
+	    }
+	  }, {
+	    key: '_createGeometry',
+	    value: function _createGeometry() {
+	      var vertexData = this._vertexArray;
+	      var normalData = this._normalArray;
+	      var texcoordData = this._texcoordArray;
+	      var boneWeightsData = this._boneWeightsArray;
+	      var boneIndicesData = null;
+	      switch (this._boneIndexSize) {
+	        case 1:
+	          {
+	            //const array = []
+	            //this._boneIndicesArray.forEach((data) => {
+	            //  array.push(data)
+	            //})
+	            //boneIndicesData = array
+	            boneIndicesData = this._boneIndicesArray;
+	            break;
+	          }
+	        case 2:
+	          {
+	            //const array = []
+	            //this._boneIndicesArray.forEach((data) => {
+	            //  array.push(data)
+	            //})
+	            //boneIndicesData = array
+	            boneIndicesData = this._boneIndicesArray;
+	            break;
+	          }
+	        case 4:
+	          {
+	            //const array = []
+	            //this._boneIndicesArray.forEach((data) => {
+	            //  array.push(data)
+	            //})
+	            //boneIndicesData = array
+	            boneIndicesData = this._boneIndicesArray;
+	            break;
+	          }
+	        default:
+	          {
+	            throw new Error('unknown bone indices size: ' + this._boneIndexSize);
+	          }
+	      }
+
+	      this._vertexSource = new _jscenekit.SCNGeometrySource(vertexData, // data
+	      _jscenekit.SCNGeometrySource.Semantic.vertex, // semantic
+	      this._vertexCount, // vectorCount
+	      true, // usesFloatComponents
+	      3, // componentsPerVector
+	      4, // bytesPerComponent
+	      0, // dataOffset
+	      12 // dataStride
+	      );
+	      this._normalSource = new _jscenekit.SCNGeometrySource(normalData, // data
+	      _jscenekit.SCNGeometrySource.Semantic.normal, // semantic
+	      this._vertexCount, // vectorCount
+	      true, // usesFloatComponents
+	      3, // componentsPerVector
+	      4, // bytesPerComponent
+	      0, // dataOffset
+	      12 // dataStride
+	      );
+	      this._texcoordSource = new _jscenekit.SCNGeometrySource(texcoordData, // data
+	      _jscenekit.SCNGeometrySource.Semantic.texcoord, // semantic
+	      this._vertexCount, // vectorCount
+	      true, // usesFloatComponents
+	      2, // componentsPerVector
+	      4, // bytesPerComponent
+	      0, // dataOffset
+	      8 // dataStride
+	      );
+
+	      var boneIndicesSource = new _jscenekit.SCNGeometrySource(boneIndicesData, // data
+	      _jscenekit.SCNGeometrySource.Semantic.boneIndices, // semantic
+	      this._vertexCount, // vectorCount
+	      true, // usesFloatComponents
+	      4, // componentsPerVector
+	      this._boneIndexSize, // bytesPerComponent
+	      0, // dataOffset
+	      4 * this._boneIndexSize // dataStride
+	      );
+	      var boneWeightsSource = new _jscenekit.SCNGeometrySource(boneWeightsData, // data
+	      _jscenekit.SCNGeometrySource.Semantic.boneWeights, // semantic
+	      this._vertexCount, // vectorCount
+	      true, // usesFloatComponents
+	      4, // componentsPerVector
+	      4, // bytesPerComponent
+	      0, // dataOffset
+	      16 // dataStride
+	      );
+
+	      for (var i = 0; i < this._materialCount; i++) {
+	        var count = this._materialIndexCountArray[i];
+	        var indexArray = this._separatedIndexArray[i];
+	        var indexData = null;
+	        switch (this._indexSize) {
+	          case 1:
+	            {
+	              //const array = []
+	              //indexArray.forEach((data) => {
+	              //  array.push(data)
+	              //})
+	              //indexData = array
+	              indexData = indexArray;
+	              break;
+	            }
+	          case 2:
+	            {
+	              //const array = []
+	              //indexArray.forEach((data) => {
+	              //  array.push(data)
+	              //})
+	              //indexData = array
+	              indexData = indexArray;
+	              break;
+	            }
+	          case 4:
+	            {
+	              //const array = []
+	              //indexArray.forEach((data) => {
+	              //  array.push(data)
+	              //})
+	              //indexData = array
+	              indexData = indexArray;
+	              break;
+	            }
+	          default:
+	            {
+	              throw new Error('unknown vertex indices size: ' + this._boneIndexSize);
+	            }
+	        }
+
+	        // FIXME: use Point/Line in the A-A-A pattern or the A-B-A pattern
+
+	        var primitiveType = this._materialShapeArray[i];
+	        var element = new _jscenekit.SCNGeometryElement(indexData, // data
+	        primitiveType, // primitiveType
+	        count, // primitiveCount
+	        this._indexSize // bytesPerIndex
+	        );
+
+	        this._elementArray.push(element);
+	      }
+
+	      var program = new _MMDProgram2.default();
+	      this._materialArray.forEach(function (material) {
+	        material.program = program;
+	      });
+	      var geometry = new _jscenekit.SCNGeometry([this._vertexSource, this._normalSource, this._texcoordSource], this._elementArray);
+	      geometry.materials = this._materialArray;
+	      geometry.name = 'Geometry';
+
+	      var geometryNode = new _jscenekit.SCNNode(geometry);
+	      geometryNode.name = 'Geometry';
+
+	      var skinner = new _jscenekit.SCNSkinner(geometry, // baseGeometry
+	      this._boneArray, // bones
+	      this._boneInverseMatrixArray, // boneInverseBindTransforms
+	      boneWeightsSource, // boneWeights
+	      boneIndicesSource // boneIndices
+	      );
+
+	      geometryNode.skinner = skinner;
+	      geometryNode.skinner.skeleton = this._rootBone;
+	      geometryNode.castsShadow = true;
+
+	      this._workingNode.name = 'rootNode';
+	      this._workingNode.castsShadow = true;
+	      this._workingNode.addChildNode(geometryNode);
+
+	      this._workingNode.vertexArray = this._vertexArray;
+
+	      this._workingNode.boneArray = this._boneArray;
+	      this._workingNode.boneInverseMatrixArray = this._boneInverseMatrixArray;
+
+	      this._workingNode.vertexCount = this._vertexCount;
+	      this._workingNode.vertexArray = this._vertexArray;
+	      this._workingNode.normalArary = this._normalArray;
+	      this._workingNode.texcoordArray = this._texcoordArray;
+
+	      this._workingNode.boneWeightsArray = this._boneWeight;
+	      this._workingNode.indexCount = this._indexCount;
+	      this._workingNode.materialCount = this._materialCount;
+	      this._workingNode.materialArray = this._mateiralArray;
+	      this._workingNode.materialIndexCountArray = this._materialIndexCountArray;
+	      this._workingNode.rootBone = this._rootBone;
+	    }
+	  }, {
+	    key: '_readPhysicsBody',
+	    value: function _readPhysicsBody() {
+	      var _this2 = this;
+
+	      var bodyCount = this.readUnsignedInt();
+
+	      for (var i = 0; i < bodyCount; i++) {
+	        var name = this._readPascalString();
+	        var englishName = this._readPascalString();
+	        var boneIndex = this.readInteger(this._boneIndexSize);
+
+	        var groupIndex = this.readUnsignedByte();
+	        var groupTarget = this.readUnsignedByte();
+	        var shapeType = this.readUnsignedByte();
+	        var dx = this.readFloat();
+	        var dy = this.readFloat();
+	        var dz = this.readFloat();
+	        var posX = this.readFloat();
+	        var posY = this.readFloat();
+	        var posZ = -this.readFloat();
+	        var rotX = -this.readFloat();
+	        var rotY = -this.readFloat();
+	        var rotZ = this.readFloat();
+	        var weight = this.readFloat();
+	        var positionDim = this.readFloat();
+	        var rotateDim = this.readFloat();
+	        var recoil = this.readFloat();
+	        var friction = this.readFloat();
+	        var type = this.readUnsignedByte();
+
+	        var bodyType = null;
+	        if (type === 0) {
+	          bodyType = _jscenekit.SCNPhysicsBodyType.kinematic;
+	        } else if (type === 1) {
+	          bodyType = _jscenekit.SCNPhysicsBodyType.dynamic;
+	        } else if (type === 2) {
+	          bodyType = _jscenekit.SCNPhysicsBodyType.dynamic;
+	        }
+	        bodyType = _jscenekit.SCNPhysicsBodyType.kinematic;
+
+	        var shape = null;
+	        if (shapeType === 0) {
+	          shape = new _jscenekit.SCNSphere(dx);
+	        } else if (shapeType === 1) {
+	          shape = new _jscenekit.SCNBox(dx, dy, dz, 0.0);
+	        } else if (shapeType === 2) {
+	          shape = new _jscenekit.SCNCapsule(dx, dy);
+	        } else {
+	          throw new Error('unknown physics body shape: ' + shape);
+	        }
+
+	        var bone = null;
+	        if (boneIndex !== -1) {
+	          bone = this._boneArray[boneIndex];
+	        }
+	        if (bone === null || typeof bone === 'undefined') {
+	          bone = this._boneArray[0];
+	        }
+
+	        var worldTransform = (0, _jscenekit.SCNMatrix4MakeTranslation)(posX, posY, posZ);
+	        worldTransform = worldTransform.rotation(0, 1, 0, rotY);
+	        worldTransform = worldTransform.rotation(1, 0, 0, rotX);
+	        worldTransform = worldTransform.rotation(0, 0, 1, rotZ);
+
+	        var invBoneTransform = bone.worldTransform.invert();
+	        var physicsTransform = worldTransform.mult(invBoneTransform);
+	        var physicsShape = new _jscenekit.SCNPhysicsShape(shape, null);
+	        var transformedShape = new _jscenekit.SCNPhysicsShape([physicsShape], [physicsTransform]);
+
+	        if (bone.physicsBody !== null) {
+	          var identity = (0, _jscenekit.SCNMatrix4MakeTranslation)(0, 0, 0);
+	          transformedShape = new _jscenekit.SCNPhysicsShape([bone.physicsBody.physicsShape, transformedShape], [identity, identity]);
+	        }
+	        var body = new _jscenekit.SCNPhysicsBody(bodyType, transformedShape);
+
+	        body.isAffectedByGravity = true;
+	        body.mass = weight;
+	        body.friction = friction;
+	        body.rollingFriction = friction;
+	        body.angularDamping = rotateDim;
+	        body.categoryBitMask = 1 << groupIndex;
+	        body.collisionBitMask = groupTarget;
+	        body.restitution = recoil;
+	        body.usesDefaultMomentOfInertia = true;
+	        body.allowsResting = true;
+	        body.charge = 0;
+
+	        if (boneIndex !== -1) {
+	          bone.physicsBody = body;
+	        }
+
+	        this._physicsBoneArray.push(bone);
+	      }
+
+	      this._physicsBoneArray.forEach(function (bone) {
+	        _this2._physicsBodyArray.push(bone.physicsBody);
+	      });
+	    }
+	  }, {
+	    key: '_readConstraint',
+	    value: function _readConstraint() {
+	      var constraintCount = this.readUnsignedInt();
+	      this._workingNode.joints = [];
+	      for (var i = 0; i < constraintCount; i++) {
+	        var name = this._readPascalString();
+	        var englishName = this._readPascalString();
+	        var type = this.readUnsignedByte();
+
+	        var bodyANo = this.readInteger(this._physicsBodyIndexSize);
+	        var bodyBNo = this.readInteger(this._physicsBodyIndexSize);
+
+	        var bodyA = this._physicsBodyArray[bodyANo];
+	        var bodyB = this._physicsBodyArray[bodyBNo];
+
+	        var pos = new _jscenekit.SCNVector3(this.readFloat(), this.readFloat(), -this.readFloat());
+	        var rot = new _jscenekit.SCNVector3(this.readFloat(), this.readFloat(), -this.readFloat());
+
+	        var minPos = new _jscenekit.SCNVector3(this.readFloat(), this.readFloat(), -this.readFloat());
+	        var manPos = new _jscenekit.SCNVector3(this.readFloat(), this.readFloat(), -this.readFloat());
+
+	        var minRot = new _jscenekit.SCNVector3(this.readFloat(), this.readFloat(), -this.readFloat());
+	        var manRot = new _jscenekit.SCNVector3(this.readFloat(), this.readFloat(), -this.readFloat());
+
+	        var springPos = new _jscenekit.SCNVector3(this.readFloat(), this.readFloat(), -this.readFloat());
+	        var springRot = new _jscenekit.SCNVector3(this.readFloat(), this.readFloat(), -this.readFloat());
+
+	        var boneA = this._physicsBoneArray[bodyANo];
+	        var boneB = this._physicsBoneArray[bodyBNo];
+
+	        var anchorA = new _jscenekit.SCNVector3(pos.x - boneA.worldTransform.m41, pos.y - boneA.worldTransform.m42, pos.z - boneA.worldTransform.m43);
+	        var anchorB = new _jscenekit.SCNVector3(pos.x - boneB.worldTransform.m41, pos.y - boneB.worldTransform.m42, pos.z - boneB.worldTransform.m43);
+
+	        if (boneA === boneB) {
+	          continue;
+	        }
+
+	        var constraint = new _jscenekit.SCNPhysicsBallSocketJoint(bodyA, anchorA, bodyB, anchorB);
+	        this._workingNode.joints.push(constraint);
+	      }
+	    }
+	  }, {
+	    key: '_readSoftBody',
+	    value: function _readSoftBody() {
+	      var softBodyCount = this.readUnsignedInt();
+
+	      for (var i = 0; i < softBodyCount; i++) {
+	        var name = this._readPascalString();
+	        var englishName = this._readPascalString();
+
+	        var shape = this.readUnsignedByte();
+	        if (shape === 0) {
+	          // TriMesh
+	        } else if (shape === 1) {
+	          // Rope
+	        } else {
+	          throw new Error('unknown softbody type: ' + shape);
+	        }
+
+	        var index = this.readInteger(this._materialIndexSize);
+	        var groupIndex = this.readUnsignedByte();
+	        var groupTarget = this.readUnsignedShort();
+
+	        var flags = this.readUnsignedByte();
+	        if (flags & 0x01) {
+	          // TODO: create B-Link
+	        }
+	        if (flags & 0x02) {
+	          // TODO: create cluster
+	        }
+	        if (flags & 0x04) {}
+	        // TODO: mix links
+
+
+	        /*
+	          4  : int	| B-Link 作成距離
+	          4  : int	| クラスタ数
+	          
+	          4  : float	| 総質量
+	          4  : float	| 衝突マージン
+	          
+	          4  : int	| AeroModel - 0:V_Point, 1:V_TwoSided, 2:V_OneSided, 3:F_TwoSided, 4:F_OneSided
+	          
+	          <config>
+	          4  : float	| VCF
+	          4  : float	| DP
+	          4  : float	| DG
+	          4  : float	| LF
+	          4  : float	| PR
+	          4  : float	| VC
+	          4  : float	| DF
+	          4  : float	| MT
+	          4  : float	| CHR
+	          4  : float	| KHR
+	          4  : float	| SHR
+	          4  : float	| AHR
+	          
+	          <cluster>
+	          4  : float	| SRHR_CL
+	          4  : float	| SKHR_CL
+	          4  : float	| SSHR_CL
+	          4  : float	| SR_SPLT_CL
+	          4  : float	| SK_SPLT_CL
+	          4  : float	| SS_SPLT_CL
+	          
+	          <iteration>
+	          4  : int	| V_IT
+	          4  : int	| P_IT
+	          4  : int	| D_IT
+	          4  : int	| C_IT
+	          
+	          <material>
+	          4  : float	| LST
+	          4  : float	| AST
+	          4  : float	| VST
+	          
+	          4  : int	| アンカー剛体数
+	          <アンカー剛体>
+	          n  : 剛体Indexサイズ  | 関連剛体Index
+	          n  : 頂点Indexサイズ  | 関連頂点Index
+	          1  : byte	| Near モード  0:OFF 1:ON
+	          </アンカー剛体>
+	          * アンカー剛体数
+	          
+	          4  : int	| Pin頂点数
+	          <Pin頂点>
+	          n  : 頂点Indexサイズ  | 関連頂点Index
+	          </Pin頂点>
+	          * Pin頂点数
+	        */
+	      }
+	    }
+	  }], [{
+	    key: 'getNode',
+	    value: function getNode(data, directoryPath) {
+	      var reader = new MMDPMXReader(data, directoryPath);
+	      return reader._loadPMXFile();
+	    }
+	  }]);
+
+	  return MMDPMXReader;
+	}(_MMDReader3.default);
+
+	exports.default = MMDPMXReader;
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 	var _jscenekit = __webpack_require__(4);
 
 	var _MMDNode = __webpack_require__(3);
@@ -3427,17 +4849,21 @@ module.exports =
 
 	var _MMDPMDReader2 = _interopRequireDefault(_MMDPMDReader);
 
-	var _MMDVMDReader = __webpack_require__(13);
+	var _MMDVMDReader = __webpack_require__(14);
 
 	var _MMDVMDReader2 = _interopRequireDefault(_MMDVMDReader);
 
-	var _MMDXReader = __webpack_require__(15);
+	var _MMDXReader = __webpack_require__(16);
 
 	var _MMDXReader2 = _interopRequireDefault(_MMDXReader);
 
-	var _fs = __webpack_require__(16);
+	var _File2 = __webpack_require__(17);
 
-	var _fs2 = _interopRequireDefault(_fs);
+	var _File3 = _interopRequireDefault(_File2);
+
+	var _FileReader2 = __webpack_require__(18);
+
+	var _FileReader3 = _interopRequireDefault(_FileReader2);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3463,12 +4889,14 @@ module.exports =
 	};
 
 	// for node
+	//import fs from 'fs'
 
 	/**
 	 *
 	 * @access public
 	 * @extends {SCNSceneSource}
 	 */
+
 	var MMDSceneSource = function (_SCNSceneSource) {
 	  _inherits(MMDSceneSource, _SCNSceneSource);
 
@@ -3697,21 +5125,22 @@ module.exports =
 	      var motions = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
 
 	      var paths = path.split('/');
-	      paths.pop();
+	      var fileName = paths.pop();
 	      var directoryPath = paths.join('/') + '/';
 
 	      // for node
-	      var promise = new Promise(function (resolve, reject) {
-	        _fs2.default.readFile(path, null, function (err, data) {
-	          if (err) {
-	            reject(err);
-	            return;
+	      /*
+	      const promise = new Promise((resolve, reject) => {
+	        fs.readFile(path, null, (err, data) => {
+	          if(err){
+	            reject(err)
+	            return
 	          }
-
-	          var source = new MMDSceneSource(data, options, directoryPath, models, motions);
-	          resolve(source);
-	        });
-	      });
+	           const source = new MMDSceneSource(data, options, directoryPath, models, motions)
+	          resolve(source)
+	        })
+	      })
+	      */
 
 	      // for browser
 	      /*
@@ -3722,6 +5151,20 @@ module.exports =
 	          Promise.resolve(source)
 	        })
 	      */
+
+	      var promise = new Promise(function (resolve, reject) {
+	        var file = new _File3.default([], path);
+	        var reader = new _FileReader3.default();
+	        reader.onloadend = function () {
+	          var data = reader.result;
+	          var source = new MMDSceneSource(data, options, directoryPath, models, motions);
+	          resolve(source);
+	        };
+	        reader.onerror = function () {
+	          reject(reader.error);
+	        };
+	        reader.readAsBinaryString(file);
+	      });
 
 	      return promise;
 	    }
@@ -3741,7 +5184,7 @@ module.exports =
 	exports.default = MMDSceneSource;
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3760,7 +5203,7 @@ module.exports =
 
 	var _MMDReader3 = _interopRequireDefault(_MMDReader2);
 
-	var _constants = __webpack_require__(14);
+	var _constants = __webpack_require__(15);
 
 	var _jscenekit = __webpack_require__(4);
 
@@ -4518,7 +5961,7 @@ module.exports =
 	exports.default = MMDVMDReader;
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4530,7 +5973,7 @@ module.exports =
 	exports.MMD_CAMERA_ROTZ_NODE_NAME = 'MMD_CAMERA_ROTZ_NODE';
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4659,6 +6102,8 @@ module.exports =
 	      }
 
 	      this._splitFaceNormals();
+
+	      this._workingNode.name = 'rootNode';
 
 	      this._workingGeometry = this._createGeometry();
 	      this._workingGeometryNode = new _jscenekit.SCNNode(this._workingGeometry);
@@ -5111,7 +6556,7 @@ module.exports =
 	            //material.diffuse.contents = new SKColor(0, 0.5, 0, 1.0)
 	          }
 	          */
-	          this._loadTexture(textureFilePath).then(function (texture) {
+	          this.loadTexture(textureFilePath).then(function (texture) {
 	            material.emission.contents = texture;
 	            material.emission.wrapS = _jscenekit.SCNWrapMode.repeat;
 	            material.emission.wrapT = _jscenekit.SCNWrapMode.repeat;
@@ -5257,22 +6702,22 @@ module.exports =
 
 	      return filePath;
 	    }
-	  }, {
-	    key: '_loadTexture',
-	    value: function _loadTexture(path) {
-	      var _this2 = this;
 
-	      var promise = new Promise(function (resolve, reject) {
-	        console.error('TODO: implement _loadTexture');
-	        var fileName = _this2.directoryPath + path;
-	        var image = new Image();
-	        image.onload = function () {
-	          resolve(image);
-	        };
-	        image.src = fileName;
-	      });
-	      return promise;
-	    }
+	    /*
+	      _loadTexture(path) {
+	        const promise = new Promise((resolve, reject) => {
+	          console.error('TODO: implement _loadTexture')
+	          const fileName = this.directoryPath + path
+	          const image = new Image()
+	          image.onload = () => {
+	            resolve(image)
+	          }
+	          image.src = fileName
+	        })
+	        return promise
+	      }
+	    */
+
 	  }], [{
 	    key: 'getNode',
 	    value: function getNode(data, directoryPath) {
@@ -5287,13 +6732,462 @@ module.exports =
 	exports.default = MMDXReader;
 
 /***/ },
-/* 16 */
+/* 17 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	/*global File*/
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var _File = File;
+	if (!_File) {
+	  var _File2 = function () {
+	    /**
+	     * @access public
+	     * @constructor
+	     * @param {array} fileBits -
+	     * @param {string} fileName -
+	     * @param {Object} options -
+	     */
+	    function _File2(fileBits, fileName, options) {
+	      _classCallCheck(this, _File2);
+
+	      this._lastModified = null;
+	      this._lastModifiedDate = null;
+	      this._name = fileName;
+	      this._size = null;
+	      this._webkitRelativePath = null;
+	      this._type = null;
+	    }
+
+	    _createClass(_File2, [{
+	      key: 'lastModified',
+	      get: function get() {
+	        return this._lastModified;
+	      }
+	    }, {
+	      key: 'lastModifiedDate',
+	      get: function get() {
+	        return this._lastModifiedDate;
+	      }
+	    }, {
+	      key: 'name',
+	      get: function get() {
+	        return this._name;
+	      }
+	    }, {
+	      key: 'size',
+	      get: function get() {
+	        return this._size;
+	      }
+	    }, {
+	      key: 'webkitRelativePath',
+	      get: function get() {
+	        return this._webkitRelativePath;
+	      }
+	    }, {
+	      key: 'type',
+	      get: function get() {
+	        return this._type;
+	      }
+	    }]);
+
+	    return _File2;
+	  }();
+
+	  _File = _File2;
+	}
+
+	exports.default = _File;
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _File2 = __webpack_require__(17);
+
+	var _File3 = _interopRequireDefault(_File2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	/*global FileReader, require*/
+	var _FileReader = FileReader;
+	if (typeof process !== 'undefined') {
+	  var fs = __webpack_require__(20);
+	  var EMPTY = 0;
+	  var LOADING = 1;
+	  var DONE = 2;
+
+	  var _FileReader2 = function () {
+	    /**
+	     * @access public
+	     * @constructor
+	     */
+	    function _FileReader2() {
+	      _classCallCheck(this, _FileReader2);
+
+	      this.onabort = null;
+	      this.onerror = null;
+	      this.onload = null;
+	      this.onloadstart = null;
+
+	      /**
+	       * @type {function}
+	       */
+	      this.onloadend = null;
+
+	      this.onprogress = null;
+
+	      this._error = null;
+	      this._readyState = EMPTY;
+	      this._result = null;
+	    }
+
+	    _createClass(_FileReader2, [{
+	      key: 'abort',
+	      value: function abort() {}
+
+	      /**
+	       * @access public
+	       * @param {Blob|File} blob -
+	       * @returns {void}
+	       */
+
+	    }, {
+	      key: 'readAsArrayBuffer',
+	      value: function readAsArrayBuffer(blob) {
+	        this._read(blob, 'ArrayBuffer');
+	      }
+
+	      /**
+	       * @access public
+	       * @param {Blob|File} blob -
+	       * @returns {void}
+	       */
+
+	    }, {
+	      key: 'readAsBinaryString',
+	      value: function readAsBinaryString(blob) {
+	        this._read(blob, 'BinaryString');
+	      }
+
+	      /**
+	       * @access public
+	       * @param {Blob|File} blob -
+	       * @param {string} [encoding = 'utf8'] -
+	       * @returns {void}
+	       */
+
+	    }, {
+	      key: 'readAsText',
+	      value: function readAsText(blob) {
+	        var encoding = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'utf8';
+
+	        this._read(blob, 'Text', encoding);
+	      }
+
+	      /**
+	       * @access public
+	       * @param {Blob|File} blob -
+	       * @returns {void}
+	       */
+
+	    }, {
+	      key: 'readAsDataURL',
+	      value: function readAsDataURL(blob) {
+	        this._read(blob, 'DataURL');
+	      }
+	    }, {
+	      key: '_read',
+	      value: function _read(blob, type) {
+	        var _this = this;
+
+	        var encoding = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+
+	        if (this._readyState === LOADING) {
+	          throw new Error('InvalidStateError');
+	        }
+	        this._readyState = LOADING;
+
+	        if (blob instanceof _File3.default) {
+	          fs.readFile(blob.name, encoding, function (err, data) {
+	            if (err) {
+	              _this._error = err;
+	              if (_this.onerror !== null) {
+	                _this.onerror();
+	              }
+	            }
+
+	            _this._readyState = DONE;
+
+	            switch (type) {
+	              case 'ArrayBuffer':
+	                _this._result = data;
+	                break;
+	              case 'BinaryString':
+	                _this._result = data;
+	                break;
+	              case 'Text':
+	                _this._result = data;
+	                break;
+	              case 'DataURL':
+	                _this._result = data;
+	                break;
+	              default:
+	                throw new Error('unknown return type');
+	            }
+
+	            if (_this._readyState !== LOADING) {
+	              if (_this.onloadend !== null) {
+	                _this.onloadend();
+	              }
+	            }
+	          });
+	        }
+	      }
+	    }, {
+	      key: 'error',
+	      get: function get() {
+	        return this._error;
+	      }
+	    }, {
+	      key: 'readyState',
+	      get: function get() {
+	        return this._readyState;
+	      }
+
+	      /**
+	       * @type {Blob|string}
+	       */
+
+	    }, {
+	      key: 'result',
+	      get: function get() {
+	        return this._result;
+	      }
+	    }]);
+
+	    return _FileReader2;
+	  }();
+
+	  _FileReader = _FileReader2;
+	}
+
+	exports.default = _FileReader;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(19)))
+
+/***/ },
+/* 19 */
+/***/ function(module, exports) {
+
+	// shim for using process in browser
+	var process = module.exports = {};
+
+	// cached from whatever global is present so that test runners that stub it
+	// don't break things.  But we need to wrap it in a try catch in case it is
+	// wrapped in strict mode code which doesn't define any globals.  It's inside a
+	// function because try/catches deoptimize in certain engines.
+
+	var cachedSetTimeout;
+	var cachedClearTimeout;
+
+	function defaultSetTimout() {
+	    throw new Error('setTimeout has not been defined');
+	}
+	function defaultClearTimeout () {
+	    throw new Error('clearTimeout has not been defined');
+	}
+	(function () {
+	    try {
+	        if (typeof setTimeout === 'function') {
+	            cachedSetTimeout = setTimeout;
+	        } else {
+	            cachedSetTimeout = defaultSetTimout;
+	        }
+	    } catch (e) {
+	        cachedSetTimeout = defaultSetTimout;
+	    }
+	    try {
+	        if (typeof clearTimeout === 'function') {
+	            cachedClearTimeout = clearTimeout;
+	        } else {
+	            cachedClearTimeout = defaultClearTimeout;
+	        }
+	    } catch (e) {
+	        cachedClearTimeout = defaultClearTimeout;
+	    }
+	} ())
+	function runTimeout(fun) {
+	    if (cachedSetTimeout === setTimeout) {
+	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    // if setTimeout wasn't available but was latter defined
+	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+	        cachedSetTimeout = setTimeout;
+	        return setTimeout(fun, 0);
+	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedSetTimeout(fun, 0);
+	    } catch(e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+	            return cachedSetTimeout.call(null, fun, 0);
+	        } catch(e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+	            return cachedSetTimeout.call(this, fun, 0);
+	        }
+	    }
+
+
+	}
+	function runClearTimeout(marker) {
+	    if (cachedClearTimeout === clearTimeout) {
+	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    // if clearTimeout wasn't available but was latter defined
+	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+	        cachedClearTimeout = clearTimeout;
+	        return clearTimeout(marker);
+	    }
+	    try {
+	        // when when somebody has screwed with setTimeout but no I.E. maddness
+	        return cachedClearTimeout(marker);
+	    } catch (e){
+	        try {
+	            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+	            return cachedClearTimeout.call(null, marker);
+	        } catch (e){
+	            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+	            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+	            return cachedClearTimeout.call(this, marker);
+	        }
+	    }
+
+
+
+	}
+	var queue = [];
+	var draining = false;
+	var currentQueue;
+	var queueIndex = -1;
+
+	function cleanUpNextTick() {
+	    if (!draining || !currentQueue) {
+	        return;
+	    }
+	    draining = false;
+	    if (currentQueue.length) {
+	        queue = currentQueue.concat(queue);
+	    } else {
+	        queueIndex = -1;
+	    }
+	    if (queue.length) {
+	        drainQueue();
+	    }
+	}
+
+	function drainQueue() {
+	    if (draining) {
+	        return;
+	    }
+	    var timeout = runTimeout(cleanUpNextTick);
+	    draining = true;
+
+	    var len = queue.length;
+	    while(len) {
+	        currentQueue = queue;
+	        queue = [];
+	        while (++queueIndex < len) {
+	            if (currentQueue) {
+	                currentQueue[queueIndex].run();
+	            }
+	        }
+	        queueIndex = -1;
+	        len = queue.length;
+	    }
+	    currentQueue = null;
+	    draining = false;
+	    runClearTimeout(timeout);
+	}
+
+	process.nextTick = function (fun) {
+	    var args = new Array(arguments.length - 1);
+	    if (arguments.length > 1) {
+	        for (var i = 1; i < arguments.length; i++) {
+	            args[i - 1] = arguments[i];
+	        }
+	    }
+	    queue.push(new Item(fun, args));
+	    if (queue.length === 1 && !draining) {
+	        runTimeout(drainQueue);
+	    }
+	};
+
+	// v8 likes predictible objects
+	function Item(fun, array) {
+	    this.fun = fun;
+	    this.array = array;
+	}
+	Item.prototype.run = function () {
+	    this.fun.apply(null, this.array);
+	};
+	process.title = 'browser';
+	process.browser = true;
+	process.env = {};
+	process.argv = [];
+	process.version = ''; // empty string to avoid regexp issues
+	process.versions = {};
+
+	function noop() {}
+
+	process.on = noop;
+	process.addListener = noop;
+	process.once = noop;
+	process.off = noop;
+	process.removeListener = noop;
+	process.removeAllListeners = noop;
+	process.emit = noop;
+
+	process.binding = function (name) {
+	    throw new Error('process.binding is not supported');
+	};
+
+	process.cwd = function () { return '/' };
+	process.chdir = function (dir) {
+	    throw new Error('process.chdir is not supported');
+	};
+	process.umask = function() { return 0; };
+
+
+/***/ },
+/* 20 */
 /***/ function(module, exports) {
 
 	module.exports = require("fs");
 
 /***/ },
-/* 17 */
+/* 21 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -5461,7 +7355,7 @@ module.exports =
 	};
 
 /***/ },
-/* 18 */
+/* 22 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -5658,7 +7552,7 @@ module.exports =
 	exports.default = new AjaxRequest();
 
 /***/ },
-/* 19 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5668,7 +7562,7 @@ module.exports =
 	});
 	exports.BinaryRequest = undefined;
 
-	var _AjaxRequest2 = __webpack_require__(18);
+	var _AjaxRequest2 = __webpack_require__(22);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -5703,7 +7597,7 @@ module.exports =
 	exports.default = new BinaryRequest();
 
 /***/ },
-/* 20 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5715,7 +7609,7 @@ module.exports =
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _AjaxRequest2 = __webpack_require__(18);
+	var _AjaxRequest2 = __webpack_require__(22);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 

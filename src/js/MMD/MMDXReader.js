@@ -111,6 +111,8 @@ export default class MMDXReader extends MMDReader {
 
     this._splitFaceNormals()
 
+    this._workingNode.name = 'rootNode'
+
     this._workingGeometry = this._createGeometry()
     this._workingGeometryNode = new SCNNode(this._workingGeometry)
     this._workingGeometryNode.name = 'Geometry'
@@ -544,7 +546,7 @@ export default class MMDXReader extends MMDReader {
           //material.diffuse.contents = new SKColor(0, 0.5, 0, 1.0)
         }
         */
-        this._loadTexture(textureFilePath)
+        this.loadTexture(textureFilePath)
           .then((texture) => {
             material.emission.contents = texture
             material.emission.wrapS = SCNWrapMode.repeat
@@ -686,6 +688,7 @@ export default class MMDXReader extends MMDReader {
     return filePath
   }
 
+/*
   _loadTexture(path) {
     const promise = new Promise((resolve, reject) => {
       console.error('TODO: implement _loadTexture')
@@ -698,5 +701,6 @@ export default class MMDXReader extends MMDReader {
     })
     return promise
   }
+*/
 }
 

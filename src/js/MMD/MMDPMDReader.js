@@ -23,6 +23,7 @@ import {
   SCNSkinner,
   SCNSphere,
   SCNVector3,
+  SCNWrapMode,
   SKColor
 } from 'jscenekit'
 
@@ -253,15 +254,18 @@ export default class MMDPMDReader extends MMDReader {
       const toonIndex = this.readUnsignedByte()
       const edge = this.readUnsignedByte()
       const indexCount = this.readUnsignedInt()
-      const textureFile = this.readString(20)
+      let textureFile = this.readString(20)
+      if(textureFile.indexOf('*') >= 0){
+        textureFile = textureFile.split('*')[0]
+      }
 
       if(textureFile !== ''){
-        const fileName = this.directoryPath + textureFile
-        const image = new Image()
-        image.onload = () => {
-          material.diffuse.contents = image
-        }
-        image.src = fileName
+        this.loadTexture(textureFile)
+          .then((texture) => {
+            material.diffuse.contents = texture
+            material.diffuse.wrapS = SCNWrapMode.repeat
+            material.diffuse.wrapT = SCNWrapMode.repeat
+          })
       }
       material.isDoubleSided = true
 
@@ -654,7 +658,7 @@ export default class MMDPMDReader extends MMDReader {
     )
 
     this._texcoordSource = new SCNGeometrySource(
-      normalData, // data
+      texcoordData, // data
       SCNGeometrySource.Semantic.texcoord, // semantic
       this._vertexCount, // vectorCount
       true, // usesFloatComponents
@@ -726,7 +730,7 @@ export default class MMDPMDReader extends MMDReader {
     }
     geometryNode.castsShadow = true
 
-    this._workingNode.name = 'rootNode'
+    this._workingNode.name = this._modelName
     this._workingNode.castsShadow = true
     this._workingNode.addChildNode(geometryNode)
 

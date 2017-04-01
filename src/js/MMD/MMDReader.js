@@ -92,4 +92,17 @@ export default class MMDReader {
   getAvailableDataLength() {
     return this._reader.getAvailableDataLength()
   }
+
+  loadTexture(filePath) {
+    const promise = new Promise((resolve, reject) => {
+      const fileName = this.directoryPath + filePath
+      const image = new Image()
+      image.onload = () => {
+        resolve(image)
+      }
+      image.src = fileName
+    })
+    return promise
+
+  }
 } 

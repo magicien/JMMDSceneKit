@@ -9,6 +9,8 @@ import MMDNode from './MMDNode'
 import MMDPMDReader from './MMDPMDReader'
 import MMDVMDReader from './MMDVMDReader'
 import MMDXReader from './MMDXReader'
+import _File from '../util/File'
+import _FileReader from '../util/FileReader'
 
 const _MMDFileType = {
   pmm: Symbol(),
@@ -26,7 +28,7 @@ const _MMDFileType = {
 }
 
 // for node
-import fs from 'fs'
+//import fs from 'fs'
 
 /**
  *
@@ -73,10 +75,11 @@ export default class MMDSceneSource extends SCNSceneSource {
 
   static sceneSourceWithPathOptions(path, options, models = null, motions = null) {
     const paths = path.split('/')
-    paths.pop()
+    const fileName = paths.pop()
     const directoryPath = paths.join('/') + '/'
 
     // for node
+    /*
     const promise = new Promise((resolve, reject) => {
       fs.readFile(path, null, (err, data) => {
         if(err){
@@ -88,6 +91,7 @@ export default class MMDSceneSource extends SCNSceneSource {
         resolve(source)
       })
     })
+    */
 
     // for browser
     /*
@@ -98,6 +102,20 @@ export default class MMDSceneSource extends SCNSceneSource {
         Promise.resolve(source)
       })
     */
+
+    const promise = new Promise((resolve, reject) => {
+      const file = new _File([], path)
+      const reader = new _FileReader()
+      reader.onloadend = () => {
+        const data = reader.result
+        const source = new MMDSceneSource(data, options, directoryPath, models, motions)
+        resolve(source)
+      }
+      reader.onerror = () => {
+        reject(reader.error)
+      }
+      reader.readAsBinaryString(file)
+    })
 
     return promise
   }
