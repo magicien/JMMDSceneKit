@@ -97,7 +97,7 @@ export default class MMDVMDReader extends MMDReader {
     this._readCameraMotion()
     this._readLightMotion()
 
-    console.log(`pos: ${this.pos}, length: ${this.length}`)
+    //console.log(`pos: ${this.pos}, length: ${this.length}`)
     if(this.pos >= this.length){
       return this._workingAnimationGroup
     }
@@ -108,7 +108,7 @@ export default class MMDVMDReader extends MMDReader {
       return this._workingAnimationGroup
     }
 
-    this._readVisbilityAndIK()
+    this._readVisibilityAndIK()
 
     return this._workingAnimationGroup
   }
@@ -140,7 +140,7 @@ export default class MMDVMDReader extends MMDReader {
 
     for(let i=0; i<frameCount; i++){
       const boneName = this.readString(15)
-      console.log(`boneName: ${boneName}`)
+      //console.log(`boneName: ${boneName}`)
       if(boneName === null){
         console.warn(`motion(${i}): skip because of broken bone name`)
         this.skip(96)
@@ -180,7 +180,7 @@ export default class MMDVMDReader extends MMDReader {
 
       let frameIndex = posXMotion.keyTimes.length - 1
       const frameNo = this.readUnsignedInt()
-      console.log(`frameNo: ${frameNo}`)
+      //console.log(`frameNo: ${frameNo}`)
 
       while(frameIndex >= 0){
         const k = posXMotion.keyTimes[frameIndex]
@@ -205,7 +205,7 @@ export default class MMDVMDReader extends MMDReader {
       const posY = this.readFloat()
       const posZ = this.readFloat()
       const rotate = (new SCNQuaternion(-this.readFloat(), -this.readFloat(), this.readFloat(), this.readFloat())).normalize()
-      console.log(`pos: ${posX}, ${posY}, ${posZ}`)
+      //console.log(`pos: ${posX}, ${posY}, ${posZ}`)
 
       const interpolation = []
       for(let j=0; j<64; j++){
@@ -270,7 +270,7 @@ export default class MMDVMDReader extends MMDReader {
       const frameNo = this.readUnsignedInt()
       const factor = this.readFloat()
 
-      console.log(`faceName: ${name}`)
+      //console.log(`faceName: ${name}`)
 
       const keyPath = `morpher.weights.${name}`
       let animation = this._faceAnimationHash.get(name)
@@ -303,7 +303,7 @@ export default class MMDVMDReader extends MMDReader {
   _createAnimations() {
     const duration = this._frameLength / this.fps
 
-    console.log('_createAnimations')
+    //console.log('_createAnimations')
     this._animationHash.forEach((motion, key) => {
       // normalize keyTimes
       const motionLength = motion.keyTimes[motion.keyTimes.length - 1]
@@ -317,7 +317,7 @@ export default class MMDVMDReader extends MMDReader {
       motion.isRemovedOnCompletion = false
       motion.fillMode = kCAFillModeForwards
 
-      console.log('animations.push ' + key)
+      //console.log('animations.push ' + key)
       this._workingAnimationGroup.animations.push(motion)
     })
 

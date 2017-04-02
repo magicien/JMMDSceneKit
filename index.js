@@ -1033,27 +1033,32 @@ module.exports =
 	        var rot = this.rotateEffector.presentation.rotation;
 	        if (this.rotateEffectRate === 1.0) {
 	          // FIXME: don't use presentation node
-	          this.presentation.rotation = rot;
+	          //this.presentation.rotation = rot
+	          this.rotation = rot;
 	        } else {
 	          var quat = this._rotationToQuat(rot);
 	          //console.log(`${this.name} quat ${quat.float32Array()}`)
 	          var orgQuat = this._rotationToQuat(this.presentation.rotation);
 	          //console.log(`${this.name} orgQuat ${orgQuat.float32Array()}`)
-	          var newQuat = this.slerp(orgQuat, quat, this.rotateEffectRate);
+	          //const newQuat = this.slerp(orgQuat, quat, this.rotateEffectRate)
+	          var newQuat = orgQuat.slerp(quat, this.rotateEffectRate);
 	          var newRot = this._quatToRotation(newQuat);
 	          // FIXME: don't use presentation
-	          this.presentaion.rotation = newRot;
+	          //this.presentation.rotation = newRot
+	          this.rotation = newRot;
 	          //console.log(`${this.name} newQuat.quatToRotation ${this.rotation.float32Array()}`)
 	        }
 	      }
 	      if (this.translateEffector !== null) {
-	        var pos = this.translateEffector.position;
+	        var pos = this.translateEffector.presentation.position;
 	        if (this.translateEffectRate === 1.0) {
 	          // FIXME: don't use presentation node
-	          this.presentation.position = pos;
+	          //this.presentation.position = pos
+	          this.position = pos;
 	        } else {
 	          // FIXME: don't use presentation node
-	          this.presentation.position = pos.mul(this.translateEffectRate);
+	          //this.presentation.position = pos.mul(this.translateEffectRate)
+	          this.position = pos.mul(this.translateEffectRate);
 	        }
 	      }
 	    }
@@ -3516,6 +3521,7 @@ module.exports =
 	  function MMDPMXReader(data, directoryPath) {
 	    _classCallCheck(this, MMDPMXReader);
 
+	    console.log('MMDPMXReader constructor');
 	    var isBinary = true;
 	    var isBigEndian = false;
 	    var encoding = 'sjis';
@@ -3559,6 +3565,7 @@ module.exports =
 
 	    // texture data
 	    _this._textureCount = 0;
+	    _this._texturePromiseArray = [];
 	    _this._textureArray = [];
 
 	    // material data
@@ -3584,8 +3591,20 @@ module.exports =
 	    _this._normalSource = null;
 	    _this._texcoordSource = null;
 	    _this._elementArray = [];
+
+	    // physics body
+	    _this._physicsBoneArray = [];
+	    _this._physicsBodyArray = [];
 	    return _this;
 	  }
+
+	  /**
+	   * @access public
+	   * @param {} data -
+	   * @param {string} directoryPath -
+	   * @returns {MMDNode} -
+	   */
+
 
 	  _createClass(MMDPMXReader, [{
 	    key: '_loadPMXFile',
@@ -3599,9 +3618,9 @@ module.exports =
 	      this._workingNode = new _MMDNode2.default();
 
 	      // read contents of file
-	      this.readPMXHeader();
-	      if (this.pmxMagic !== 'PMX ') {
-	        throw new Error('PMX file magic error: ' + this.pmxMagic);
+	      this._readPMXHeader();
+	      if (this._pmxMagic !== 'PMX ') {
+	        throw new Error('PMX file magic error: ' + this._pmxMagic);
 	      }
 
 	      // read basic data
@@ -3615,6 +3634,9 @@ module.exports =
 
 	      // create geometry for shader
 	      this._createGeometry();
+	      this._createFaceMorph();
+
+	      this._readPhysicsBody();
 	      this._readConstraint();
 
 	      if (this._version > 2.0) {
@@ -3623,12 +3645,25 @@ module.exports =
 
 	      return this._workingNode;
 	    }
+
+	    /**
+	     * @access private
+	     * @returns {string} -
+	     */
+
 	  }, {
 	    key: '_readPascalString',
 	    value: function _readPascalString() {
 	      var strlen = this.readUnsignedInt();
 	      return this.readString(strlen, this._encoding);
 	    }
+
+	    /**
+	     * read PMX header data
+	     * @access private
+	     * @returns {void}
+	     */
+
 	  }, {
 	    key: '_readPMXHeader',
 	    value: function _readPMXHeader() {
@@ -3636,6 +3671,9 @@ module.exports =
 	      this._version = this.readFloat();
 
 	      var numData = this.readUnsignedByte();
+	      if (numData !== 8) {
+	        throw new Error('unknown header data size: ' + numData);
+	      }
 
 	      var encodingNo = this.readUnsignedByte();
 	      switch (encodingNo) {
@@ -3661,7 +3699,16 @@ module.exports =
 	      this._englishModelName = this._readPascalString();
 	      this._comment = this._readPascalString();
 	      this._englishComment = this._readPascalString();
+
+	      console.log('modelName: ' + this._modelName);
 	    }
+
+	    /**
+	     * read PMX vertex data
+	     * @access private
+	     * @returns {void}
+	     */
+
 	  }, {
 	    key: '_readVertex',
 	    value: function _readVertex() {
@@ -3791,6 +3838,8 @@ module.exports =
 	          weight4 = 0;
 	        }
 
+	        //console.log(`boneIndex ${i} ${boneNo1}:${weight1} ${boneNo2}:${weight2} ${boneNo3}:${weight3} ${boneNo4}:${weight4}`)
+
 	        // the first weight must not be 0 in SceneKit...
 	        if (weight1 === 0.0) {
 	          if (weight2 !== 0.0) {
@@ -3841,80 +3890,109 @@ module.exports =
 	        this._edgeArray.push(this.readFloat());
 	      }
 	    }
+
+	    /**
+	     * read PMX index data
+	     * @access private
+	     * @returns {void}
+	     */
+
 	  }, {
 	    key: '_readIndex',
 	    value: function _readIndex() {
 	      var indexCount = this.readUnsignedInt();
 	      this._indexCount = indexCount;
+	      console.log('indexCount: ' + indexCount);
 
 	      for (var i = 0; i < indexCount; i++) {
 	        this._indexArray.push(this.readInteger(this._indexSize));
 	      }
 	    }
+
+	    /**
+	     * read PMX texture data
+	     * @access private
+	     * @returns {void}
+	     */
+
 	  }, {
 	    key: '_readTexture',
 	    value: function _readTexture() {
-	      var textureCount = this._readUnsignedInt();
+	      var _this2 = this;
+
+	      var textureCount = this.readUnsignedInt();
 	      this._textureCount = textureCount;
 
+	      var _loop = function _loop(i) {
+	        var textureFile = _this2._readPascalString();
+	        var index = _this2._texturePromiseArray.length;
+	        _this2._texturePromiseArray.push(_this2.loadTexture(textureFile).then(function (texture) {
+	          _this2._textureArray[index] = texture;
+	        }));
+	      };
+
 	      for (var i = 0; i < textureCount; i++) {
-	        var textureFile = this._readPascalString();
-	        var fileName = this.directoryPath + textureFile;
-	        var image = new Image();
-	        image.src = fileName;
-	        this._textureArray.push(image);
+	        _loop(i);
 	      }
 	    }
+
+	    /**
+	     * read PMX material data
+	     * @access private
+	     * @returns {void}
+	     */
+
 	  }, {
 	    key: '_readMaterial',
 	    value: function _readMaterial() {
+	      var _this3 = this;
+
 	      var materialCount = this.readUnsignedInt();
 	      this._materialCount = materialCount;
 
 	      var indexPos = 0;
 
-	      for (var i = 0; i < materialCount; i++) {
+	      var _loop2 = function _loop2(i) {
 	        var material = new _jscenekit.SCNMaterial();
-	        material.name = this._readPascalString();
+	        material.name = _this3._readPascalString();
 
-	        var englishName = this._readPascalString();
+	        var englishName = _this3._readPascalString();
 
-	        material.diffuse.contents = new _jscenekit.SKColor(this.readFloat(), this.readFloat(), this.readFloat(), this.readFloat());
-	        material.specular.contents = new _jscenekit.SKColor(this.readFloat(), this.readFloat(), this.readFloat(), 1.0);
-	        material.shininess = this.readFloat();
+	        material.diffuse.contents = new _jscenekit.SKColor(_this3.readFloat(), _this3.readFloat(), _this3.readFloat(), _this3.readFloat());
+	        material.specular.contents = new _jscenekit.SKColor(_this3.readFloat(), _this3.readFloat(), _this3.readFloat(), 1.0);
+	        material.shininess = _this3.readFloat();
 	        material.ambient.contents = new _jscenekit.SKColor(0, 0, 0, 1);
-	        material.emission.contents = new _jscenekit.SKColor(this.readFloat(), this.readFloat(), this.readFloat(), 1.0);
+	        material.emission.contents = new _jscenekit.SKColor(_this3.readFloat(), _this3.readFloat(), _this3.readFloat(), 1.0);
 
-	        var bitFlag = this.readUnsignedByte();
-	        var edgeColor = new _jscenekit.SKColor(this.readFloat(), this.readFloat(), this.readFloat(), this.readFloat());
+	        var bitFlag = _this3.readUnsignedByte();
+	        var edgeColor = new _jscenekit.SKColor(_this3.readFloat(), _this3.readFloat(), _this3.readFloat(), _this3.readFloat());
 
-	        var noCulling = (bitFlag && 0x01) !== 0;
-	        var floorShadow = (bitFlag && 0x02) !== 0;
-	        var shadowMap = (bitFlag && 0x04) !== 0;
-	        var selfShadow = (bitFlag && 0x08) !== 0;
-	        var drawEdge = (bitFlag && 0x10) !== 0;
-	        var vertexColor = (bitFlag && 0x20) !== 0;
-	        var drawPoint = (bitFlag && 0x40) !== 0;
-	        var drawLine = (bitFlag && 0x80) !== 0;
+	        var noCulling = (bitFlag & 0x01) !== 0;
+	        var floorShadow = (bitFlag & 0x02) !== 0;
+	        var shadowMap = (bitFlag & 0x04) !== 0;
+	        var selfShadow = (bitFlag & 0x08) !== 0;
+	        var drawEdge = (bitFlag & 0x10) !== 0;
+	        var vertexColor = (bitFlag & 0x20) !== 0;
+	        var drawPoint = (bitFlag & 0x40) !== 0;
+	        var drawLine = (bitFlag & 0x80) !== 0;
 
-	        var edgeSize = this.readFloat();
-	        var textureNo = this.readInteger(this._textureIndexSize);
-	        var sphereTextureNo = this.readInteger(this._textureIndexSize);
-	        var sphereMode = this.readUnsignedByte();
-	        var toonFlag = this.readUnsignedByte();
+	        var edgeSize = _this3.readFloat();
+	        var textureNo = _this3.readInteger(_this3._textureIndexSize);
+	        var sphereTextureNo = _this3.readInteger(_this3._textureIndexSize);
+	        var sphereMode = _this3.readUnsignedByte();
+	        var toonFlag = _this3.readUnsignedByte();
 	        var toonTextureNo = 0;
 
-	        if (textureNo < this._textureArray.length) {
-	          var texture = this._textureArray[textureNo];
-	          //material.diffuse.contents = this._createTexture(texture, material.diffuse.contents)
-	          //material.emission.contents = this._createTexture(texture, material.emission.contents)
-	          material.multiply.contents = texture;
+	        if (textureNo < _this3._texturePromiseArray.length) {
+	          _this3._texturePromiseArray[textureNo].then(function () {
+	            material.diffuse.contents = _this3._textureArray[textureNo];
+	          });
 	        }
 
 	        if (toonFlag === 0) {
-	          toonTextureNo = this.readInteger(this._textureIndexSize);
+	          toonTextureNo = _this3.readInteger(_this3._textureIndexSize);
 	        } else if (toonFlag === 1) {
-	          toonTextureNo = this.readUnsignedByte();
+	          toonTextureNo = _this3.readUnsignedByte();
 	        } else {
 	          throw new Error('unknown toon flag: ' + toonFlag);
 	        }
@@ -3935,15 +4013,17 @@ module.exports =
 	        } else if (drawLine) {
 	          shape = _jscenekit.SCNGeometryPrimitiveType.line;
 	        }
-	        this._materialShapeArray.push(shape);
 
-	        var text = this._readPascalString();
-	        var materialIndexCount = this.readUnsignedInt();
+	        _this3._materialShapeArray.push(shape);
+
+	        var text = _this3._readPascalString();
+	        var materialIndexCount = _this3.readUnsignedInt();
 
 	        // create index data
-	        var orgArray = this._indexArray.slice(indexPos, indexPos + materialIndexCount);
+	        var orgArray = _this3._indexArray.slice(indexPos, indexPos + materialIndexCount);
 	        var newArray = [];
 	        indexPos += materialIndexCount;
+	        console.log('indexPos: ' + text + ' ' + indexPos);
 
 	        var arrayPos = 0;
 	        var newIndexCount = 0;
@@ -3971,18 +4051,18 @@ module.exports =
 	            var _index3 = orgArray[arrayPos + 2];
 
 	            if (_index === _index3) {
-	              newArray.append(_index);
-	              newArray.append(_index2);
+	              newArray.push(_index);
+	              newArray.push(_index2);
 	              newIndexCount += 1;
 	            } else {
-	              newArray.append(_index);
-	              newArray.append(_index2);
+	              newArray.push(_index);
+	              newArray.push(_index2);
 
-	              newArray.append(_index2);
-	              newArray.append(_index3);
+	              newArray.push(_index2);
+	              newArray.push(_index3);
 
-	              newArray.append(_index3);
-	              newArray.append(_index);
+	              newArray.push(_index3);
+	              newArray.push(_index);
 
 	              newIndexCount += 3;
 	            }
@@ -3994,20 +4074,31 @@ module.exports =
 	            var _index5 = orgArray[arrayPos + 1];
 	            var _index6 = orgArray[arrayPos + 2];
 
-	            newArray.append(_index4);
-	            newArray.append(_index6);
-	            newArray.append(_index5);
+	            newArray.push(_index4);
+	            newArray.push(_index6);
+	            newArray.push(_index5);
 
 	            newIndexCount += 1;
 	            arrayPos += 3;
 	          }
 	        }
 
-	        this._materialIndexCountArray.push(newIndexCount);
-	        this._materialArray.push(material);
-	        this._separatedIndexArray.push(newArray);
+	        _this3._materialIndexCountArray.push(newIndexCount);
+	        _this3._materialArray.push(material);
+	        _this3._separatedIndexArray.push(newArray);
+	      };
+
+	      for (var i = 0; i < materialCount; i++) {
+	        _loop2(i);
 	      }
 	    }
+
+	    /**
+	     * read PMX bone data
+	     * @access private
+	     * @returns {void}
+	     */
+
 	  }, {
 	    key: '_readBone',
 	    value: function _readBone() {
@@ -4018,6 +4109,8 @@ module.exports =
 	      this._boneCount = boneCount;
 	      this._rootBone.position = new _jscenekit.SCNVector3(0, 0, 0);
 	      this._rootBone.name = 'rootBone';
+
+	      this._workingNode.ikArray = [];
 
 	      for (var i = 0; i < boneCount; i++) {
 	        var boneNode = new _MMDNode2.default();
@@ -4035,7 +4128,7 @@ module.exports =
 
 	        var x = this.readFloat();
 	        var y = this.readFloat();
-	        var z = this.readFloat();
+	        var z = -this.readFloat();
 
 	        var position = new _jscenekit.SCNVector3(x, y, z);
 	        bonePositionArray.push(position);
@@ -4067,7 +4160,6 @@ module.exports =
 	          this.readFloat();
 	        }
 
-	        console.log(_i + ': ' + _boneNode.name);
 	        if (hasRotationValue || hasTranslationValue) {
 	          var boneIndex = this.readInteger(this._boneIndexSize);
 	          var rate = this.readFloat();
@@ -4185,6 +4277,13 @@ module.exports =
 
 	      this._workingNode.addChildNode(this._rootBone);
 	    }
+
+	    /**
+	     * read PMX face data
+	     * @access private
+	     * @returns {void}
+	     */
+
 	  }, {
 	    key: '_readFace',
 	    value: function _readFace() {
@@ -4250,14 +4349,22 @@ module.exports =
 	        }
 	      }
 	    }
+
+	    /**
+	     * read PMX vertex morphing data
+	     * @access private
+	     * @param {number} count -
+	     * @returns {void}
+	     */
+
 	  }, {
 	    key: '_readVertexMorph',
 	    value: function _readVertexMorph(count) {
 	      var faceVertex = [];
 
 	      for (var i = 0; i < count; i++) {
-	        var index = this.readInteger(this._indexSize);
-	        var vertexIndex = index * 3;
+	        var _index7 = this.readInteger(this._indexSize);
+	        var vertexIndex = _index7 * 3;
 
 	        var x = this.readFloat();
 	        var y = this.readFloat();
@@ -4270,22 +4377,39 @@ module.exports =
 
 	      this._faceVertexArray.push(faceVertex);
 	    }
+
+	    /**
+	     * read PMX uv morphing data
+	     * @access private
+	     * @param {number} count -
+	     * @param {number} textureNo -
+	     * @returns {void}
+	     */
+
 	  }, {
 	    key: '_readUVMorph',
 	    value: function _readUVMorph(count, textureNo) {
 	      for (var i = 0; i < count; i++) {
-	        var index = this.readInteger(this._indexSize);
+	        var _index8 = this.readInteger(this._indexSize);
 	        var x = this.readFloat();
 	        var y = this.readFloat();
 	        var z = this.readFloat();
 	        var w = this.readFloat();
 	      }
 	    }
+
+	    /**
+	     * read PMX bone morphing data
+	     * @access private
+	     * @param {number} count -
+	     * @returns {void}
+	     */
+
 	  }, {
 	    key: '_readBoneMorph',
 	    value: function _readBoneMorph(count) {
 	      for (var i = 0; i < count; i++) {
-	        var index = this.readInteger(this._boneIndexSize);
+	        var _index9 = this.readInteger(this._boneIndexSize);
 	        var posX = this.readFloat();
 	        var posY = this.readFloat();
 	        var posZ = -this.readFloat();
@@ -4296,23 +4420,39 @@ module.exports =
 	        var quatW = this.readFloat();
 	      }
 	    }
+
+	    /**
+	     * read PMX material morphing data
+	     * @access private
+	     * @param {number} count -
+	     * @returns {void}
+	     */
+
 	  }, {
 	    key: '_readMaterialMorph',
 	    value: function _readMaterialMorph(count) {
 	      for (var i = 0; i < count; i++) {
-	        var index = this.readInteger(this._materialIndexSize);
+	        var _index10 = this.readInteger(this._materialIndexSize);
 	        var addColor = this.readUnsignedByte();
 	        var diffuseColor = new _jscenekit.SKColor(this.readFloat(), this.readFloat(), this.readFloat(), this.readFloat());
 	        var specularColor = new _jscenekit.SKColor(this.readFloat(), this.readFloat(), this.readFloat(), 1.0);
 	        var shininess = this.readFloat();
 	        var ambientColor = new _jscenekit.SKColor(this.readFloat(), this.readFloat(), this.readFloat(), 1.0);
-	        var edgeColor = new _jscenekit.SKColor(this.readFloat(), this.readFloat(), this.readFloat(), 1.0);
+	        var edgeColor = new _jscenekit.SKColor(this.readFloat(), this.readFloat(), this.readFloat(), this.readFloat());
 	        var edgeSize = this.readFloat();
 	        var textureColor = new _jscenekit.SKColor(this.readFloat(), this.readFloat(), this.readFloat(), this.readFloat());
 	        var sphereColor = new _jscenekit.SKColor(this.readFloat(), this.readFloat(), this.readFloat(), this.readFloat());
 	        var toonColor = new _jscenekit.SKColor(this.readFloat(), this.readFloat(), this.readFloat(), this.readFloat());
 	      }
 	    }
+
+	    /** 
+	     * read PMX group morphing data
+	     * @access private
+	     * @param {number} count -
+	     * @returns {void}
+	     */
+
 	  }, {
 	    key: '_readGroupMorph',
 	    value: function _readGroupMorph(count) {
@@ -4321,6 +4461,14 @@ module.exports =
 	        var rate = this.readFloat();
 	      }
 	    }
+
+	    /**
+	     * read PMX flip morphing data
+	     * @access private
+	     * @param {number} count -
+	     * @returns {void}
+	     */
+
 	  }, {
 	    key: '_readFlipMorph',
 	    value: function _readFlipMorph(count) {
@@ -4329,6 +4477,14 @@ module.exports =
 	        var rate = this.readFloat();
 	      }
 	    }
+
+	    /**
+	     * read PMX impulse morphing data
+	     * @access private
+	     * @param {number} count -
+	     * @returns {void}
+	     */
+
 	  }, {
 	    key: '_readImpulseMorph',
 	    value: function _readImpulseMorph(count) {
@@ -4345,6 +4501,13 @@ module.exports =
 	        var torqueZ = this.readFloat();
 	      }
 	    }
+
+	    /**
+	     * read PMX face morphing data
+	     * @access private
+	     * @returns {void}
+	     */
+
 	  }, {
 	    key: '_createFaceMorph',
 	    value: function _createFaceMorph() {
@@ -4364,12 +4527,21 @@ module.exports =
 	        12 // dataStride
 	        );
 	        var faceGeometry = new _jscenekit.SCNGeometry([faceVertexSource, this._normalSource], []);
+	        faceGeometry.name = this._faceNameArray[i];
+
 	        morpher.targets.push(faceGeometry);
 	      }
 	      var geometryNode = this._workingNode.childNodeWithNameRecursively('Geometry', true);
 	      geometryNode.morpher = morpher;
 	      this._workingNode.geometryMorpher = morpher;
 	    }
+
+	    /**
+	     * read PMX display info
+	     * @access private
+	     * @returns {void}
+	     */
+
 	  }, {
 	    key: '_readDisplayInfo',
 	    value: function _readDisplayInfo() {
@@ -4394,6 +4566,13 @@ module.exports =
 	        }
 	      }
 	    }
+
+	    /**
+	     * create geometry objects
+	     * @access private
+	     * @returns {void}
+	     */
+
 	  }, {
 	    key: '_createGeometry',
 	    value: function _createGeometry() {
@@ -4470,7 +4649,7 @@ module.exports =
 	      var boneIndicesSource = new _jscenekit.SCNGeometrySource(boneIndicesData, // data
 	      _jscenekit.SCNGeometrySource.Semantic.boneIndices, // semantic
 	      this._vertexCount, // vectorCount
-	      true, // usesFloatComponents
+	      false, // usesFloatComponents
 	      4, // componentsPerVector
 	      this._boneIndexSize, // bytesPerComponent
 	      0, // dataOffset
@@ -4540,6 +4719,7 @@ module.exports =
 	      }
 
 	      var program = new _MMDProgram2.default();
+	      // TODO: implement MMD renderer
 	      this._materialArray.forEach(function (material) {
 	        material.program = program;
 	      });
@@ -4561,7 +4741,7 @@ module.exports =
 	      geometryNode.skinner.skeleton = this._rootBone;
 	      geometryNode.castsShadow = true;
 
-	      this._workingNode.name = 'rootNode';
+	      this._workingNode.name = this._modelName;
 	      this._workingNode.castsShadow = true;
 	      this._workingNode.addChildNode(geometryNode);
 
@@ -4582,20 +4762,30 @@ module.exports =
 	      this._workingNode.materialIndexCountArray = this._materialIndexCountArray;
 	      this._workingNode.rootBone = this._rootBone;
 	    }
+
+	    /**
+	     * read PMX physics body data
+	     * @access private
+	     * @returns {void}
+	     */
+
 	  }, {
 	    key: '_readPhysicsBody',
 	    value: function _readPhysicsBody() {
-	      var _this2 = this;
+	      var _this4 = this;
 
 	      var bodyCount = this.readUnsignedInt();
 
+	      console.log('readPhysicsBody bodyCount: ' + bodyCount);
+
 	      for (var i = 0; i < bodyCount; i++) {
 	        var name = this._readPascalString();
+	        console.log('physics body name: ' + name);
 	        var englishName = this._readPascalString();
 	        var boneIndex = this.readInteger(this._boneIndexSize);
 
 	        var groupIndex = this.readUnsignedByte();
-	        var groupTarget = this.readUnsignedByte();
+	        var groupTarget = this.readUnsignedShort();
 	        var shapeType = this.readUnsignedByte();
 	        var dx = this.readFloat();
 	        var dy = this.readFloat();
@@ -4621,17 +4811,17 @@ module.exports =
 	        } else if (type === 2) {
 	          bodyType = _jscenekit.SCNPhysicsBodyType.dynamic;
 	        }
-	        bodyType = _jscenekit.SCNPhysicsBodyType.kinematic;
+	        bodyType = _jscenekit.SCNPhysicsBodyType.kinematic; // for debug
 
-	        var shape = null;
+	        var _shape = null;
 	        if (shapeType === 0) {
-	          shape = new _jscenekit.SCNSphere(dx);
+	          _shape = new _jscenekit.SCNSphere(dx);
 	        } else if (shapeType === 1) {
-	          shape = new _jscenekit.SCNBox(dx, dy, dz, 0.0);
+	          _shape = new _jscenekit.SCNBox(dx, dy, dz, 0.0);
 	        } else if (shapeType === 2) {
-	          shape = new _jscenekit.SCNCapsule(dx, dy);
+	          _shape = new _jscenekit.SCNCapsule(dx, dy);
 	        } else {
-	          throw new Error('unknown physics body shape: ' + shape);
+	          throw new Error('unknown physics body shape: ' + shapeType);
 	        }
 
 	        var bone = null;
@@ -4649,7 +4839,7 @@ module.exports =
 
 	        var invBoneTransform = bone.worldTransform.invert();
 	        var physicsTransform = worldTransform.mult(invBoneTransform);
-	        var physicsShape = new _jscenekit.SCNPhysicsShape(shape, null);
+	        var physicsShape = new _jscenekit.SCNPhysicsShape(_shape, null);
 	        var transformedShape = new _jscenekit.SCNPhysicsShape([physicsShape], [physicsTransform]);
 
 	        if (bone.physicsBody !== null) {
@@ -4662,6 +4852,7 @@ module.exports =
 	        body.mass = weight;
 	        body.friction = friction;
 	        body.rollingFriction = friction;
+	        body.dumping = positionDim;
 	        body.angularDamping = rotateDim;
 	        body.categoryBitMask = 1 << groupIndex;
 	        body.collisionBitMask = groupTarget;
@@ -4678,9 +4869,16 @@ module.exports =
 	      }
 
 	      this._physicsBoneArray.forEach(function (bone) {
-	        _this2._physicsBodyArray.push(bone.physicsBody);
+	        _this4._physicsBodyArray.push(bone.physicsBody);
 	      });
 	    }
+
+	    /**
+	     * read PMX constraint data
+	     * @access private
+	     * @returns {void}
+	     */
+
 	  }, {
 	    key: '_readConstraint',
 	    value: function _readConstraint() {
@@ -4688,6 +4886,7 @@ module.exports =
 	      this._workingNode.joints = [];
 	      for (var i = 0; i < constraintCount; i++) {
 	        var name = this._readPascalString();
+	        console.log('constraint name: ' + name);
 	        var englishName = this._readPascalString();
 	        var type = this.readUnsignedByte();
 
@@ -4723,6 +4922,13 @@ module.exports =
 	        this._workingNode.joints.push(constraint);
 	      }
 	    }
+
+	    /**
+	     * read PMX soft body data
+	     * @access private
+	     * @returns {void}
+	     */
+
 	  }, {
 	    key: '_readSoftBody',
 	    value: function _readSoftBody() {
@@ -4732,16 +4938,16 @@ module.exports =
 	        var name = this._readPascalString();
 	        var englishName = this._readPascalString();
 
-	        var shape = this.readUnsignedByte();
-	        if (shape === 0) {
+	        var _shape2 = this.readUnsignedByte();
+	        if (_shape2 === 0) {
 	          // TriMesh
-	        } else if (shape === 1) {
+	        } else if (_shape2 === 1) {
 	          // Rope
 	        } else {
-	          throw new Error('unknown softbody type: ' + shape);
+	          throw new Error('unknown softbody type: ' + _shape2);
 	        }
 
-	        var index = this.readInteger(this._materialIndexSize);
+	        var _index11 = this.readInteger(this._materialIndexSize);
 	        var groupIndex = this.readUnsignedByte();
 	        var groupTarget = this.readUnsignedShort();
 
@@ -4848,6 +5054,10 @@ module.exports =
 	var _MMDPMDReader = __webpack_require__(5);
 
 	var _MMDPMDReader2 = _interopRequireDefault(_MMDPMDReader);
+
+	var _MMDPMXReader = __webpack_require__(12);
+
+	var _MMDPMXReader2 = _interopRequireDefault(_MMDPMXReader);
 
 	var _MMDVMDReader = __webpack_require__(14);
 
@@ -4967,6 +5177,11 @@ module.exports =
 	        if (xNode) {
 	          this._workingNode = xNode;
 	        }
+	      } else if (this._fileType === _MMDFileType.pmx) {
+	        var pmxNode = _MMDPMXReader2.default.getNode(data, this._directoryPath);
+	        if (pmxNode) {
+	          this._workingNode = pmxNode;
+	        }
 	      }
 	      /*
 	      }else if(this._fileType === _MMDFileType.vpd){
@@ -4985,11 +5200,6 @@ module.exports =
 	        const vacNode = MMDVACReader.getNode(data, this._directoryPath)
 	        if(vacNode){
 	          this._workingNode = vacNode
-	        }
-	      }else if(this._fileType === _MMDFileType.pmx){
-	        const pmxNode = MMDPMXReader.getNode(data, this._directoryPath)
-	        if(pmxNode){
-	          this._workingNode = pmxNode
 	        }
 	      }else if(this._fileType === _MMDFileType.obj
 	              || this._fileType === _MMDFileType.dae
@@ -5300,7 +5510,7 @@ module.exports =
 	      this._readCameraMotion();
 	      this._readLightMotion();
 
-	      console.log('pos: ' + this.pos + ', length: ' + this.length);
+	      //console.log(`pos: ${this.pos}, length: ${this.length}`)
 	      if (this.pos >= this.length) {
 	        return this._workingAnimationGroup;
 	      }
@@ -5311,7 +5521,7 @@ module.exports =
 	        return this._workingAnimationGroup;
 	      }
 
-	      this._readVisbilityAndIK();
+	      this._readVisibilityAndIK();
 
 	      return this._workingAnimationGroup;
 	    }
@@ -5345,7 +5555,7 @@ module.exports =
 
 	      for (var i = 0; i < frameCount; i++) {
 	        var boneName = this.readString(15);
-	        console.log('boneName: ' + boneName);
+	        //console.log(`boneName: ${boneName}`)
 	        if (boneName === null) {
 	          console.warn('motion(' + i + '): skip because of broken bone name');
 	          this.skip(96);
@@ -5385,7 +5595,7 @@ module.exports =
 
 	        var frameIndex = posXMotion.keyTimes.length - 1;
 	        var frameNo = this.readUnsignedInt();
-	        console.log('frameNo: ' + frameNo);
+	        //console.log(`frameNo: ${frameNo}`)
 
 	        while (frameIndex >= 0) {
 	          var k = posXMotion.keyTimes[frameIndex];
@@ -5410,7 +5620,7 @@ module.exports =
 	        var posY = this.readFloat();
 	        var posZ = this.readFloat();
 	        var rotate = new _jscenekit.SCNQuaternion(-this.readFloat(), -this.readFloat(), this.readFloat(), this.readFloat()).normalize();
-	        console.log('pos: ' + posX + ', ' + posY + ', ' + posZ);
+	        //console.log(`pos: ${posX}, ${posY}, ${posZ}`)
 
 	        var interpolation = [];
 	        for (var j = 0; j < 64; j++) {
@@ -5455,7 +5665,7 @@ module.exports =
 	        var frameNo = this.readUnsignedInt();
 	        var factor = this.readFloat();
 
-	        console.log('faceName: ' + name);
+	        //console.log(`faceName: ${name}`)
 
 	        var keyPath = 'morpher.weights.' + name;
 	        var animation = this._faceAnimationHash.get(name);
@@ -5491,7 +5701,7 @@ module.exports =
 
 	      var duration = this._frameLength / this.fps;
 
-	      console.log('_createAnimations');
+	      //console.log('_createAnimations')
 	      this._animationHash.forEach(function (motion, key) {
 	        // normalize keyTimes
 	        var motionLength = motion.keyTimes[motion.keyTimes.length - 1];
@@ -5505,7 +5715,7 @@ module.exports =
 	        motion.isRemovedOnCompletion = false;
 	        motion.fillMode = _jscenekit.kCAFillModeForwards;
 
-	        console.log('animations.push ' + key);
+	        //console.log('animations.push ' + key)
 	        _this2._workingAnimationGroup.animations.push(motion);
 	      });
 

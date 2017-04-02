@@ -103,6 +103,5 @@ export default class MMDReader {
       image.src = fileName
     })
     return promise
-
   }
 } 

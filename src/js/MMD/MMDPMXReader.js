@@ -54,6 +54,7 @@ export default class MMDPMXReader extends MMDReader {
    * @param {string} directoryPath -
    */
   constructor(data, directoryPath) {
+    console.log('MMDPMXReader constructor')
     const isBinary = true
     const isBigEndian = false
     const encoding = 'sjis'
@@ -96,6 +97,7 @@ export default class MMDPMXReader extends MMDReader {
 
     // texture data
     this._textureCount = 0
+    this._texturePromiseArray = []
     this._textureArray = []
 
     // material data
@@ -121,8 +123,18 @@ export default class MMDPMXReader extends MMDReader {
     this._normalSource = null
     this._texcoordSource = null
     this._elementArray = []
+
+    // physics body
+    this._physicsBoneArray = []
+    this._physicsBodyArray = []
   }
 
+  /**
+   * @access public
+   * @param {} data -
+   * @param {string} directoryPath -
+   * @returns {MMDNode} -
+   */
   static getNode(data, directoryPath) {
     const reader = new MMDPMXReader(data, directoryPath)
     return reader._loadPMXFile()
@@ -136,9 +148,9 @@ export default class MMDPMXReader extends MMDReader {
     this._workingNode = new MMDNode()
 
     // read contents of file
-    this.readPMXHeader()
-    if(this.pmxMagic !== 'PMX '){
-      throw new Error(`PMX file magic error: ${this.pmxMagic}`)
+    this._readPMXHeader()
+    if(this._pmxMagic !== 'PMX '){
+      throw new Error(`PMX file magic error: ${this._pmxMagic}`)
     }
 
     // read basic data
@@ -152,6 +164,9 @@ export default class MMDPMXReader extends MMDReader {
 
     // create geometry for shader
     this._createGeometry()
+    this._createFaceMorph()
+
+    this._readPhysicsBody()
     this._readConstraint()
 
     if(this._version > 2.0){
@@ -161,16 +176,28 @@ export default class MMDPMXReader extends MMDReader {
     return this._workingNode
   }
 
+  /**
+   * @access private
+   * @returns {string} -
+   */
   _readPascalString() {
     const strlen = this.readUnsignedInt()
     return this.readString(strlen, this._encoding)
   }
 
+  /**
+   * read PMX header data
+   * @access private
+   * @returns {void}
+   */
   _readPMXHeader() {
     this._pmxMagic = this.readString(4)
     this._version = this.readFloat()
 
     const numData = this.readUnsignedByte()
+    if(numData !== 8){
+      throw new Error(`unknown header data size: ${numData}`)
+    }
 
     const encodingNo = this.readUnsignedByte()
     switch(encodingNo){
@@ -196,8 +223,15 @@ export default class MMDPMXReader extends MMDReader {
     this._englishModelName = this._readPascalString()
     this._comment = this._readPascalString()
     this._englishComment = this._readPascalString()
+
+    console.log(`modelName: ${this._modelName}`)
   }
 
+  /**
+   * read PMX vertex data
+   * @access private
+   * @returns {void}
+   */
   _readVertex() {
     const vertexCount = this.readInt()
     this._vertexCount = vertexCount
@@ -320,6 +354,8 @@ export default class MMDPMXReader extends MMDReader {
         weight4 = 0
       }
 
+      //console.log(`boneIndex ${i} ${boneNo1}:${weight1} ${boneNo2}:${weight2} ${boneNo3}:${weight3} ${boneNo4}:${weight4}`)
+
       // the first weight must not be 0 in SceneKit...
       if(weight1 === 0.0){
         if(weight2 !== 0.0){
@@ -371,28 +407,47 @@ export default class MMDPMXReader extends MMDReader {
     }
   }
 
+  /**
+   * read PMX index data
+   * @access private
+   * @returns {void}
+   */
   _readIndex() {
     const indexCount = this.readUnsignedInt()
     this._indexCount = indexCount
+    console.log(`indexCount: ${indexCount}`)
 
     for(let i=0; i<indexCount; i++){
       this._indexArray.push(this.readInteger(this._indexSize))
     }
   }
 
+  /**
+   * read PMX texture data
+   * @access private
+   * @returns {void}
+   */
   _readTexture() {
-    const textureCount = this._readUnsignedInt()
+    const textureCount = this.readUnsignedInt()
     this._textureCount = textureCount
 
     for(let i=0; i<textureCount; i++){
       const textureFile = this._readPascalString()
-      const fileName = this.directoryPath + textureFile
-      const image = new Image()
-      image.src = fileName
-      this._textureArray.push(image)
+      const index = this._texturePromiseArray.length
+      this._texturePromiseArray.push(
+        this.loadTexture(textureFile)
+          .then((texture) => {
+            this._textureArray[index] = texture
+          })
+      )
     }
   }
 
+  /**
+   * read PMX material data
+   * @access private
+   * @returns {void}
+   */
   _readMaterial() {
     const materialCount = this.readUnsignedInt()
     this._materialCount = materialCount
@@ -414,14 +469,14 @@ export default class MMDPMXReader extends MMDReader {
       const bitFlag = this.readUnsignedByte()
       const edgeColor = new SKColor(this.readFloat(), this.readFloat(), this.readFloat(), this.readFloat())
 
-      const noCulling = ((bitFlag && 0x01) !== 0)
-      const floorShadow = ((bitFlag && 0x02) !== 0)
-      const shadowMap = ((bitFlag && 0x04) !== 0)
-      const selfShadow = ((bitFlag && 0x08) !== 0)
-      const drawEdge = ((bitFlag && 0x10) !== 0)
-      const vertexColor = ((bitFlag && 0x20) !== 0)
-      const drawPoint = ((bitFlag && 0x40) !== 0)
-      const drawLine = ((bitFlag && 0x80) !== 0)
+      const noCulling = ((bitFlag & 0x01) !== 0)
+      const floorShadow = ((bitFlag & 0x02) !== 0)
+      const shadowMap = ((bitFlag & 0x04) !== 0)
+      const selfShadow = ((bitFlag & 0x08) !== 0)
+      const drawEdge = ((bitFlag & 0x10) !== 0)
+      const vertexColor = ((bitFlag & 0x20) !== 0)
+      const drawPoint = ((bitFlag & 0x40) !== 0)
+      const drawLine = ((bitFlag & 0x80) !== 0)
 
       const edgeSize = this.readFloat()
       const textureNo = this.readInteger(this._textureIndexSize)
@@ -430,11 +485,11 @@ export default class MMDPMXReader extends MMDReader {
       const toonFlag = this.readUnsignedByte()
       let toonTextureNo = 0
 
-      if(textureNo < this._textureArray.length){
-        const texture = this._textureArray[textureNo]
-        //material.diffuse.contents = this._createTexture(texture, material.diffuse.contents)
-        //material.emission.contents = this._createTexture(texture, material.emission.contents)
-        material.multiply.contents = texture
+      if(textureNo < this._texturePromiseArray.length){
+        this._texturePromiseArray[textureNo]
+          .then(() => {
+            material.diffuse.contents = this._textureArray[textureNo]
+          })
       }
 
       if(toonFlag === 0){
@@ -461,6 +516,7 @@ export default class MMDPMXReader extends MMDReader {
       }else if(drawLine){
         shape = SCNGeometryPrimitiveType.line
       }
+
       this._materialShapeArray.push(shape)
 
       const text = this._readPascalString()
@@ -470,6 +526,7 @@ export default class MMDPMXReader extends MMDReader {
       const orgArray = this._indexArray.slice(indexPos, indexPos + materialIndexCount)
       let newArray = []
       indexPos += materialIndexCount
+      console.log(`indexPos: ${text} ${indexPos}`)
 
       let arrayPos = 0
       let newIndexCount = 0
@@ -497,18 +554,18 @@ export default class MMDPMXReader extends MMDReader {
           const index3 = orgArray[arrayPos + 2]
 
           if(index1 === index3){
-            newArray.append(index1)
-            newArray.append(index2)
+            newArray.push(index1)
+            newArray.push(index2)
             newIndexCount += 1
           }else{
-            newArray.append(index1)
-            newArray.append(index2)
+            newArray.push(index1)
+            newArray.push(index2)
 
-            newArray.append(index2)
-            newArray.append(index3)
+            newArray.push(index2)
+            newArray.push(index3)
 
-            newArray.append(index3)
-            newArray.append(index1)
+            newArray.push(index3)
+            newArray.push(index1)
 
             newIndexCount += 3
           }
@@ -520,9 +577,9 @@ export default class MMDPMXReader extends MMDReader {
           const index2 = orgArray[arrayPos + 1]
           const index3 = orgArray[arrayPos + 2]
 
-          newArray.append(index1)
-          newArray.append(index3)
-          newArray.append(index2)
+          newArray.push(index1)
+          newArray.push(index3)
+          newArray.push(index2)
 
           newIndexCount += 1
           arrayPos += 3
@@ -535,6 +592,11 @@ export default class MMDPMXReader extends MMDReader {
     }
   }
 
+  /**
+   * read PMX bone data
+   * @access private
+   * @returns {void}
+   */
   _readBone() {
     const bonePositionArray = []
     const parentNoArray = []
@@ -543,6 +605,8 @@ export default class MMDPMXReader extends MMDReader {
     this._boneCount = boneCount
     this._rootBone.position = new SCNVector3(0, 0, 0)
     this._rootBone.name = 'rootBone'
+
+    this._workingNode.ikArray = []
 
     for(let i=0; i<boneCount; i++){
       const boneNode = new MMDNode()
@@ -560,7 +624,7 @@ export default class MMDPMXReader extends MMDReader {
 
       const x = this.readFloat()
       const y = this.readFloat()
-      const z = this.readFloat()
+      const z = -this.readFloat()
 
       const position = new SCNVector3(x, y, z)
       bonePositionArray.push(position)
@@ -592,7 +656,6 @@ export default class MMDPMXReader extends MMDReader {
         this.readFloat()
       }
 
-      console.log(`${i}: ${boneNode.name}`)
       if(hasRotationValue || hasTranslationValue){
         const boneIndex = this.readInteger(this._boneIndexSize)
         const rate = this.readFloat()
@@ -711,6 +774,11 @@ export default class MMDPMXReader extends MMDReader {
     this._workingNode.addChildNode(this._rootBone)
   }
 
+  /**
+   * read PMX face data
+   * @access private
+   * @returns {void}
+   */
   _readFace() {
     const faceCount = this.readUnsignedInt()
     this._faceCount = faceCount
@@ -763,6 +831,12 @@ export default class MMDPMXReader extends MMDReader {
     }
   }
 
+  /**
+   * read PMX vertex morphing data
+   * @access private
+   * @param {number} count -
+   * @returns {void}
+   */
   _readVertexMorph(count) {
     const faceVertex = []
 
@@ -782,6 +856,13 @@ export default class MMDPMXReader extends MMDReader {
     this._faceVertexArray.push(faceVertex)
   }
 
+  /**
+   * read PMX uv morphing data
+   * @access private
+   * @param {number} count -
+   * @param {number} textureNo -
+   * @returns {void}
+   */
   _readUVMorph(count, textureNo) {
     for(let i=0; i<count; i++){
       const index = this.readInteger(this._indexSize)
@@ -792,6 +873,12 @@ export default class MMDPMXReader extends MMDReader {
     }
   }
 
+  /**
+   * read PMX bone morphing data
+   * @access private
+   * @param {number} count -
+   * @returns {void}
+   */
   _readBoneMorph(count) {
     for(let i=0; i<count; i++){
       const index = this.readInteger(this._boneIndexSize)
@@ -806,6 +893,12 @@ export default class MMDPMXReader extends MMDReader {
     }
   }
 
+  /**
+   * read PMX material morphing data
+   * @access private
+   * @param {number} count -
+   * @returns {void}
+   */
   _readMaterialMorph(count) {
     for(let i=0; i<count; i++){
       const index = this.readInteger(this._materialIndexSize)
@@ -814,7 +907,7 @@ export default class MMDPMXReader extends MMDReader {
       const specularColor = new SKColor(this.readFloat(), this.readFloat(), this.readFloat(), 1.0)
       const shininess = this.readFloat()
       const ambientColor = new SKColor(this.readFloat(), this.readFloat(), this.readFloat(), 1.0)
-      const edgeColor = new SKColor(this.readFloat(), this.readFloat(), this.readFloat(), 1.0)
+      const edgeColor = new SKColor(this.readFloat(), this.readFloat(), this.readFloat(), this.readFloat())
       const edgeSize = this.readFloat()
       const textureColor = new SKColor(this.readFloat(), this.readFloat(), this.readFloat(), this.readFloat())
       const sphereColor = new SKColor(this.readFloat(), this.readFloat(), this.readFloat(), this.readFloat())
@@ -822,6 +915,12 @@ export default class MMDPMXReader extends MMDReader {
     }
   }
 
+  /** 
+   * read PMX group morphing data
+   * @access private
+   * @param {number} count -
+   * @returns {void}
+   */
   _readGroupMorph(count) {
     for(let i=0; i<count; i++){
       const morphIndex = this.readInteger(this._morphIndexSize)
@@ -829,6 +928,12 @@ export default class MMDPMXReader extends MMDReader {
     }
   }
 
+  /**
+   * read PMX flip morphing data
+   * @access private
+   * @param {number} count -
+   * @returns {void}
+   */
   _readFlipMorph(count) {
     for(let i=0; i<count; i++){
       const morphIndex = this.readInteger(this._morphIndexSize)
@@ -836,6 +941,12 @@ export default class MMDPMXReader extends MMDReader {
     }
   }
 
+  /**
+   * read PMX impulse morphing data
+   * @access private
+   * @param {number} count -
+   * @returns {void}
+   */
   _readImpulseMorph(count) {
     for(let i=0; i<count; i++){
       const morphIndex = this.readInteger(this._morphIndexSize)
@@ -851,6 +962,11 @@ export default class MMDPMXReader extends MMDReader {
     }
   }
 
+  /**
+   * read PMX face morphing data
+   * @access private
+   * @returns {void}
+   */
   _createFaceMorph() {
     const morpher = new SCNMorpher()
     morpher.calculationMode = SCNMorpherCalculationMode.additive
@@ -869,6 +985,8 @@ export default class MMDPMXReader extends MMDReader {
         12 // dataStride
       )
       const faceGeometry = new SCNGeometry([faceVertexSource, this._normalSource], [])
+      faceGeometry.name = this._faceNameArray[i]
+
       morpher.targets.push(faceGeometry)
     }
     const geometryNode = this._workingNode.childNodeWithNameRecursively('Geometry', true)
@@ -876,6 +994,11 @@ export default class MMDPMXReader extends MMDReader {
     this._workingNode.geometryMorpher = morpher
   }
 
+  /**
+   * read PMX display info
+   * @access private
+   * @returns {void}
+   */
   _readDisplayInfo() {
     const displayCount = this.readUnsignedInt()
 
@@ -899,6 +1022,11 @@ export default class MMDPMXReader extends MMDReader {
     }
   }
 
+  /**
+   * create geometry objects
+   * @access private
+   * @returns {void}
+   */
   _createGeometry() {
     const vertexData = this._vertexArray
     const normalData = this._normalArray
@@ -973,7 +1101,7 @@ export default class MMDPMXReader extends MMDReader {
       boneIndicesData, // data
       SCNGeometrySource.Semantic.boneIndices, // semantic
       this._vertexCount, // vectorCount
-      true, // usesFloatComponents
+      false, // usesFloatComponents
       4, // componentsPerVector
       this._boneIndexSize, // bytesPerComponent
       0, // dataOffset
@@ -1041,6 +1169,7 @@ export default class MMDPMXReader extends MMDReader {
     }
 
     const program = new MMDProgram()
+    // TODO: implement MMD renderer
     this._materialArray.forEach((material) => {
       material.program = program
     })
@@ -1063,7 +1192,7 @@ export default class MMDPMXReader extends MMDReader {
     geometryNode.skinner.skeleton = this._rootBone
     geometryNode.castsShadow = true
 
-    this._workingNode.name = 'rootNode'
+    this._workingNode.name = this._modelName
     this._workingNode.castsShadow = true
     this._workingNode.addChildNode(geometryNode)
 
@@ -1085,16 +1214,24 @@ export default class MMDPMXReader extends MMDReader {
     this._workingNode.rootBone = this._rootBone
   }
 
+  /**
+   * read PMX physics body data
+   * @access private
+   * @returns {void}
+   */
   _readPhysicsBody() {
     const bodyCount = this.readUnsignedInt()
 
+    console.log(`readPhysicsBody bodyCount: ${bodyCount}`)
+
     for(let i=0; i<bodyCount; i++){
       const name = this._readPascalString()
+      console.log(`physics body name: ${name}`)
       const englishName = this._readPascalString()
       const boneIndex = this.readInteger(this._boneIndexSize)
 
       const groupIndex = this.readUnsignedByte()
-      const groupTarget = this.readUnsignedByte()
+      const groupTarget = this.readUnsignedShort()
       const shapeType = this.readUnsignedByte()
       const dx = this.readFloat()
       const dy = this.readFloat()
@@ -1120,7 +1257,7 @@ export default class MMDPMXReader extends MMDReader {
       }else if(type === 2){
         bodyType = SCNPhysicsBodyType.dynamic
       }
-      bodyType = SCNPhysicsBodyType.kinematic
+      bodyType = SCNPhysicsBodyType.kinematic // for debug
 
       let shape = null
       if(shapeType === 0){
@@ -1130,7 +1267,7 @@ export default class MMDPMXReader extends MMDReader {
       }else if(shapeType === 2){
         shape = new SCNCapsule(dx, dy)
       }else{
-        throw new Error(`unknown physics body shape: ${shape}`)
+        throw new Error(`unknown physics body shape: ${shapeType}`)
       }
 
       let bone = null
@@ -1161,6 +1298,7 @@ export default class MMDPMXReader extends MMDReader {
       body.mass = weight
       body.friction = friction
       body.rollingFriction = friction
+      body.dumping = positionDim
       body.angularDamping = rotateDim
       body.categoryBitMask = (1 << groupIndex)
       body.collisionBitMask = groupTarget
@@ -1181,11 +1319,17 @@ export default class MMDPMXReader extends MMDReader {
     })
   }
 
+  /**
+   * read PMX constraint data
+   * @access private
+   * @returns {void}
+   */
   _readConstraint() {
     const constraintCount = this.readUnsignedInt()
     this._workingNode.joints = []
     for(let i=0; i<constraintCount; i++){
       const name = this._readPascalString()
+      console.log(`constraint name: ${name}`)
       const englishName = this._readPascalString()
       const type = this.readUnsignedByte()
 
@@ -1230,6 +1374,11 @@ export default class MMDPMXReader extends MMDReader {
     }
   }
 
+  /**
+   * read PMX soft body data
+   * @access private
+   * @returns {void}
+   */
   _readSoftBody() {
     const softBodyCount = this.readUnsignedInt()
 

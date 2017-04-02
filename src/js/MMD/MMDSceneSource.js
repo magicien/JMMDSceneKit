@@ -7,6 +7,7 @@ import {
 } from 'jscenekit'
 import MMDNode from './MMDNode'
 import MMDPMDReader from './MMDPMDReader'
+import MMDPMXReader from './MMDPMXReader'
 import MMDVMDReader from './MMDVMDReader'
 import MMDXReader from './MMDXReader'
 import _File from '../util/File'
@@ -148,6 +149,11 @@ export default class MMDSceneSource extends SCNSceneSource {
       if(xNode){
         this._workingNode = xNode
       }
+    }else if(this._fileType === _MMDFileType.pmx){
+      const pmxNode = MMDPMXReader.getNode(data, this._directoryPath)
+      if(pmxNode){
+        this._workingNode = pmxNode
+      }
     }
     /*
     }else if(this._fileType === _MMDFileType.vpd){
@@ -166,11 +172,6 @@ export default class MMDSceneSource extends SCNSceneSource {
       const vacNode = MMDVACReader.getNode(data, this._directoryPath)
       if(vacNode){
         this._workingNode = vacNode
-      }
-    }else if(this._fileType === _MMDFileType.pmx){
-      const pmxNode = MMDPMXReader.getNode(data, this._directoryPath)
-      if(pmxNode){
-        this._workingNode = pmxNode
       }
     }else if(this._fileType === _MMDFileType.obj
             || this._fileType === _MMDFileType.dae

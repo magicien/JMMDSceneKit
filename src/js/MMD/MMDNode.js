@@ -684,27 +684,32 @@ export default class MMDNode extends SCNNode {
       const rot = this.rotateEffector.presentation.rotation
       if(this.rotateEffectRate === 1.0){
         // FIXME: don't use presentation node
-        this.presentation.rotation = rot
+        //this.presentation.rotation = rot
+        this.rotation = rot
       }else{
         const quat = this._rotationToQuat(rot)
         //console.log(`${this.name} quat ${quat.float32Array()}`)
         const orgQuat = this._rotationToQuat(this.presentation.rotation)
         //console.log(`${this.name} orgQuat ${orgQuat.float32Array()}`)
-        const newQuat = this.slerp(orgQuat, quat, this.rotateEffectRate)
+        //const newQuat = this.slerp(orgQuat, quat, this.rotateEffectRate)
+        const newQuat = orgQuat.slerp(quat, this.rotateEffectRate)
         const newRot = this._quatToRotation(newQuat)
         // FIXME: don't use presentation
-        this.presentaion.rotation = newRot
+        //this.presentation.rotation = newRot
+        this.rotation = newRot
         //console.log(`${this.name} newQuat.quatToRotation ${this.rotation.float32Array()}`)
       }
     }
     if(this.translateEffector !== null){
-      const pos = this.translateEffector.position
+      const pos = this.translateEffector.presentation.position
       if(this.translateEffectRate === 1.0){
         // FIXME: don't use presentation node
-        this.presentation.position = pos
+        //this.presentation.position = pos
+        this.position = pos
       }else{
         // FIXME: don't use presentation node
-        this.presentation.position = pos.mul(this.translateEffectRate)
+        //this.presentation.position = pos.mul(this.translateEffectRate)
+        this.position = pos.mul(this.translateEffectRate)
       }
     }
   }
