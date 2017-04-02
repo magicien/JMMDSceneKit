@@ -12,8 +12,10 @@ const _supportedEncoding = [
 ]
 
 /*global Buffer*/
-let _Buffer = Buffer
-if(!_Buffer){
+let _Buffer = null
+if(typeof Buffer !== 'undefined'){
+  _Buffer = Buffer
+}else{
   class Buffer {
     constructor() {
       this._data = null

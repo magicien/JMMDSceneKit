@@ -3,7 +3,10 @@
 import _File from './File'
 
 /*global FileReader, require*/
-let _FileReader = FileReader
+let _FileReader = null
+if(typeof FileReader !== 'undefined'){
+  _FileReader = FileReader
+}
 if(typeof process !== 'undefined'){
   const fs = require('fs')
   const EMPTY = 0

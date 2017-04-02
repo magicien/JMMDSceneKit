@@ -2618,8 +2618,10 @@ module.exports =
 	var _supportedEncoding = ['ascii', 'utf8', 'utf16le', 'ucs2', 'base64', 'latin1', 'binary', 'hex'];
 
 	/*global Buffer*/
-	var _Buffer = Buffer;
-	if (!_Buffer) {
+	var _Buffer = null;
+	if (typeof Buffer !== 'undefined') {
+	  _Buffer = Buffer;
+	} else {
 	  var _Buffer2 = function () {
 	    function _Buffer2() {
 	      _classCallCheck(this, _Buffer2);
@@ -6957,8 +6959,10 @@ module.exports =
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var _File = File;
-	if (!_File) {
+	var _File = null;
+	if (typeof File !== 'undefined') {
+	  _File = File;
+	} else {
 	  var _File2 = function () {
 	    /**
 	     * @access public
@@ -7039,7 +7043,10 @@ module.exports =
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	/*global FileReader, require*/
-	var _FileReader = FileReader;
+	var _FileReader = null;
+	if (typeof FileReader !== 'undefined') {
+	  _FileReader = FileReader;
+	}
 	if (typeof process !== 'undefined') {
 	  var fs = __webpack_require__(20);
 	  var EMPTY = 0;

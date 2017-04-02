@@ -70,7 +70,7 @@ module.exports = {
       ui: 'bdd',
       reporter: 'spec', // or nyan
       globals: [],
-      require: ['chai']
+      require: ['test/help/testHelper', 'chai']
     }
   },
 

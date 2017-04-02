@@ -1,8 +1,10 @@
 'use strict'
 
 /*global File*/
-let _File = File
-if(!_File){
+let _File = null
+if(typeof File !== 'undefined'){
+  _File = File
+}else{
   class File {
     /**
      * @access public
