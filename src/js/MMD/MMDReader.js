@@ -100,6 +100,9 @@ export default class MMDReader {
       image.onload = () => {
         resolve(image)
       }
+      image.onerror = () => {
+        reject(new Error(`image ${fileName} load error`))
+      }
       image.src = fileName
     })
     return promise
