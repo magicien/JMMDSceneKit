@@ -3,30 +3,46 @@
 import {
   SCNNode,
   SCNScene,
-  SCNSceneSource
+  SCNSceneSource,
+  _BinaryRequest,
+  _File,
+  _FileReader
 } from 'jscenekit'
 import MMDNode from './MMDNode'
 import MMDPMDReader from './MMDPMDReader'
 import MMDPMXReader from './MMDPMXReader'
 import MMDVMDReader from './MMDVMDReader'
 import MMDXReader from './MMDXReader'
-import _File from '../util/File'
-import _FileReader from '../util/FileReader'
 
 const _MMDFileType = {
-  pmm: Symbol(),
-  pmd: Symbol(),
-  vmd: Symbol(),
-  vpd: Symbol(),
-  x: Symbol(),
-  vac: Symbol(),
-  pmx: Symbol(),
-  obj: Symbol(),
-  dae: Symbol(),
-  abc: Symbol(),
-  scn: Symbol(),
-  unknown: Symbol()
+  pmm: 'pmm',
+  pmd: 'pmd',
+  vmd: 'vmd',
+  vpd: 'vpd',
+  x: 'x',
+  vac: 'vac',
+  pmx: 'pmx',
+  obj: 'obj',
+  dae: 'dae',
+  abc: 'abc',
+  scn: 'scn',
+  unknown: 'unknown'
 }
+
+const _LoadingOption = {
+  animationImportPolicy: 'kSceneSourceAnimationLoadingMode',
+  assetDirectoryURLs: 'kSceneSourceAssetDirectoryURLs',
+  checkConsistency: 'kSceneSourceCheckConsistency',
+  convertToYUp: 'kSceneSourceConvertToYUpIfNeeded',
+  convertUnitsToMeters: 'kSceneSourceConvertToUnit',
+  createNormalsIfAbsent: 'kSceneSourceCreateNormalsIfAbsent',
+  flattenScene: 'kSceneSourceFlattenScene',
+  overrideAssetURLs: 'kSceneSourceOverrideAssetURLs',
+  preserveOriginalTopology: 'kSceneSourcePreserveOriginalTopology',
+  strictConformance: 'kSceneSourceStrictConformanceKey',
+  useSafeMode: 'kSceneSourceUseSafeMode' 
+}
+
 
 // for node
 //import fs from 'fs'
@@ -52,7 +68,7 @@ export default class MMDSceneSource extends SCNSceneSource {
    * @see https://developer.apple.com/reference/scenekit/scnscenesource/1522629-init
    */
   constructor(data, options, directoryPath, models, motions) {
-    super()
+    super(data, options)
 
     this._fileType = _MMDFileType.unknown
     this._directoryPath = directoryPath
@@ -60,10 +76,10 @@ export default class MMDSceneSource extends SCNSceneSource {
     this._workingNode = null
     this._workingAnimationGroup = null
 
-    if(typeof data === 'undefined'){
-      return
-    }
-    this._loadData(data, options)
+    //if(typeof data === 'undefined'){
+    //  return
+    //}
+    //this._loadData(data, options)
   }
 
   static sceneSourceWithDataOptions(data, options, directoryPath, models = null, motions = null) {
@@ -71,7 +87,23 @@ export default class MMDSceneSource extends SCNSceneSource {
   }
 
   static sceneSourceWithURLOpions(url, options, models = null, motions = null) {
-    
+    let _options = options
+    if(_options === null){
+      _options = new Map()
+    }
+    if(typeof _options.get(_LoadingOption.assetDirectoryURLs) === 'undefined'){
+      const paths = url.split('/')
+      const name = paths.pop()
+      const directory = paths.join('/')
+
+      _options.set(_LoadingOption.assetDirectoryURLs, directory)
+    }
+
+    const promise = _BinaryRequest.get(url)
+      .then((data) => {
+        return new MMDSceneSource(data, _options)
+      })
+    return promise
   }
 
   static sceneSourceWithPathOptions(path, options, models = null, motions = null) {
@@ -131,6 +163,8 @@ export default class MMDSceneSource extends SCNSceneSource {
    * @returns {void}
    */
   _loadData(data, options, models = null, motions = null) {
+    console.warn('MMDSceneSource _loadData')
+    //this._workingScene = new MMDScene()
     this._workingScene = new SCNScene()
     this._checkFileTypeFromData(data)
 
@@ -165,7 +199,7 @@ export default class MMDSceneSource extends SCNSceneSource {
       const pmmScene = MMDPMMReader.getScene(data, this._directoryPath, models, motions)
       if(pmmScene){
         pmmScene.rootNode.childNodes.forEach((node) => {
-          this.workingScene.rootNode.addChildNode(node)
+          this._workingScene.rootNode.addChildNode(node)
         })
       }
     }else if(this._fileType === _MMDFileType.vac){
@@ -191,9 +225,53 @@ export default class MMDSceneSource extends SCNSceneSource {
       // unknown file
     }
     */
+    else{
+      // try SCNSceneSource to load the data
+      this._data = data
+      this._workingScene = super.scene(options)
+    }
+
+    if(this._workingNode){
+      this._workingScene.rootNode.addChildNode(this._workingNode)
+    }
+    if(this._workingAnimationGroup){
+      this._workingScene.rootNode.addAnimationForKey(this._workingAnimationGroup, null)
+    }
   }
 
   static sceneSource() {
+    return new MMDSceneSource()
+  }
+
+  scene(options = null, statusHandler = null) {
+    let _options = options
+    if(!_options){
+      if(this._options){
+        _options = this._options
+      }
+    }
+
+    let url = this._url
+    const assetDirectoryURLs = _options.get(_LoadingOption.assetDirectoryURLs)
+    if(assetDirectoryURLs){
+      let dir = assetDirectoryURLs
+      if(Array.isArray(dir)){
+        dir = dir[0]
+      }
+      url = dir + '/'
+      if(this._url){
+        url += this._url.split('/').pop()
+      }
+    }
+    if(!this._directoryPath){
+      const paths = url.split('/')
+      paths.pop()
+      this._directoryPath = paths.join('/') + '/'
+    }
+
+    this._loadData(this._data, _options)
+
+    return this.getScene()
   }
 
   modelNodes() {
@@ -226,7 +304,7 @@ export default class MMDSceneSource extends SCNSceneSource {
   }
 
   getScene() {
-    return this.workingScene
+    return this._workingScene
   }
 
   getModel() {
@@ -285,5 +363,4 @@ export default class MMDSceneSource extends SCNSceneSource {
   static get FileType() {
     return _MMDFileType
   }
-
 } 

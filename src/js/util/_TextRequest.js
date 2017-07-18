@@ -1,12 +1,12 @@
 'use strict'
 
-import {AjaxRequest} from './AjaxRequest'
+import {_AjaxRequest} from 'jscenekit'
 
 /**
  * TextRequest class
  * @access public
  */
-export class TextRequest extends AjaxRequest {
+export class TextRequest extends _AjaxRequest.constructor {
   /**
    * constructor
    * @access public

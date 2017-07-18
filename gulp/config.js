@@ -1,6 +1,7 @@
 const path = require('path');
 const babel = require('babel-core/register');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const webpack = require('webpack');
 
 const src = './src';
 const dest = './';
@@ -28,41 +29,75 @@ module.exports = {
   },
 
   webpack: {
-    entry: src + '/js/main.js',
-    output: {
-      filename: 'index.js',
-      library: 'JMMDSceneKit',
-      libraryTarget: 'commonjs2'
-    },
-    resolve: {
-      extensions: ['', '.js']
-    },
-    plugins: [
-      //new UglifyJSPlugin()
-    ],
-    module: {
-      loaders: [
-        {
-          test: /\.js$/,
-          exclude: /node_modules/,
-          loader: 'babel-loader',
-          query: {
-            presets: ['es2015']
-          }
-        }
-      ]
-    },
     node: {
-      Buffer: false
+      target: 'node',
+      entry: src + '/js/main.js',
+      output: {
+        filename: 'index.node.js',
+        library: 'JMMDSceneKit',
+        libraryTarget: 'commonjs2'
+      },
+      resolve: {
+        extensions: ['', '.js']
+      },
+      plugins: [
+        new webpack.DefinePlugin({'process.env.BROWSER': false})
+        //new UglifyJSPlugin()
+      ],
+      module: {
+        loaders: [
+          {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loader: 'babel-loader',
+            query: {
+              presets: ['es2015']
+            }
+          }
+        ]
+      },
+      externals: {
+        fs: 'fs'
+      }
     },
-    externals: {
-      jscenekit: 'jscenekit',
-      fs: 'fs'
+    web: {
+      target: 'web',
+      entry: src + '/js/main.js',
+      output: {
+        filename: 'index.web.js',
+        library: 'JMMDSceneKit',
+        libraryTarget: 'commonjs2'
+      },
+      resolve: {
+        extensions: ['', '.js']
+      },
+      plugins: [
+        new webpack.DefinePlugin({'process.env.BROWSER': true})
+      ],
+      module: {
+        loaders: [
+          {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            loader: 'babel-loader',
+            query: {
+              presets: ['es2015']
+            }
+          }
+        ]
+      },
+      node: {
+        fs: false,
+        Buffer: true
+      },
+      externals: {
+        //fs: 'fs'
+      }
     }
   },
 
   mocha: {
-    src: ['test/**/*.js', 'src/**/*.js'],
+    src: ['test/**/*.js', 'src/**/*.js', '!src/**/*.web.js'],
     compilers: {
       js: babel
     },

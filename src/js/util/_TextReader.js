@@ -1,27 +1,37 @@
 'use strict'
 
-import Buffer from './Buffer'
+// import {_Buffer} from 'jscenekit'
 import {UnescapeSJIS, UnescapeEUCJP, UnescapeJIS7, UnescapeJIS8, 
         UnescapeUnicode, UnescapeUTF7, UnescapeUTF8, UnescapeUTF16LE} from '../third_party/ecl'
+/*global Buffer*/
+
+const _integerPattern = new RegExp(/^(-|\+)?\d+;?/)
+const _floatPattern = new RegExp(/^(-|\+)?(\d)*\.(\d)*;?/)
+const _wordPattern = new RegExp(/^\w+/)
 
 /**
- * BinaryReader class
+ * TextReader class
  * @access public
  */
-export default class BinaryReader {
+export default class TextReader {
   /**
    * constructor
-   * @param {Buffer|ArrayBuffer} data - 
-   * @param {boolean} bigEndian -
-   * @param {string} encoding -
+   * @access public
    * @constructor
+   * @param {Buffer|ArrayBuffer} data -
+   * @param {string} encoding -
    */
-  constructor(data, bigEndian = false, encoding = '') {
+  constructor(data, encoding = 'utf-8') {
     /**
      * @access private
      * @type {number}
      */
     this._pos = 0
+
+    this._partialText = ''
+    this._partialOffset = 0
+    this._partialStep = 200
+    this._partialMinLength = 100
 
     /**
      * @access private
@@ -47,7 +57,7 @@ export default class BinaryReader {
      * @access public
      * @type {boolean}
      */
-    this.bigEndian = bigEndian
+    //this.bigEndian = bigEndian
 
     /**
      *
@@ -55,6 +65,9 @@ export default class BinaryReader {
      * @type {string}
      */
     this.encoding = encoding
+
+    // prepare buffered text
+    this._addPartialText()
   }
 
   /**
@@ -64,7 +77,7 @@ export default class BinaryReader {
    * @returns {void}
    */
   skip(length, noAssert = false) {
-    this._pos += length
+    this._moveIndex(length)
     if(!noAssert){
       this._check()
     }
@@ -78,15 +91,9 @@ export default class BinaryReader {
    * @returns {string} -
    */
   readString(length, encoding = null) {
-    const start = this._pos
-    this._pos += length
-    const _encoding = encoding || this.encoding || 'sjis'
-    if(Buffer.isEncoding(_encoding)){
-      return this.buffer.toString(_encoding, start, this._pos)
-    }
+    const str = this._partialText.substring(0, length)
 
-    const data = this.buffer.toString('binary', start, this._pos)
-    return this._convert(data, _encoding)
+    this._moveIndex(str.length)
   }
 
   /**
@@ -97,22 +104,9 @@ export default class BinaryReader {
    * @returns {number} -
    */
   readInteger(length, signed) {
-    const start = this._pos
-    this._pos += length
-
-    // big endian
-    if(this.bigEndian){
-      if(signed){
-        return this.buffer.readIntBE(start, length)
-      }
-      return this.buffer.readUIntBE(start, length)
-    }
-
-    // little endian
-    if(signed){
-      return this.buffer.readIntLE(start, length)
-    }
-    return this.buffer.readUIntLE(start, length)
+    const str = this._getString(_integerPattern)
+    const val = parseInt(str[0], 10)
+    return val
   }
 
   /**
@@ -157,13 +151,9 @@ export default class BinaryReader {
    * @returns {number} -
    */
   readFloat() {
-    const start = this._pos
-    this._pos += 4
-    if(this.bigEndian){
-      return this.buffer.readFloatBE(start)
-    }
-
-    return this.buffer.readFloatLE(start)
+    const str = this._getString(_floatPattern)
+    const val = parseFloat(str[0])
+    return val
   }
 
   /**
@@ -172,13 +162,7 @@ export default class BinaryReader {
    * @returns {number} -
    */
   readDouble() {
-    const start = this._pos
-    this._pos += 8
-    if(this.bigEndian){
-      return this.buffer.readDoubleBE(start)
-    }
-
-    return this.buffer.readDoubleLE(start)
+    return this.readFloat()
   }
 
   /**
@@ -193,15 +177,22 @@ export default class BinaryReader {
     return this.buffer.slice(start, this._pos)
   }
 
+  readWord() {
+    const str = this._getString(_wordPattern)
+    return (str !== null ? str[0] : null)
+  }
+
+  readPattern(pattern) {
+    return this._getString(pattern)
+  }
+
+
   /**
    *
    * @access private
    * @returns {void}
    */
   _check() {
-    if(this._pos >= this.buffer.length){
-      throw new Error(`BinaryReader: buffer out of range (${this._pos} >= ${this.buffer.length})`)
-    }
   }
 
   /**
@@ -250,4 +241,73 @@ export default class BinaryReader {
   getAvailableDataLength() {
     return this.buffer.length - this._pos
   }
+
+  /**
+   *
+   * @access private
+   * @param {number} len -
+   * @returns {void}
+   */
+  _moveIndex(len) {
+    this._partialText = this._partialText.substring(len)
+    if(this._partialText.length < this._partialMinLength){
+      this._addPartialText()
+    }
+  }
+
+  _skipSpace() {
+    let i = 0
+    let code = this._partialText.charCodeAt(i)
+
+    //  9: Horizontal Tab
+    // 10: Line Feed
+    // 11: Vertical Tab
+    // 12: New Page
+    // 13: Carriage Return
+    // 32: Space
+    while(code === 32 || (9 <= code && code <= 13)){
+      i++
+      code = this._partialText.charCodeAt(i)
+
+      if(i >= this._partialText.length){
+        this._addPartialText()
+      }
+    }
+    if(i>0){
+      this._moveIndex(i)
+    }
+  }
+
+  _addPartialText() {
+    if(this._partialOffset >= this.buffer.length){
+      return
+    }
+
+    let newOffset = this._partialOffset + this._partialStep
+    if(newOffset > this.buffer.length){
+      newOffset = this.buffer.length
+    }
+
+    if(Buffer.isEncoding(this.encoding)){
+      this._partialText += this.buffer.toString(this.encoding, this._partialOffset, newOffset)
+    }else{
+      const data = this.buffer.toString('binary', this._partialOffset, newOffset)
+      this._partialText += this._convert(data, this.encoding)
+    }
+    this._partialOffset = newOffset
+  }
+
+  _getString(pattern) {
+    this._skipSpace()
+
+    const str = this._partialText.match(pattern)
+    if(str === null){
+      return null
+    }
+
+    this._moveIndex(str[0].length)
+
+    return str
+  }
 }
+

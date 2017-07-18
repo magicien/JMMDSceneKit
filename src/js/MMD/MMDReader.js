@@ -1,10 +1,10 @@
 'use strict'
 
-import BinaryReader from '../util/BinaryReader'
-import TextReader from '../util/TextReader'
-//import {
-//  SCNNode
-//} from 'jscenekit'
+import {
+  _BinaryReader,
+  _TGAImage
+} from 'jscenekit'
+import _TextReader from '../util/_TextReader'
 
 /**
  *
@@ -43,9 +43,9 @@ export default class MMDReader {
     this._reader = null
 
     if(isBinary){
-      this._reader = new BinaryReader(data, isBigEndian, encoding)
+      this._reader = new _BinaryReader(data, isBigEndian, encoding)
     }else{
-      this._reader = new TextReader(data, encoding)
+      this._reader = new _TextReader(data, encoding)
     }
   }
 
@@ -96,14 +96,21 @@ export default class MMDReader {
   loadTexture(filePath) {
     const promise = new Promise((resolve, reject) => {
       const fileName = this.directoryPath + filePath
-      const image = new Image()
-      image.onload = () => {
-        resolve(image)
+      if(fileName.endsWith('tga')){
+        const tga = _TGAImage.imageWithURL(fileName)
+        tga.didLoad.then(() => {
+          resolve(tga.image)
+        })
+      }else{
+        const image = new Image()
+        image.onload = () => {
+          resolve(image)
+        }
+        image.onerror = () => {
+          reject(new Error(`image ${fileName} load error`))
+        }
+        image.src = fileName
       }
-      image.onerror = () => {
-        reject(new Error(`image ${fileName} load error`))
-      }
-      image.src = fileName
     })
     return promise
   }
