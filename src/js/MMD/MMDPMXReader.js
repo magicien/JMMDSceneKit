@@ -1171,7 +1171,7 @@ export default class MMDPMXReader extends MMDReader {
     const program = new MMDProgram()
     // TODO: implement MMD renderer
     this._materialArray.forEach((material) => {
-      //material.program = program
+      material.program = program
     })
     const geometry = new SCNGeometry([this._vertexSource, this._normalSource, this._texcoordSource], this._elementArray)
     geometry.materials = this._materialArray

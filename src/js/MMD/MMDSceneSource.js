@@ -86,7 +86,7 @@ export default class MMDSceneSource extends SCNSceneSource {
     return new MMDSceneSource(data, options, directoryPath, models, motions)
   }
 
-  static sceneSourceWithURLOpions(url, options, models = null, motions = null) {
+  static sceneSourceWithURLOptions(url, options = null, models = null, motions = null) {
     let _options = options
     if(_options === null){
       _options = new Map()
@@ -320,7 +320,6 @@ export default class MMDSceneSource extends SCNSceneSource {
   }
 
   getMotion() {
-    //console.log('getMotion: workingAnimationGroup.animations.length: ' + this._workingAnimationGroup.animations.length)
     return this._workingAnimationGroup
   }
 

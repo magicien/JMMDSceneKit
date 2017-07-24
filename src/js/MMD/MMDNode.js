@@ -448,13 +448,27 @@ export default class MMDNode extends SCNNode {
    * @param {string} key -
    * @returns {void}
    */
+  stopPreparedAnimationForKey(key) {
+    if(this.preparedAnimation === null){
+      return
+    }
+    super.removeAnimationForKey(key)
+    //this.preparedAnimation.delete(key)
+  }
+
+  /**
+   *
+   * @access public
+   * @param {string} key -
+   * @returns {void}
+   */
   playPreparedAnimationForKey(key) {
     if(this.preparedAnimation === null){
       return
     }
     const anim = this.preparedAnimation.get(key)
     if(anim){
-      super.addAnimation(anim, key)
+      super.addAnimationForKey(anim, key)
     }
   }
 
@@ -512,7 +526,7 @@ export default class MMDNode extends SCNNode {
                 const newValue = origValue + bone.position.x
                 newAnim.values[i] = newValue
 
-                console.log(`convert ${newAnim.keyPath}: ${origValue} => ${newValue}`)
+                //console.log(`convert ${newAnim.keyPath}: ${origValue} => ${newValue}`)
               }
             }else if(newAnim.keyPath.endsWith('.translation.y')){
               for(let i=0; i<newAnim.values.length; i++){
@@ -520,7 +534,7 @@ export default class MMDNode extends SCNNode {
                 const newValue = origValue + bone.position.y
                 newAnim.values[i] = newValue
 
-                console.log(`convert ${newAnim.keyPath}: ${origValue} => ${newValue}`)
+                //console.log(`convert ${newAnim.keyPath}: ${origValue} => ${newValue}`)
               }
             }else if(newAnim.keyPath.endsWith('.translation.z')){
               for(let i=0; i<newAnim.values.length; i++){
@@ -528,7 +542,7 @@ export default class MMDNode extends SCNNode {
                 const newValue = origValue + bone.position.z
                 newAnim.values[i] = newValue
 
-                console.log(`convert ${newAnim.keyPath}: ${origValue} => ${newValue}`)
+                //console.log(`convert ${newAnim.keyPath}: ${origValue} => ${newValue}`)
               }
             }
 

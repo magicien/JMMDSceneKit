@@ -38,7 +38,8 @@ export default class MMDReader {
      *
      * @type {number}
      */
-    this.length = data.byteLength
+    //this.length = data.byteLength
+    this.length = data.length
 
     this._reader = null
 
