@@ -152,18 +152,18 @@ export default class MMDPMDReader extends MMDReader {
     this._createFaceMorph()
 
     // read additional data
-    if(this._pos >= this.length){
+    if(this.pos >= this.length){
       return this._workingNode
     }
 
     this._readEnglishInfo()
-    if(this._pos >= this.length){
+    if(this.pos >= this.length){
       return this._workingNode
     }
 
     this._readToonTexture()
 
-    if(this._pos >= this.length){
+    if(this.pos >= this.length){
       return this._workingNode
     }
 
@@ -255,16 +255,29 @@ export default class MMDPMDReader extends MMDReader {
       const edge = this.readUnsignedByte()
       const indexCount = this.readUnsignedInt()
       let textureFile = this.readString(20)
+      let sphereFile = ''
       if(textureFile.indexOf('*') >= 0){
-        textureFile = textureFile.split('*')[0]
+        const files = textureFile.split('*')
+        textureFile = files[0]
+        sphereFile = files[1]
+      }
+      if(textureFile.endsWith('spa') || textureFile.endsWith('sph')){
+        sphereFile = textureFile
+        textureFile = ''
       }
 
       if(textureFile !== ''){
         this.loadTexture(textureFile)
           .then((texture) => {
-            material.diffuse.contents = texture
-            material.diffuse.wrapS = SCNWrapMode.repeat
-            material.diffuse.wrapT = SCNWrapMode.repeat
+            material.multiply.contents = texture
+            material.multiply.wrapS = SCNWrapMode.repeat
+            material.multiply.wrapT = SCNWrapMode.repeat
+          })
+      }
+      if(sphereFile !== ''){
+        this.loadTexture(sphereFile)
+          .then((texture) => {
+            material.reflective.contents = texture
           })
       }
       material.isDoubleSided = true
@@ -706,7 +719,7 @@ export default class MMDPMDReader extends MMDReader {
       indexPos += count
     }
 
-    const program = new MMDProgram()
+    //const program = new MMDProgram()
     const geometry = new SCNGeometry(
       [this._vertexSource, this._normalSource, this._texcoordSource],
       this._elementArray

@@ -47,79 +47,104 @@ module.exports =
 
 	'use strict';
 
-	var _MMDIKConstraint = __webpack_require__(1);
+	var _MMDFragmentShader2 = __webpack_require__(1);
+
+	var _MMDFragmentShader3 = _interopRequireDefault(_MMDFragmentShader2);
+
+	var _MMDCameraNode = __webpack_require__(2);
+
+	var _MMDCameraNode2 = _interopRequireDefault(_MMDCameraNode);
+
+	var _MMDIKConstraint = __webpack_require__(9);
 
 	var _MMDIKConstraint2 = _interopRequireDefault(_MMDIKConstraint);
 
-	var _MMDIKController = __webpack_require__(2);
+	var _MMDIKController = __webpack_require__(10);
 
 	var _MMDIKController2 = _interopRequireDefault(_MMDIKController);
 
-	var _MMDNode = __webpack_require__(3);
+	var _MMDNode = __webpack_require__(8);
 
 	var _MMDNode2 = _interopRequireDefault(_MMDNode);
 
-	var _MMDPMDReader = __webpack_require__(9);
+	var _MMDPMDReader = __webpack_require__(11);
 
 	var _MMDPMDReader2 = _interopRequireDefault(_MMDPMDReader);
 
-	var _MMDPMXReader = __webpack_require__(14);
+	var _MMDPMMReader = __webpack_require__(17);
+
+	var _MMDPMMReader2 = _interopRequireDefault(_MMDPMMReader);
+
+	var _MMDPMXReader = __webpack_require__(19);
 
 	var _MMDPMXReader2 = _interopRequireDefault(_MMDPMXReader);
 
-	var _MMDProgram = __webpack_require__(10);
+	var _MMDProgram = __webpack_require__(12);
 
 	var _MMDProgram2 = _interopRequireDefault(_MMDProgram);
 
-	var _MMDReader = __webpack_require__(11);
+	var _MMDReader = __webpack_require__(13);
 
 	var _MMDReader2 = _interopRequireDefault(_MMDReader);
 
-	var _MMDScene = __webpack_require__(15);
+	var _MMDScene = __webpack_require__(25);
 
 	var _MMDScene2 = _interopRequireDefault(_MMDScene);
 
-	var _MMDSceneSource = __webpack_require__(16);
+	var _MMDSceneSource = __webpack_require__(18);
 
 	var _MMDSceneSource2 = _interopRequireDefault(_MMDSceneSource);
 
-	var _MMDVMDReader = __webpack_require__(17);
+	var _MMDVACReader = __webpack_require__(20);
+
+	var _MMDVACReader2 = _interopRequireDefault(_MMDVACReader);
+
+	var _MMDVMDReader = __webpack_require__(21);
 
 	var _MMDVMDReader2 = _interopRequireDefault(_MMDVMDReader);
 
-	var _MMDXReader = __webpack_require__(19);
+	var _MMDVPDReader = __webpack_require__(23);
+
+	var _MMDVPDReader2 = _interopRequireDefault(_MMDVPDReader);
+
+	var _MMDXReader = __webpack_require__(24);
 
 	var _MMDXReader2 = _interopRequireDefault(_MMDXReader);
 
-	var _BinaryParser = __webpack_require__(20);
+	var _BinaryParser = __webpack_require__(26);
 
 	var _BinaryParser2 = _interopRequireDefault(_BinaryParser);
 
-	var _ecl = __webpack_require__(13);
+	var _ecl = __webpack_require__(16);
 
 	var _ecl2 = _interopRequireDefault(_ecl);
 
-	var _TextReader2 = __webpack_require__(12);
+	var _TextReader2 = __webpack_require__(15);
 
 	var _TextReader3 = _interopRequireDefault(_TextReader2);
 
-	var _TextRequest2 = __webpack_require__(21);
+	var _TextRequest2 = __webpack_require__(27);
 
 	var _TextRequest3 = _interopRequireDefault(_TextRequest2);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	/*global exports*/
+	exports._MMDFragmentShader = _MMDFragmentShader3.default;
+	exports.MMDCameraNode = _MMDCameraNode2.default;
 	exports.MMDIKConstraint = _MMDIKConstraint2.default;
 	exports.MMDIKController = _MMDIKController2.default;
 	exports.MMDNode = _MMDNode2.default;
 	exports.MMDPMDReader = _MMDPMDReader2.default;
+	exports.MMDPMMReader = _MMDPMMReader2.default;
 	exports.MMDPMXReader = _MMDPMXReader2.default;
 	exports.MMDProgram = _MMDProgram2.default;
 	exports.MMDReader = _MMDReader2.default;
 	exports.MMDScene = _MMDScene2.default;
 	exports.MMDSceneSource = _MMDSceneSource2.default;
+	exports.MMDVACReader = _MMDVACReader2.default;
 	exports.MMDVMDReader = _MMDVMDReader2.default;
+	exports.MMDVPDReader = _MMDVPDReader2.default;
 	exports.MMDXReader = _MMDXReader2.default;
 	exports.BinaryParser = _BinaryParser2.default;
 	exports.ecl = _ecl2.default;
@@ -132,22 +157,12 @@ module.exports =
 
 	'use strict';
 
-	/**
-	 *
-	 * @access public
-	 */
-
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	var _MMDFragmentShader = '\n  uniform float useTexture;\n  uniform float useToon;\n  uniform float useSphereMap;\n  uniform float useSubtexture;\n\n  uniform float spadd;\n\n  #pragma transparent\n  #pragma body\n\n  vec4 materialDiffuse = pow(_surface.diffuse, vec4(1.0/2.2));\n  vec4 materialSpecular = pow(_surface.specular, vec4(1.0/2.2));\n  vec4 materialEmission = pow(_surface.emission, vec4(1.0/2.2));\n  vec3 lightAmbient = pow(_lightingContribution.ambient, vec3(1.0/2.2));\n  vec3 lightSpecular = pow(_lightingContribution.specular, vec3(1.0/2.2));\n\n  // TODO: get lightDirection\n  vec3 lightDirection = vec3(0, -1, 0);\n\n  // light direction in view space\n  vec3 lightDir = normalize((u_viewTransform * vec4(lightDirection, 0.0)).xyz);\n\n  //vec4 diffuseColor = materialDiffuse * vec4(lightDiffuse, 1.0);\n  vec4 diffuseColor = vec4(0, 0, 0, 1);\n  // This is not typo; use materialDiffuse for ambientColor.\n  vec3 ambientColor = materialDiffuse.rgb * lightAmbient.rgb + materialEmission.rgb;\n  vec3 specularColor = materialSpecular.rgb * lightSpecular.rgb;\n\n  vec3 n = normalize(_surface.normal);\n\n  #define SKII1 1500\n  #define SKII2 8000\n  #define Toon 3\n\n  _output.color.rgb = ambientColor.rgb;\n  if(useToon <= 0){\n    _output.color.rgb += diffuseColor.rgb;\n  }\n  _output.color.a = diffuseColor.a;\n  _output.color = saturate(_output.color);\n\n  vec2 spTex;\n  if(useSphereMap > 0){\n    if(useSubtexture > 0){\n      spTex = _surface.specularTexcoord;\n    }else{\n      spTex.x = n.x * 0.5 + 0.5;\n      spTex.y = n.y * 0.5 + 0.5;\n    }\n  }\n\n  //vec3 halfVector = normalize(normalize(_surface.view) - normalize(lightDir));\n  //vec3 specular = pow(max(0.0, dot(halfVector, n)), _surface.shininess) * specularColor;\n\n\n\n\n  if(useTexture > 0){\n    _output.color *= texture(u_multiplyTexture, _surface.multiplyTexcoord);\n  }\n\n  if(useSphereMap > 0){\n    vec4 texColor = texture(u_reflectiveTexture, spTex);\n    if(spadd){\n      _output.color.rgb += texColor.rgb;\n    }else{\n      _output.color.rgb *= texColor.rgb;\n    }\n    _output.color.a *= texColor.a;\n  }\n\n  if(useToon > 0){\n    float lightNormal = dot(n, -lightDir);\n    _output.color *= texture(u_transparentTexture, vec2(0, 0.5 + lightNormal * 0.5));\n  }\n  _output.color.rgb += specularColor.rgb;\n\n  _output.color = pow(_output.color, vec4(2.2));\n';
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var MMDIKConstraint = function MMDIKConstraint() {
-	  _classCallCheck(this, MMDIKConstraint);
-	};
-
-	exports.default = MMDIKConstraint;
+	exports.default = _MMDFragmentShader;
 
 /***/ },
 /* 2 */
@@ -158,118 +173,17 @@ module.exports =
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.MMD_CAMERA_ROTZ_NODE_NAME = exports.MMD_CAMERA_ROTY_NODE_NAME = exports.MMD_CAMERA_ROTX_NODE_NAME = exports.MMD_CAMERA_NODE_NAME = exports.MMD_CAMERA_ROOT_NODE_NAME = undefined;
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _MMDNode = __webpack_require__(3);
+	var _jscenekit = __webpack_require__(3);
 
-	var _MMDNode2 = _interopRequireDefault(_MMDNode);
+	var _MMDNode2 = __webpack_require__(8);
 
-	__webpack_require__(4);
+	var _MMDNode3 = _interopRequireDefault(_MMDNode2);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var _sharedController = null;
-
-	/**
-	 *
-	 * @access public
-	 * @implements {SCNSceneRendererDelegate}
-	 */
-
-	var MMDIKController = function () {
-	  _createClass(MMDIKController, null, [{
-	    key: 'sharedController',
-	    get: function get() {
-	      if (_sharedController === null) {
-	        _sharedController = new MMDIKController();
-	      }
-	      return _sharedController;
-	    }
-
-	    /**
-	     *
-	     * @access private
-	     * @constructor
-	     */
-
-	  }]);
-
-	  function MMDIKController() {
-	    _classCallCheck(this, MMDIKController);
-	  }
-
-	  /**
-	   * update IK constraint for the given renderer
-	   * @access public
-	   * @param {SCNSceneRenderer} renderer -
-	   * @returns {void}
-	   */
-
-
-	  _createClass(MMDIKController, [{
-	    key: 'rendererDidApplyAnimationsAtTime',
-
-
-	    /**
-	     * apply IK constraint after animations are applied
-	     * @access public
-	     * @param {SCNSceneRenderer} renderer -
-	     * @param {TimeInterval} time -
-	     */
-	    value: function rendererDidApplyAnimationsAtTime(renderer, time) {
-	      MMDIKController.updateIK(renderer);
-	    }
-	  }], [{
-	    key: 'updateIK',
-	    value: function updateIK(renderer) {
-	      if (renderer.scene) {
-	        MMDIKController.applyIKRecursive(renderer.scene.rootNode);
-	      }
-	    }
-
-	    /**
-	     * apply IK constraint recursively
-	     * @access public
-	     * @param {SCNNode} node -
-	     * @returns {void}
-	     */
-
-	  }, {
-	    key: 'applyIKRecursive',
-	    value: function applyIKRecursive(node) {
-	      if (node instanceof _MMDNode2.default) {
-	        node.updateIK();
-	      }
-
-	      node.childNodes.forEach(function (childNode) {
-	        MMDIKController.applyIKRecursive(childNode);
-	      });
-	    }
-	  }]);
-
-	  return MMDIKController;
-	}();
-
-	exports.default = MMDIKController;
-
-/***/ },
-/* 3 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _jscenekit = __webpack_require__(4);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -277,1020 +191,164 @@ module.exports =
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var _MMDNodeType = {
-	  rotate: Symbol(),
-	  rotateTranslate: Symbol(),
-	  ik: Symbol(),
-	  unknown: Symbol(),
-	  ikChild: Symbol(),
-	  rotateChild: Symbol(),
-	  ikTarget: Symbol(),
-	  hidden: Symbol(),
-	  twist: Symbol(),
-	  roll: Symbol()
-	};
-
-	var _MMDAnimationCompletionBlockKey = 'MMDAnimationCompletionBlockKey';
-	var _faceWeightsPattern = /faceWeights\[(\d+)\]/;
-
-	var DummyNode = function (_NSObject) {
-	  _inherits(DummyNode, _NSObject);
-
-	  function DummyNode() {
-	    _classCallCheck(this, DummyNode);
-
-	    return _possibleConstructorReturn(this, (DummyNode.__proto__ || Object.getPrototypeOf(DummyNode)).apply(this, arguments));
-	  }
-
-	  _createClass(DummyNode, [{
-	    key: 'valueForUndefinedKey',
-	    value: function valueForUndefinedKey(key) {
-	      return this;
-	    }
-	  }]);
-
-	  return DummyNode;
-	}(_jscenekit.NSObject);
-
-	var _dummyNode = new DummyNode();
+	var MMD_CAMERA_ROOT_NODE_NAME = exports.MMD_CAMERA_ROOT_NODE_NAME = 'MMDCameraRoot';
+	var MMD_CAMERA_NODE_NAME = exports.MMD_CAMERA_NODE_NAME = 'MMDCamera';
+	var MMD_CAMERA_ROTX_NODE_NAME = exports.MMD_CAMERA_ROTX_NODE_NAME = 'MMDCameraRotX';
+	var MMD_CAMERA_ROTY_NODE_NAME = exports.MMD_CAMERA_ROTY_NODE_NAME = 'MMDCameraRotY';
+	var MMD_CAMERA_ROTZ_NODE_NAME = exports.MMD_CAMERA_ROTZ_NODE_NAME = 'MMDCameraRotZ';
 
 	/**
 	 *
 	 * @access public
-	 * @extends {SCNNode}
-	 * @implements {CAAnimationDelegate}
+	 * @extends {MMDNode}
 	 */
 
-	var MMDNode = function (_SCNNode) {
-	  _inherits(MMDNode, _SCNNode);
+	var MMDCameraNode = function (_MMDNode) {
+	  _inherits(MMDCameraNode, _MMDNode);
 
 	  /**
 	   *
 	   * @access public
-	   * @param {MMDNode} mmdNode -
+	   * @param {string} [name = MMD_CAMERA_ROOT_NODE_NAME] -
 	   * @constructor
 	   */
-	  function MMDNode() {
-	    var mmdNode = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+	  function MMDCameraNode() {
+	    var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : MMD_CAMERA_ROOT_NODE_NAME;
 
-	    _classCallCheck(this, MMDNode);
+	    _classCallCheck(this, MMDCameraNode);
 
-	    /**
-	     *
-	     * @type {SCNPhysicsBehaviors[]}
-	     */
-	    var _this2 = _possibleConstructorReturn(this, (MMDNode.__proto__ || Object.getPrototypeOf(MMDNode)).call(this));
+	    var _this = _possibleConstructorReturn(this, (MMDCameraNode.__proto__ || Object.getPrototypeOf(MMDCameraNode)).call(this));
 
-	    _this2.physicsBehaviors = [];
+	    _this.name = name;
 
-	    /**
-	     *
-	     * @type {Symbol}
-	     */
-	    _this2.type = MMDNode.Type.unknown;
+	    /** @type {MMDNode} */
+	    _this.cameraNode = new _MMDNode3.default();
 
-	    /**
-	     *
-	     * @type {boolean}
-	     */
-	    _this2.isKnee = false;
+	    var camera = new _jscenekit.SCNCamera();
+	    _this.cameraNode.name = MMD_CAMERA_NODE_NAME;
+	    _this.cameraNode.camera = camera;
 
-	    /**
-	     *
-	     * @type {MMDIKConstraint}
-	     */
-	    _this2.ikConstraint = null;
+	    // TODO: set default values of MikuMikuDance: ex) fov
+	    camera.yFov = 30.0;
+	    camera.automaticallyAdjustsZRange = true;
 
-	    /**
-	     *
-	     * @type {MMDIKConstraint[]}
-	     */
-	    _this2.ikArray = null;
+	    /** @type {MMDNode} */
+	    _this.rotYNode = new _MMDNode3.default();
 
-	    /**
-	     *
-	     * @type {SCNPhysicsBehavior[]}
-	     */
-	    _this2.joints = null;
+	    _this.rotYNode.name = MMD_CAMERA_ROTY_NODE_NAME;
+	    _this.addChildNode(_this.rotYNode);
 
-	    /**
-	     *
-	     * @type {number}
-	     */
-	    _this2.vertexCount = 0;
+	    /** @type {MMDNode} */
+	    _this.rotXNode = new _MMDNode3.default();
 
-	    /**
-	     *
-	     * @type {number[]}
-	     */
-	    _this2.vertexArray = null;
+	    _this.rotXNode.name = MMD_CAMERA_ROTX_NODE_NAME;
+	    _this.rotYNode.addChildNode(_this.rotXNode);
 
-	    /**
-	     *
-	     * @type {number[]}
-	     */
-	    _this2.normalArray = null;
+	    /** @type {MMDNode} */
+	    _this.rotZNode = new _MMDNode3.default();
 
-	    /**
-	     *
-	     * @type {number[]}
-	     */
-	    _this2.texcoordArray = null;
+	    _this.rotZNode.name = MMD_CAMERA_ROTZ_NODE_NAME;
+	    _this.rotXNode.addChildNode(_this.rotZNode);
 
-	    /**
-	     *
-	     * @type {number[]}
-	     */
-	    _this2.boneIndicesArray = null;
-
-	    /**
-	     *
-	     * @type {number[]}
-	     */
-	    _this2.boneWeightsArray = null;
-
-	    /**
-	     *
-	     * @type {number}
-	     */
-	    _this2.indexCount = 0;
-
-	    /**
-	     *
-	     * @type {number[]}
-	     */
-	    _this2.indexArray = null;
-
-	    /**
-	     *
-	     * @type {number}
-	     */
-	    _this2.materialCount = 0;
-
-	    /**
-	     *
-	     * @type {SCNMaterial[]}
-	     */
-	    _this2.materialArray = null;
-
-	    /**
-	     *
-	     * @type {number[]}
-	     */
-	    _this2.materialIndexCountArray = null;
-
-	    /**
-	     *
-	     * @type {?SCNGeometryElement[]}
-	     */
-	    _this2.elementArray = null;
-
-	    /**
-	     *
-	     * @type {MMDNode[]}
-	     */
-	    _this2.boneArray = null;
-
-	    /**
-	     *
-	     * @type {SCNMatrix4[]}
-	     */
-	    _this2.boneInverseMatrixArray = null;
-
-	    /**
-	     *
-	     * @type {MMDNode}
-	     */
-	    _this2.rootBone = null;
-
-	    /**
-	     *
-	     * @type {?MMDNode}
-	     */
-	    _this2.rotateEffector = null;
-
-	    /**
-	     *
-	     * @type {number}
-	     */
-	    _this2.rotateEffectRate = 0;
-
-	    /**
-	     *
-	     * @type {?MMDNode}
-	     */
-	    _this2.translateEffector = null;
-
-	    /**
-	     *
-	     * @type {number}
-	     */
-	    _this2.translateEffectRate = 0;
-
-	    /**
-	     *
-	     * @type {?number[]}
-	     */
-	    _this2.faceIndexArray = null;
-
-	    /**
-	     *
-	     * @type {?number[][]}
-	     */
-	    _this2.faceDataArray = null;
-
-	    /**
-	     *
-	     * @type {number[]}
-	     */
-	    _this2.faceWeights = null;
-
-	    /**
-	     *
-	     * @type {SCNMorpher}
-	     */
-	    _this2.geometryMorpher = null;
-
-	    /**
-	     *
-	     * @type {?Map}
-	     */
-	    _this2.preparedAnimation = null;
-
-	    if (mmdNode !== null) {
-	      _this2.copySCNNodeValues(mmdNode);
-	      _this2.copyValues(mmdNode);
-	    }
-	    return _this2;
+	    _this.rotZNode.addChildNode(_this.cameraNode);
+	    return _this;
 	  }
 
-	  /**
-	   *
-	   * @access public
-	   * @returns {MMDNode} -
-	   */
+	  _createClass(MMDCameraNode, [{
+	    key: 'getCameraNode',
 
-
-	  _createClass(MMDNode, [{
-	    key: 'clone',
-	    value: function clone() {
-	      //console.log('MMDNode.clone() ' + this.name)
-	      var newNode = _get(MMDNode.prototype.__proto__ || Object.getPrototypeOf(MMDNode.prototype), 'clone', this).call(this);
-	      // TODO: copy values of SCNNode
-	      this.copyValuesRecursive(this, newNode);
-
-	      return newNode;
-	    }
-
-	    /*
-	    copy() {
-	      return this.clone()
-	    }
-	    */
 
 	    /**
-	     *
-	     * @access public
-	     * @param {SCNNode} node -
-	     * @returns {void}
-	     */
-
-	  }, {
-	    key: 'copySCNNodeValues',
-	    value: function copySCNNodeValues(node) {
-	      this.name = node.name;
-	      this.light = node.light;
-	      this.camera = node.camera;
-	      this.geometry = node.geometry;
-	      this.morpher = node.morpher;
-	      this.skinner = node.skinner;
-	      this.categoryBitMask = node.categoryBitMask;
-	      this.isPaused = node.isPaused;
-	      this.transform = node.transform;
-	      this.constraints = node.constraints ? node.constraints.slice() : null;
-	      this.isHidden = node.isHidden;
-	      this.opacity = node.opacity;
-	      this.renderingOrder = node.renderingOrder;
-	      this.castsShadow = node.castsShadow;
-	      this.movabilityHint = node.movabilityHint;
-	      this.filters = node.filters ? node.filters.slice() : null;
-	      this.rendererDelegate = node.rendererDelegate;
-
-	      if (node.physicsBody) {
-	        var body = node.physicsBody;
-	        var newBody = null;
-	        switch (body.type) {
-	          case _jscenekit.SCNPhysicsBody.Type.static:
-	            newBody = _jscenekit.SCNPhysicsBody.static();
-	            break;
-	          case _jscenekit.SCNPhysicsBody.Type.dynamic:
-	            newBody = _jscenekit.SCNPhysicsBody.dynamic();
-	            break;
-	          case _jscenekit.SCNPhysicsBody.Type.kinematic:
-	            newBody = _jscenekit.SCNPhysicsBody.kinematic();
-	            break;
-	          default:
-	            throw new Error('unknown physics body type: ' + body.type);
-	        }
-	        newBody.physicsShape = body.physicsShape;
-	        newBody.velocityFactor = body.velocityFactor;
-	        newBody.angularVelocityFactor = body.angularVelocityFactor;
-	        newBody.isAffectedByGravity = body.isAffectedByGravity;
-	        newBody.mass = body.mass;
-	        newBody.charge = body.charge;
-	        newBody.friction = body.friction;
-	        newBody.rollingFriction = body.rollingFriction;
-	        newBody.restitution = body.restitution;
-	        newBody.damping = body.damping;
-	        newBody.angularDamping = body.angularDamping;
-	        newBody.momentOfInertia = body.momentOfInertia;
-	        newBody.usesDefaultMomentOfInertia = body.usesDefaultMomentOfInertia;
-	        newBody.cateogryBitMask = body.categoryBitMask;
-	        newBody.contactTestBitMask = body.contactTestBitMask;
-	        newBody.collisionBitMask = body.collisionBitMask;
-	        newBody.velocity = body.velocity;
-	        newBody.angularVelocity = body.angularVelocity;
-	        newBody.allowsResting = body.allowsResting;
-
-	        this.physicsBody = newBody;
-	      }
-
-	      this.physicsField = node.physicsField;
-	    }
-
-	    /**
-	     *
-	     * @access public
-	     * @param {MMDNode} node -
-	     * @returns {void}
-	     */
-
-	  }, {
-	    key: 'copyValues',
-	    value: function copyValues(node) {
-	      this.physicsBehaviors = node.physicsBehaviors; // [SCNPhysicsBehavior]
-	      this.type = node.type;
-	      this.isKnee = node.isKnee;
-	      this.ikConstraint = node.ikConstraint; // MMDIKConstraint
-	      this.ikArray = node.ikArray; // [MMDIKConstraint]
-	      this.joints = node.joints; // [SCNPhysicsBehavior]
-	      this.vertexCount = node.vertexCount;
-	      this.vertexArray = node.vertexArray;
-	      this.normalArray = node.normalArray;
-	      this.texcoordArray = node.texcoordArray;
-	      this.boneIndicesArray = node.boneIndicesArray;
-	      this.boneWeightsArray = node.boneWeightsArray;
-	      this.indexCount = node.indexCount;
-	      this.indexArray = node.indexArray;
-	      this.materialCount = node.materialCount;
-	      this.materialArray = node.materialArray; // [SCNMaterial]
-	      this.materialIndexCountArray = node.materialIndexCountArray;
-	      this.elementArray = node.elementArray; // [SCNGeometryElement]
-	      this.boneArray = node.boneArray; // [MMDNode]
-	      this.boneInverseMatrixArray = node.boneInverseMatrixArray;
-	      this.rootBone = node.rootBone; // MMDNode
-
-	      this.rotateEffector = node.rotateEffector; // MMDNode
-	      this.rotateEffectRate = node.rotateEffectRate;
-	      this.translateEffector = node.translateEffector; // MMDNode
-	      this.translateEffectRate = node.translateEffectRate;
-
-	      this.faceIndexArray = node.faceIndexArray;
-	      this.faceDataArray = node.faceDataArray;
-	      this.faceWeights = node.faceWeights;
-	      this.geometryMorpher = node.geometryMorpher; // SCNMorpher
-
-	      this.preparedAnimation = node.preparedAnimation;
-	    }
-
-	    /**
-	     *
-	     * @access public
-	     * @param {SCNNode} src -
-	     * @param {SCNNode} dst -
-	     * @returns {void}
-	     */
-
-	  }, {
-	    key: 'copyValuesRecursive',
-	    value: function copyValuesRecursive(src, dst) {
-	      if (src instanceof MMDNode) {
-	        if (dst instanceof MMDNode) {
-	          dst.copyValues(src);
-	        }
-	      }
-
-	      for (var i = 0; i < src.childNodes.length; i++) {
-	        this.copyValuesRecursive(src.childNodes[i], dst.childNodes[i]);
-	      }
-	    }
-	  }, {
-	    key: 'valueForUndefinedKey',
-	    value: function valueForUndefinedKey(key) {
-	      //console.log('MMDNode.valueForUndefinedKey: ' + key)
-	      if (key.startsWith('/')) {
-	        var searchKey = key.substring(1);
-	        var node = this.childNodeWithNameRecursively(searchKey, true);
-	        if (node) {
-	          return node;
-	        }
-
-	        //console.warn(`valueForUndefinedKey ${key} not found.`)
-	        return _dummyNode;
-	      }
-
-	      var result = key.match(_faceWeightsPattern);
-	      if (result) {
-	        var index = result[1];
-	        var value = this.faceWeights[index];
-	        return value;
-	      }
-
-	      if (key === 'kPivotKey') {
-	        return null;
-	      }
-
-	      return _get(MMDNode.prototype.__proto__ || Object.getPrototypeOf(MMDNode.prototype), 'valueForUndefinedKey', this).call(this, key);
-	    }
-
-	    /*
-	    setValueForUndefinedKey(value, key) {
-	      console.log('MMDNode.setValueForUndefinedKey: ' + key)
-	    }
-	     setValueForKeyPath(value, keyPath) {
-	      console.log('MMDNode.setValueForKeyPath: ' + keyPath)
-	      super.setValueForKeyPath(value, keyPath)
-	    }
-	    */
-
-	    /**
-	     *
-	     * @access public
-	     * @param {CAAnimation} animation -
-	     * @param {string} key -
-	     * @returns {void}
-	     */
-
-	  }, {
-	    key: 'prepareAnimationForKey',
-	    value: function prepareAnimationForKey(animation, key) {
-	      if (this.preparedAnimation === null) {
-	        this.preparedAnimation = new Map();
-	      }
-	      if (animation instanceof _jscenekit.CAAnimationGroup) {
-	        var convertedAnimation = this._convertAnimation(animation);
-	        convertedAnimation.delegate = this;
-	        this.preparedAnimation.set(key, convertedAnimation);
-	      } else {
-	        animation.delegate = this;
-	        this.preparedAnimation.set(key, animation);
-	      }
-	    }
-
-	    /**
-	     *
-	     * @access public
-	     * @param {string} key -
-	     * @returns {void}
-	     */
-
-	  }, {
-	    key: 'stopPreparedAnimationForKey',
-	    value: function stopPreparedAnimationForKey(key) {
-	      if (this.preparedAnimation === null) {
-	        return;
-	      }
-	      _get(MMDNode.prototype.__proto__ || Object.getPrototypeOf(MMDNode.prototype), 'removeAnimationForKey', this).call(this, key);
-	      //this.preparedAnimation.delete(key)
-	    }
-
-	    /**
-	     *
-	     * @access public
-	     * @param {string} key -
-	     * @returns {void}
-	     */
-
-	  }, {
-	    key: 'playPreparedAnimationForKey',
-	    value: function playPreparedAnimationForKey(key) {
-	      if (this.preparedAnimation === null) {
-	        return;
-	      }
-	      var anim = this.preparedAnimation.get(key);
-	      if (anim) {
-	        _get(MMDNode.prototype.__proto__ || Object.getPrototypeOf(MMDNode.prototype), 'addAnimationForKey', this).call(this, anim, key);
-	      }
-	    }
-
-	    /**
-	     *
-	     * @access private
-	     * @param {CAAnimationGroup} animation -
-	     * @returns {CAAnimationGroup} -
-	     */
-
-	  }, {
-	    key: '_convertAnimation',
-	    value: function _convertAnimation(animation) {
-	      var _this3 = this;
-
-	      console.log('_convertAnimation start');
-	      var geometryNode = this.childNodeWithNameRecursively('Geometry', true);
-	      var newGroup = animation.copy();
-	      newGroup.animations = [];
-
-	      var animations = animation.animations;
-	      console.log('animations');
-	      if (animations) {
-	        console.log('if(animations): true');
-	        animations.forEach(function (anim) {
-	          console.log('anim: ' + anim.keyPath);
-	          var hasEffector = false;
-	          var newAnim = anim.copy();
-
-	          if (newAnim instanceof _jscenekit.CAKeyframeAnimation) {
-	            console.log('newAnim: ' + newAnim.keyPath);
-	            var boneNameKey = newAnim.keyPath.split('.')[0];
-	            var boneName = boneNameKey.substring(1);
-	            var bone = _this3.childNodeWithNameRecursively(boneName, true);
-	            console.log('boneName: ' + boneName + ', bone: ' + bone);
-
-	            if (boneNameKey === 'morpher') {
-	              if (newAnim.keyPath.startsWith('morpher.weights.')) {
-	                var faceName = newAnim.keyPath.substring(16);
-	                var faceIndex = -1;
-
-	                // search face name from geometry node
-	                for (var i = 0; i < geometryNode.morpher.targets.length; i++) {
-	                  if (geometryNode.morpher.targets[i].name === faceName) {
-	                    faceIndex = i;
-	                    break;
-	                  }
-	                }
-
-	                if (faceIndex >= 0) {
-	                  newAnim.keyPath = '/Geometry.morpher.weights[' + faceIndex + ']';
-	                } else {
-	                  newAnim.keyPath = '//';
-	                }
-	              }
-	            } else if (bone !== null) {
-	              if (newAnim.keyPath.endsWith('.translation.x')) {
-	                for (var _i = 0; _i < newAnim.values.length; _i++) {
-	                  var origValue = newAnim.values[_i];
-	                  var newValue = origValue + bone.position.x;
-	                  newAnim.values[_i] = newValue;
-
-	                  //console.log(`convert ${newAnim.keyPath}: ${origValue} => ${newValue}`)
-	                }
-	              } else if (newAnim.keyPath.endsWith('.translation.y')) {
-	                for (var _i2 = 0; _i2 < newAnim.values.length; _i2++) {
-	                  var _origValue = newAnim.values[_i2];
-	                  var _newValue = _origValue + bone.position.y;
-	                  newAnim.values[_i2] = _newValue;
-
-	                  //console.log(`convert ${newAnim.keyPath}: ${origValue} => ${newValue}`)
-	                }
-	              } else if (newAnim.keyPath.endsWith('.translation.z')) {
-	                for (var _i3 = 0; _i3 < newAnim.values.length; _i3++) {
-	                  var _origValue2 = newAnim.values[_i3];
-	                  var _newValue2 = _origValue2 + bone.position.z;
-	                  newAnim.values[_i3] = _newValue2;
-
-	                  //console.log(`convert ${newAnim.keyPath}: ${origValue} => ${newValue}`)
-	                }
-	              }
-
-	              if (newAnim.values.length === 1) {
-	                // remove the meanless animation
-	                var value = newAnim.values[0];
-	                if (value instanceof _jscenekit.SCNVector3) {
-	                  if (value.x === 0 && value.y === 0 && value.z === 0) {
-	                    hasEffector = true;
-	                  }
-	                } else if (value instanceof _jscenekit.SCNVector4) {
-	                  if (value.x === 0 && value.y === 0 && value.z === 0) {
-	                    hasEffector = true;
-	                  }
-	                }
-	              } // newAnim.values.length === 1
-	            } // bone !== null
-	          } // newAnim instanceof CAKeyframeAnimation
-
-	          if (!hasEffector) {
-	            newGroup.animations.push(newAnim);
-	          }
-	        }); // animations.forEach
-	      } // animations
-	      console.log('_convertAnimation end');
-	      return newGroup;
-	    }
-
-	    /**
-	     *
-	     * @access public
-	     * @param {CAAnimation} animation -
-	     * @param {string} key -
-	     * @returns {void}
-	     */
-
-	  }, {
-	    key: 'addAnimationForKey',
-	    value: function addAnimationForKey(animation, key) {
-	      if (animation instanceof _jscenekit.CAAnimationGroup) {
-	        var convertedAnimation = this._convertAnimation(animation);
-	        _get(MMDNode.prototype.__proto__ || Object.getPrototypeOf(MMDNode.prototype), 'addAnimationForKey', this).call(this, convertedAnimation, key);
-	      } else {
-	        animation.delegate = this;
-	        _get(MMDNode.prototype.__proto__ || Object.getPrototypeOf(MMDNode.prototype), 'addAnimationForKey', this).call(this, animation, key);
-	      }
-	    }
-
-	    /**
-	     *
-	     * @access public
-	     * @returns {void}
-	     */
-
-	  }, {
-	    key: 'updateIK',
-	    value: function updateIK() {
-	      var _this4 = this;
-
-	      if (this.ikArray !== null) {
-	        var zeroThreshold = 0.0000001;
-	        this.ikArray.forEach(function (ik) {
-	          var ikBone = ik.ikBone;
-	          var targetBone = ik.targetBone;
-
-	          for (var i = 0; i < ik.iteration; i++) {
-	            for (var index = 0; index < ik.boneArray.length; index++) {
-	              var bone = ik.boneArray[index];
-
-	              var bonePosition = _this4._getWorldPosition(bone.presentation);
-	              var targetPosition = _this4._getWorldPosition(targetBone.presentation);
-	              var ikPosition = _this4._getWorldPosition(ikBone.presentation);
-	              //console.log(`IK it ${i} bone ${bone.name} target ${targetPosition.float32Array()} ik ${ikPosition.float32Array()}`)
-
-	              var v1 = bonePosition.sub(targetPosition);
-	              var v2 = bonePosition.sub(ikPosition);
-
-	              v1 = v1.normalize();
-	              v2 = v2.normalize();
-
-	              var diff = v1.sub(v2);
-	              var x2 = diff.x * diff.x;
-	              var y2 = diff.y * diff.y;
-	              var z2 = diff.z * diff.z;
-	              if (x2 + y2 + z2 < zeroThreshold) {
-	                break;
-	              }
-
-	              var v = v1.cross(v2);
-	              v = _this4._inverseCross(v, bone.parent.presentation.worldTransform);
-	              v = v.normalize();
-
-	              if (bone.isKnee) {
-	                if (v.x > 0) {
-	                  v.x = 1.0;
-	                } else {
-	                  v.x = -1.0;
-	                }
-	                v.y = 0;
-	                v.z = 0;
-	              }
-
-	              var innerProduct = v1.dot(v2);
-	              if (innerProduct > 1) {
-	                innerProduct = 1;
-	              } else if (innerProduct < -1) {
-	                innerProduct = -1;
-	              }
-
-	              var ikRot = 0.5 * Math.acos(innerProduct);
-	              var maxRot = ik.weight * (index + 1) * 2;
-	              if (ikRot > maxRot) {
-	                ikRot = maxRot;
-	              }
-
-	              var ikSin = Math.sin(ikRot);
-	              var ikCos = Math.cos(ikRot);
-	              var quat = new _jscenekit.SCNVector4();
-
-	              // create quaternion
-	              quat.x = v.x * ikSin;
-	              quat.y = v.y * ikSin;
-	              quat.z = v.z * ikSin;
-	              quat.w = ikCos;
-
-	              var orgQuat = _this4._rotationToQuat(bone.presentation.rotation);
-	              //console.log(`${this.name} rot ${bone.presentation.rotation.float32Array()}`)
-	              //console.log(`${this.name} orgQuat ${orgQuat.float32Array()}`)
-	              quat = quat.cross(orgQuat);
-
-	              // FIXME: don't use presentation node
-	              //bone.presentation.rotation = this._quatToRotation(quat)
-	              bone.rotation = _this4._quatToRotation(quat);
-
-	              if (bone.isKnee) {
-	                // FIXME: don't use presentation node
-	                //if(bone.presentation.eulerAngles.x < 0){
-	                if (bone.eulerAngles.x < 0) {
-	                  quat.x = -quat.x;
-	                  // FIXME: don't use presentation node
-	                  //bone.presentation.rotation = rot
-	                  bone.rotation = _this4._quatToRotation(quat);
-	                  //console.log(`${bone.name} quatToRotation ${bone.rotation.float32Array()}`)
-	                }
-	              }
-	              //console.log(`after ${this.name} rot ${bone.presentation.rotation.float32Array()}`)
-	            } // boneArray
-	          } // iteration
-	        }); // ikArray
-	      }
-	      this.updateEffector();
-	    }
-
-	    /**
-	     *
-	     * @access public
-	     * @returns {void}
-	     */
-
-	  }, {
-	    key: 'updateEffector',
-	    value: function updateEffector() {
-	      if (this.rotateEffector !== null) {
-	        var rot = this.rotateEffector.presentation.rotation;
-	        if (this.rotateEffectRate === 1.0) {
-	          // FIXME: don't use presentation node
-	          //this.presentation.rotation = rot
-	          this.rotation = rot;
-	        } else {
-	          var quat = this._rotationToQuat(rot);
-	          //console.log(`${this.name} quat ${quat.float32Array()}`)
-	          var orgQuat = this._rotationToQuat(this.presentation.rotation);
-	          //console.log(`${this.name} orgQuat ${orgQuat.float32Array()}`)
-	          //const newQuat = this.slerp(orgQuat, quat, this.rotateEffectRate)
-	          var newQuat = orgQuat.slerp(quat, this.rotateEffectRate);
-	          var newRot = this._quatToRotation(newQuat);
-	          // FIXME: don't use presentation
-	          //this.presentation.rotation = newRot
-	          this.rotation = newRot;
-	          //console.log(`${this.name} newQuat.quatToRotation ${this.rotation.float32Array()}`)
-	        }
-	      }
-	      if (this.translateEffector !== null) {
-	        var pos = this.translateEffector.presentation.position;
-	        if (this.translateEffectRate === 1.0) {
-	          // FIXME: don't use presentation node
-	          //this.presentation.position = pos
-	          this.position = pos;
-	        } else {
-	          // FIXME: don't use presentation node
-	          //this.presentation.position = pos.mul(this.translateEffectRate)
-	          this.position = pos.mul(this.translateEffectRate);
-	        }
-	      }
-	    }
-
-	    /**
-	     * 
-	     * @access public
-	     * @param {SCNScene} scene -
-	     * @returns {void}
-	     */
-
-	  }, {
-	    key: 'addPhysicsBehavior',
-	    value: function addPhysicsBehavior(scene) {
-	      if (this.joints === null) {
-	        return;
-	      }
-
-	      this.joints.forEach(function (joint) {
-	        scene.physicsWorld.addBehavior(joint);
-	      });
-	    }
-
-	    /**
-	     *
-	     * @access public
-	     * @param {SCNScene} scene -
-	     * @returns {void}
-	     */
-
-	  }, {
-	    key: 'removePhysicsBehavior',
-	    value: function removePhysicsBehavior(scene) {
-	      if (this.joints === null) {
-	        return;
-	      }
-
-	      this.joints.forEach(function (joint) {
-	        scene.physicsWorld.removeBehavior(joint);
-	      });
-	    }
-
-	    /**
-	     *
 	     * @access public
 	     * @returns {SCNNode} -
 	     */
-
-	  }, {
-	    key: 'getRootNode',
-	    value: function getRootNode() {
-	      var node = this;
-	      var parentNode = node.parent;
-	      while (parentNode !== null) {
-	        node = parentNode;
-	        parentNode = node.parent;
-	      }
-	      return node;
-	    }
-
-	    /**
-	     *
-	     * @access public
-	     * @param {string} key -
-	     * @param {string} boneName -
-	     * @returns {object} -
-	     */
-
-	  }, {
-	    key: 'getFirstFramePoseForKeyBoneName',
-	    value: function getFirstFramePoseForKeyBoneName(key, boneName) {}
-	    // TODO: implement
-
-
-	    /**
-	     *
-	     * @access public
-	     * @param {string} key -
-	     * @param {string} boneName -
-	     * @returns {object} -
-	     */
-
-	  }, {
-	    key: 'getLastFramePoseForKeyBoneName',
-	    value: function getLastFramePoseForKeyBoneName(key, boneName) {}
-	    // TODO: implement
-
-
-	    /////////////////////////
-	    // CAAnimationDelegate //
-	    /////////////////////////
-
-	    /**
-	     * @access public
-	     * @param {CAAnimation} anim -
-	     * @param {boolean} finished -
-	     * @returns {void}
-	     */
-
-	  }, {
-	    key: 'animationDidStop',
-	    value: function animationDidStop(anim, finished) {
-	      if (finished) {
-	        var block = anim.valueForKey(_MMDAnimationCompletionBlockKey);
-	        if (block) {
-	          block();
-	        }
-	      }
+	    value: function getCameraNode() {
+	      return this.cameraNode;
 	    }
 
 	    /**
 	     * @access public
-	     * @param {function} block -
-	     * @param {string} key -
-	     * @returns {void}
+	     * @returns {SCNCamera} -
 	     */
 
 	  }, {
-	    key: 'setCompletionHandler',
-	    value: function setCompletionHandler(block, key) {
-	      var anim = this.preparedAnimation.get(key);
-	      if (anim) {
-	        anim.setValueForKey(block, _MMDAnimationCompletionBlockKey);
-	      }
+	    key: 'getCamera',
+	    value: function getCamera() {
+	      return this.cameraNode.camera;
 	    }
 	  }, {
-	    key: '_getWorldPosition',
-
-
-	    /**
-	     *
-	     * @access private
-	     * @param {SCNNode} node -
-	     * @returns {SCNVector3} -
-	     */
-	    value: function _getWorldPosition() {
-	      var node = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-
-	      var m = null;
-	      if (node === null) {
-	        m = this.worldTransform;
-	      } else {
-	        m = node.worldTransform;
-	      }
-	      return new _jscenekit.SCNVector3(m.m41, m.m42, m.m43);
-	    }
-
-	    /**
-	     * @access private
-	     * @param {SCNVector3} v1 -
-	     * @param {SCNMatrix4} mat -
-	     * @param {boolean} [includeTranslation = false] -
-	     * @returns {SCNVector3} -
-	     */
-
-	  }, {
-	    key: '_inverseCross',
-	    value: function _inverseCross(v1, mat) {
-	      var includeTranslation = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
-	      var v = new _jscenekit.SCNVector3();
-
-	      v.x = v1.x * mat.m11 + v1.y * mat.m12 + v1.z * mat.m13;
-	      v.y = v1.x * mat.m21 + v1.y * mat.m22 + v1.z * mat.m23;
-	      v.z = v1.x * mat.m31 + v1.y * mat.m32 + v1.z * mat.m33;
-
-	      if (includeTranslation) {
-	        v.x += mat.m14;
-	        v.y += mat.m24;
-	        v.z += mat.m34;
-	      }
-
-	      return v;
-	    }
-	  }, {
-	    key: '_rotationToQuat',
-	    value: function _rotationToQuat(rot) {
-	      var quat = new _jscenekit.SCNVector4();
-	      if (rot.x === 0 && rot.y === 0 && rot.z === 0) {
-	        quat.x = 0;
-	        quat.y = 0;
-	        quat.z = 0;
-	        quat.w = 1.0;
-	      } else {
-	        var r = 1.0 / Math.sqrt(rot.x * rot.x + rot.y * rot.y + rot.z * rot.z);
-	        var cosW = Math.cos(rot.w);
-	        var sinW = Math.sin(rot.w) * r;
-	        quat.x = rot.x * sinW;
-	        quat.y = rot.y * sinW;
-	        quat.z = rot.z * sinW;
-	        quat.w = cosW;
-	      }
-	      return quat;
-	    }
-	  }, {
-	    key: '_quatToRotation',
-	    value: function _quatToRotation(quat) {
-	      var rot = new _jscenekit.SCNVector4();
-
-	      if (quat.x === 0 && quat.y === 0 && quat.z === 0) {
-	        rot.x = 0;
-	        rot.y = 0;
-	        rot.z = 0;
-	        rot.w = 0;
-	      } else {
-	        rot.x = quat.x;
-	        rot.y = quat.y;
-	        rot.z = quat.z;
-
-	        var qw = quat.w;
-	        if (quat.w > 1) {
-	          qw = 1;
-	        } else if (quat.w < -1) {
-	          qw = -1;
-	        }
-	        var w = Math.acos(qw);
-
-	        if (isNaN(w)) {
-	          rot.w = 0;
-	        } else {
-	          rot.w = w;
-	        }
-	      }
-
-	      return rot;
-	    }
-	  }], [{
-	    key: 'Type',
+	    key: 'rotX',
 	    get: function get() {
-	      return _MMDNodeType;
+	      //return this.rotXNode.eulerAngles.x
+	      var value = this.rotXNode.rotation.w;
+	      if (this.rotXNode.rotation.x < 0) {
+	        return -value;
+	      }
+	      return value;
+	    },
+	    set: function set(newValue) {
+	      //const euler = this.rotXNode.eulerAngles
+	      //euler.x = newValue
+	      //this.rotXNode.eulerAngles = euler
+	      this.rotXNode.rotation = new _jscenekit.SCNVector4(1, 0, 0, newValue);
+	    }
+	  }, {
+	    key: 'rotY',
+	    get: function get() {
+	      //return this.rotYNode.eulerAngles.y
+	      var value = this.rotYNode.rotation.w;
+	      if (this.rotYNode.rotation.y < 0) {
+	        return -value;
+	      }
+	      return value;
+	    },
+	    set: function set(newValue) {
+	      //const euler = this.rotYNode.eulerAngles
+	      //euler.y = newValue
+	      //this.rotYNode.eulerAngles = euler
+	      this.rotYNode.rotation = new _jscenekit.SCNVector4(0, 1, 0, newValue);
+	    }
+	  }, {
+	    key: 'rotZ',
+	    get: function get() {
+	      //return this.rotZNode.eulerAngles.z
+	      var value = this.rotZNode.rotation.w;
+	      if (this.rotZNode.rotation.z < 0) {
+	        return -value;
+	      }
+	      return value;
+	    },
+	    set: function set(newValue) {
+	      //const euler = this.rotZNode.eulerAngles
+	      //euler.z = newValue
+	      //this.rotZNode.eulerAngles = euler
+	      this.rotZNode.rotation = new _jscenekit.SCNVector4(0, 0, 1, newValue);
+	    }
+	  }, {
+	    key: 'distance',
+	    get: function get() {
+	      return this.cameraNode.position.z;
+	    },
+	    set: function set(newValue) {
+	      this.cameraNode.position.z = newValue;
+	    }
+	  }, {
+	    key: 'angle',
+	    get: function get() {
+	      return this.cameraNode.camera.yFov;
+	    },
+	    set: function set(newValue) {
+	      this.cameraNode.camera.yFov = newValue;
 	    }
 	  }]);
 
-	  return MMDNode;
-	}(_jscenekit.SCNNode);
+	  return MMDCameraNode;
+	}(_MMDNode3.default);
 
-	exports.default = MMDNode;
+	exports.default = MMDCameraNode;
 
 /***/ },
-/* 4 */
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {module.exports =
@@ -22355,7 +21413,8 @@ module.exports =
 		    value: function rotationToEulerAngles() {
 		      var euler = new _SCNVector2.default();
 		      var sinW = Math.sin(this.w);
-		      var cosWR = 1.0 - Math.cos(this.w);
+		      var cosW = Math.cos(this.w);
+		      var cosWR = 1.0 - cosW;
 		      var len2 = this.x * this.x + this.y * this.y + this.z * this.z;
 		      if (len2 === 0) {
 		        return euler;
@@ -22380,9 +21439,32 @@ module.exports =
 		        euler.y = Math.PI * 0.5;
 		        euler.z = 2.0 * Math.atan2(z * Math.sin(this.w * 0.5), Math.cos(this.w * 0.5));
 		      } else {
-		        euler.x = Math.atan2(x * sinW + y * z * cosWR, 1 - (y * y + x * x) * cosWR);
-		        euler.y = Math.asin(s);
-		        euler.z = Math.atan2(z * sinW + x * y * cosWR, 1 - (z * z + y * y) * cosWR);
+		        var m23 = x * sinW + y * z * cosWR;
+		        var m33 = cosW + z * z * cosWR;
+		        //const m33 = 1 - (y * y + x * x) * cosWR
+		        var m12 = z * sinW + x * y * cosWR;
+		        var m11 = cosW + x * x * cosWR;
+		        //const m11 = 1 - (z * z + y * y) * cosWR
+		        //euler.x = Math.atan2(x * sinW + y * z * cosWR, 1 - (y * y + x * x) * cosWR)
+		        euler.x = Math.atan2(m23, m33);
+		        euler.y = Math.asin(s
+		        //euler.z = Math.atan2(z * sinW + x * y * cosWR, 1 - (z * z + y * y) * cosWR)
+		        );euler.z = Math.atan2(m12, m11
+		        //console.log(`euler.x: ${euler.x}`)
+		        //if(m23 !== 0){
+		        //  console.log(`Math.sin(euler.x): ${Math.sin(euler.x)}`)
+		        //  console.log(`m23: ${m23}`)
+		        //  if(Math.sin(euler.x) * m23 < 0){
+		        //    euler.y = Math.PI - euler.y
+		        //  }
+		        //}else{
+		        //  console.log(`Math.cos(euler.x): ${Math.cos(euler.x)}`)
+		        //  console.log(`m33: ${m33}`)
+		        //  if(Math.cos(euler.x) * m33 < 0){
+		        //    euler.y = Math.PI - euler.y
+		        //  }
+		        //}
+		        );
 		      }
 
 		      return euler;
@@ -29397,17 +28479,24 @@ module.exports =
 
 		    /**
 		     * @access private
-		     * @returns {Promise} -
+		     * @returns {void}
 		     */
 
 		  }, {
-		    key: '_getLoadedPromise',
-		    value: function _getLoadedPromise() {
-		      if (this._loadedPromise) {
-		        return this._loadedPromise;
-		      }
+		    key: '_resetPromise',
+		    value: function _resetPromise() {
+		      this._loadedPromise = null;
+		    }
 
-		      var promises = [];
+		    /**
+		     * @access private
+		     * @returns {void}
+		     */
+
+		  }, {
+		    key: '_resetPromiseRecursively',
+		    value: function _resetPromiseRecursively() {
+		      this._resetPromise();
 		      var _iteratorNormalCompletion5 = true;
 		      var _didIteratorError5 = false;
 		      var _iteratorError5 = undefined;
@@ -29416,7 +28505,7 @@ module.exports =
 		        for (var _iterator5 = this._childNodes[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
 		          var child = _step5.value;
 
-		          promises.push(child._getLoadedPromise());
+		          child._resetPromiseRecursively();
 		        }
 		      } catch (err) {
 		        _didIteratorError5 = true;
@@ -29432,63 +28521,103 @@ module.exports =
 		          }
 		        }
 		      }
+		    }
+
+		    /**
+		     * @access private
+		     * @returns {Promise} -
+		     */
+
+		  }, {
+		    key: '_getLoadedPromise',
+		    value: function _getLoadedPromise() {
+		      if (this._loadedPromise) {
+		        return this._loadedPromise;
+		      }
+
+		      var promises = [];
+		      var _iteratorNormalCompletion6 = true;
+		      var _didIteratorError6 = false;
+		      var _iteratorError6 = undefined;
+
+		      try {
+		        for (var _iterator6 = this._childNodes[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+		          var child = _step6.value;
+
+		          promises.push(child.didLoad);
+		        }
+		      } catch (err) {
+		        _didIteratorError6 = true;
+		        _iteratorError6 = err;
+		      } finally {
+		        try {
+		          if (!_iteratorNormalCompletion6 && _iterator6.return) {
+		            _iterator6.return();
+		          }
+		        } finally {
+		          if (_didIteratorError6) {
+		            throw _iteratorError6;
+		          }
+		        }
+		      }
 
 		      if (this._particleSystems) {
-		        var _iteratorNormalCompletion6 = true;
-		        var _didIteratorError6 = false;
-		        var _iteratorError6 = undefined;
+		        var _iteratorNormalCompletion7 = true;
+		        var _didIteratorError7 = false;
+		        var _iteratorError7 = undefined;
 
 		        try {
-		          for (var _iterator6 = this._particleSystems[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-		            var system = _step6.value;
+		          for (var _iterator7 = this._particleSystems[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+		            var system = _step7.value;
 
-		            promises.push(system._getLoadedPromise());
+		            promises.push(system.didLoad);
 		          }
 		        } catch (err) {
-		          _didIteratorError6 = true;
-		          _iteratorError6 = err;
+		          _didIteratorError7 = true;
+		          _iteratorError7 = err;
 		        } finally {
 		          try {
-		            if (!_iteratorNormalCompletion6 && _iterator6.return) {
-		              _iterator6.return();
+		            if (!_iteratorNormalCompletion7 && _iterator7.return) {
+		              _iterator7.return();
 		            }
 		          } finally {
-		            if (_didIteratorError6) {
-		              throw _iteratorError6;
+		            if (_didIteratorError7) {
+		              throw _iteratorError7;
 		            }
 		          }
 		        }
 		      }
 		      if (this._geometry) {
-		        promises.push(this._geometry._getLoadedPromise());
+		        promises.push(this._geometry.didLoad);
 		      }
-		      var _iteratorNormalCompletion7 = true;
-		      var _didIteratorError7 = false;
-		      var _iteratorError7 = undefined;
+		      var _iteratorNormalCompletion8 = true;
+		      var _didIteratorError8 = false;
+		      var _iteratorError8 = undefined;
 
 		      try {
-		        for (var _iterator7 = this._audioPlayers[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-		          var player = _step7.value;
+		        for (var _iterator8 = this._audioPlayers[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
+		          var player = _step8.value;
 
-		          promises.push(player._getLoadedPromise());
+		          promises.push(player.didLoad);
 		        }
+		        //this._loadedPromise = Promise.all(promises)
+		        //return this._loadedPromise
 		      } catch (err) {
-		        _didIteratorError7 = true;
-		        _iteratorError7 = err;
+		        _didIteratorError8 = true;
+		        _iteratorError8 = err;
 		      } finally {
 		        try {
-		          if (!_iteratorNormalCompletion7 && _iterator7.return) {
-		            _iterator7.return();
+		          if (!_iteratorNormalCompletion8 && _iterator8.return) {
+		            _iterator8.return();
 		          }
 		        } finally {
-		          if (_didIteratorError7) {
-		            throw _iteratorError7;
+		          if (_didIteratorError8) {
+		            throw _iteratorError8;
 		          }
 		        }
 		      }
 
-		      this._loadedPromise = Promise.all(promises);
-		      return this._loadedPromise;
+		      return Promise.all(promises);
 		    }
 
 		    /**
@@ -29677,7 +28806,9 @@ module.exports =
 		      return this._rotation.rotationToQuat();
 		    },
 		    set: function set(newValue) {
-		      if (!(newValue instanceof _SCNVector4.default)) {
+		      //if(!(newValue instanceof SCNVector4)){
+		      if (newValue.constructor.name !== 'SCNVector4') {
+		        // FIXME: handle subclasses
 		        throw new Error('orientation must be SCNVector4');
 		      }
 
@@ -29905,43 +29036,12 @@ module.exports =
 		    key: 'actionKeys',
 		    get: function get() {
 		      var keys = [];
-		      var _iteratorNormalCompletion8 = true;
-		      var _didIteratorError8 = false;
-		      var _iteratorError8 = undefined;
-
-		      try {
-		        for (var _iterator8 = this._actions.keys()[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
-		          var key = _step8.value;
-
-		          keys.push(key);
-		        }
-		      } catch (err) {
-		        _didIteratorError8 = true;
-		        _iteratorError8 = err;
-		      } finally {
-		        try {
-		          if (!_iteratorNormalCompletion8 && _iterator8.return) {
-		            _iterator8.return();
-		          }
-		        } finally {
-		          if (_didIteratorError8) {
-		            throw _iteratorError8;
-		          }
-		        }
-		      }
-
-		      return keys;
-		    }
-		  }, {
-		    key: 'animationKeys',
-		    get: function get() {
-		      var keys = [];
 		      var _iteratorNormalCompletion9 = true;
 		      var _didIteratorError9 = false;
 		      var _iteratorError9 = undefined;
 
 		      try {
-		        for (var _iterator9 = this._animations.keys()[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
+		        for (var _iterator9 = this._actions.keys()[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
 		          var key = _step9.value;
 
 		          keys.push(key);
@@ -29957,6 +29057,37 @@ module.exports =
 		        } finally {
 		          if (_didIteratorError9) {
 		            throw _iteratorError9;
+		          }
+		        }
+		      }
+
+		      return keys;
+		    }
+		  }, {
+		    key: 'animationKeys',
+		    get: function get() {
+		      var keys = [];
+		      var _iteratorNormalCompletion10 = true;
+		      var _didIteratorError10 = false;
+		      var _iteratorError10 = undefined;
+
+		      try {
+		        for (var _iterator10 = this._animations.keys()[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
+		          var key = _step10.value;
+
+		          keys.push(key);
+		        }
+		      } catch (err) {
+		        _didIteratorError10 = true;
+		        _iteratorError10 = err;
+		      } finally {
+		        try {
+		          if (!_iteratorNormalCompletion10 && _iterator10.return) {
+		            _iterator10.return();
+		          }
+		        } finally {
+		          if (_didIteratorError10) {
+		            throw _iteratorError10;
 		          }
 		        }
 		      }
@@ -30042,13 +29173,13 @@ module.exports =
 		    key: '_loadAnimationArray',
 		    value: function _loadAnimationArray(node, animations) {
 		      //console.log('_loadAnimationArray start')
-		      var _iteratorNormalCompletion10 = true;
-		      var _didIteratorError10 = false;
-		      var _iteratorError10 = undefined;
+		      var _iteratorNormalCompletion11 = true;
+		      var _didIteratorError11 = false;
+		      var _iteratorError11 = undefined;
 
 		      try {
-		        for (var _iterator10 = Object.keys(animations)[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
-		          var animName = _step10.value;
+		        for (var _iterator11 = Object.keys(animations)[Symbol.iterator](), _step11; !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {
+		          var animName = _step11.value;
 
 		          var data = animations[animName];
 		          var animation = this._loadAnimationData(data, animName);
@@ -30056,16 +29187,16 @@ module.exports =
 		        }
 		        //console.log('_loadAnimationArray done')
 		      } catch (err) {
-		        _didIteratorError10 = true;
-		        _iteratorError10 = err;
+		        _didIteratorError11 = true;
+		        _iteratorError11 = err;
 		      } finally {
 		        try {
-		          if (!_iteratorNormalCompletion10 && _iterator10.return) {
-		            _iterator10.return();
+		          if (!_iteratorNormalCompletion11 && _iterator11.return) {
+		            _iterator11.return();
 		          }
 		        } finally {
-		          if (_didIteratorError10) {
-		            throw _iteratorError10;
+		          if (_didIteratorError11) {
+		            throw _iteratorError11;
 		          }
 		        }
 		      }
@@ -30208,13 +29339,13 @@ module.exports =
 		    key: '_loadActionArray',
 		    value: function _loadActionArray(node, actions) {
 		      //console.log('_loadActionArray start')
-		      var _iteratorNormalCompletion11 = true;
-		      var _didIteratorError11 = false;
-		      var _iteratorError11 = undefined;
+		      var _iteratorNormalCompletion12 = true;
+		      var _didIteratorError12 = false;
+		      var _iteratorError12 = undefined;
 
 		      try {
-		        for (var _iterator11 = Object.keys(actions)[Symbol.iterator](), _step11; !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {
-		          var actName = _step11.value;
+		        for (var _iterator12 = Object.keys(actions)[Symbol.iterator](), _step12; !(_iteratorNormalCompletion12 = (_step12 = _iterator12.next()).done); _iteratorNormalCompletion12 = true) {
+		          var actName = _step12.value;
 
 		          var data = actions[actName];
 		          //const action = this._loadActionData(data, actName)
@@ -30223,16 +29354,16 @@ module.exports =
 		        }
 		        //console.log('_loadAnimationArray done')
 		      } catch (err) {
-		        _didIteratorError11 = true;
-		        _iteratorError11 = err;
+		        _didIteratorError12 = true;
+		        _iteratorError12 = err;
 		      } finally {
 		        try {
-		          if (!_iteratorNormalCompletion11 && _iterator11.return) {
-		            _iterator11.return();
+		          if (!_iteratorNormalCompletion12 && _iterator12.return) {
+		            _iterator12.return();
 		          }
 		        } finally {
-		          if (_didIteratorError11) {
-		            throw _iteratorError11;
+		          if (_didIteratorError12) {
+		            throw _iteratorError12;
 		          }
 		        }
 		      }
@@ -35587,6 +34718,24 @@ module.exports =
 		     */
 		    _this.shaderModifiers = null;
 
+		    /**
+		     * @access private
+		     * @type {Map<string, SCNBindingBlock>}
+		     */
+		    _this._bindingHandler = {};
+
+		    /**
+		     * @access private
+		     * @type {Map<string, SCNBindingBlock>}
+		     */
+		    _this._unbindingHandler = {};
+
+		    /**
+		     * @access private
+		     * @type {Object}
+		     */
+		    _this._valuesForUndefinedKeys = {};
+
 		    ///////////////////
 		    // SCNAnimatable //
 		    ///////////////////
@@ -35617,7 +34766,6 @@ module.exports =
 		     */
 		    _this._loadedPromise = null;
 
-		    _this._valuesForUndefinedKeys = {};
 		    return _this;
 		  }
 
@@ -35706,6 +34854,8 @@ module.exports =
 		     */
 		    value: function handleBindingOfSymbolHandler(symbol) {
 		      var block = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+		      this._bindingHandler[symbol] = block;
 		    }
 
 		    /**
@@ -35722,6 +34872,90 @@ module.exports =
 		    key: 'handleUnbindingOfSymbolHandler',
 		    value: function handleUnbindingOfSymbolHandler(symbol) {
 		      var block = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+		      this._unbindingHandler[symbol] = block;
+		    }
+
+		    /**
+		     * @access private
+		     * @param {SCNNode} node -
+		     * @param {WebGLProgram} glProgram -
+		     * @param {WebGLRenderingContext} gl -
+		     * @param {SCNRenderer} renderer -
+		     * @returns {void}
+		     */
+
+		  }, {
+		    key: '_callBindingHandlerForNodeProgramContextRenderer',
+		    value: function _callBindingHandlerForNodeProgramContextRenderer(node, glProgram, gl, renderer) {
+		      var bindingKeys = Object.keys(this._bindingHandler);
+		      var _iteratorNormalCompletion = true;
+		      var _didIteratorError = false;
+		      var _iteratorError = undefined;
+
+		      try {
+		        for (var _iterator = bindingKeys[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+		          var key = _step.value;
+
+		          var handler = this._bindingHandler[key];
+		          var loc = gl.getUniformBlockIndex(glProgram, key);
+		          handler(glProgram, loc, node, renderer);
+		        }
+		      } catch (err) {
+		        _didIteratorError = true;
+		        _iteratorError = err;
+		      } finally {
+		        try {
+		          if (!_iteratorNormalCompletion && _iterator.return) {
+		            _iterator.return();
+		          }
+		        } finally {
+		          if (_didIteratorError) {
+		            throw _iteratorError;
+		          }
+		        }
+		      }
+		    }
+
+		    /**
+		     * @access private
+		     * @param {SCNNode} node -
+		     * @param {WebGLProgram} glProgram -
+		     * @param {WebGLRenderingContext} gl -
+		     * @param {SCNRenderer} renderer -
+		     * @returns {void}
+		     */
+
+		  }, {
+		    key: '_callUnindingHandlerForNodeProgramContextRenderer',
+		    value: function _callUnindingHandlerForNodeProgramContextRenderer(node, glProgram, gl, renderer) {
+		      var bindingKeys = Object.keys(this._unbindingHandler);
+		      var _iteratorNormalCompletion2 = true;
+		      var _didIteratorError2 = false;
+		      var _iteratorError2 = undefined;
+
+		      try {
+		        for (var _iterator2 = bindingKeys[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+		          var key = _step2.value;
+
+		          var handler = this._unbindingHandler[key];
+		          var loc = gl.getUniformBlockIndex(glProgram, key);
+		          handler(glProgram, loc, node, renderer);
+		        }
+		      } catch (err) {
+		        _didIteratorError2 = true;
+		        _iteratorError2 = err;
+		      } finally {
+		        try {
+		          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+		            _iterator2.return();
+		          }
+		        } finally {
+		          if (_didIteratorError2) {
+		            throw _iteratorError2;
+		          }
+		        }
+		      }
 		    }
 
 		    ///////////////////
@@ -35891,35 +35125,36 @@ module.exports =
 
 		      var properties = [this._ambient, this._specular, this._normal, this._reflective, this._emission, this._transparent, this._multiply, this._ambientOcclusion, this._metalness, this._roughness];
 		      var promises = [];
-		      var _iteratorNormalCompletion = true;
-		      var _didIteratorError = false;
-		      var _iteratorError = undefined;
+		      var _iteratorNormalCompletion3 = true;
+		      var _didIteratorError3 = false;
+		      var _iteratorError3 = undefined;
 
 		      try {
-		        for (var _iterator = properties[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-		          var p = _step.value;
+		        for (var _iterator3 = properties[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+		          var p = _step3.value;
 
 		          if (p) {
-		            promises.push(p._getLoadedPromise());
+		            promises.push(p.didLoad);
 		          }
 		        }
+		        //this._loadedPromise = Promise.all(promises)
+		        //return this._loadedPromise
 		      } catch (err) {
-		        _didIteratorError = true;
-		        _iteratorError = err;
+		        _didIteratorError3 = true;
+		        _iteratorError3 = err;
 		      } finally {
 		        try {
-		          if (!_iteratorNormalCompletion && _iterator.return) {
-		            _iterator.return();
+		          if (!_iteratorNormalCompletion3 && _iterator3.return) {
+		            _iterator3.return();
 		          }
 		        } finally {
-		          if (_didIteratorError) {
-		            throw _iteratorError;
+		          if (_didIteratorError3) {
+		            throw _iteratorError3;
 		          }
 		        }
 		      }
 
-		      this._loadedPromise = Promise.all(promises);
-		      return this._loadedPromise;
+		      return Promise.all(promises);
 		    }
 
 		    /**
@@ -35928,8 +35163,21 @@ module.exports =
 		     */
 
 		  }, {
-		    key: 'valueForUndefinedKey',
+		    key: 'setValueForUndefinedKey',
 
+
+		    /**
+		     * Invoked by setValue(_:forKey:) when it finds no property for a given key.
+		     * @access public
+		     * @param {?Object} value - The value for the key identified by key.
+		     * @param {string} key - A string that is not equal to the name of any of the receiver's properties.
+		     * @returns {void}
+		     * @desc Subclasses can override this method to handle the request in some other way. The default implementation raises an NSUndefinedKeyException.
+		     * @see https://developer.apple.com/documentation/objectivec/nsobject/1413490-setvalue
+		     */
+		    value: function setValueForUndefinedKey(value, key) {
+		      this._valuesForUndefinedKeys[key] = value;
+		    }
 
 		    /**
 		     * Invoked by value(forKey:) when it finds no property corresponding to a given key.
@@ -35939,6 +35187,9 @@ module.exports =
 		     * @desc Subclasses can override this method to return an alternate value for undefined keys. The default implementation raises an NSUndefinedKeyException.
 		     * @see https://developer.apple.com/documentation/objectivec/nsobject/1413457-value
 		     */
+
+		  }, {
+		    key: 'valueForUndefinedKey',
 		    value: function valueForUndefinedKey(key) {
 		      if (typeof this._valuesForUndefinedKeys[key] !== 'undefined') {
 		        return this._valuesForUndefinedKeys[key];
@@ -36110,27 +35361,27 @@ module.exports =
 		    key: 'animationKeys',
 		    get: function get() {
 		      var keys = [];
-		      var _iteratorNormalCompletion2 = true;
-		      var _didIteratorError2 = false;
-		      var _iteratorError2 = undefined;
+		      var _iteratorNormalCompletion4 = true;
+		      var _didIteratorError4 = false;
+		      var _iteratorError4 = undefined;
 
 		      try {
-		        for (var _iterator2 = this._animations.keys()[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-		          var key = _step2.value;
+		        for (var _iterator4 = this._animations.keys()[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+		          var key = _step4.value;
 
 		          keys.push(key);
 		        }
 		      } catch (err) {
-		        _didIteratorError2 = true;
-		        _iteratorError2 = err;
+		        _didIteratorError4 = true;
+		        _iteratorError4 = err;
 		      } finally {
 		        try {
-		          if (!_iteratorNormalCompletion2 && _iterator2.return) {
-		            _iterator2.return();
+		          if (!_iteratorNormalCompletion4 && _iterator4.return) {
+		            _iterator4.return();
 		          }
 		        } finally {
-		          if (_didIteratorError2) {
-		            throw _iteratorError2;
+		          if (_didIteratorError4) {
+		            throw _iteratorError4;
 		          }
 		        }
 		      }
@@ -37031,6 +36282,8 @@ module.exports =
 		  value: true
 		});
 
+		var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
 		var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 		var _NSObject2 = __webpack_require__(2);
@@ -37238,6 +36491,24 @@ module.exports =
 		     * @see https://developer.apple.com/documentation/scenekit/scnshadable/1523348-shadermodifiers
 		     */
 		    _this.shaderModifiers = null;
+
+		    /**
+		     * @access private
+		     * @type {Map<string, SCNBindingBlock>}
+		     */
+		    _this._bindingHandler = {};
+
+		    /**
+		     * @access private
+		     * @type {Map<string, SCNBindingBlock>}
+		     */
+		    _this._unbindingHandler = {};
+
+		    /**
+		     * @access private
+		     * @type {Object}
+		     */
+		    _this._valuesForUndefinedKeys = {};
 
 		    ///////////////////
 		    // SCNAnimatable //
@@ -37482,6 +36753,8 @@ module.exports =
 		    key: 'handleBindingOfSymbolHandler',
 		    value: function handleBindingOfSymbolHandler(symbol) {
 		      var block = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+		      this._bindingHandler[symbol] = block;
 		    }
 
 		    /**
@@ -37498,6 +36771,90 @@ module.exports =
 		    key: 'handleUnbindingOfSymbolHandler',
 		    value: function handleUnbindingOfSymbolHandler(symbol) {
 		      var block = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+		      this._unbindingHandler[symbol] = block;
+		    }
+
+		    /**
+		     * @access private
+		     * @param {SCNNode} node -
+		     * @param {WebGLProgram} glProgram -
+		     * @param {WebGLRenderingContext} gl -
+		     * @param {SCNRenderer} renderer -
+		     * @returns {void}
+		     */
+
+		  }, {
+		    key: '_callBindingHandlerForNodeProgramContextRenderer',
+		    value: function _callBindingHandlerForNodeProgramContextRenderer(node, glProgram, gl, renderer) {
+		      var bindingKeys = Object.keys(this._bindingHandler);
+		      var _iteratorNormalCompletion = true;
+		      var _didIteratorError = false;
+		      var _iteratorError = undefined;
+
+		      try {
+		        for (var _iterator = bindingKeys[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+		          var key = _step.value;
+
+		          var handler = this._bindingHandler[key];
+		          var loc = gl.getUniformBlockIndex(glProgram, key);
+		          handler(glProgram, loc, node, renderer);
+		        }
+		      } catch (err) {
+		        _didIteratorError = true;
+		        _iteratorError = err;
+		      } finally {
+		        try {
+		          if (!_iteratorNormalCompletion && _iterator.return) {
+		            _iterator.return();
+		          }
+		        } finally {
+		          if (_didIteratorError) {
+		            throw _iteratorError;
+		          }
+		        }
+		      }
+		    }
+
+		    /**
+		     * @access private
+		     * @param {SCNNode} node -
+		     * @param {WebGLProgram} glProgram -
+		     * @param {WebGLRenderingContext} gl -
+		     * @param {SCNRenderer} renderer -
+		     * @returns {void}
+		     */
+
+		  }, {
+		    key: '_callUnindingHandlerForNodeProgramContextRenderer',
+		    value: function _callUnindingHandlerForNodeProgramContextRenderer(node, glProgram, gl, renderer) {
+		      var bindingKeys = Object.keys(this._unbindingHandler);
+		      var _iteratorNormalCompletion2 = true;
+		      var _didIteratorError2 = false;
+		      var _iteratorError2 = undefined;
+
+		      try {
+		        for (var _iterator2 = bindingKeys[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+		          var key = _step2.value;
+
+		          var handler = this._unbindingHandler[key];
+		          var loc = gl.getUniformBlockIndex(glProgram, key);
+		          handler(glProgram, loc, node, renderer);
+		        }
+		      } catch (err) {
+		        _didIteratorError2 = true;
+		        _iteratorError2 = err;
+		      } finally {
+		        try {
+		          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+		            _iterator2.return();
+		          }
+		        } finally {
+		          if (_didIteratorError2) {
+		            throw _iteratorError2;
+		          }
+		        }
+		      }
 		    }
 
 		    ///////////////////
@@ -38080,13 +37437,13 @@ module.exports =
 		        tangent.push(new _SCNVector2.default(0, 0, 0));
 		      }
 
-		      var _iteratorNormalCompletion = true;
-		      var _didIteratorError = false;
-		      var _iteratorError = undefined;
+		      var _iteratorNormalCompletion3 = true;
+		      var _didIteratorError3 = false;
+		      var _iteratorError3 = undefined;
 
 		      try {
-		        for (var _iterator = elements[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-		          var element = _step.value;
+		        for (var _iterator3 = elements[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+		          var element = _step3.value;
 
 		          var len = element.primitiveCount;
 		          for (var _i3 = 0; _i3 < len; _i3++) {
@@ -38110,16 +37467,16 @@ module.exports =
 		          }
 		        }
 		      } catch (err) {
-		        _didIteratorError = true;
-		        _iteratorError = err;
+		        _didIteratorError3 = true;
+		        _iteratorError3 = err;
 		      } finally {
 		        try {
-		          if (!_iteratorNormalCompletion && _iterator.return) {
-		            _iterator.return();
+		          if (!_iteratorNormalCompletion3 && _iterator3.return) {
+		            _iterator3.return();
 		          }
 		        } finally {
-		          if (_didIteratorError) {
-		            throw _iteratorError;
+		          if (_didIteratorError3) {
+		            throw _iteratorError3;
 		          }
 		        }
 		      }
@@ -38304,13 +37661,13 @@ module.exports =
 		      var sources = this.getGeometrySourcesForSemantic(_SCNGeometrySource2.default.Semantic.vertex);
 		      var min = new _SCNVector2.default(Infinity, Infinity, Infinity);
 		      var max = new _SCNVector2.default(-Infinity, -Infinity, -Infinity);
-		      var _iteratorNormalCompletion2 = true;
-		      var _didIteratorError2 = false;
-		      var _iteratorError2 = undefined;
+		      var _iteratorNormalCompletion4 = true;
+		      var _didIteratorError4 = false;
+		      var _iteratorError4 = undefined;
 
 		      try {
-		        for (var _iterator2 = sources[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-		          var src = _step2.value;
+		        for (var _iterator4 = sources[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+		          var src = _step4.value;
 
 		          var result = src._createBoundingBox(transform);
 		          if (result.min.x < min.x) {
@@ -38333,16 +37690,16 @@ module.exports =
 		          }
 		        }
 		      } catch (err) {
-		        _didIteratorError2 = true;
-		        _iteratorError2 = err;
+		        _didIteratorError4 = true;
+		        _iteratorError4 = err;
 		      } finally {
 		        try {
-		          if (!_iteratorNormalCompletion2 && _iterator2.return) {
-		            _iterator2.return();
+		          if (!_iteratorNormalCompletion4 && _iterator4.return) {
+		            _iterator4.return();
 		          }
 		        } finally {
-		          if (_didIteratorError2) {
-		            throw _iteratorError2;
+		          if (_didIteratorError4) {
+		            throw _iteratorError4;
 		          }
 		        }
 		      }
@@ -38388,33 +37745,34 @@ module.exports =
 		      }
 
 		      var promises = [];
-		      var _iteratorNormalCompletion3 = true;
-		      var _didIteratorError3 = false;
-		      var _iteratorError3 = undefined;
+		      var _iteratorNormalCompletion5 = true;
+		      var _didIteratorError5 = false;
+		      var _iteratorError5 = undefined;
 
 		      try {
-		        for (var _iterator3 = this.materials[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-		          var m = _step3.value;
+		        for (var _iterator5 = this.materials[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+		          var m = _step5.value;
 
-		          promises.push(m._getLoadedPromise());
+		          promises.push(m.didLoad);
 		        }
+		        //this._loadedPromise = Promise.all(promises)
+		        //return this._loadedPromise
 		      } catch (err) {
-		        _didIteratorError3 = true;
-		        _iteratorError3 = err;
+		        _didIteratorError5 = true;
+		        _iteratorError5 = err;
 		      } finally {
 		        try {
-		          if (!_iteratorNormalCompletion3 && _iterator3.return) {
-		            _iterator3.return();
+		          if (!_iteratorNormalCompletion5 && _iterator5.return) {
+		            _iterator5.return();
 		          }
 		        } finally {
-		          if (_didIteratorError3) {
-		            throw _iteratorError3;
+		          if (_didIteratorError5) {
+		            throw _iteratorError5;
 		          }
 		        }
 		      }
 
-		      this._loadedPromise = Promise.all(promises);
-		      return this._loadedPromise;
+		      return Promise.all(promises);
 		    }
 
 		    /**
@@ -38422,6 +37780,40 @@ module.exports =
 		     * @type {Promise} -
 		     */
 
+		  }, {
+		    key: 'setValueForUndefinedKey',
+
+
+		    /**
+		     * Invoked by setValue(_:forKey:) when it finds no property for a given key.
+		     * @access public
+		     * @param {?Object} value - The value for the key identified by key.
+		     * @param {string} key - A string that is not equal to the name of any of the receiver's properties.
+		     * @returns {void}
+		     * @desc Subclasses can override this method to handle the request in some other way. The default implementation raises an NSUndefinedKeyException.
+		     * @see https://developer.apple.com/documentation/objectivec/nsobject/1413490-setvalue
+		     */
+		    value: function setValueForUndefinedKey(value, key) {
+		      this._valuesForUndefinedKeys[key] = value;
+		    }
+
+		    /**
+		     * Invoked by value(forKey:) when it finds no property corresponding to a given key.
+		     * @access public
+		     * @param {string} key - A string that is not equal to the name of any of the receiver's properties.
+		     * @returns {?Object} - 
+		     * @desc Subclasses can override this method to return an alternate value for undefined keys. The default implementation raises an NSUndefinedKeyException.
+		     * @see https://developer.apple.com/documentation/objectivec/nsobject/1413457-value
+		     */
+
+		  }, {
+		    key: 'valueForUndefinedKey',
+		    value: function valueForUndefinedKey(key) {
+		      if (typeof this._valuesForUndefinedKeys[key] !== 'undefined') {
+		        return this._valuesForUndefinedKeys[key];
+		      }
+		      return _get(SCNGeometry.prototype.__proto__ || Object.getPrototypeOf(SCNGeometry.prototype), 'valueForUndefinedKey', this).call(this, key);
+		    }
 		  }, {
 		    key: 'firstMaterial',
 		    get: function get() {
@@ -38470,27 +37862,27 @@ module.exports =
 		    key: 'animationKeys',
 		    get: function get() {
 		      var keys = [];
-		      var _iteratorNormalCompletion4 = true;
-		      var _didIteratorError4 = false;
-		      var _iteratorError4 = undefined;
+		      var _iteratorNormalCompletion6 = true;
+		      var _didIteratorError6 = false;
+		      var _iteratorError6 = undefined;
 
 		      try {
-		        for (var _iterator4 = this._animations.keys()[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-		          var key = _step4.value;
+		        for (var _iterator6 = this._animations.keys()[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+		          var key = _step6.value;
 
 		          keys.push(key);
 		        }
 		      } catch (err) {
-		        _didIteratorError4 = true;
-		        _iteratorError4 = err;
+		        _didIteratorError6 = true;
+		        _iteratorError6 = err;
 		      } finally {
 		        try {
-		          if (!_iteratorNormalCompletion4 && _iterator4.return) {
-		            _iterator4.return();
+		          if (!_iteratorNormalCompletion6 && _iterator6.return) {
+		            _iterator6.return();
 		          }
 		        } finally {
-		          if (_didIteratorError4) {
-		            throw _iteratorError4;
+		          if (_didIteratorError6) {
+		            throw _iteratorError6;
 		          }
 		        }
 		      }
@@ -50731,6 +50123,18 @@ module.exports =
 
 		    /**
 		     * @access private
+		     * @type {Map<string, NSObject}}
+		     */
+		    _this._semantics = new Map();
+
+		    /**
+		     * @access private
+		     * @type {Map<string, SCNBufferBindingBlock>[]}
+		     */
+		    _this._bufferBindings = [new Map(), new Map(), new Map()];
+
+		    /**
+		     * @access private
 		     * @type {boolean}
 		     */
 		    _this._programCompiled = false;
@@ -50787,6 +50191,8 @@ module.exports =
 		    key: 'setSemanticForSymbol',
 		    value: function setSemanticForSymbol(semantic, symbol) {
 		      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+
+		      this._semantics.set(symbol, semantic);
 		    }
 
 		    /**
@@ -50800,7 +50206,7 @@ module.exports =
 		  }, {
 		    key: 'semanticForSymbol',
 		    value: function semanticForSymbol(symbol) {
-		      return null;
+		      return this._semantics.set(symbol);
 		    }
 
 		    // Providing Input for Metal Shaders
@@ -50818,7 +50224,9 @@ module.exports =
 
 		  }, {
 		    key: 'handleBindingOfBufferNamedHandler',
-		    value: function handleBindingOfBufferNamedHandler(name, frequency, block) {}
+		    value: function handleBindingOfBufferNamedHandler(name, frequency, block) {
+		      this._bufferBindings[frequency].set(name, block);
+		    }
 		  }, {
 		    key: '_getGLProgramForContext',
 		    value: function _getGLProgramForContext(context) {
@@ -51515,7 +50923,7 @@ module.exports =
 		        });
 		      });
 		      this._loadedPromise = promise.then(function () {
-		        return _this2._scene._getLoadedPromise();
+		        return _this2._scene.didLoad;
 		      });
 		    }
 
@@ -52137,10 +51545,10 @@ module.exports =
 
 		      this._loadedPromise = this._dataLoadedPromise.then(function () {
 		        var promises = [];
-		        promises.push(_this3._rootNode._getLoadedPromise());
-		        promises.push(_this3._skyBox._getLoadedPromise());
+		        promises.push(_this3._rootNode.didLoad);
+		        promises.push(_this3._skyBox.didLoad);
 		        if (_this3._lightingEnvironment) {
-		          promises.push(_this3._lightingEnvironment._getLoadedPromise());
+		          promises.push(_this3._lightingEnvironment.didLoad);
 		        }
 		        return Promise.all(promises);
 		      });
@@ -52370,6 +51778,19 @@ module.exports =
 		    _this._url = null;
 		    _this._options = options;
 		    _this._data = data;
+
+		    /**
+		     * @access private
+		     * @type {Promise}
+		     */
+		    _this._loadedPromise = new Promise(function (resolve, reject) {
+		      _this._resolveFunction = resolve;
+		      _this._rejectFunction = reject;
+		    });
+
+		    if (data) {
+		      _this._resolveFunction();
+		    }
 		    return _this;
 		  }
 
@@ -52523,6 +51944,23 @@ module.exports =
 		     */
 
 		  }, {
+		    key: '_getLoadedPromise',
+
+
+		    /**
+		     * @access private
+		     * @returns {Promise* -
+		     */
+		    value: function _getLoadedPromise() {
+		      return this._loadedPromise;
+		    }
+
+		    /**
+		     * @access public
+		     * @type {Promise}
+		     */
+
+		  }, {
 		    key: 'url',
 		    get: function get() {
 		      return this._url;
@@ -52539,6 +51977,11 @@ module.exports =
 		    get: function get() {
 		      return this._data;
 		    }
+		  }, {
+		    key: 'didLoad',
+		    get: function get() {
+		      return this._getLoadedPromise();
+		    }
 		  }], [{
 		    key: 'sceneSourceWithDataOptions',
 		    value: function sceneSourceWithDataOptions(data, options) {
@@ -52549,7 +51992,7 @@ module.exports =
 		     * @access public
 		     * @param {string|File} url -
 		     * @param {?Map<SCNSceneSource.LoadingOption, Object>} [options = null] -
-		     * @returns {Promise} -
+		     * @returns {SCNSceneSource} -
 		     */
 
 		  }, {
@@ -52569,10 +52012,14 @@ module.exports =
 		        _options.set(_LoadingOption.assetDirectoryURLs, directory);
 		      }
 
-		      var promise = _BinaryRequest3.default.get(url).then(function (data) {
-		        return new SCNSceneSource(data, _options);
+		      var source = new SCNSceneSource();
+		      source._url = url;
+		      _BinaryRequest3.default.get(url).then(function (data) {
+		        source._data = data;
+		        source._options = _options;
+		        source._resolveFunction();
 		      });
-		      return promise;
+		      return source;
 		    }
 		  }, {
 		    key: 'AnimationImportPolicy',
@@ -53827,8 +53274,12 @@ module.exports =
 		          var materialIndex = gl.getUniformBlockIndex(p, 'materialUniform');
 		          gl.uniformBlockBinding(p, materialIndex, _materialLoc);
 		          gl.bindBufferBase(gl.UNIFORM_BUFFER, _materialLoc, geometry._materialBuffer);
+
+		          material._callBindingHandlerForNodeProgramContextRenderer(node, p, gl, this);
 		        } else {
 		          this._switchProgram(scnProgram);
+
+		          geometry._callBindingHandlerForNodeProgramContextRenderer(node, glProgram, gl, this);
 		        }
 		        var vao = geometry._vertexArrayObjects[i];
 		        var element = geometry.geometryElements[i];
@@ -55062,7 +54513,7 @@ module.exports =
 		        txt = _defaultVertexShader;
 		      }
 
-		      if (obj instanceof _SCNMaterial2.default && obj._valuesForUndefinedKeys) {
+		      if (obj._valuesForUndefinedKeys) {
 		        var keys = Object.keys(obj._valuesForUndefinedKeys);
 		        return this._replaceTexts(txt, obj._shadableHelper, keys);
 		      }
@@ -55089,7 +54540,7 @@ module.exports =
 		        txt = _defaultFragmentShader;
 		      }
 
-		      if (obj instanceof _SCNMaterial2.default && obj._valuesForUndefinedKeys) {
+		      if (obj._valuesForUndefinedKeys) {
 		        var keys = Object.keys(obj._valuesForUndefinedKeys);
 		        return this._replaceTexts(txt, obj._shadableHelper, keys);
 		      }
@@ -56718,6 +56169,10 @@ module.exports =
 		    value: function _render(gl, viewRect) {
 		      var p = this.__presentation;
 		      if (this.texture === null) {
+		        //if(this.color === null){
+		        //  return
+		        //}
+		        //this.texture = this._createTextureFromColor()
 		        return;
 		      }
 		      if (this.texture._glTexture === null) {
@@ -62037,26 +61492,30 @@ module.exports =
 		        _this._mouseIsDown = false;
 		        var ev = _this._createEvent(e);
 		        _this.mouseUpWith(ev);
+		        _this._preventDefault(ev);
 		      }
 		    });
 		    this._canvas.addEventListener('mouseover', function (e) {
 		      var ev = _this._createEvent(e);
-		      _this.mouseEnteredWith(ev);
+		      _this._preventDefault(ev);
 		    });
 		    this._canvas.addEventListener('mouseout', function (e) {
 		      var ev = _this._createEvent(e);
 		      _this.mouseExitedWith(ev);
+		      _this._preventDefault(ev);
 		    });
 		    this._canvas.addEventListener('mousewheel', function (e) {
 		      var ev = _this._createEvent(e);
 		      _this.scrollWheelWith(ev);
+		      _this._preventDefault(ev);
 		    });
 
 		    this._canvas.addEventListener('keydown', function (e) {
 		      //const ev = this._createEvent(e)
 		      var ev = {
 		        keyCode: 0,
-		        isARepeat: false
+		        isARepeat: false,
+		        _doDefaultAction: false
 		      };
 		      if (_KeyCode.has(e.code)) {
 		        ev.keyCode = _KeyCode.get(e.code);
@@ -62069,12 +61528,14 @@ module.exports =
 		      }
 
 		      _this.keyDownWith(ev);
+		      _this._preventDefault(ev);
 		    });
 		    this._canvas.addEventListener('keyup', function (e) {
 		      //const ev = this._createEvent(e)
 		      var ev = {
 		        keyCode: 0,
-		        isARepeat: false
+		        isARepeat: false,
+		        _doDefaultAction: false
 		      };
 		      if (_KeyCode.has(e.code)) {
 		        ev.keyCode = _KeyCode.get(e.code);
@@ -62083,6 +61544,7 @@ module.exports =
 		      }
 
 		      _this.keyUpWith(ev);
+		      _this._preventDefault(ev);
 		    });
 		  }
 
@@ -62899,7 +62361,15 @@ module.exports =
 		    value: function _createEvent(e) {
 		      // TODO: implement
 		      e.locationInWindow = new _CGPoint2.default(e.clientX, e.clientY);
+		      e._doDefaultAction = false;
 		      return e;
+		    }
+		  }, {
+		    key: '_preventDefault',
+		    value: function _preventDefault(e) {
+		      if (!e._doDefaultAction) {
+		        e.preventDefault();
+		      }
 		    }
 
 		    /**
@@ -62910,7 +62380,9 @@ module.exports =
 
 		  }, {
 		    key: 'mouseDownWith',
-		    value: function mouseDownWith(theEvent) {}
+		    value: function mouseDownWith(theEvent) {
+		      theEvent._doDefaultAction = true;
+		    }
 
 		    /**
 		     * @access public
@@ -62920,7 +62392,9 @@ module.exports =
 
 		  }, {
 		    key: 'mouseDraggedWith',
-		    value: function mouseDraggedWith(theEvent) {}
+		    value: function mouseDraggedWith(theEvent) {
+		      theEvent._doDefaultAction = true;
+		    }
 
 		    /**
 		     * @access public
@@ -62930,7 +62404,9 @@ module.exports =
 
 		  }, {
 		    key: 'mouseUpWith',
-		    value: function mouseUpWith(theEvent) {}
+		    value: function mouseUpWith(theEvent) {
+		      theEvent._doDefaultAction = true;
+		    }
 
 		    /**
 		     * @access public
@@ -62940,7 +62416,9 @@ module.exports =
 
 		  }, {
 		    key: 'mouseMovedWith',
-		    value: function mouseMovedWith(theEvent) {}
+		    value: function mouseMovedWith(theEvent) {
+		      theEvent._doDefaultAction = true;
+		    }
 
 		    /**
 		     * @access public
@@ -62950,7 +62428,9 @@ module.exports =
 
 		  }, {
 		    key: 'mouseEnteredWith',
-		    value: function mouseEnteredWith(theEvent) {}
+		    value: function mouseEnteredWith(theEvent) {
+		      theEvent._doDefaultAction = true;
+		    }
 
 		    /**
 		     * @access public
@@ -62960,7 +62440,9 @@ module.exports =
 
 		  }, {
 		    key: 'mouseExitedWith',
-		    value: function mouseExitedWith(theEvent) {}
+		    value: function mouseExitedWith(theEvent) {
+		      theEvent._doDefaultAction = true;
+		    }
 
 		    /**
 		     * @access public
@@ -62970,7 +62452,9 @@ module.exports =
 
 		  }, {
 		    key: 'rightMouseDraggedWith',
-		    value: function rightMouseDraggedWith(theEvent) {}
+		    value: function rightMouseDraggedWith(theEvent) {
+		      theEvent._doDefaultAction = true;
+		    }
 
 		    /**
 		     * @access public
@@ -62980,7 +62464,9 @@ module.exports =
 
 		  }, {
 		    key: 'rightMouseUpWith',
-		    value: function rightMouseUpWith(theEvent) {}
+		    value: function rightMouseUpWith(theEvent) {
+		      theEvent._doDefaultAction = true;
+		    }
 
 		    /**
 		     * @access public
@@ -62990,7 +62476,9 @@ module.exports =
 
 		  }, {
 		    key: 'otherMouseDownWith',
-		    value: function otherMouseDownWith(theEvent) {}
+		    value: function otherMouseDownWith(theEvent) {
+		      theEvent._doDefaultAction = true;
+		    }
 
 		    /**
 		     * @access public
@@ -63000,7 +62488,9 @@ module.exports =
 
 		  }, {
 		    key: 'otherMouseDraggedWith',
-		    value: function otherMouseDraggedWith(theEvent) {}
+		    value: function otherMouseDraggedWith(theEvent) {
+		      theEvent._doDefaultAction = true;
+		    }
 
 		    /**
 		     * @access public
@@ -63010,7 +62500,9 @@ module.exports =
 
 		  }, {
 		    key: 'otherMouseUpWith',
-		    value: function otherMouseUpWith(theEvent) {}
+		    value: function otherMouseUpWith(theEvent) {
+		      theEvent._doDefaultAction = true;
+		    }
 
 		    /**
 		     * @access public
@@ -63020,7 +62512,9 @@ module.exports =
 
 		  }, {
 		    key: 'scrollWheelWith',
-		    value: function scrollWheelWith(theEvent) {}
+		    value: function scrollWheelWith(theEvent) {
+		      theEvent._doDefaultAction = true;
+		    }
 
 		    /**
 		     * @access public
@@ -63030,7 +62524,9 @@ module.exports =
 
 		  }, {
 		    key: 'keyDownWith',
-		    value: function keyDownWith(theEvent) {}
+		    value: function keyDownWith(theEvent) {
+		      theEvent._doDefaultAction = true;
+		    }
 
 		    /**
 		     * @access public
@@ -63040,7 +62536,9 @@ module.exports =
 
 		  }, {
 		    key: 'keyUpWith',
-		    value: function keyUpWith(theEvent) {}
+		    value: function keyUpWith(theEvent) {
+		      theEvent._doDefaultAction = true;
+		    }
 
 		    /**
 		     * @access public
@@ -68757,10 +68255,10 @@ module.exports =
 
 	/***/ }
 	/******/ ]);
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4).Buffer))
 
 /***/ },
-/* 5 */
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/*!
@@ -68773,9 +68271,9 @@ module.exports =
 
 	'use strict'
 
-	var base64 = __webpack_require__(6)
-	var ieee754 = __webpack_require__(7)
-	var isArray = __webpack_require__(8)
+	var base64 = __webpack_require__(5)
+	var ieee754 = __webpack_require__(6)
+	var isArray = __webpack_require__(7)
 
 	exports.Buffer = Buffer
 	exports.SlowBuffer = SlowBuffer
@@ -70556,7 +70054,7 @@ module.exports =
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 6 */
+/* 5 */
 /***/ function(module, exports) {
 
 	'use strict'
@@ -70676,7 +70174,7 @@ module.exports =
 
 
 /***/ },
-/* 7 */
+/* 6 */
 /***/ function(module, exports) {
 
 	exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -70766,7 +70264,7 @@ module.exports =
 
 
 /***/ },
-/* 8 */
+/* 7 */
 /***/ function(module, exports) {
 
 	var toString = {}.toString;
@@ -70777,7 +70275,1064 @@ module.exports =
 
 
 /***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _jscenekit = __webpack_require__(3);
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _MMDNodeType = {
+	  rotate: Symbol(),
+	  rotateTranslate: Symbol(),
+	  ik: Symbol(),
+	  unknown: Symbol(),
+	  ikChild: Symbol(),
+	  rotateChild: Symbol(),
+	  ikTarget: Symbol(),
+	  hidden: Symbol(),
+	  twist: Symbol(),
+	  roll: Symbol()
+	};
+
+	var _MMDAnimationCompletionBlockKey = 'MMDAnimationCompletionBlockKey';
+	var _faceWeightsPattern = /faceWeights\[(\d+)\]/;
+
+	var DummyNode = function (_NSObject) {
+	  _inherits(DummyNode, _NSObject);
+
+	  function DummyNode() {
+	    _classCallCheck(this, DummyNode);
+
+	    return _possibleConstructorReturn(this, (DummyNode.__proto__ || Object.getPrototypeOf(DummyNode)).apply(this, arguments));
+	  }
+
+	  _createClass(DummyNode, [{
+	    key: 'valueForUndefinedKey',
+	    value: function valueForUndefinedKey(key) {
+	      return this;
+	    }
+	  }]);
+
+	  return DummyNode;
+	}(_jscenekit.NSObject);
+
+	var _dummyNode = new DummyNode();
+
+	/**
+	 *
+	 * @access public
+	 * @extends {SCNNode}
+	 * @implements {CAAnimationDelegate}
+	 */
+
+	var MMDNode = function (_SCNNode) {
+	  _inherits(MMDNode, _SCNNode);
+
+	  /**
+	   *
+	   * @access public
+	   * @param {MMDNode} mmdNode -
+	   * @constructor
+	   */
+	  function MMDNode() {
+	    var mmdNode = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+	    _classCallCheck(this, MMDNode);
+
+	    /**
+	     *
+	     * @type {SCNPhysicsBehaviors[]}
+	     */
+	    var _this2 = _possibleConstructorReturn(this, (MMDNode.__proto__ || Object.getPrototypeOf(MMDNode)).call(this));
+
+	    _this2.physicsBehaviors = [];
+
+	    /**
+	     *
+	     * @type {Symbol}
+	     */
+	    _this2.type = MMDNode.Type.unknown;
+
+	    /**
+	     *
+	     * @type {boolean}
+	     */
+	    _this2.isKnee = false;
+
+	    /**
+	     *
+	     * @type {MMDIKConstraint}
+	     */
+	    _this2.ikConstraint = null;
+
+	    /**
+	     *
+	     * @type {MMDIKConstraint[]}
+	     */
+	    _this2.ikArray = null;
+
+	    /**
+	     *
+	     * @type {SCNPhysicsBehavior[]}
+	     */
+	    _this2.joints = null;
+
+	    /**
+	     *
+	     * @type {number}
+	     */
+	    _this2.vertexCount = 0;
+
+	    /**
+	     *
+	     * @type {number[]}
+	     */
+	    _this2.vertexArray = null;
+
+	    /**
+	     *
+	     * @type {number[]}
+	     */
+	    _this2.normalArray = null;
+
+	    /**
+	     *
+	     * @type {number[]}
+	     */
+	    _this2.texcoordArray = null;
+
+	    /**
+	     *
+	     * @type {number[]}
+	     */
+	    _this2.boneIndicesArray = null;
+
+	    /**
+	     *
+	     * @type {number[]}
+	     */
+	    _this2.boneWeightsArray = null;
+
+	    /**
+	     *
+	     * @type {number}
+	     */
+	    _this2.indexCount = 0;
+
+	    /**
+	     *
+	     * @type {number[]}
+	     */
+	    _this2.indexArray = null;
+
+	    /**
+	     *
+	     * @type {number}
+	     */
+	    _this2.materialCount = 0;
+
+	    /**
+	     *
+	     * @type {SCNMaterial[]}
+	     */
+	    _this2.materialArray = null;
+
+	    /**
+	     *
+	     * @type {number[]}
+	     */
+	    _this2.materialIndexCountArray = null;
+
+	    /**
+	     *
+	     * @type {?SCNGeometryElement[]}
+	     */
+	    _this2.elementArray = null;
+
+	    /**
+	     *
+	     * @type {MMDNode[]}
+	     */
+	    _this2.boneArray = null;
+
+	    /**
+	     *
+	     * @type {SCNMatrix4[]}
+	     */
+	    _this2.boneInverseMatrixArray = null;
+
+	    /**
+	     *
+	     * @type {MMDNode}
+	     */
+	    _this2.rootBone = null;
+
+	    /**
+	     *
+	     * @type {?MMDNode}
+	     */
+	    _this2.rotateEffector = null;
+
+	    /**
+	     *
+	     * @type {number}
+	     */
+	    _this2.rotateEffectRate = 0;
+
+	    /**
+	     *
+	     * @type {?MMDNode}
+	     */
+	    _this2.translateEffector = null;
+
+	    /**
+	     *
+	     * @type {number}
+	     */
+	    _this2.translateEffectRate = 0;
+
+	    /**
+	     *
+	     * @type {?number[]}
+	     */
+	    _this2.faceIndexArray = null;
+
+	    /**
+	     *
+	     * @type {?number[][]}
+	     */
+	    _this2.faceDataArray = null;
+
+	    /**
+	     *
+	     * @type {number[]}
+	     */
+	    _this2.faceWeights = null;
+
+	    /**
+	     *
+	     * @type {SCNMorpher}
+	     */
+	    _this2.geometryMorpher = null;
+
+	    /**
+	     *
+	     * @type {?Map}
+	     */
+	    _this2.preparedAnimation = null;
+
+	    if (mmdNode !== null) {
+	      _this2.copySCNNodeValues(mmdNode);
+	      _this2.copyValues(mmdNode);
+	    }
+	    return _this2;
+	  }
+
+	  /**
+	   *
+	   * @access public
+	   * @returns {MMDNode} -
+	   */
+
+
+	  _createClass(MMDNode, [{
+	    key: 'clone',
+	    value: function clone() {
+	      //console.log('MMDNode.clone() ' + this.name)
+	      var newNode = _get(MMDNode.prototype.__proto__ || Object.getPrototypeOf(MMDNode.prototype), 'clone', this).call(this);
+	      // TODO: copy values of SCNNode
+	      this.copyValuesRecursive(this, newNode);
+
+	      return newNode;
+	    }
+
+	    /*
+	    copy() {
+	      return this.clone()
+	    }
+	    */
+
+	    /**
+	     *
+	     * @access public
+	     * @param {SCNNode} node -
+	     * @returns {void}
+	     */
+
+	  }, {
+	    key: 'copySCNNodeValues',
+	    value: function copySCNNodeValues(node) {
+	      this.name = node.name;
+	      this.light = node.light;
+	      this.camera = node.camera;
+	      this.geometry = node.geometry;
+	      this.morpher = node.morpher;
+	      this.skinner = node.skinner;
+	      this.categoryBitMask = node.categoryBitMask;
+	      this.isPaused = node.isPaused;
+	      this.transform = node.transform;
+	      this.constraints = node.constraints ? node.constraints.slice() : null;
+	      this.isHidden = node.isHidden;
+	      this.opacity = node.opacity;
+	      this.renderingOrder = node.renderingOrder;
+	      this.castsShadow = node.castsShadow;
+	      this.movabilityHint = node.movabilityHint;
+	      this.filters = node.filters ? node.filters.slice() : null;
+	      this.rendererDelegate = node.rendererDelegate;
+
+	      if (node.physicsBody) {
+	        var body = node.physicsBody;
+	        var newBody = null;
+	        switch (body.type) {
+	          case _jscenekit.SCNPhysicsBody.Type.static:
+	            newBody = _jscenekit.SCNPhysicsBody.static();
+	            break;
+	          case _jscenekit.SCNPhysicsBody.Type.dynamic:
+	            newBody = _jscenekit.SCNPhysicsBody.dynamic();
+	            break;
+	          case _jscenekit.SCNPhysicsBody.Type.kinematic:
+	            newBody = _jscenekit.SCNPhysicsBody.kinematic();
+	            break;
+	          default:
+	            throw new Error('unknown physics body type: ' + body.type);
+	        }
+	        newBody.physicsShape = body.physicsShape;
+	        newBody.velocityFactor = body.velocityFactor;
+	        newBody.angularVelocityFactor = body.angularVelocityFactor;
+	        newBody.isAffectedByGravity = body.isAffectedByGravity;
+	        newBody.mass = body.mass;
+	        newBody.charge = body.charge;
+	        newBody.friction = body.friction;
+	        newBody.rollingFriction = body.rollingFriction;
+	        newBody.restitution = body.restitution;
+	        newBody.damping = body.damping;
+	        newBody.angularDamping = body.angularDamping;
+	        newBody.momentOfInertia = body.momentOfInertia;
+	        newBody.usesDefaultMomentOfInertia = body.usesDefaultMomentOfInertia;
+	        newBody.cateogryBitMask = body.categoryBitMask;
+	        newBody.contactTestBitMask = body.contactTestBitMask;
+	        newBody.collisionBitMask = body.collisionBitMask;
+	        newBody.velocity = body.velocity;
+	        newBody.angularVelocity = body.angularVelocity;
+	        newBody.allowsResting = body.allowsResting;
+
+	        this.physicsBody = newBody;
+	      }
+
+	      this.physicsField = node.physicsField;
+	    }
+
+	    /**
+	     *
+	     * @access public
+	     * @param {MMDNode} node -
+	     * @returns {void}
+	     */
+
+	  }, {
+	    key: 'copyValues',
+	    value: function copyValues(node) {
+	      this.physicsBehaviors = node.physicsBehaviors; // [SCNPhysicsBehavior]
+	      this.type = node.type;
+	      this.isKnee = node.isKnee;
+	      this.ikConstraint = node.ikConstraint; // MMDIKConstraint
+	      this.ikArray = node.ikArray; // [MMDIKConstraint]
+	      this.joints = node.joints; // [SCNPhysicsBehavior]
+	      this.vertexCount = node.vertexCount;
+	      this.vertexArray = node.vertexArray;
+	      this.normalArray = node.normalArray;
+	      this.texcoordArray = node.texcoordArray;
+	      this.boneIndicesArray = node.boneIndicesArray;
+	      this.boneWeightsArray = node.boneWeightsArray;
+	      this.indexCount = node.indexCount;
+	      this.indexArray = node.indexArray;
+	      this.materialCount = node.materialCount;
+	      this.materialArray = node.materialArray; // [SCNMaterial]
+	      this.materialIndexCountArray = node.materialIndexCountArray;
+	      this.elementArray = node.elementArray; // [SCNGeometryElement]
+	      this.boneArray = node.boneArray; // [MMDNode]
+	      this.boneInverseMatrixArray = node.boneInverseMatrixArray;
+	      this.rootBone = node.rootBone; // MMDNode
+
+	      this.rotateEffector = node.rotateEffector; // MMDNode
+	      this.rotateEffectRate = node.rotateEffectRate;
+	      this.translateEffector = node.translateEffector; // MMDNode
+	      this.translateEffectRate = node.translateEffectRate;
+
+	      this.faceIndexArray = node.faceIndexArray;
+	      this.faceDataArray = node.faceDataArray;
+	      this.faceWeights = node.faceWeights;
+	      this.geometryMorpher = node.geometryMorpher; // SCNMorpher
+
+	      this.preparedAnimation = node.preparedAnimation;
+	    }
+
+	    /**
+	     *
+	     * @access public
+	     * @param {SCNNode} src -
+	     * @param {SCNNode} dst -
+	     * @returns {void}
+	     */
+
+	  }, {
+	    key: 'copyValuesRecursive',
+	    value: function copyValuesRecursive(src, dst) {
+	      if (src instanceof MMDNode) {
+	        if (dst instanceof MMDNode) {
+	          dst.copyValues(src);
+	        }
+	      }
+
+	      for (var i = 0; i < src.childNodes.length; i++) {
+	        this.copyValuesRecursive(src.childNodes[i], dst.childNodes[i]);
+	      }
+	    }
+	  }, {
+	    key: 'valueForUndefinedKey',
+	    value: function valueForUndefinedKey(key) {
+	      //console.log('MMDNode.valueForUndefinedKey: ' + key)
+	      if (key.startsWith('/')) {
+	        var searchKey = key.substring(1);
+	        var node = this.childNodeWithNameRecursively(searchKey, true);
+	        if (node) {
+	          return node;
+	        }
+
+	        //console.warn(`valueForUndefinedKey ${key} not found.`)
+	        return _dummyNode;
+	      }
+
+	      var result = key.match(_faceWeightsPattern);
+	      if (result) {
+	        var index = result[1];
+	        var value = this.faceWeights[index];
+	        return value;
+	      }
+
+	      if (key === 'kPivotKey') {
+	        return null;
+	      }
+
+	      return _get(MMDNode.prototype.__proto__ || Object.getPrototypeOf(MMDNode.prototype), 'valueForUndefinedKey', this).call(this, key);
+	    }
+
+	    /*
+	    setValueForUndefinedKey(value, key) {
+	      console.log('MMDNode.setValueForUndefinedKey: ' + key)
+	    }
+	     setValueForKeyPath(value, keyPath) {
+	      console.log('MMDNode.setValueForKeyPath: ' + keyPath)
+	      super.setValueForKeyPath(value, keyPath)
+	    }
+	    */
+
+	    /**
+	     *
+	     * @access public
+	     * @param {CAAnimation} animation -
+	     * @param {string} key -
+	     * @returns {void}
+	     */
+
+	  }, {
+	    key: 'prepareAnimationForKey',
+	    value: function prepareAnimationForKey(animation, key) {
+	      if (this.preparedAnimation === null) {
+	        this.preparedAnimation = new Map();
+	      }
+	      if (animation instanceof _jscenekit.CAAnimationGroup) {
+	        var convertedAnimation = this._convertAnimation(animation);
+	        convertedAnimation.delegate = this;
+	        this.preparedAnimation.set(key, convertedAnimation);
+	      } else {
+	        animation.delegate = this;
+	        this.preparedAnimation.set(key, animation);
+	      }
+	    }
+
+	    /**
+	     *
+	     * @access public
+	     * @param {string} key -
+	     * @returns {void}
+	     */
+
+	  }, {
+	    key: 'stopPreparedAnimationForKey',
+	    value: function stopPreparedAnimationForKey(key) {
+	      if (this.preparedAnimation === null) {
+	        return;
+	      }
+	      _get(MMDNode.prototype.__proto__ || Object.getPrototypeOf(MMDNode.prototype), 'removeAnimationForKey', this).call(this, key);
+	      //this.preparedAnimation.delete(key)
+	    }
+
+	    /**
+	     *
+	     * @access public
+	     * @param {string} key -
+	     * @returns {void}
+	     */
+
+	  }, {
+	    key: 'playPreparedAnimationForKey',
+	    value: function playPreparedAnimationForKey(key) {
+	      if (this.preparedAnimation === null) {
+	        return;
+	      }
+	      var anim = this.preparedAnimation.get(key);
+	      if (anim) {
+	        _get(MMDNode.prototype.__proto__ || Object.getPrototypeOf(MMDNode.prototype), 'addAnimationForKey', this).call(this, anim, key);
+	      }
+	    }
+
+	    /**
+	     *
+	     * @access private
+	     * @param {CAAnimationGroup} animation -
+	     * @returns {CAAnimationGroup} -
+	     */
+
+	  }, {
+	    key: '_convertAnimation',
+	    value: function _convertAnimation(animation) {
+	      var _this3 = this;
+
+	      console.log('_convertAnimation start');
+	      var geometryNode = this.childNodeWithNameRecursively('Geometry', true);
+	      var newGroup = animation.copy();
+	      newGroup.animations = [];
+
+	      var animations = animation.animations;
+	      console.log('animations');
+	      if (animations) {
+	        console.log('if(animations): true');
+	        animations.forEach(function (anim) {
+	          console.log('anim: ' + anim.keyPath);
+	          var hasEffector = false;
+	          var newAnim = anim.copy();
+
+	          if (newAnim instanceof _jscenekit.CAKeyframeAnimation) {
+	            console.log('newAnim: ' + newAnim.keyPath);
+	            var boneNameKey = newAnim.keyPath.split('.')[0];
+	            var boneName = boneNameKey.substring(1);
+	            var bone = _this3.childNodeWithNameRecursively(boneName, true);
+	            console.log('boneName: ' + boneName + ', bone: ' + bone);
+
+	            if (boneNameKey === 'morpher') {
+	              if (newAnim.keyPath.startsWith('morpher.weights.')) {
+	                var faceName = newAnim.keyPath.substring(16);
+	                var faceIndex = -1;
+
+	                // search face name from geometry node
+	                for (var i = 0; i < geometryNode.morpher.targets.length; i++) {
+	                  if (geometryNode.morpher.targets[i].name === faceName) {
+	                    faceIndex = i;
+	                    break;
+	                  }
+	                }
+
+	                if (faceIndex >= 0) {
+	                  newAnim.keyPath = '/Geometry.morpher.weights[' + faceIndex + ']';
+	                } else {
+	                  newAnim.keyPath = '//';
+	                }
+	              }
+	            } else if (bone !== null) {
+	              if (newAnim.keyPath.endsWith('.translation.x')) {
+	                for (var _i = 0; _i < newAnim.values.length; _i++) {
+	                  var origValue = newAnim.values[_i];
+	                  var newValue = origValue + bone.position.x;
+	                  newAnim.values[_i] = newValue;
+
+	                  //console.log(`convert ${newAnim.keyPath}: ${origValue} => ${newValue}`)
+	                }
+	              } else if (newAnim.keyPath.endsWith('.translation.y')) {
+	                for (var _i2 = 0; _i2 < newAnim.values.length; _i2++) {
+	                  var _origValue = newAnim.values[_i2];
+	                  var _newValue = _origValue + bone.position.y;
+	                  newAnim.values[_i2] = _newValue;
+
+	                  //console.log(`convert ${newAnim.keyPath}: ${origValue} => ${newValue}`)
+	                }
+	              } else if (newAnim.keyPath.endsWith('.translation.z')) {
+	                for (var _i3 = 0; _i3 < newAnim.values.length; _i3++) {
+	                  var _origValue2 = newAnim.values[_i3];
+	                  var _newValue2 = _origValue2 + bone.position.z;
+	                  newAnim.values[_i3] = _newValue2;
+
+	                  //console.log(`convert ${newAnim.keyPath}: ${origValue} => ${newValue}`)
+	                }
+	              }
+
+	              if (newAnim.values.length === 1) {
+	                // remove the meanless animation
+	                var value = newAnim.values[0];
+	                if (value instanceof _jscenekit.SCNVector3) {
+	                  if (value.x === 0 && value.y === 0 && value.z === 0) {
+	                    hasEffector = true;
+	                  }
+	                } else if (value instanceof _jscenekit.SCNVector4) {
+	                  if (value.x === 0 && value.y === 0 && value.z === 0) {
+	                    hasEffector = true;
+	                  }
+	                }
+	              } // newAnim.values.length === 1
+	            } // bone !== null
+	          } // newAnim instanceof CAKeyframeAnimation
+
+	          if (!hasEffector) {
+	            newGroup.animations.push(newAnim);
+	          }
+	        }); // animations.forEach
+	      } // animations
+	      console.log('_convertAnimation end');
+	      return newGroup;
+	    }
+
+	    /**
+	     *
+	     * @access public
+	     * @param {CAAnimation} animation -
+	     * @param {string} key -
+	     * @returns {void}
+	     */
+
+	  }, {
+	    key: 'addAnimationForKey',
+	    value: function addAnimationForKey(animation, key) {
+	      if (animation instanceof _jscenekit.CAAnimationGroup) {
+	        var convertedAnimation = this._convertAnimation(animation);
+	        _get(MMDNode.prototype.__proto__ || Object.getPrototypeOf(MMDNode.prototype), 'addAnimationForKey', this).call(this, convertedAnimation, key);
+	      } else {
+	        animation.delegate = this;
+	        _get(MMDNode.prototype.__proto__ || Object.getPrototypeOf(MMDNode.prototype), 'addAnimationForKey', this).call(this, animation, key);
+	      }
+	    }
+
+	    /**
+	     *
+	     * @access public
+	     * @returns {void}
+	     */
+
+	  }, {
+	    key: 'updateIK',
+	    value: function updateIK() {
+	      var _this4 = this;
+
+	      if (this.ikArray !== null) {
+	        var zeroThreshold = 0.0000001;
+	        this.ikArray.forEach(function (ik) {
+	          var ikBone = ik.ikBone;
+	          var targetBone = ik.targetBone;
+
+	          for (var i = 0; i < ik.iteration; i++) {
+	            for (var index = 0; index < ik.boneArray.length; index++) {
+	              var bone = ik.boneArray[index];
+
+	              var bonePosition = _this4._getWorldPosition(bone.presentation);
+	              var targetPosition = _this4._getWorldPosition(targetBone.presentation);
+	              var ikPosition = _this4._getWorldPosition(ikBone.presentation);
+	              //console.log(`IK it ${i} bone ${bone.name} target ${targetPosition.float32Array()} ik ${ikPosition.float32Array()}`)
+
+	              var v1 = bonePosition.sub(targetPosition);
+	              var v2 = bonePosition.sub(ikPosition);
+
+	              v1 = v1.normalize();
+	              v2 = v2.normalize();
+
+	              var diff = v1.sub(v2);
+	              var x2 = diff.x * diff.x;
+	              var y2 = diff.y * diff.y;
+	              var z2 = diff.z * diff.z;
+	              if (x2 + y2 + z2 < zeroThreshold) {
+	                break;
+	              }
+
+	              var v = v1.cross(v2);
+	              v = _this4._inverseCross(v, bone.parent.presentation.worldTransform);
+	              v = v.normalize();
+
+	              if (bone.isKnee) {
+	                if (v.x > 0) {
+	                  v.x = 1.0;
+	                } else {
+	                  v.x = -1.0;
+	                }
+	                v.y = 0;
+	                v.z = 0;
+	              }
+
+	              var innerProduct = v1.dot(v2);
+	              if (innerProduct > 1) {
+	                innerProduct = 1;
+	              } else if (innerProduct < -1) {
+	                innerProduct = -1;
+	              }
+
+	              var ikRot = 0.5 * Math.acos(innerProduct);
+	              var maxRot = ik.weight * (index + 1) * 2;
+	              if (ikRot > maxRot) {
+	                ikRot = maxRot;
+	              }
+
+	              var ikSin = Math.sin(ikRot);
+	              var ikCos = Math.cos(ikRot);
+	              var quat = new _jscenekit.SCNVector4();
+
+	              // create quaternion
+	              quat.x = v.x * ikSin;
+	              quat.y = v.y * ikSin;
+	              quat.z = v.z * ikSin;
+	              quat.w = ikCos;
+
+	              var orgQuat = _this4._rotationToQuat(bone.presentation.rotation);
+	              //console.log(`${this.name} rot ${bone.presentation.rotation.float32Array()}`)
+	              //console.log(`${this.name} orgQuat ${orgQuat.float32Array()}`)
+	              quat = quat.cross(orgQuat);
+
+	              // FIXME: don't use presentation node
+	              //bone.presentation.rotation = this._quatToRotation(quat)
+	              bone.rotation = _this4._quatToRotation(quat);
+
+	              if (bone.isKnee) {
+	                // FIXME: don't use presentation node
+	                //if(bone.presentation.eulerAngles.x < 0){
+	                if (bone.eulerAngles.x < 0) {
+	                  quat.x = -quat.x;
+	                  // FIXME: don't use presentation node
+	                  //bone.presentation.rotation = rot
+	                  bone.rotation = _this4._quatToRotation(quat);
+	                  //console.log(`${bone.name} quatToRotation ${bone.rotation.float32Array()}`)
+	                }
+	              }
+	              //console.log(`after ${this.name} rot ${bone.presentation.rotation.float32Array()}`)
+	            } // boneArray
+	          } // iteration
+	        }); // ikArray
+	      }
+	      this.updateEffector();
+	    }
+
+	    /**
+	     *
+	     * @access public
+	     * @returns {void}
+	     */
+
+	  }, {
+	    key: 'updateEffector',
+	    value: function updateEffector() {
+	      if (this.rotateEffector !== null) {
+	        var rot = this.rotateEffector.presentation.rotation;
+	        if (this.rotateEffectRate === 1.0) {
+	          // FIXME: don't use presentation node
+	          //this.presentation.rotation = rot
+	          this.rotation = rot;
+	        } else {
+	          var quat = this._rotationToQuat(rot);
+	          //console.log(`${this.name} quat ${quat.float32Array()}`)
+	          var orgQuat = this._rotationToQuat(this.presentation.rotation);
+	          //console.log(`${this.name} orgQuat ${orgQuat.float32Array()}`)
+	          //const newQuat = this.slerp(orgQuat, quat, this.rotateEffectRate)
+	          var newQuat = orgQuat.slerp(quat, this.rotateEffectRate);
+	          var newRot = this._quatToRotation(newQuat);
+	          // FIXME: don't use presentation
+	          //this.presentation.rotation = newRot
+	          this.rotation = newRot;
+	          //console.log(`${this.name} newQuat.quatToRotation ${this.rotation.float32Array()}`)
+	        }
+	      }
+	      if (this.translateEffector !== null) {
+	        var pos = this.translateEffector.presentation.position;
+	        if (this.translateEffectRate === 1.0) {
+	          // FIXME: don't use presentation node
+	          //this.presentation.position = pos
+	          this.position = pos;
+	        } else {
+	          // FIXME: don't use presentation node
+	          //this.presentation.position = pos.mul(this.translateEffectRate)
+	          this.position = pos.mul(this.translateEffectRate);
+	        }
+	      }
+	    }
+
+	    /**
+	     * 
+	     * @access public
+	     * @param {SCNScene} scene -
+	     * @returns {void}
+	     */
+
+	  }, {
+	    key: 'addPhysicsBehavior',
+	    value: function addPhysicsBehavior(scene) {
+	      if (this.joints === null) {
+	        return;
+	      }
+
+	      this.joints.forEach(function (joint) {
+	        scene.physicsWorld.addBehavior(joint);
+	      });
+	    }
+
+	    /**
+	     *
+	     * @access public
+	     * @param {SCNScene} scene -
+	     * @returns {void}
+	     */
+
+	  }, {
+	    key: 'removePhysicsBehavior',
+	    value: function removePhysicsBehavior(scene) {
+	      if (this.joints === null) {
+	        return;
+	      }
+
+	      this.joints.forEach(function (joint) {
+	        scene.physicsWorld.removeBehavior(joint);
+	      });
+	    }
+
+	    /**
+	     *
+	     * @access public
+	     * @returns {SCNNode} -
+	     */
+
+	  }, {
+	    key: 'getRootNode',
+	    value: function getRootNode() {
+	      var node = this;
+	      var parentNode = node.parent;
+	      while (parentNode !== null) {
+	        node = parentNode;
+	        parentNode = node.parent;
+	      }
+	      return node;
+	    }
+
+	    /**
+	     *
+	     * @access public
+	     * @param {string} key -
+	     * @param {string} boneName -
+	     * @returns {object} -
+	     */
+
+	  }, {
+	    key: 'getFirstFramePoseForKeyBoneName',
+	    value: function getFirstFramePoseForKeyBoneName(key, boneName) {}
+	    // TODO: implement
+
+
+	    /**
+	     *
+	     * @access public
+	     * @param {string} key -
+	     * @param {string} boneName -
+	     * @returns {object} -
+	     */
+
+	  }, {
+	    key: 'getLastFramePoseForKeyBoneName',
+	    value: function getLastFramePoseForKeyBoneName(key, boneName) {}
+	    // TODO: implement
+
+
+	    /////////////////////////
+	    // CAAnimationDelegate //
+	    /////////////////////////
+
+	    /**
+	     * @access public
+	     * @param {CAAnimation} anim -
+	     * @param {boolean} finished -
+	     * @returns {void}
+	     */
+
+	  }, {
+	    key: 'animationDidStop',
+	    value: function animationDidStop(anim, finished) {
+	      if (finished) {
+	        var block = anim.valueForKey(_MMDAnimationCompletionBlockKey);
+	        if (block) {
+	          block();
+	        }
+	      }
+	    }
+
+	    /**
+	     * @access public
+	     * @param {function} block -
+	     * @param {string} key -
+	     * @returns {void}
+	     */
+
+	  }, {
+	    key: 'setCompletionHandler',
+	    value: function setCompletionHandler(block, key) {
+	      var anim = this.preparedAnimation.get(key);
+	      if (anim) {
+	        anim.setValueForKey(block, _MMDAnimationCompletionBlockKey);
+	      }
+	    }
+	  }, {
+	    key: '_getWorldPosition',
+
+
+	    /**
+	     *
+	     * @access private
+	     * @param {SCNNode} node -
+	     * @returns {SCNVector3} -
+	     */
+	    value: function _getWorldPosition() {
+	      var node = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+	      var m = null;
+	      if (node === null) {
+	        m = this.worldTransform;
+	      } else {
+	        m = node.worldTransform;
+	      }
+	      return new _jscenekit.SCNVector3(m.m41, m.m42, m.m43);
+	    }
+
+	    /**
+	     * @access private
+	     * @param {SCNVector3} v1 -
+	     * @param {SCNMatrix4} mat -
+	     * @param {boolean} [includeTranslation = false] -
+	     * @returns {SCNVector3} -
+	     */
+
+	  }, {
+	    key: '_inverseCross',
+	    value: function _inverseCross(v1, mat) {
+	      var includeTranslation = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
+	      var v = new _jscenekit.SCNVector3();
+
+	      v.x = v1.x * mat.m11 + v1.y * mat.m12 + v1.z * mat.m13;
+	      v.y = v1.x * mat.m21 + v1.y * mat.m22 + v1.z * mat.m23;
+	      v.z = v1.x * mat.m31 + v1.y * mat.m32 + v1.z * mat.m33;
+
+	      if (includeTranslation) {
+	        v.x += mat.m14;
+	        v.y += mat.m24;
+	        v.z += mat.m34;
+	      }
+
+	      return v;
+	    }
+	  }, {
+	    key: '_rotationToQuat',
+	    value: function _rotationToQuat(rot) {
+	      var quat = new _jscenekit.SCNVector4();
+	      if (rot.x === 0 && rot.y === 0 && rot.z === 0) {
+	        quat.x = 0;
+	        quat.y = 0;
+	        quat.z = 0;
+	        quat.w = 1.0;
+	      } else {
+	        var r = 1.0 / Math.sqrt(rot.x * rot.x + rot.y * rot.y + rot.z * rot.z);
+	        var cosW = Math.cos(rot.w);
+	        var sinW = Math.sin(rot.w) * r;
+	        quat.x = rot.x * sinW;
+	        quat.y = rot.y * sinW;
+	        quat.z = rot.z * sinW;
+	        quat.w = cosW;
+	      }
+	      return quat;
+	    }
+	  }, {
+	    key: '_quatToRotation',
+	    value: function _quatToRotation(quat) {
+	      var rot = new _jscenekit.SCNVector4();
+
+	      if (quat.x === 0 && quat.y === 0 && quat.z === 0) {
+	        rot.x = 0;
+	        rot.y = 0;
+	        rot.z = 0;
+	        rot.w = 0;
+	      } else {
+	        rot.x = quat.x;
+	        rot.y = quat.y;
+	        rot.z = quat.z;
+
+	        var qw = quat.w;
+	        if (quat.w > 1) {
+	          qw = 1;
+	        } else if (quat.w < -1) {
+	          qw = -1;
+	        }
+	        var w = Math.acos(qw);
+
+	        if (isNaN(w)) {
+	          rot.w = 0;
+	        } else {
+	          rot.w = w;
+	        }
+	      }
+
+	      return rot;
+	    }
+	  }], [{
+	    key: 'Type',
+	    get: function get() {
+	      return _MMDNodeType;
+	    }
+	  }]);
+
+	  return MMDNode;
+	}(_jscenekit.SCNNode);
+
+	exports.default = MMDNode;
+
+/***/ },
 /* 9 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	/**
+	 *
+	 * @access public
+	 */
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var MMDIKConstraint = function MMDIKConstraint() {
+	  _classCallCheck(this, MMDIKConstraint);
+	};
+
+	exports.default = MMDIKConstraint;
+
+/***/ },
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -70788,23 +71343,129 @@ module.exports =
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _MMDNode = __webpack_require__(3);
+	var _MMDNode = __webpack_require__(8);
 
 	var _MMDNode2 = _interopRequireDefault(_MMDNode);
 
-	var _MMDProgram = __webpack_require__(10);
+	__webpack_require__(3);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var _sharedController = null;
+
+	/**
+	 *
+	 * @access public
+	 * @implements {SCNSceneRendererDelegate}
+	 */
+
+	var MMDIKController = function () {
+	  _createClass(MMDIKController, null, [{
+	    key: 'sharedController',
+	    get: function get() {
+	      if (_sharedController === null) {
+	        _sharedController = new MMDIKController();
+	      }
+	      return _sharedController;
+	    }
+
+	    /**
+	     *
+	     * @access private
+	     * @constructor
+	     */
+
+	  }]);
+
+	  function MMDIKController() {
+	    _classCallCheck(this, MMDIKController);
+	  }
+
+	  /**
+	   * update IK constraint for the given renderer
+	   * @access public
+	   * @param {SCNSceneRenderer} renderer -
+	   * @returns {void}
+	   */
+
+
+	  _createClass(MMDIKController, [{
+	    key: 'rendererDidApplyAnimationsAtTime',
+
+
+	    /**
+	     * apply IK constraint after animations are applied
+	     * @access public
+	     * @param {SCNSceneRenderer} renderer -
+	     * @param {TimeInterval} time -
+	     */
+	    value: function rendererDidApplyAnimationsAtTime(renderer, time) {
+	      MMDIKController.updateIK(renderer);
+	    }
+	  }], [{
+	    key: 'updateIK',
+	    value: function updateIK(renderer) {
+	      if (renderer.scene) {
+	        MMDIKController.applyIKRecursive(renderer.scene.rootNode);
+	      }
+	    }
+
+	    /**
+	     * apply IK constraint recursively
+	     * @access public
+	     * @param {SCNNode} node -
+	     * @returns {void}
+	     */
+
+	  }, {
+	    key: 'applyIKRecursive',
+	    value: function applyIKRecursive(node) {
+	      if (node instanceof _MMDNode2.default) {
+	        node.updateIK();
+	      }
+
+	      node.childNodes.forEach(function (childNode) {
+	        MMDIKController.applyIKRecursive(childNode);
+	      });
+	    }
+	  }]);
+
+	  return MMDIKController;
+	}();
+
+	exports.default = MMDIKController;
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _MMDNode = __webpack_require__(8);
+
+	var _MMDNode2 = _interopRequireDefault(_MMDNode);
+
+	var _MMDProgram = __webpack_require__(12);
 
 	var _MMDProgram2 = _interopRequireDefault(_MMDProgram);
 
-	var _MMDReader2 = __webpack_require__(11);
+	var _MMDReader2 = __webpack_require__(13);
 
 	var _MMDReader3 = _interopRequireDefault(_MMDReader2);
 
-	var _MMDIKConstraint = __webpack_require__(1);
+	var _MMDIKConstraint = __webpack_require__(9);
 
 	var _MMDIKConstraint2 = _interopRequireDefault(_MMDIKConstraint);
 
-	var _jscenekit = __webpack_require__(4);
+	var _jscenekit = __webpack_require__(3);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -70935,18 +71596,18 @@ module.exports =
 	      this._createFaceMorph();
 
 	      // read additional data
-	      if (this._pos >= this.length) {
+	      if (this.pos >= this.length) {
 	        return this._workingNode;
 	      }
 
 	      this._readEnglishInfo();
-	      if (this._pos >= this.length) {
+	      if (this.pos >= this.length) {
 	        return this._workingNode;
 	      }
 
 	      this._readToonTexture();
 
-	      if (this._pos >= this.length) {
+	      if (this.pos >= this.length) {
 	        return this._workingNode;
 	      }
 
@@ -71044,15 +71705,27 @@ module.exports =
 	        var edge = _this2.readUnsignedByte();
 	        var indexCount = _this2.readUnsignedInt();
 	        var textureFile = _this2.readString(20);
+	        var sphereFile = '';
 	        if (textureFile.indexOf('*') >= 0) {
-	          textureFile = textureFile.split('*')[0];
+	          var files = textureFile.split('*');
+	          textureFile = files[0];
+	          sphereFile = files[1];
+	        }
+	        if (textureFile.endsWith('spa') || textureFile.endsWith('sph')) {
+	          sphereFile = textureFile;
+	          textureFile = '';
 	        }
 
 	        if (textureFile !== '') {
 	          _this2.loadTexture(textureFile).then(function (texture) {
-	            material.diffuse.contents = texture;
-	            material.diffuse.wrapS = _jscenekit.SCNWrapMode.repeat;
-	            material.diffuse.wrapT = _jscenekit.SCNWrapMode.repeat;
+	            material.multiply.contents = texture;
+	            material.multiply.wrapS = _jscenekit.SCNWrapMode.repeat;
+	            material.multiply.wrapT = _jscenekit.SCNWrapMode.repeat;
+	          });
+	        }
+	        if (sphereFile !== '') {
+	          _this2.loadTexture(sphereFile).then(function (texture) {
+	            material.reflective.contents = texture;
 	          });
 	        }
 	        material.isDoubleSided = true;
@@ -71502,7 +72175,7 @@ module.exports =
 	        indexPos += count;
 	      }
 
-	      var program = new _MMDProgram2.default();
+	      //const program = new MMDProgram()
 	      var geometry = new _jscenekit.SCNGeometry([this._vertexSource, this._normalSource, this._texcoordSource], this._elementArray);
 	      geometry.materials = this._materialArray;
 	      geometry.name = 'Geometry';
@@ -71556,7 +72229,7 @@ module.exports =
 	exports.default = MMDPMDReader;
 
 /***/ },
-/* 10 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71565,7 +72238,7 @@ module.exports =
 	  value: true
 	});
 
-	var _jscenekit = __webpack_require__(4);
+	var _jscenekit = __webpack_require__(3);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -71577,13 +72250,13 @@ module.exports =
 	 * @access private
 	 * @type {string}
 	 */
-	var _vertexShader = '#version 300 es\n  precision mediump float;\n\n  #define NUM_AMBIENT_LIGHTS __NUM_AMBIENT_LIGHTS__\n  #define NUM_DIRECTIONAL_LIGHTS __NUM_DIRECTIONAL_LIGHTS__\n  #define NUM_DIRECTIONAL_SHADOW_LIGHTS __NUM_DIRECTIONAL_SHADOW_LIGHTS__\n  #define NUM_OMNI_LIGHTS __NUM_OMNI_LIGHTS__\n  #define NUM_SPOT_LIGHTS __NUM_SPOT_LIGHTS__\n  #define NUM_IES_LIGHTS __NUM_IES_LIGHTS__\n  #define NUM_PROBE_LIGHTS __NUM_PROBE_LIGHTS__\n\n  #define NUM_SHADOW_LIGHTS (NUM_DIRECTIONAL_LIGHTS + NUM_DIRECTIONAL_SHADOW_LIGHTS + NUM_OMNI_LIGHTS + NUM_SPOT_LIGHTS)\n  #define NUM_LIGHTS (NUM_AMBIENT_LIGHTS + NUM_DIRECTIONAL_LIGHTS + NUM_DIRECTIONAL_SHADOW_LIGHTS + NUM_OMNI_LIGHTS + NUM_SPOT_LIGHTS + NUM_IES_LIGHTS + NUM_PROBE_LIGHTS)\n\n  #define USE_SHADER_MODIFIER_GEOMETRY __USE_SHADER_MODIFIER_GEOMETRY__\n\n  layout (std140) uniform cameraUniform {\n    vec4 position;\n    mat4 viewTransform;\n    mat4 viewProjectionTransform;\n  } camera;\n\n  layout (std140) uniform materialUniform {\n    vec4 ambient;\n    vec4 diffuse;\n    vec4 specular;\n    vec4 emission;\n    float shininess;\n    float fresnelExponent;\n  } material;\n\n  struct AmbientLight {\n    vec4 color;\n  };\n\n  struct DirectionalLight {\n    vec4 color;\n    vec4 direction; // should use vec4; vec3 might cause problem for the layout\n  };\n\n  struct DirectionalShadowLight {\n    vec4 color;\n    vec4 direction; // should use vec4; vec3 might cause problem for the layout\n    vec4 shadowColor;\n    mat4 viewProjectionTransform;\n    mat4 shadowProjectionTransform;\n  };\n\n  struct OmniLight {\n    vec4 color;\n    vec4 position; // should use vec4; vec3 might cause problem for the layout\n  };\n\n  struct SpotLight {\n    // TODO: implement\n    vec4 color;\n  };\n\n  struct IESLight {\n    // TODO: implement\n    vec4 color;\n  };\n\n  struct ProbeLight {\n    // TODO: implement\n    vec4 color;\n  };\n\n  layout (std140) uniform lightUniform {\n    #if NUM_AMBIENT_LIGHTS > 0\n      AmbientLight ambient[NUM_AMBIENT_LIGHTS];\n    #endif\n    #if NUM_DIRECTIONAL_LIGHTS > 0\n      DirectionalLight directional[NUM_DIRECTIONAL_LIGHTS];\n    #endif\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0\n      DirectionalShadowLight directionalShadow[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n    #endif\n    #if NUM_OMNI_LIGHTS > 0\n      OmniLight omni[NUM_OMNI_LIGHTS];\n    #endif\n    #if NUM_SPOT_LIGHTS > 0\n      SpotLight spot[NUM_SPOT_LIGHTS];\n    #endif\n    #if NUM_IES_LIGHTS > 0\n      IESLight ies[NUM_IES_LIGHTS];\n    #endif\n    #if NUM_PROBE_LIGHTS > 0\n      ProbeLight probe[NUM_PROBE_LIGHTS];\n    #endif\n    #if NUM_LIGHTS == 0\n      vec4 dummy;\n    #endif\n  } light;\n  #if NUM_SHADOW_LIGHTS > 0\n    out vec3 v_light[NUM_SHADOW_LIGHTS];\n  #endif\n  #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0\n    out vec4 v_directionalShadowDepth[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n    out vec4 v_directionalShadowTexcoord[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n  #endif\n\n  layout (std140) uniform fogUniform {\n    vec4 color;\n    float startDistance;\n    float endDistance;\n    float densityExponent;\n  } fog;\n\n  #define kSCNTexcoordCount 2\n  struct SCNShaderGeometry {\n    vec3 position;\n    vec3 normal;\n    vec4 tangent;\n    vec4 color;\n    vec2 texcoords[kSCNTexcoordCount];\n  };\n\n  uniform float u_time;\n  //uniform mat3x4[255] skinningJoints;\n  uniform vec4[765] skinningJoints;\n  uniform int numSkinningJoints;\n  uniform mat4 modelTransform;\n\n  in vec3 position;\n  in vec3 normal;\n  in vec3 tangent;\n  in vec4 color;\n  in vec2 texcoord0;\n  in vec2 texcoord1;\n  in vec4 boneIndices;\n  in vec4 boneWeights;\n\n  out vec3 v_position;\n  out vec3 v_normal;\n  out vec3 v_tangent;\n  out vec3 v_bitangent;\n  out vec2 v_texcoord0;\n  out vec2 v_texcoord1;\n  out vec4 v_color;\n  out vec3 v_eye;\n  out float v_fogFactor;\n\n  __USER_CUSTOM_UNIFORM__\n\n  #if USE_SHADER_MODIFIER_GEOMETRY\n  void shaderModifierGeometry(inout SCNShaderGeometry _geometry) {\n    __SHADER_MODIFIER_GEOMETRY__\n  }\n  #endif\n\n  void main() {\n    SCNShaderGeometry _geometry;\n    _geometry.position = position;\n    _geometry.normal = normal;\n    _geometry.tangent = vec4(tangent, 1.0);\n    _geometry.color = color;\n    _geometry.texcoords[0] = texcoord0;\n    _geometry.texcoords[1] = texcoord1;\n    \n    #if USE_SHADER_MODIFIER_GEOMETRY\n      shaderModifierGeometry(_geometry);\n    #endif\n\n    vec3 pos = vec3(0, 0, 0);\n    vec3 nom = vec3(0, 0, 0);\n    vec3 tng = vec3(0, 0, 0);\n    vec4 col = _geometry.color;\n\n    if(numSkinningJoints > 0){\n      for(int i=0; i<numSkinningJoints; i++){\n        float weight = boneWeights[i];\n        if(int(boneIndices[i]) < 0){\n          continue;\n        }\n        int idx = int(boneIndices[i]) * 3;\n        mat4 jointMatrix = transpose(mat4(skinningJoints[idx],\n                                          skinningJoints[idx+1],\n                                          skinningJoints[idx+2],\n                                          vec4(0, 0, 0, 1)));\n        pos += (jointMatrix * vec4(_geometry.position, 1.0)).xyz * weight;\n        nom += (mat3(jointMatrix) * _geometry.normal) * weight;\n        tng += (mat3(jointMatrix) * _geometry.tangent.xyz) * weight;\n      }\n    }else{\n      mat4 jointMatrix = transpose(mat4(skinningJoints[0],\n                                        skinningJoints[1],\n                                        skinningJoints[2],\n                                        vec4(0, 0, 0, 1)));\n      pos = (jointMatrix * vec4(_geometry.position, 1.0)).xyz;\n      nom = mat3(jointMatrix) * _geometry.normal;\n      tng = mat3(jointMatrix) * _geometry.tangent.xyz;\n    }\n    v_position = pos;\n    v_normal = normalize(nom);\n    v_tangent = normalize(tng);\n    v_bitangent = cross(v_tangent, v_normal);\n\n    vec3 viewVec = camera.position.xyz - pos;\n    v_eye = viewVec;\n\n    v_color = material.emission;\n\n    // Lighting\n    int numLights = 0;\n\n    #if NUM_AMBIENT_LIGHTS > 0\n      for(int i=0; i<NUM_AMBIENT_LIGHTS; i++){\n        v_color += light.ambient[i].color * material.ambient;\n      }\n    #endif\n\n    #if NUM_DIRECTIONAL_LIGHTS > 0\n      for(int i=0; i<NUM_DIRECTIONAL_LIGHTS; i++){\n        v_light[numLights + i] = -light.directional[i].direction.xyz;\n      }\n      numLights += NUM_DIRECTIONAL_LIGHTS;\n    #endif\n\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0\n      for(int i=0; i<NUM_DIRECTIONAL_SHADOW_LIGHTS; i++){\n        v_light[numLights + i] = -light.directionalShadow[i].direction.xyz;\n        v_directionalShadowDepth[i] = light.directionalShadow[i].viewProjectionTransform * vec4(pos, 1.0);\n        v_directionalShadowTexcoord[i] = light.directionalShadow[i].shadowProjectionTransform * vec4(pos, 1.0);\n      }\n      numLights += NUM_DIRECTIONAL_SHADOW_LIGHTS;\n    #endif\n\n    #if NUM_OMNI_LIGHTS > 0\n      for(int i=0; i<NUM_OMNI_LIGHTS; i++){\n        v_light[numLights + i] = light.omni[i].position.xyz - pos;\n      }\n      numLights += NUM_OMNI_LIGHTS;\n    #endif\n\n    #if NUM_SPOT_LIGHTS > 0\n      for(int i=0; i<NUM_SPOT_LIGHTS; i++){\n        v_light[numLights + i] = light.spot[i].position.xyz - pos;\n      }\n      numLights += NUM_SPOT_LIGHTS;\n    #endif\n\n    #if NUM_IES_LIGHTS > 0\n      // TODO: implement\n    #endif\n\n    #if NUM_PROBE_LIGHTS > 0\n      // TODO: implement\n    #endif\n\n\n    float distance = length(viewVec);\n    v_fogFactor = clamp((distance - fog.startDistance) / (fog.endDistance - fog.startDistance), 0.0, 1.0);\n\n    v_texcoord0 = _geometry.texcoords[0];\n    v_texcoord1 = _geometry.texcoords[1];\n    gl_Position = camera.viewProjectionTransform * vec4(pos, 1.0);\n  }\n';
+	var _vertexShader = '#version 300 es\n  precision mediump float;\n\n  #define NUM_AMBIENT_LIGHTS __NUM_AMBIENT_LIGHTS__\n  #define NUM_DIRECTIONAL_LIGHTS __NUM_DIRECTIONAL_LIGHTS__\n  #define NUM_DIRECTIONAL_SHADOW_LIGHTS __NUM_DIRECTIONAL_SHADOW_LIGHTS__\n  #define NUM_OMNI_LIGHTS __NUM_OMNI_LIGHTS__\n  #define NUM_SPOT_LIGHTS __NUM_SPOT_LIGHTS__\n  #define NUM_IES_LIGHTS __NUM_IES_LIGHTS__\n  #define NUM_PROBE_LIGHTS __NUM_PROBE_LIGHTS__\n\n  #define NUM_SHADOW_LIGHTS (NUM_DIRECTIONAL_LIGHTS + NUM_DIRECTIONAL_SHADOW_LIGHTS + NUM_OMNI_LIGHTS + NUM_SPOT_LIGHTS)\n  #define NUM_LIGHTS (NUM_AMBIENT_LIGHTS + NUM_DIRECTIONAL_LIGHTS + NUM_DIRECTIONAL_SHADOW_LIGHTS + NUM_OMNI_LIGHTS + NUM_SPOT_LIGHTS + NUM_IES_LIGHTS + NUM_PROBE_LIGHTS)\n\n  #define USE_SHADER_MODIFIER_GEOMETRY __USE_SHADER_MODIFIER_GEOMETRY__\n\n  layout (std140) uniform cameraUniform {\n    vec4 position;\n    mat4 viewTransform;\n    mat4 viewProjectionTransform;\n  } camera;\n\n  layout (std140) uniform materialUniform {\n    vec4 ambient;\n    vec4 diffuse;\n    vec4 specular;\n    vec4 emission;\n    float shininess;\n    float fresnelExponent;\n  } material;\n\n  struct AmbientLight {\n    vec4 color;\n  };\n\n  struct DirectionalLight {\n    vec4 color;\n    vec4 direction; // should use vec4; vec3 might cause problem for the layout\n  };\n\n  struct DirectionalShadowLight {\n    vec4 color;\n    vec4 direction; // should use vec4; vec3 might cause problem for the layout\n    vec4 shadowColor;\n    mat4 viewProjectionTransform;\n    mat4 shadowProjectionTransform;\n  };\n\n  struct OmniLight {\n    vec4 color;\n    vec4 position; // should use vec4; vec3 might cause problem for the layout\n  };\n\n  struct SpotLight {\n    // TODO: implement\n    vec4 color;\n  };\n\n  struct IESLight {\n    // TODO: implement\n    vec4 color;\n  };\n\n  struct ProbeLight {\n    // TODO: implement\n    vec4 color;\n  };\n\n  layout (std140) uniform lightUniform {\n    #if NUM_AMBIENT_LIGHTS > 0\n      AmbientLight ambient[NUM_AMBIENT_LIGHTS];\n    #endif\n    #if NUM_DIRECTIONAL_LIGHTS > 0\n      DirectionalLight directional[NUM_DIRECTIONAL_LIGHTS];\n    #endif\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0\n      DirectionalShadowLight directionalShadow[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n    #endif\n    #if NUM_OMNI_LIGHTS > 0\n      OmniLight omni[NUM_OMNI_LIGHTS];\n    #endif\n    #if NUM_SPOT_LIGHTS > 0\n      SpotLight spot[NUM_SPOT_LIGHTS];\n    #endif\n    #if NUM_IES_LIGHTS > 0\n      IESLight ies[NUM_IES_LIGHTS];\n    #endif\n    #if NUM_PROBE_LIGHTS > 0\n      ProbeLight probe[NUM_PROBE_LIGHTS];\n    #endif\n    #if NUM_LIGHTS == 0\n      vec4 dummy;\n    #endif\n  } light;\n  #if NUM_SHADOW_LIGHTS > 0\n    out vec3 v_light[NUM_SHADOW_LIGHTS];\n  #endif\n  #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0\n    out vec4 v_directionalShadowDepth[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n    out vec4 v_directionalShadowTexcoord[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n  #endif\n  out vec2 v_sptex;\n\n  layout (std140) uniform fogUniform {\n    vec4 color;\n    float startDistance;\n    float endDistance;\n    float densityExponent;\n  } fog;\n\n  #define kSCNTexcoordCount 2\n  struct SCNShaderGeometry {\n    vec3 position;\n    vec3 normal;\n    vec4 tangent;\n    vec4 color;\n    vec2 texcoords[kSCNTexcoordCount];\n  };\n\n  uniform float u_time;\n  //uniform mat3x4[255] skinningJoints;\n  uniform vec4[765] skinningJoints;\n  uniform int numSkinningJoints;\n  uniform mat4 modelTransform;\n\n  in vec3 position;\n  in vec3 normal;\n  in vec3 tangent;\n  in vec4 color;\n  in vec2 texcoord0;\n  in vec2 texcoord1;\n  in vec4 boneIndices;\n  in vec4 boneWeights;\n\n  out vec3 v_position;\n  out vec3 v_normal;\n  out vec3 v_tangent;\n  out vec3 v_bitangent;\n  out vec2 v_texcoord0;\n  out vec2 v_texcoord1;\n  out vec4 v_color;\n  out vec3 v_eye;\n  out float v_fogFactor;\n\n  __USER_CUSTOM_UNIFORM__\n\n  #if USE_SHADER_MODIFIER_GEOMETRY\n  void shaderModifierGeometry(inout SCNShaderGeometry _geometry) {\n    __SHADER_MODIFIER_GEOMETRY__\n  }\n  #endif\n\n  void main() {\n    SCNShaderGeometry _geometry;\n    _geometry.position = position;\n    _geometry.normal = normal;\n    _geometry.tangent = vec4(tangent, 1.0);\n    _geometry.color = color;\n    _geometry.texcoords[0] = texcoord0;\n    _geometry.texcoords[1] = texcoord1;\n    \n    #if USE_SHADER_MODIFIER_GEOMETRY\n      shaderModifierGeometry(_geometry);\n    #endif\n\n    vec3 pos = vec3(0, 0, 0);\n    vec3 nom = vec3(0, 0, 0);\n    vec3 tng = vec3(0, 0, 0);\n    vec4 col = _geometry.color;\n\n    if(numSkinningJoints > 0){\n      for(int i=0; i<numSkinningJoints; i++){\n        float weight = boneWeights[i];\n        if(int(boneIndices[i]) < 0){\n          continue;\n        }\n        int idx = int(boneIndices[i]) * 3;\n        mat4 jointMatrix = transpose(mat4(skinningJoints[idx],\n                                          skinningJoints[idx+1],\n                                          skinningJoints[idx+2],\n                                          vec4(0, 0, 0, 1)));\n        pos += (jointMatrix * vec4(_geometry.position, 1.0)).xyz * weight;\n        nom += (mat3(jointMatrix) * _geometry.normal) * weight;\n        tng += (mat3(jointMatrix) * _geometry.tangent.xyz) * weight;\n      }\n    }else{\n      mat4 jointMatrix = transpose(mat4(skinningJoints[0],\n                                        skinningJoints[1],\n                                        skinningJoints[2],\n                                        vec4(0, 0, 0, 1)));\n      pos = (jointMatrix * vec4(_geometry.position, 1.0)).xyz;\n      nom = mat3(jointMatrix) * _geometry.normal;\n      tng = mat3(jointMatrix) * _geometry.tangent.xyz;\n    }\n    v_position = pos;\n    v_normal = normalize(nom);\n    v_tangent = normalize(tng);\n    v_bitangent = cross(v_tangent, v_normal);\n\n    vec3 viewVec = camera.position.xyz - pos;\n    v_eye = viewVec;\n\n    v_color = material.emission;\n\n    // Lighting\n    int numLights = 0;\n\n    v_color.rgb = material.emission.rgb;\n\n    #if NUM_AMBIENT_LIGHTS > 0\n      for(int i=0; i<NUM_AMBIENT_LIGHTS; i++){\n        v_color.rgb += light.ambient[i].color.rgb * material.ambient.rgb;\n      }\n    #endif\n\n    #if NUM_DIRECTIONAL_LIGHTS > 0\n      if(!useToon){\n        for(int i=0; i<NUM_DIRECTIONAL_LIGHTS; i++){\n          v_light[numLights + i] = -light.directional[i].direction.xyz;\n\n          vec4 diffuseColor = material.diffuse * vec4(light.directional[i].color.rgb, 1.0);\n          vec3 lightVec = normalize(v_light[numLights + i]);\n          float diffuse = clamp(dot(lightVec, _surface.normal), 0.0f, 1.0f);\n          v_color.rgb += diffuse * diffuseColor.rgb;\n          //v_color.a = diffuseColor.a;\n          v_color = clamp(v_color, 0.0f, 1.0f);\n        }\n      }\n      v_color.a = material.diffuse.a;\n\n      numLights += NUM_DIRECTIONAL_LIGHTS;\n    #endif\n\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0\n      if(!useToon){\n        for(int i=0; i<NUM_DIRECTIONAL_SHADOW_LIGHTS; i++){\n          v_light[numLights + i] = -light.directionalShadow[i].direction.xyz;\n          v_directionalShadowDepth[i] = light.directionalShadow[i].viewProjectionTransform * vec4(pos, 1.0);\n          v_directionalShadowTexcoord[i] = light.directionalShadow[i].shadowProjectionTransform * vec4(pos, 1.0);\n\n          vec4 diffuseColor = material.diffuse * vec4(light.directionalShadow[i].color.rgb, 1.0);\n          vec3 lightVec = normalize(v_light[numLights + i]);\n          float diffuse = clamp(dot(lightVec, _surface.normal), 0.0f, 1.0f);\n          v_color.rgb += diffuse * diffuseColor.rgb;\n          v_color.a = diffuseColor.a;\n          v_color = clamp(v_color, 0.0f, 1.0f);\n        }\n      }\n      v_color.a = material.diffuse.a;\n\n      numLights += NUM_DIRECTIONAL_SHADOW_LIGHTS;\n    #endif\n\n    if(useSphereMap){\n      if(useSubTexture){\n        v_sptex = \n      }else{\n        vec2 normalWV = vec2(camera.viewTransform * vec4(v_normal, 1.0));\n        v_sptex.x = normalWV.x * 0.5 + 0.5;\n        v_sptex.y = normalWV.y * (-0.5) + 0.5;\n      }\n    }\n\n    #if NUM_OMNI_LIGHTS > 0\n      for(int i=0; i<NUM_OMNI_LIGHTS; i++){\n        v_light[numLights + i] = light.omni[i].position.xyz - pos;\n      }\n      numLights += NUM_OMNI_LIGHTS;\n    #endif\n\n    #if NUM_SPOT_LIGHTS > 0\n      for(int i=0; i<NUM_SPOT_LIGHTS; i++){\n        v_light[numLights + i] = light.spot[i].position.xyz - pos;\n      }\n      numLights += NUM_SPOT_LIGHTS;\n    #endif\n\n    #if NUM_IES_LIGHTS > 0\n      // TODO: implement\n    #endif\n\n    #if NUM_PROBE_LIGHTS > 0\n      // TODO: implement\n    #endif\n\n    float distance = length(viewVec);\n    v_fogFactor = clamp((distance - fog.startDistance) / (fog.endDistance - fog.startDistance), 0.0, 1.0);\n\n    v_texcoord0 = _geometry.texcoords[0];\n    v_texcoord1 = _geometry.texcoords[1];\n    gl_Position = camera.viewProjectionTransform * vec4(pos, 1.0);\n  }\n';
 
 	/**
 	 * @access private
 	 * @type {string}
 	 */
-	var _fragmentShader = '#version 300 es\n  precision mediump float;\n  precision highp sampler2DShadow;\n\n  uniform bool[8] textureFlags;\n  #define TEXTURE_EMISSION_INDEX 0\n  #define TEXTURE_AMBIENT_INDEX 1\n  #define TEXTURE_DIFFUSE_INDEX 2\n  #define TEXTURE_SPECULAR_INDEX 3\n  #define TEXTURE_REFLECTIVE_INDEX 4\n  #define TEXTURE_TRANSPARENT_INDEX 5\n  #define TEXTURE_MULTIPLY_INDEX 6\n  #define TEXTURE_NORMAL_INDEX 7\n\n  uniform bool selfIllumination;\n\n  uniform sampler2D u_emissionTexture;\n  uniform sampler2D u_ambientTexture;\n  uniform sampler2D u_diffuseTexture;\n  uniform sampler2D u_specularTexture;\n  uniform samplerCube u_reflectiveTexture;\n  uniform sampler2D u_transparentTexture;\n  uniform sampler2D u_multiplyTexture;\n  uniform sampler2D u_normalTexture;\n\n  #define NUM_AMBIENT_LIGHTS __NUM_AMBIENT_LIGHTS__\n  #define NUM_DIRECTIONAL_LIGHTS __NUM_DIRECTIONAL_LIGHTS__\n  #define NUM_DIRECTIONAL_SHADOW_LIGHTS __NUM_DIRECTIONAL_SHADOW_LIGHTS__\n  #define NUM_OMNI_LIGHTS __NUM_OMNI_LIGHTS__\n  #define NUM_SPOT_LIGHTS __NUM_SPOT_LIGHTS__\n  #define NUM_IES_LIGHTS __NUM_IES_LIGHTS__\n  #define NUM_PROBE_LIGHTS __NUM_PROBE_LIGHTS__\n\n  #define NUM_SHADOW_LIGHTS (NUM_DIRECTIONAL_LIGHTS + NUM_DIRECTIONAL_SHADOW_LIGHTS + NUM_OMNI_LIGHTS + NUM_SPOT_LIGHTS)\n  #define NUM_LIGHTS (NUM_AMBIENT_LIGHTS + NUM_DIRECTIONAL_LIGHTS + NUM_DIRECTIONAL_SHADOW_LIGHTS + NUM_OMNI_LIGHTS + NUM_SPOT_LIGHTS + NUM_IES_LIGHTS + NUM_PROBE_LIGHTS)\n\n  #define USE_SHADER_MODIFIER_SURFACE __USE_SHADER_MODIFIER_SURFACE__\n  #define USE_SHADER_MODIFIER_FRAGMENT __USE_SHADER_MODIFIER_FRAGMENT__\n\n  layout (std140) uniform materialUniform {\n    vec4 ambient;\n    vec4 diffuse;\n    vec4 specular;\n    vec4 emission;\n    float shininess;\n    float fresnelExponent;\n  } material;\n\n  struct AmbientLight {\n    vec4 color;\n  };\n\n  struct DirectionalLight {\n    vec4 color;\n    vec4 direction; // should use vec4; vec3 might cause problem for the layout\n  };\n\n  struct DirectionalShadowLight {\n    vec4 color;\n    vec4 direction; // should use vec4; vec3 might cause problem for the layout\n    vec4 shadowColor;\n    mat4 viewProjectionTransform;\n    mat4 shadowProjectionTransform;\n  };\n\n  struct OmniLight {\n    vec4 color;\n    vec4 position; // should use vec4; vec3 might cause problem for the layout\n  };\n\n  struct ProbeLight {\n    // TODO: implement\n    vec4 color;\n  };\n\n  struct SpotLight {\n    // TODO: implement\n    vec4 color;\n  };\n\n  layout (std140) uniform lightUniform {\n    #if NUM_AMBIENT_LIGHTS > 0\n      AmbientLight ambient[NUM_AMBIENT_LIGHTS];\n    #endif\n    #if NUM_DIRECTIONAL_LIGHTS > 0\n      DirectionalLight directional[NUM_DIRECTIONAL_LIGHTS];\n    #endif\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0\n      DirectionalShadowLight directionalShadow[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n    #endif\n    #if NUM_OMNI_LIGHTS > 0\n      OmniLight omni[NUM_OMNI_LIGHTS];\n    #endif\n    #if NUM_SPOT_LIGHTS > 0\n      SpotLight spot[NUM_SPOT_LIGHTS];\n    #endif\n    #if NUM_IES_LIGHTS > 0\n      IESLight ies[NUM_IES_LIGHTS];\n    #endif\n    #if NUM_PROBE_LIGHTS > 0\n      ProbeLight probe[NUM_PROBE_LIGHTS];\n    #endif\n    #if NUM_LIGHTS == 0\n      vec4 dummy;\n    #endif\n  } light;\n  #if NUM_SHADOW_LIGHTS > 0\n    in vec3 v_light[NUM_SHADOW_LIGHTS];\n  #endif\n  #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0\n    in vec4 v_directionalShadowDepth[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n    in vec4 v_directionalShadowTexcoord[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n    uniform sampler2D u_shadowMapTexture0;\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 1\n      uniform sampler2D u_shadowMapTexture1;\n    #endif\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 2\n      uniform sampler2D u_shadowMapTexture2;\n    #endif\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 3\n      uniform sampler2D u_shadowMapTexture3;\n    #endif\n  #endif\n\n  layout (std140) uniform fogUniform {\n    vec4 color;\n    float startDistance;\n    float endDistance;\n    float densityExponent;\n  } fog;\n\n  struct SCNShaderSurface {\n    vec3 view;\n    vec3 position;\n    vec3 normal;\n    vec2 normalTexcoord;\n    vec3 geometryNormal;\n    vec3 tangent;\n    vec3 bitangent;\n    vec4 ambient;\n    vec2 ambientTexcoord;\n    vec4 diffuse;\n    vec2 diffuseTexcoord;\n    vec4 specular;\n    vec2 specularTexcoord;\n    vec4 emission;\n    vec2 emissionTexcoord;\n    vec4 multiply;\n    vec2 multiplyTexcoord;\n    vec4 transparent;\n    vec2 transparentTexcoord;\n    vec4 reflective;\n    float ambientOcclusion;\n    float shininess;\n    float fresnel;\n    __USER_CUSTOM_SURFACE__\n  } _surface;\n\n  struct SCNShaderOutput {\n    vec4 color;\n  } _output;\n\n  vec2 poissonDisk[4] = vec2[](\n    vec2( -0.94201624, -0.39906216 ),\n    vec2( 0.94558609, -0.76890725 ),\n    vec2( -0.094184101, -0.92938870 ),\n    vec2( 0.34495938, 0.29387760 )\n  );\n\n  uniform float u_time;\n\n  in vec3 v_position;\n  in vec3 v_normal;\n  in vec2 v_texcoord0;\n  in vec2 v_texcoord1;\n  in vec4 v_color;\n  in vec3 v_eye;\n  in vec3 v_tangent;\n  in vec3 v_bitangent;\n  in float v_fogFactor;\n\n  out vec4 outColor;\n\n  __USER_CUSTOM_UNIFORM__\n\n  float saturate(float value) {\n    return clamp(value, 0.0, 1.0);\n  }\n\n  float convDepth(vec4 color) {\n    const float rMask = 1.0;\n    const float gMask = 1.0 / 255.0;\n    const float bMask = 1.0 / (255.0 * 255.0);\n    const float aMask = 1.0 / (255.0 * 255.0 * 255.0);\n    float depth = dot(color, vec4(rMask, gMask, bMask, aMask));\n    return depth * 2.0 - 1.0;\n  }\n\n  #if USE_SHADER_MODIFIER_SURFACE\n  void shaderModifierSurface() {\n    __SHADER_MODIFIER_SURFACE__\n  }\n  #endif\n\n  #if USE_SHADER_MODIFIER_FRAGMENT\n  void shaderModifierFragment() {\n    __SHADER_MODIFIER_FRAGMENT__\n  }\n  #endif\n\n    \n  void main() {\n    _output.color = v_color;\n\n    //vec3 viewVec = normalize(v_eye);\n    //vec3 nom = normalize(v_normal);\n    _surface.view = normalize(v_eye);\n    _surface.position = v_position;\n    _surface.normal = normalize(v_normal);\n    _surface.tangent = normalize(v_tangent);\n    _surface.bitangent = normalize(v_bitangent);\n\n    // normal texture\n    if(textureFlags[TEXTURE_NORMAL_INDEX]){\n      mat3 tsInv = mat3(_surface.tangent, _surface.bitangent, _surface.normal);\n      vec3 color = normalize(texture(u_normalTexture, v_texcoord0).rgb * 2.0 - 1.0); // FIXME: check mappingChannel to decide which texture you use.\n      _surface.normal = normalize(tsInv * color);\n    }\n\n    #if USE_SHADER_MODIFIER_SURFACE\n      shaderModifierSurface();\n    #endif\n\n    // emission texture\n    if(textureFlags[TEXTURE_EMISSION_INDEX]){\n      if(selfIllumination){\n        vec4 color = texture(u_emissionTexture, v_texcoord1); // FIXME: check mappingChannel to decide which texture you use.\n        _output.color += color;\n      }else{\n        vec4 color = texture(u_emissionTexture, v_texcoord0);\n        _output.color = color * _output.color;\n      }\n    }\n\n    vec4 specularColor;\n    if(textureFlags[TEXTURE_SPECULAR_INDEX]){\n      vec4 color = texture(u_specularTexture, v_texcoord0);\n      specularColor = color;\n    }else{\n      specularColor = material.specular;\n    }\n      \n    _output.color.a = material.diffuse.a;\n\n    // Lighting\n    int numLights = 0;\n\n    #if NUM_AMBIENT_LIGHTS > 0\n      // nothing to do for ambient lights\n    #endif\n\n    #if NUM_DIRECTIONAL_LIGHTS > 0\n      for(int i=0; i<NUM_DIRECTIONAL_LIGHTS; i++){\n        // diffuse\n        vec3 lightVec = normalize(v_light[numLights + i]);\n        float diffuse = clamp(dot(lightVec, _surface.normal), 0.0f, 1.0f);\n        _output.color.rgb += light.directional[i].color.rgb * material.diffuse.rgb * diffuse;\n\n        // specular\n        if(diffuse > 0.0f){\n          vec3 halfVec = normalize(lightVec + _surface.view);\n          float specular = pow(dot(halfVec, _surface.normal), material.shininess);\n          _output.color.rgb += specularColor.rgb * specular;\n        }\n      }\n      numLights += NUM_DIRECTIONAL_LIGHTS;\n    #endif\n\n    #if NUM_OMNI_LIGHTS > 0\n      for(int i=0; i<NUM_OMNI_LIGHTS; i++){\n        // diffuse\n        vec3 lightVec = normalize(v_light[numLights + i]);\n        float diffuse = clamp(dot(lightVec, _surface.normal), 0.0f, 1.0f);\n        _output.color.rgb += light.omni[i].color.rgb * material.diffuse.rgb * diffuse;\n\n        // specular\n        if(diffuse > 0.0f){\n          vec3 halfVec = normalize(lightVec + _surface.view);\n          float specular = pow(dot(halfVec, _surface.normal), material.shininess);\n          //outColor.rgb += material.specular.rgb * specular; // TODO: get the light color of specular\n          _output.color.rgb += specularColor.rgb * specular;\n        }\n      }\n      numLights += NUM_OMNI_LIGHTS;\n    #endif\n\n    #if NUM_SPOT_LIGHTS > 0\n      // TODO: implement\n    #endif\n\n    #if NUM_IES_LIGHTS > 0\n      // TODO: implement\n    #endif\n\n    #if NUM_PROBE_LIGHTS > 0\n      // TODO: implement\n    #endif\n\n    __FS_LIGHTING__\n    \n\n    // diffuse texture\n    if(textureFlags[TEXTURE_DIFFUSE_INDEX]){\n      vec4 color = texture(u_diffuseTexture, v_texcoord0);\n      _output.color = color * _output.color;\n    }\n\n    // fresnel reflection\n    if(textureFlags[TEXTURE_REFLECTIVE_INDEX]){\n      vec3 r = reflect(_surface.view, _surface.normal);\n      //float f0 = 0.0; // TODO: calculate f0\n      //float fresnel = f0 + (1.0 - f0) * pow(1.0 - clamp(dot(viewVec, nom), 0.0, 1.0), material.fresnelExponent);\n      float fresnel = 0.4 * pow(1.0 - clamp(dot(_surface.view, _surface.normal), 0.0, 1.0), material.fresnelExponent);\n      _output.color.rgb += texture(u_reflectiveTexture, r).rgb * fresnel;\n    }\n\n    float fogFactor = pow(v_fogFactor, fog.densityExponent);\n    _output.color = mix(_output.color, fog.color, fogFactor);\n\n    #if USE_SHADER_MODIFIER_FRAGMENT\n      shaderModifierFragment();\n    #endif\n\n    // DEBUG\n    //_output.color.a = material.diffuse.a;\n\n    outColor = _output.color;\n  }\n';
+	var _fragmentShader = '#version 300 es\n  precision mediump float;\n  precision highp sampler2DShadow;\n\n  uniform bool[8] textureFlags;\n  #define TEXTURE_EMISSION_INDEX 0\n  #define TEXTURE_AMBIENT_INDEX 1\n  #define TEXTURE_DIFFUSE_INDEX 2\n  #define TEXTURE_SPECULAR_INDEX 3\n  #define TEXTURE_REFLECTIVE_INDEX 4\n  #define TEXTURE_TRANSPARENT_INDEX 5\n  #define TEXTURE_MULTIPLY_INDEX 6\n  #define TEXTURE_NORMAL_INDEX 7\n\n  uniform bool selfIllumination;\n\n  uniform sampler2D u_emissionTexture;\n  uniform sampler2D u_ambientTexture;\n  uniform sampler2D u_diffuseTexture;\n  uniform sampler2D u_specularTexture;\n  uniform samplerCube u_reflectiveTexture;\n  uniform sampler2D u_transparentTexture;\n  uniform sampler2D u_multiplyTexture;\n  uniform sampler2D u_normalTexture;\n\n  #define NUM_AMBIENT_LIGHTS __NUM_AMBIENT_LIGHTS__\n  #define NUM_DIRECTIONAL_LIGHTS __NUM_DIRECTIONAL_LIGHTS__\n  #define NUM_DIRECTIONAL_SHADOW_LIGHTS __NUM_DIRECTIONAL_SHADOW_LIGHTS__\n  #define NUM_OMNI_LIGHTS __NUM_OMNI_LIGHTS__\n  #define NUM_SPOT_LIGHTS __NUM_SPOT_LIGHTS__\n  #define NUM_IES_LIGHTS __NUM_IES_LIGHTS__\n  #define NUM_PROBE_LIGHTS __NUM_PROBE_LIGHTS__\n\n  #define NUM_SHADOW_LIGHTS (NUM_DIRECTIONAL_LIGHTS + NUM_DIRECTIONAL_SHADOW_LIGHTS + NUM_OMNI_LIGHTS + NUM_SPOT_LIGHTS)\n  #define NUM_LIGHTS (NUM_AMBIENT_LIGHTS + NUM_DIRECTIONAL_LIGHTS + NUM_DIRECTIONAL_SHADOW_LIGHTS + NUM_OMNI_LIGHTS + NUM_SPOT_LIGHTS + NUM_IES_LIGHTS + NUM_PROBE_LIGHTS)\n\n  #define USE_SHADER_MODIFIER_SURFACE __USE_SHADER_MODIFIER_SURFACE__\n  #define USE_SHADER_MODIFIER_FRAGMENT __USE_SHADER_MODIFIER_FRAGMENT__\n\n  layout (std140) uniform materialUniform {\n    vec4 ambient;\n    vec4 diffuse;\n    vec4 specular;\n    vec4 emission;\n    float shininess;\n    float fresnelExponent;\n  } material;\n\n  struct AmbientLight {\n    vec4 color;\n  };\n\n  struct DirectionalLight {\n    vec4 color;\n    vec4 direction; // should use vec4; vec3 might cause problem for the layout\n  };\n\n  struct DirectionalShadowLight {\n    vec4 color;\n    vec4 direction; // should use vec4; vec3 might cause problem for the layout\n    vec4 shadowColor;\n    mat4 viewProjectionTransform;\n    mat4 shadowProjectionTransform;\n  };\n\n  struct OmniLight {\n    vec4 color;\n    vec4 position; // should use vec4; vec3 might cause problem for the layout\n  };\n\n  struct ProbeLight {\n    // TODO: implement\n    vec4 color;\n  };\n\n  struct SpotLight {\n    // TODO: implement\n    vec4 color;\n  };\n\n  layout (std140) uniform lightUniform {\n    #if NUM_AMBIENT_LIGHTS > 0\n      AmbientLight ambient[NUM_AMBIENT_LIGHTS];\n    #endif\n    #if NUM_DIRECTIONAL_LIGHTS > 0\n      DirectionalLight directional[NUM_DIRECTIONAL_LIGHTS];\n    #endif\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0\n      DirectionalShadowLight directionalShadow[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n    #endif\n    #if NUM_OMNI_LIGHTS > 0\n      OmniLight omni[NUM_OMNI_LIGHTS];\n    #endif\n    #if NUM_SPOT_LIGHTS > 0\n      SpotLight spot[NUM_SPOT_LIGHTS];\n    #endif\n    #if NUM_IES_LIGHTS > 0\n      IESLight ies[NUM_IES_LIGHTS];\n    #endif\n    #if NUM_PROBE_LIGHTS > 0\n      ProbeLight probe[NUM_PROBE_LIGHTS];\n    #endif\n    #if NUM_LIGHTS == 0\n      vec4 dummy;\n    #endif\n  } light;\n  #if NUM_SHADOW_LIGHTS > 0\n    in vec3 v_light[NUM_SHADOW_LIGHTS];\n  #endif\n  #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0\n    in vec4 v_directionalShadowDepth[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n    in vec4 v_directionalShadowTexcoord[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n    uniform sampler2D u_shadowMapTexture0;\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 1\n      uniform sampler2D u_shadowMapTexture1;\n    #endif\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 2\n      uniform sampler2D u_shadowMapTexture2;\n    #endif\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 3\n      uniform sampler2D u_shadowMapTexture3;\n    #endif\n  #endif\n\n  layout (std140) uniform fogUniform {\n    vec4 color;\n    float startDistance;\n    float endDistance;\n    float densityExponent;\n  } fog;\n\n  struct SCNShaderSurface {\n    vec3 view;\n    vec3 position;\n    vec3 normal;\n    vec2 normalTexcoord;\n    vec3 geometryNormal;\n    vec3 tangent;\n    vec3 bitangent;\n    vec4 ambient;\n    vec2 ambientTexcoord;\n    vec4 diffuse;\n    vec2 diffuseTexcoord;\n    vec4 specular;\n    vec2 specularTexcoord;\n    vec4 emission;\n    vec2 emissionTexcoord;\n    vec4 multiply;\n    vec2 multiplyTexcoord;\n    vec4 transparent;\n    vec2 transparentTexcoord;\n    vec4 reflective;\n    float ambientOcclusion;\n    float shininess;\n    float fresnel;\n    __USER_CUSTOM_SURFACE__\n  } _surface;\n\n  struct SCNShaderOutput {\n    vec4 color;\n  } _output;\n\n  vec2 poissonDisk[4] = vec2[](\n    vec2( -0.94201624, -0.39906216 ),\n    vec2( 0.94558609, -0.76890725 ),\n    vec2( -0.094184101, -0.92938870 ),\n    vec2( 0.34495938, 0.29387760 )\n  );\n\n  uniform float u_time;\n\n  in vec3 v_position;\n  in vec3 v_normal;\n  in vec2 v_texcoord0;\n  in vec2 v_texcoord1;\n  in vec4 v_color;\n  in vec3 v_eye;\n  in vec3 v_tangent;\n  in vec3 v_bitangent;\n  in float v_fogFactor;\n\n  out vec4 outColor;\n\n  __USER_CUSTOM_UNIFORM__\n\n  float saturate(float value) {\n    return clamp(value, 0.0, 1.0);\n  }\n\n  float convDepth(vec4 color) {\n    const float rMask = 1.0;\n    const float gMask = 1.0 / 255.0;\n    const float bMask = 1.0 / (255.0 * 255.0);\n    const float aMask = 1.0 / (255.0 * 255.0 * 255.0);\n    float depth = dot(color, vec4(rMask, gMask, bMask, aMask));\n    return depth * 2.0 - 1.0;\n  }\n\n  #if USE_SHADER_MODIFIER_SURFACE\n  void shaderModifierSurface() {\n    __SHADER_MODIFIER_SURFACE__\n  }\n  #endif\n\n  #if USE_SHADER_MODIFIER_FRAGMENT\n  void shaderModifierFragment() {\n    __SHADER_MODIFIER_FRAGMENT__\n  }\n  #endif\n\n    \n  void main() {\n    bool spadd = true;\n\n    _output.color = v_color;\n\n    //vec3 viewVec = normalize(v_eye);\n    //vec3 nom = normalize(v_normal);\n    _surface.view = normalize(v_eye);\n    _surface.position = v_position;\n    _surface.normal = normalize(v_normal);\n    _surface.tangent = normalize(v_tangent);\n    _surface.bitangent = normalize(v_bitangent);\n\n    // normal texture\n    //if(textureFlags[TEXTURE_NORMAL_INDEX]){\n    //  mat3 tsInv = mat3(_surface.tangent, _surface.bitangent, _surface.normal);\n    //  vec3 color = normalize(texture(u_normalTexture, v_texcoord0).rgb * 2.0 - 1.0); // FIXME: check mappingChannel to decide which texture you use.\n    //  _surface.normal = normalize(tsInv * color);\n    //}\n\n    #if USE_SHADER_MODIFIER_SURFACE\n      shaderModifierSurface();\n    #endif\n\n    // emission texture\n    //if(textureFlags[TEXTURE_EMISSION_INDEX]){\n    //  if(selfIllumination){\n    //    vec4 color = texture(u_emissionTexture, v_texcoord1); // FIXME: check mappingChannel to decide which texture you use.\n    //    _output.color += color;\n    //  }else{\n    //    vec4 color = texture(u_emissionTexture, v_texcoord0);\n    //    _output.color = color * _output.color;\n    //  }\n    //}\n\n    vec4 specularColor;\n    if(textureFlags[TEXTURE_SPECULAR_INDEX]){\n      vec4 color = texture(u_specularTexture, v_texcoord0);\n      specularColor = color;\n    }else{\n      specularColor = material.specular;\n    }\n      \n    //_output.color.a = material.diffuse.a;\n    vec4 shadowColor = vec4(clamp(material.ambient.rgb, 0.0f, 1.0f), v_color.a);\n    if(textureFlags[TEXTURE_DIFFUSE_INDEX]){\n      vec4 texColor = texture(u_diffuseTexture, v_texcoord0);\n      vec4 textureMulValue = vec4(1);\n      vec4 textureAddValue = vec4(0);\n\n      if(textureFlags[TEXTURE_EMISSION_INDEX]){\n        textureAddValue = texture(u_emissionTexture, v_texcoord0);\n      }\n      if(textureFlags[TEXTURE_MULTIPLY_INDEX]){\n        textureMulValue = texture(u_multiplyTexture, v_texcoord0);\n      }\n      texColor.rgb = mix(vec3(1), texColor.rgb * textureMulValue.rgb + textureAddValue.rgb, textureMulValue.a + textureAddValue.a);\n      _output.color *= texColor;\n      shadowColor *= texColor;\n\n    }\n    if(textureFlags[TEXTURE_REFLECTIVE_INDEX]){\n      vec4 sphereMulValue = vec4(1);\n      vec4 sphereAddValue = vec4(0);\n\n      vec3 r = reflect(_surface.view, _surface.normal);\n      vec4 texColor = texture(u_reflectiveTexture, r);\n      texColor.rgb = mix(spadd ? vec3(0) : vec3(1), texColor.rgb * sphereMulValue.rgb + sphereAddValue.rgb, sphereMulValue.a + sphereAddValue.a);\n      if(spadd){\n        _output.color.rgb += texColor.rgb;\n        shadowColor.rgb += texColor.rgb;\n      }else{\n        _output.color.rgb *= texColor.rgb;\n        shadowColor.rgb *= texColor.rgb;\n      }\n      _output.color.a *= texColor.a;\n      shadowColor.a *= texColor.a;\n    }\n    _output.color.rgb += specularColor.rgb;\n\n    // Lighting\n    int numLights = 0;\n\n    #if NUM_AMBIENT_LIGHTS > 0\n      // nothing to do for ambient lights\n    #endif\n\n    vec4 outSpecular = vec4(0, 0, 0, 1);\n    #if NUM_DIRECTIONAL_LIGHTS > 0\n      //for(int i=0; i<NUM_DIRECTIONAL_LIGHTS; i++){\n      //  // diffuse\n      //  vec3 lightVec = normalize(v_light[numLights + i]);\n      //  float diffuse = clamp(dot(lightVec, _surface.normal), 0.0f, 1.0f);\n      //  _output.color.rgb += light.directional[i].color.rgb * material.diffuse.rgb * diffuse;\n      //  _output.color.a = material.diffuse.a;\n\n      //  // specular\n      //  if(diffuse > 0.0f){\n      //    vec3 halfVec = normalize(lightVec + _surface.view);\n      //    float specular = pow(dot(halfVec, _surface.normal), material.shininess);\n      //    _output.color.rgb += specularColor.rgb * specular;\n      //  }\n      //}\n      for(int i=0; i<NUM_DIRECTIONAL_LIGHTS; i++){\n        vec3 lightVec = normalize(v_light[numLights + i]);\n        vec3 halfVector = normalize(lightVec + _surface.view);\n        float specular = pow(max(0, dot(halfVec, _surface.normal)), material.shininess);\n        outSpecular = specular * specularColor;\n      }\n      numLights += NUM_DIRECTIONAL_LIGHTS;\n    #endif\n\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0\n      for(int i=0; i<NUM_DIRECTIONAL_SHADOW_LIGHTS; i++){\n        vec3 lightVec = normalize(v_light[numLights + i]);\n        vec3 halfVector = normalize(lightVec + _surface.view);\n        float specular = pow(max(0, dot(halfVec, _surface.normal)), material.shininess);\n        outSpecular = specular * specularColor;\n      }\n    #endif\n\n    #if NUM_OMNI_LIGHTS > 0\n      //for(int i=0; i<NUM_OMNI_LIGHTS; i++){\n      //  // diffuse\n      //  vec3 lightVec = normalize(v_light[numLights + i]);\n      //  float diffuse = clamp(dot(lightVec, _surface.normal), 0.0f, 1.0f);\n      //  _output.color.rgb += light.omni[i].color.rgb * material.diffuse.rgb * diffuse;\n\n      //  // specular\n      //  if(diffuse > 0.0f){\n      //    vec3 halfVec = normalize(lightVec + _surface.view);\n      //    float specular = pow(dot(halfVec, _surface.normal), material.shininess);\n      //    //outColor.rgb += material.specular.rgb * specular; // TODO: get the light color of specular\n      //    _output.color.rgb += specularColor.rgb * specular;\n      //  }\n      //}\n      numLights += NUM_OMNI_LIGHTS;\n    #endif\n\n    #if NUM_SPOT_LIGHTS > 0\n      // TODO: implement\n    #endif\n\n    #if NUM_IES_LIGHTS > 0\n      // TODO: implement\n    #endif\n\n    #if NUM_PROBE_LIGHTS > 0\n      // TODO: implement\n    #endif\n\n\n    // diffuse texture\n    //if(textureFlags[TEXTURE_DIFFUSE_INDEX]){\n    //  vec4 color = texture(u_diffuseTexture, v_texcoord0);\n    //  _output.color = color * _output.color;\n    //}\n\n    // fresnel reflection\n    //if(textureFlags[TEXTURE_REFLECTIVE_INDEX]){\n    //  vec3 r = reflect(_surface.view, _surface.normal);\n    //  //float f0 = 0.0; // TODO: calculate f0\n    //  //float fresnel = f0 + (1.0 - f0) * pow(1.0 - clamp(dot(viewVec, nom), 0.0, 1.0), material.fresnelExponent);\n    //  float fresnel = 0.4 * pow(1.0 - clamp(dot(_surface.view, _surface.normal), 0.0, 1.0), material.fresnelExponent);\n    //  _output.color.rgb += texture(u_reflectiveTexture, r).rgb * fresnel;\n    //}\n\n    //float fogFactor = pow(v_fogFactor, fog.densityExponent);\n    //_output.color = mix(_output.color, fog.color, fogFactor);\n\n    #if USE_SHADER_MODIFIER_FRAGMENT\n      shaderModifierFragment();\n    #endif\n\n    // DEBUG\n    //_output.color.a = material.diffuse.a;\n\n    outColor = _output.color;\n  }\n';
 
 	/**
 	 *
@@ -71615,7 +72288,7 @@ module.exports =
 	exports.default = MMDProgram;
 
 /***/ },
-/* 11 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -71626,9 +72299,13 @@ module.exports =
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _jscenekit = __webpack_require__(4);
+	var _jscenekit = __webpack_require__(3);
 
-	var _TextReader2 = __webpack_require__(12);
+	var _TGAImage = __webpack_require__(14);
+
+	var _TGAImage2 = _interopRequireDefault(_TGAImage);
+
+	var _TextReader2 = __webpack_require__(15);
 
 	var _TextReader3 = _interopRequireDefault(_TextReader2);
 
@@ -71746,7 +72423,7 @@ module.exports =
 	      var promise = new Promise(function (resolve, reject) {
 	        var fileName = _this.directoryPath + filePath;
 	        if (fileName.endsWith('tga')) {
-	          var tga = _jscenekit._TGAImage.imageWithURL(fileName);
+	          var tga = _TGAImage2.default.imageWithURL(fileName);
 	          tga.didLoad.then(function () {
 	            resolve(tga.image);
 	          });
@@ -71776,7 +72453,2638 @@ module.exports =
 	exports.default = MMDReader;
 
 /***/ },
-/* 12 */
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(Buffer) {module.exports =
+	/******/ (function(modules) { // webpackBootstrap
+	/******/ 	// The module cache
+	/******/ 	var installedModules = {};
+
+	/******/ 	// The require function
+	/******/ 	function __webpack_require__(moduleId) {
+
+	/******/ 		// Check if module is in cache
+	/******/ 		if(installedModules[moduleId])
+	/******/ 			return installedModules[moduleId].exports;
+
+	/******/ 		// Create a new module (and put it into the cache)
+	/******/ 		var module = installedModules[moduleId] = {
+	/******/ 			exports: {},
+	/******/ 			id: moduleId,
+	/******/ 			loaded: false
+	/******/ 		};
+
+	/******/ 		// Execute the module function
+	/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+	/******/ 		// Flag the module as loaded
+	/******/ 		module.loaded = true;
+
+	/******/ 		// Return the exports of the module
+	/******/ 		return module.exports;
+	/******/ 	}
+
+
+	/******/ 	// expose the modules object (__webpack_modules__)
+	/******/ 	__webpack_require__.m = modules;
+
+	/******/ 	// expose the module cache
+	/******/ 	__webpack_require__.c = installedModules;
+
+	/******/ 	// __webpack_public_path__
+	/******/ 	__webpack_require__.p = "";
+
+	/******/ 	// Load entry module and return exports
+	/******/ 	return __webpack_require__(0);
+	/******/ })
+	/************************************************************************/
+	/******/ ([
+	/* 0 */
+	/***/ (function(module, exports, __webpack_require__) {
+
+		/* WEBPACK VAR INJECTION */(function(Buffer) {'use strict';
+
+		/*global Buffer*/
+
+		var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+		function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+		function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+		var _ImageType = {
+		  noImage: 0,
+		  colorMapped: 1,
+		  RGB: 2,
+		  blackAndWhite: 3,
+		  runlengthColorMapped: 9,
+		  runlengthRGB: 10,
+		  compressedBlackAndWhite: 11,
+		  compressedColorMapped: 32,
+		  compressed4PassQTColorMapped: 33
+		};
+
+		var _headerLength = 18;
+
+		var TGAImage = function () {
+		  /**
+		   * constructor
+		   * @param {Buffer|ArrayBuffer} data -
+		   * @constructor
+		   */
+		  function TGAImage(data) {
+		    var _this = this;
+
+		    _classCallCheck(this, TGAImage);
+
+		    if (data instanceof Buffer) {
+		      this._buffer = data;
+		    } else if (typeof data === 'string') {
+		      this._buffer = Buffer.from(data, 'binary');
+		    } else if (data) {
+		      this._buffer = Buffer.from(data);
+		    } else {
+		      this._buffer = null;
+		    }
+
+		    // Header
+		    this._idLength = 0;
+		    this._colorMapType = 0;
+		    this._imageType = 0;
+		    this._colorMapOrigin = 0;
+		    this._colorMapLength = 0;
+		    this._colorMapDepth = 0;
+		    this._imageXOrigin = 0;
+		    this._imageYOrigin = 0;
+		    this._imageWidth = 0;
+		    this._imageHeight = 0;
+		    this._imageDepth = 0;
+		    this._alphaDepth = 0;
+		    this._leftToRight = true;
+		    this._topToBottom = false;
+		    this._interleave = false;
+		    this._hasAlpha = false;
+
+		    // Image Identification Field
+		    this._imageID = null;
+
+		    // Image Data
+		    this._canvas = null;
+		    this._context = null;
+		    this._imageData = null;
+		    this._image = null;
+
+		    // for HTML Image tag compatibility
+		    this._src = null;
+		    this.onload = null;
+		    this.onerror = null;
+
+		    this._resolveFunc = null;
+		    this._rejectFunc = null;
+		    this._didLoad = new Promise(function (resolve, reject) {
+		      _this._resolveFunc = resolve;
+		      _this._rejectFunc = reject;
+		    });
+
+		    if (data) {
+		      this._parseData();
+		    }
+		  }
+
+		  _createClass(TGAImage, [{
+		    key: '_loadURL',
+		    value: function _loadURL(url) {
+		      var _this2 = this;
+
+		      this._src = url;
+		      this._requestBinaryFile(url).then(function (data) {
+		        _this2._buffer = Buffer.from(data);
+		        _this2._parseData();
+		      }).catch(function (error) {
+		        _this2._reject(error);
+		      });
+		    }
+		  }, {
+		    key: '_requestBinaryFile',
+		    value: function _requestBinaryFile(url) {
+		      return new Promise(function (resolve, reject) {
+		        var request = new XMLHttpRequest();
+		        request.open('GET', url);
+		        request.responseType = 'arraybuffer';
+		        request.onload = function (ev) {
+		          if (request.response) {
+		            resolve(request.response);
+		          } else {
+		            reject(request);
+		          }
+		        };
+		        request.onerror = function (ev) {
+		          reject(ev);
+		        };
+		        request.send(null);
+		      });
+		    }
+		  }, {
+		    key: '_parseData',
+		    value: function _parseData() {
+		      this._readHeader();
+		      this._readImageID();
+		      this._initImage();
+
+		      var data = this._getImageData();
+
+		      switch (this._imageType) {
+		        case _ImageType.noImage:
+		          {
+		            // nothing to do
+		            break;
+		          }
+		        case _ImageType.colorMapped:
+		          {
+		            this._parseColorMapData(data);
+		            break;
+		          }
+		        case _ImageType.RGB:
+		          {
+		            this._parseRGBData(data);
+		            break;
+		          }
+		        case _ImageType.blackAndWhite:
+		          {
+		            this._parseBlackAndWhiteData(data);
+		            break;
+		          }
+		        case _ImageType.runlengthColorMapped:
+		          {
+		            this._parseColorMapData(data);
+		            break;
+		          }
+		        case _ImageType.runlengthRGB:
+		          {
+		            this._parseRGBData(data);
+		            break;
+		          }
+		        case _ImageType.compressedBlackAndWhite:
+		          {
+		            this._parseBlackAndWhiteData(data);
+		            break;
+		          }
+		        case _ImageType.compressedColorMapped:
+		          {
+		            console.error('parser for compressed TGA is not implemeneted');
+		            break;
+		          }
+		        case _ImageType.compressed4PassQTColorMapped:
+		          {
+		            console.error('parser for compressed TGA is not implemeneted');
+		            break;
+		          }
+		        default:
+		          {
+		            throw new Error('unknown imageType: ' + this._imageType);
+		          }
+		      }
+
+		      this._setImage();
+		      this._deleteBuffer();
+
+		      this._resolve();
+		    }
+		  }, {
+		    key: '_readHeader',
+		    value: function _readHeader() {
+		      this._idLength = this._buffer.readUIntLE(0, 1);
+		      this._colorMapType = this._buffer.readUIntLE(1, 1);
+		      this._imageType = this._buffer.readUIntLE(2, 1);
+		      this._colorMapOrigin = this._buffer.readUIntLE(3, 2);
+		      this._colorMapLength = this._buffer.readUIntLE(5, 2);
+		      this._colorMapDepth = this._buffer.readUIntLE(7, 1);
+		      this._imageXOrigin = this._buffer.readUIntLE(8, 2);
+		      this._imageYOrigin = this._buffer.readUIntLE(10, 2);
+		      this._imageWidth = this._buffer.readUIntLE(12, 2);
+		      this._imageHeight = this._buffer.readUIntLE(14, 2);
+		      this._imageDepth = this._buffer.readUIntLE(16, 1);
+
+		      var descriptor = this._buffer.readUIntLE(17, 1);
+		      this._alphaDepth = descriptor & 0x0F;
+		      this._leftToRight = (descriptor & 0x10) === 0;
+		      this._topToBottom = (descriptor & 0x20) > 0;
+		      this._interleave = descriptor & 0xC0;
+		    }
+		  }, {
+		    key: '_readImageID',
+		    value: function _readImageID() {
+		      if (this._idLength > 0) {
+		        this._imageID = this._buffer.subarray(_headerLength, this._idLength);
+		      }
+		    }
+		  }, {
+		    key: '_initImage',
+		    value: function _initImage() {
+		      if (this._imageType === _ImageType.noImage) {
+		        return;
+		      }
+		      if (this._imageWidth <= 0 || this._imageHeight <= 0) {
+		        return;
+		      }
+		      this._canvas = document.createElement('canvas');
+		      this._canvas.width = this._imageWidth;
+		      this._canvas.height = this._imageHeight;
+		      this._context = this._canvas.getContext('2d');
+		      this._imageData = this._context.createImageData(this._imageWidth, this._imageHeight);
+		    }
+		  }, {
+		    key: '_setImage',
+		    value: function _setImage() {
+		      this._context.putImageData(this._imageData, 0, 0);
+		      this._image = new Image();
+		      this._image.width = this._imageWidth;
+		      this._image.height = this._imageHeight;
+		      this._image.src = this._canvas.toDataURL();
+		    }
+		  }, {
+		    key: '_deleteBuffer',
+		    value: function _deleteBuffer() {
+		      if (this._buffer) {
+		        delete this._buffer;
+		        this._buffer = null;
+		      }
+		      if (this._imageData) {
+		        delete this._imageData;
+		        this._imageData = null;
+		      }
+		    }
+		  }, {
+		    key: '_parseColorMapData',
+		    value: function _parseColorMapData(buf) {
+		      if (this._colorMapDepth === 24 || this._colorMapDepth === 16 || this._colorMapDepth === 15) {
+		        this._hasAlpha = false;
+		      } else if (this._colorMapDepth === 32) {
+		        this._hasAlpha = true;
+		      } else {
+		        throw new Error('unknown colorMapDepth: ' + this._colorMapDepth);
+		      }
+
+		      var colorMapDataPos = _headerLength + this._idLength;
+		      var colorMapDataSize = Math.ceil(this._colorMapDepth / 8);
+		      var colorMapDataLen = colorMapDataSize * this._colorMapLength;
+
+		      var imageDataSize = 1;
+
+		      var colorMap = [];
+		      var pos = colorMapDataPos;
+		      for (var i = 0; i < this._colorMapLength; i++) {
+		        var rgba = this._getRGBA(this._buffer, pos, this._colorMapDepth);
+		        colorMap.push(rgba);
+		        pos += colorMapDataSize;
+		      }
+
+		      var data = this._imageData.data;
+		      var initX = 0;
+		      var initY = 0;
+		      var xStep = 1;
+		      var yStep = 1;
+		      if (!this._leftToRight) {
+		        initX = this._imageWidth - 1;
+		        xStep = -1;
+		      }
+		      if (!this._topToBottom) {
+		        initY = this._imageHeight - 1;
+		        yStep = -1;
+		      }
+
+		      pos = 0;
+		      var y = initY;
+		      var defaultColor = [0xFF, 0xFF, 0xFF, 0xFF];
+		      for (var iy = 0; iy < this._imageHeight; iy++) {
+		        var x = initX;
+		        for (var ix = 0; ix < this._imageWidth; ix++) {
+		          var index = (y * this._imageWidth + x) * 4;
+		          var color = defaultColor;
+		          var mapNo = buf[pos] - this._colorMapOrigin;
+		          if (mapNo >= 0) {
+		            color = colorMap[mapNo];
+		          }
+		          data[index] = color[0];
+		          data[index + 1] = color[1];
+		          data[index + 2] = color[2];
+		          data[index + 3] = color[3];
+
+		          x += xStep;
+		          pos += imageDataSize;
+		        }
+		        y += yStep;
+		      }
+		    }
+		  }, {
+		    key: '_parseRGBData',
+		    value: function _parseRGBData(buf) {
+		      if (this._imageDepth === 24 || this._imageDepth === 16 || this._imageDepth === 15) {
+		        this._hasAlpha = false;
+		      } else if (this._imageDepth === 32) {
+		        this._hasAlpha = true;
+		      } else {
+		        throw new Error('unknown imageDepth: ' + this._imageDepth);
+		      }
+
+		      var imageDataSize = Math.ceil(this._imageDepth / 8);
+
+		      var data = this._imageData.data;
+		      var initX = 0;
+		      var initY = 0;
+		      var xStep = 1;
+		      var yStep = 1;
+		      if (!this._leftToRight) {
+		        initX = this._imageWidth - 1;
+		        xStep = -1;
+		      }
+		      if (!this._topToBottom) {
+		        initY = this._imageHeight - 1;
+		        yStep = -1;
+		      }
+
+		      var pos = 0;
+		      var y = initY;
+		      for (var iy = 0; iy < this._imageHeight; iy++) {
+		        var x = initX;
+		        for (var ix = 0; ix < this._imageWidth; ix++) {
+		          var index = (y * this._imageWidth + x) * 4;
+		          var rgba = this._getRGBA(buf, pos, this._imageDepth);
+		          data[index] = rgba[0];
+		          data[index + 1] = rgba[1];
+		          data[index + 2] = rgba[2];
+		          data[index + 3] = rgba[3];
+
+		          x += xStep;
+		          pos += imageDataSize;
+		        }
+		        y += yStep;
+		      }
+		    }
+		  }, {
+		    key: '_getRGBA',
+		    value: function _getRGBA(buf, offset, depth) {
+		      if (depth === 15) {
+		        var r = (buf[offset + 1] & 0x7c) << 1;
+		        var g = (buf[offset + 1] & 0x03) << 6 | (buf[offset] & 0xe0) >> 2;
+		        var b = (buf[offset] & 0x1f) << 3;
+		        //const a = (buf[offset+1] & 0x80) > 0 ? 255 : 0
+		        var a = 255;
+		        return [r, g, b, a];
+		      } else if (depth === 16) {
+		        var _r = (buf[offset + 1] & 0x7c) << 1;
+		        var _g = (buf[offset + 1] & 0x03) << 6 | (buf[offset] & 0xe0) >> 2;
+		        var _b = (buf[offset] & 0x1f) << 3;
+		        var _a = 255;
+		        return [_r, _g, _b, _a];
+		      } else if (depth === 24) {
+		        return [buf[offset + 2], buf[offset + 1], buf[offset], 255];
+		      } else if (depth === 32) {
+		        return [buf[offset + 2], buf[offset + 1], buf[offset], buf[offset + 3]];
+		      }
+		      throw new Error('unsupported imageDepth: ' + depth);
+		    }
+		  }, {
+		    key: '_parseBlackAndWhiteData',
+		    value: function _parseBlackAndWhiteData(buf) {
+		      if (this._imageDepth == 8) {
+		        this._hasAlpha = false;
+		      } else if (this._imageDepth == 16) {
+		        this._hasAlpha = true;
+		      } else {
+		        throw new Error('unknown imageDepth: ' + this._imageDepth);
+		      }
+
+		      var imageDataSize = this._imageDepth / 8;
+
+		      var data = this._imageData.data;
+		      var initX = 0;
+		      var initY = 0;
+		      var xStep = 1;
+		      var yStep = 1;
+		      if (!this._leftToRight) {
+		        initX = this._imageWidth - 1;
+		        xStep = -1;
+		      }
+		      if (!this._topToBottom) {
+		        initY = this._imageHeight - 1;
+		        yStep = -1;
+		      }
+
+		      var pos = 0;
+		      if (this._hasAlpha) {
+		        var y = initY;
+		        for (var iy = 0; iy < this._imageHeight; iy++) {
+		          var x = initX;
+		          for (var ix = 0; ix < this._imageWidth; ix++) {
+		            var index = (y * this._imageWidth + x) * 4;
+		            var c = buf[pos];
+		            var a = buf[pos + 1];
+		            data[index] = c;
+		            data[index + 1] = c;
+		            data[index + 2] = c;
+		            data[index + 3] = a;
+
+		            x += xStep;
+		            pos += imageDataSize;
+		          }
+		          y += yStep;
+		        }
+		      } else {
+		        var _y = initY;
+		        for (var _iy = 0; _iy < this._imageHeight; _iy++) {
+		          var _x = initX;
+		          for (var _ix = 0; _ix < this._imageWidth; _ix++) {
+		            var _index = (_y * this._imageWidth + _x) * 4;
+		            var _c = buf[pos];
+		            var _a2 = 255;
+		            data[_index] = _c;
+		            data[_index + 1] = _c;
+		            data[_index + 2] = _c;
+		            data[_index + 3] = _a2;
+
+		            _x += xStep;
+		            pos += imageDataSize;
+		          }
+		          _y += yStep;
+		        }
+		      }
+		    }
+		  }, {
+		    key: '_getImageData',
+		    value: function _getImageData() {
+		      var data = null;
+		      if (this._imageType !== _ImageType.none) {
+		        var colorMapDataLen = Math.ceil(this._colorMapDepth / 8) * this._colorMapLength;
+		        var start = _headerLength + this._idLength + colorMapDataLen;
+		        data = this._buffer.subarray(start);
+		      }
+
+		      if (this._imageType === _ImageType.runlengthColorMapped || this._imageType === _ImageType.runlengthRGB) {
+		        data = this._decompressRunlengthData(data);
+		      } else if (this._imageType === _ImageType.compressedBlackAndWhite) {
+		        data = this._decompressRunlengthData(data);
+		      } else if (this._imageType === _ImageType.compressedColorMapped) {
+		        // TODO: implement
+		        console.error('Compressed Color Mapped TGA Image data is not supported');
+		      } else if (this._imageType === _ImageType.compressed4PassQTColorMapped) {
+		        // TODO: implement
+		        console.error('Compressed Color Mapped TGA Image data is not supported');
+		      }
+		      return data;
+		    }
+		  }, {
+		    key: '_decompressRunlengthData',
+		    value: function _decompressRunlengthData(data) {
+		      var d = [];
+		      var elementCount = Math.ceil(this._imageDepth / 8);
+		      var dataLength = elementCount * this._imageWidth * this._imageHeight;
+		      var pos = 0;
+
+		      while (d.length < dataLength) {
+		        var packet = data[pos];
+		        pos += 1;
+		        if ((packet & 0x80) !== 0) {
+		          // RLE
+		          var elements = data.slice(pos, pos + elementCount);
+		          pos += elementCount;
+
+		          var count = (packet & 0x7F) + 1;
+		          for (var i = 0; i < count; i++) {
+		            d.push.apply(d, _toConsumableArray(elements));
+		          }
+		        } else {
+		          // RAW
+		          var len = (packet + 1) * elementCount;
+		          d.push.apply(d, _toConsumableArray(data.slice(pos, pos + len)));
+		          pos += len;
+		        }
+		      }
+		      return d;
+		    }
+		  }, {
+		    key: '_resolve',
+		    value: function _resolve(e) {
+		      if (this.onload) {
+		        this.onload(e);
+		      }
+		      this._resolveFunc(e);
+		    }
+		  }, {
+		    key: '_reject',
+		    value: function _reject(e) {
+		      if (this.onerror) {
+		        this.onerror(e);
+		      }
+		      this._rejectFunc(e);
+		    }
+		  }, {
+		    key: 'image',
+		    get: function get() {
+		      return this._image;
+		    }
+		  }, {
+		    key: 'canvas',
+		    get: function get() {
+		      return this._canvas;
+		    }
+		  }, {
+		    key: 'didLoad',
+		    get: function get() {
+		      return this._didLoad;
+		    }
+		  }, {
+		    key: 'src',
+		    get: function get() {
+		      return this._src;
+		    },
+		    set: function set(newValue) {
+		      this._loadURL(newValue);
+		    }
+		  }], [{
+		    key: 'imageWithData',
+		    value: function imageWithData(data) {
+		      return new TGAImage(data);
+		    }
+		  }, {
+		    key: 'imageWithURL',
+		    value: function imageWithURL(url) {
+		      var image = new TGAImage();
+		      image._loadURL(url);
+		      return image;
+		    }
+		  }]);
+
+		  return TGAImage;
+		}();
+
+		module.exports = TGAImage;
+		/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
+
+	/***/ }),
+	/* 1 */
+	/***/ (function(module, exports, __webpack_require__) {
+
+		/* WEBPACK VAR INJECTION */(function(global) {/*!
+		 * The buffer module from node.js, for the browser.
+		 *
+		 * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
+		 * @license  MIT
+		 */
+		/* eslint-disable no-proto */
+
+		'use strict'
+
+		var base64 = __webpack_require__(2)
+		var ieee754 = __webpack_require__(3)
+		var isArray = __webpack_require__(4)
+
+		exports.Buffer = Buffer
+		exports.SlowBuffer = SlowBuffer
+		exports.INSPECT_MAX_BYTES = 50
+
+		/**
+		 * If `Buffer.TYPED_ARRAY_SUPPORT`:
+		 *   === true    Use Uint8Array implementation (fastest)
+		 *   === false   Use Object implementation (most compatible, even IE6)
+		 *
+		 * Browsers that support typed arrays are IE 10+, Firefox 4+, Chrome 7+, Safari 5.1+,
+		 * Opera 11.6+, iOS 4.2+.
+		 *
+		 * Due to various browser bugs, sometimes the Object implementation will be used even
+		 * when the browser supports typed arrays.
+		 *
+		 * Note:
+		 *
+		 *   - Firefox 4-29 lacks support for adding new properties to `Uint8Array` instances,
+		 *     See: https://bugzilla.mozilla.org/show_bug.cgi?id=695438.
+		 *
+		 *   - Chrome 9-10 is missing the `TypedArray.prototype.subarray` function.
+		 *
+		 *   - IE10 has a broken `TypedArray.prototype.subarray` function which returns arrays of
+		 *     incorrect length in some situations.
+
+		 * We detect these buggy browsers and set `Buffer.TYPED_ARRAY_SUPPORT` to `false` so they
+		 * get the Object implementation, which is slower but behaves correctly.
+		 */
+		Buffer.TYPED_ARRAY_SUPPORT = global.TYPED_ARRAY_SUPPORT !== undefined
+		  ? global.TYPED_ARRAY_SUPPORT
+		  : typedArraySupport()
+
+		/*
+		 * Export kMaxLength after typed array support is determined.
+		 */
+		exports.kMaxLength = kMaxLength()
+
+		function typedArraySupport () {
+		  try {
+		    var arr = new Uint8Array(1)
+		    arr.__proto__ = {__proto__: Uint8Array.prototype, foo: function () { return 42 }}
+		    return arr.foo() === 42 && // typed array instances can be augmented
+		        typeof arr.subarray === 'function' && // chrome 9-10 lack `subarray`
+		        arr.subarray(1, 1).byteLength === 0 // ie10 has broken `subarray`
+		  } catch (e) {
+		    return false
+		  }
+		}
+
+		function kMaxLength () {
+		  return Buffer.TYPED_ARRAY_SUPPORT
+		    ? 0x7fffffff
+		    : 0x3fffffff
+		}
+
+		function createBuffer (that, length) {
+		  if (kMaxLength() < length) {
+		    throw new RangeError('Invalid typed array length')
+		  }
+		  if (Buffer.TYPED_ARRAY_SUPPORT) {
+		    // Return an augmented `Uint8Array` instance, for best performance
+		    that = new Uint8Array(length)
+		    that.__proto__ = Buffer.prototype
+		  } else {
+		    // Fallback: Return an object instance of the Buffer class
+		    if (that === null) {
+		      that = new Buffer(length)
+		    }
+		    that.length = length
+		  }
+
+		  return that
+		}
+
+		/**
+		 * The Buffer constructor returns instances of `Uint8Array` that have their
+		 * prototype changed to `Buffer.prototype`. Furthermore, `Buffer` is a subclass of
+		 * `Uint8Array`, so the returned instances will have all the node `Buffer` methods
+		 * and the `Uint8Array` methods. Square bracket notation works as expected -- it
+		 * returns a single octet.
+		 *
+		 * The `Uint8Array` prototype remains unmodified.
+		 */
+
+		function Buffer (arg, encodingOrOffset, length) {
+		  if (!Buffer.TYPED_ARRAY_SUPPORT && !(this instanceof Buffer)) {
+		    return new Buffer(arg, encodingOrOffset, length)
+		  }
+
+		  // Common case.
+		  if (typeof arg === 'number') {
+		    if (typeof encodingOrOffset === 'string') {
+		      throw new Error(
+		        'If encoding is specified then the first argument must be a string'
+		      )
+		    }
+		    return allocUnsafe(this, arg)
+		  }
+		  return from(this, arg, encodingOrOffset, length)
+		}
+
+		Buffer.poolSize = 8192 // not used by this implementation
+
+		// TODO: Legacy, not needed anymore. Remove in next major version.
+		Buffer._augment = function (arr) {
+		  arr.__proto__ = Buffer.prototype
+		  return arr
+		}
+
+		function from (that, value, encodingOrOffset, length) {
+		  if (typeof value === 'number') {
+		    throw new TypeError('"value" argument must not be a number')
+		  }
+
+		  if (typeof ArrayBuffer !== 'undefined' && value instanceof ArrayBuffer) {
+		    return fromArrayBuffer(that, value, encodingOrOffset, length)
+		  }
+
+		  if (typeof value === 'string') {
+		    return fromString(that, value, encodingOrOffset)
+		  }
+
+		  return fromObject(that, value)
+		}
+
+		/**
+		 * Functionally equivalent to Buffer(arg, encoding) but throws a TypeError
+		 * if value is a number.
+		 * Buffer.from(str[, encoding])
+		 * Buffer.from(array)
+		 * Buffer.from(buffer)
+		 * Buffer.from(arrayBuffer[, byteOffset[, length]])
+		 **/
+		Buffer.from = function (value, encodingOrOffset, length) {
+		  return from(null, value, encodingOrOffset, length)
+		}
+
+		if (Buffer.TYPED_ARRAY_SUPPORT) {
+		  Buffer.prototype.__proto__ = Uint8Array.prototype
+		  Buffer.__proto__ = Uint8Array
+		  if (typeof Symbol !== 'undefined' && Symbol.species &&
+		      Buffer[Symbol.species] === Buffer) {
+		    // Fix subarray() in ES2016. See: https://github.com/feross/buffer/pull/97
+		    Object.defineProperty(Buffer, Symbol.species, {
+		      value: null,
+		      configurable: true
+		    })
+		  }
+		}
+
+		function assertSize (size) {
+		  if (typeof size !== 'number') {
+		    throw new TypeError('"size" argument must be a number')
+		  } else if (size < 0) {
+		    throw new RangeError('"size" argument must not be negative')
+		  }
+		}
+
+		function alloc (that, size, fill, encoding) {
+		  assertSize(size)
+		  if (size <= 0) {
+		    return createBuffer(that, size)
+		  }
+		  if (fill !== undefined) {
+		    // Only pay attention to encoding if it's a string. This
+		    // prevents accidentally sending in a number that would
+		    // be interpretted as a start offset.
+		    return typeof encoding === 'string'
+		      ? createBuffer(that, size).fill(fill, encoding)
+		      : createBuffer(that, size).fill(fill)
+		  }
+		  return createBuffer(that, size)
+		}
+
+		/**
+		 * Creates a new filled Buffer instance.
+		 * alloc(size[, fill[, encoding]])
+		 **/
+		Buffer.alloc = function (size, fill, encoding) {
+		  return alloc(null, size, fill, encoding)
+		}
+
+		function allocUnsafe (that, size) {
+		  assertSize(size)
+		  that = createBuffer(that, size < 0 ? 0 : checked(size) | 0)
+		  if (!Buffer.TYPED_ARRAY_SUPPORT) {
+		    for (var i = 0; i < size; ++i) {
+		      that[i] = 0
+		    }
+		  }
+		  return that
+		}
+
+		/**
+		 * Equivalent to Buffer(num), by default creates a non-zero-filled Buffer instance.
+		 * */
+		Buffer.allocUnsafe = function (size) {
+		  return allocUnsafe(null, size)
+		}
+		/**
+		 * Equivalent to SlowBuffer(num), by default creates a non-zero-filled Buffer instance.
+		 */
+		Buffer.allocUnsafeSlow = function (size) {
+		  return allocUnsafe(null, size)
+		}
+
+		function fromString (that, string, encoding) {
+		  if (typeof encoding !== 'string' || encoding === '') {
+		    encoding = 'utf8'
+		  }
+
+		  if (!Buffer.isEncoding(encoding)) {
+		    throw new TypeError('"encoding" must be a valid string encoding')
+		  }
+
+		  var length = byteLength(string, encoding) | 0
+		  that = createBuffer(that, length)
+
+		  var actual = that.write(string, encoding)
+
+		  if (actual !== length) {
+		    // Writing a hex string, for example, that contains invalid characters will
+		    // cause everything after the first invalid character to be ignored. (e.g.
+		    // 'abxxcd' will be treated as 'ab')
+		    that = that.slice(0, actual)
+		  }
+
+		  return that
+		}
+
+		function fromArrayLike (that, array) {
+		  var length = array.length < 0 ? 0 : checked(array.length) | 0
+		  that = createBuffer(that, length)
+		  for (var i = 0; i < length; i += 1) {
+		    that[i] = array[i] & 255
+		  }
+		  return that
+		}
+
+		function fromArrayBuffer (that, array, byteOffset, length) {
+		  array.byteLength // this throws if `array` is not a valid ArrayBuffer
+
+		  if (byteOffset < 0 || array.byteLength < byteOffset) {
+		    throw new RangeError('\'offset\' is out of bounds')
+		  }
+
+		  if (array.byteLength < byteOffset + (length || 0)) {
+		    throw new RangeError('\'length\' is out of bounds')
+		  }
+
+		  if (byteOffset === undefined && length === undefined) {
+		    array = new Uint8Array(array)
+		  } else if (length === undefined) {
+		    array = new Uint8Array(array, byteOffset)
+		  } else {
+		    array = new Uint8Array(array, byteOffset, length)
+		  }
+
+		  if (Buffer.TYPED_ARRAY_SUPPORT) {
+		    // Return an augmented `Uint8Array` instance, for best performance
+		    that = array
+		    that.__proto__ = Buffer.prototype
+		  } else {
+		    // Fallback: Return an object instance of the Buffer class
+		    that = fromArrayLike(that, array)
+		  }
+		  return that
+		}
+
+		function fromObject (that, obj) {
+		  if (Buffer.isBuffer(obj)) {
+		    var len = checked(obj.length) | 0
+		    that = createBuffer(that, len)
+
+		    if (that.length === 0) {
+		      return that
+		    }
+
+		    obj.copy(that, 0, 0, len)
+		    return that
+		  }
+
+		  if (obj) {
+		    if ((typeof ArrayBuffer !== 'undefined' &&
+		        obj.buffer instanceof ArrayBuffer) || 'length' in obj) {
+		      if (typeof obj.length !== 'number' || isnan(obj.length)) {
+		        return createBuffer(that, 0)
+		      }
+		      return fromArrayLike(that, obj)
+		    }
+
+		    if (obj.type === 'Buffer' && isArray(obj.data)) {
+		      return fromArrayLike(that, obj.data)
+		    }
+		  }
+
+		  throw new TypeError('First argument must be a string, Buffer, ArrayBuffer, Array, or array-like object.')
+		}
+
+		function checked (length) {
+		  // Note: cannot use `length < kMaxLength()` here because that fails when
+		  // length is NaN (which is otherwise coerced to zero.)
+		  if (length >= kMaxLength()) {
+		    throw new RangeError('Attempt to allocate Buffer larger than maximum ' +
+		                         'size: 0x' + kMaxLength().toString(16) + ' bytes')
+		  }
+		  return length | 0
+		}
+
+		function SlowBuffer (length) {
+		  if (+length != length) { // eslint-disable-line eqeqeq
+		    length = 0
+		  }
+		  return Buffer.alloc(+length)
+		}
+
+		Buffer.isBuffer = function isBuffer (b) {
+		  return !!(b != null && b._isBuffer)
+		}
+
+		Buffer.compare = function compare (a, b) {
+		  if (!Buffer.isBuffer(a) || !Buffer.isBuffer(b)) {
+		    throw new TypeError('Arguments must be Buffers')
+		  }
+
+		  if (a === b) return 0
+
+		  var x = a.length
+		  var y = b.length
+
+		  for (var i = 0, len = Math.min(x, y); i < len; ++i) {
+		    if (a[i] !== b[i]) {
+		      x = a[i]
+		      y = b[i]
+		      break
+		    }
+		  }
+
+		  if (x < y) return -1
+		  if (y < x) return 1
+		  return 0
+		}
+
+		Buffer.isEncoding = function isEncoding (encoding) {
+		  switch (String(encoding).toLowerCase()) {
+		    case 'hex':
+		    case 'utf8':
+		    case 'utf-8':
+		    case 'ascii':
+		    case 'latin1':
+		    case 'binary':
+		    case 'base64':
+		    case 'ucs2':
+		    case 'ucs-2':
+		    case 'utf16le':
+		    case 'utf-16le':
+		      return true
+		    default:
+		      return false
+		  }
+		}
+
+		Buffer.concat = function concat (list, length) {
+		  if (!isArray(list)) {
+		    throw new TypeError('"list" argument must be an Array of Buffers')
+		  }
+
+		  if (list.length === 0) {
+		    return Buffer.alloc(0)
+		  }
+
+		  var i
+		  if (length === undefined) {
+		    length = 0
+		    for (i = 0; i < list.length; ++i) {
+		      length += list[i].length
+		    }
+		  }
+
+		  var buffer = Buffer.allocUnsafe(length)
+		  var pos = 0
+		  for (i = 0; i < list.length; ++i) {
+		    var buf = list[i]
+		    if (!Buffer.isBuffer(buf)) {
+		      throw new TypeError('"list" argument must be an Array of Buffers')
+		    }
+		    buf.copy(buffer, pos)
+		    pos += buf.length
+		  }
+		  return buffer
+		}
+
+		function byteLength (string, encoding) {
+		  if (Buffer.isBuffer(string)) {
+		    return string.length
+		  }
+		  if (typeof ArrayBuffer !== 'undefined' && typeof ArrayBuffer.isView === 'function' &&
+		      (ArrayBuffer.isView(string) || string instanceof ArrayBuffer)) {
+		    return string.byteLength
+		  }
+		  if (typeof string !== 'string') {
+		    string = '' + string
+		  }
+
+		  var len = string.length
+		  if (len === 0) return 0
+
+		  // Use a for loop to avoid recursion
+		  var loweredCase = false
+		  for (;;) {
+		    switch (encoding) {
+		      case 'ascii':
+		      case 'latin1':
+		      case 'binary':
+		        return len
+		      case 'utf8':
+		      case 'utf-8':
+		      case undefined:
+		        return utf8ToBytes(string).length
+		      case 'ucs2':
+		      case 'ucs-2':
+		      case 'utf16le':
+		      case 'utf-16le':
+		        return len * 2
+		      case 'hex':
+		        return len >>> 1
+		      case 'base64':
+		        return base64ToBytes(string).length
+		      default:
+		        if (loweredCase) return utf8ToBytes(string).length // assume utf8
+		        encoding = ('' + encoding).toLowerCase()
+		        loweredCase = true
+		    }
+		  }
+		}
+		Buffer.byteLength = byteLength
+
+		function slowToString (encoding, start, end) {
+		  var loweredCase = false
+
+		  // No need to verify that "this.length <= MAX_UINT32" since it's a read-only
+		  // property of a typed array.
+
+		  // This behaves neither like String nor Uint8Array in that we set start/end
+		  // to their upper/lower bounds if the value passed is out of range.
+		  // undefined is handled specially as per ECMA-262 6th Edition,
+		  // Section 13.3.3.7 Runtime Semantics: KeyedBindingInitialization.
+		  if (start === undefined || start < 0) {
+		    start = 0
+		  }
+		  // Return early if start > this.length. Done here to prevent potential uint32
+		  // coercion fail below.
+		  if (start > this.length) {
+		    return ''
+		  }
+
+		  if (end === undefined || end > this.length) {
+		    end = this.length
+		  }
+
+		  if (end <= 0) {
+		    return ''
+		  }
+
+		  // Force coersion to uint32. This will also coerce falsey/NaN values to 0.
+		  end >>>= 0
+		  start >>>= 0
+
+		  if (end <= start) {
+		    return ''
+		  }
+
+		  if (!encoding) encoding = 'utf8'
+
+		  while (true) {
+		    switch (encoding) {
+		      case 'hex':
+		        return hexSlice(this, start, end)
+
+		      case 'utf8':
+		      case 'utf-8':
+		        return utf8Slice(this, start, end)
+
+		      case 'ascii':
+		        return asciiSlice(this, start, end)
+
+		      case 'latin1':
+		      case 'binary':
+		        return latin1Slice(this, start, end)
+
+		      case 'base64':
+		        return base64Slice(this, start, end)
+
+		      case 'ucs2':
+		      case 'ucs-2':
+		      case 'utf16le':
+		      case 'utf-16le':
+		        return utf16leSlice(this, start, end)
+
+		      default:
+		        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
+		        encoding = (encoding + '').toLowerCase()
+		        loweredCase = true
+		    }
+		  }
+		}
+
+		// The property is used by `Buffer.isBuffer` and `is-buffer` (in Safari 5-7) to detect
+		// Buffer instances.
+		Buffer.prototype._isBuffer = true
+
+		function swap (b, n, m) {
+		  var i = b[n]
+		  b[n] = b[m]
+		  b[m] = i
+		}
+
+		Buffer.prototype.swap16 = function swap16 () {
+		  var len = this.length
+		  if (len % 2 !== 0) {
+		    throw new RangeError('Buffer size must be a multiple of 16-bits')
+		  }
+		  for (var i = 0; i < len; i += 2) {
+		    swap(this, i, i + 1)
+		  }
+		  return this
+		}
+
+		Buffer.prototype.swap32 = function swap32 () {
+		  var len = this.length
+		  if (len % 4 !== 0) {
+		    throw new RangeError('Buffer size must be a multiple of 32-bits')
+		  }
+		  for (var i = 0; i < len; i += 4) {
+		    swap(this, i, i + 3)
+		    swap(this, i + 1, i + 2)
+		  }
+		  return this
+		}
+
+		Buffer.prototype.swap64 = function swap64 () {
+		  var len = this.length
+		  if (len % 8 !== 0) {
+		    throw new RangeError('Buffer size must be a multiple of 64-bits')
+		  }
+		  for (var i = 0; i < len; i += 8) {
+		    swap(this, i, i + 7)
+		    swap(this, i + 1, i + 6)
+		    swap(this, i + 2, i + 5)
+		    swap(this, i + 3, i + 4)
+		  }
+		  return this
+		}
+
+		Buffer.prototype.toString = function toString () {
+		  var length = this.length | 0
+		  if (length === 0) return ''
+		  if (arguments.length === 0) return utf8Slice(this, 0, length)
+		  return slowToString.apply(this, arguments)
+		}
+
+		Buffer.prototype.equals = function equals (b) {
+		  if (!Buffer.isBuffer(b)) throw new TypeError('Argument must be a Buffer')
+		  if (this === b) return true
+		  return Buffer.compare(this, b) === 0
+		}
+
+		Buffer.prototype.inspect = function inspect () {
+		  var str = ''
+		  var max = exports.INSPECT_MAX_BYTES
+		  if (this.length > 0) {
+		    str = this.toString('hex', 0, max).match(/.{2}/g).join(' ')
+		    if (this.length > max) str += ' ... '
+		  }
+		  return '<Buffer ' + str + '>'
+		}
+
+		Buffer.prototype.compare = function compare (target, start, end, thisStart, thisEnd) {
+		  if (!Buffer.isBuffer(target)) {
+		    throw new TypeError('Argument must be a Buffer')
+		  }
+
+		  if (start === undefined) {
+		    start = 0
+		  }
+		  if (end === undefined) {
+		    end = target ? target.length : 0
+		  }
+		  if (thisStart === undefined) {
+		    thisStart = 0
+		  }
+		  if (thisEnd === undefined) {
+		    thisEnd = this.length
+		  }
+
+		  if (start < 0 || end > target.length || thisStart < 0 || thisEnd > this.length) {
+		    throw new RangeError('out of range index')
+		  }
+
+		  if (thisStart >= thisEnd && start >= end) {
+		    return 0
+		  }
+		  if (thisStart >= thisEnd) {
+		    return -1
+		  }
+		  if (start >= end) {
+		    return 1
+		  }
+
+		  start >>>= 0
+		  end >>>= 0
+		  thisStart >>>= 0
+		  thisEnd >>>= 0
+
+		  if (this === target) return 0
+
+		  var x = thisEnd - thisStart
+		  var y = end - start
+		  var len = Math.min(x, y)
+
+		  var thisCopy = this.slice(thisStart, thisEnd)
+		  var targetCopy = target.slice(start, end)
+
+		  for (var i = 0; i < len; ++i) {
+		    if (thisCopy[i] !== targetCopy[i]) {
+		      x = thisCopy[i]
+		      y = targetCopy[i]
+		      break
+		    }
+		  }
+
+		  if (x < y) return -1
+		  if (y < x) return 1
+		  return 0
+		}
+
+		// Finds either the first index of `val` in `buffer` at offset >= `byteOffset`,
+		// OR the last index of `val` in `buffer` at offset <= `byteOffset`.
+		//
+		// Arguments:
+		// - buffer - a Buffer to search
+		// - val - a string, Buffer, or number
+		// - byteOffset - an index into `buffer`; will be clamped to an int32
+		// - encoding - an optional encoding, relevant is val is a string
+		// - dir - true for indexOf, false for lastIndexOf
+		function bidirectionalIndexOf (buffer, val, byteOffset, encoding, dir) {
+		  // Empty buffer means no match
+		  if (buffer.length === 0) return -1
+
+		  // Normalize byteOffset
+		  if (typeof byteOffset === 'string') {
+		    encoding = byteOffset
+		    byteOffset = 0
+		  } else if (byteOffset > 0x7fffffff) {
+		    byteOffset = 0x7fffffff
+		  } else if (byteOffset < -0x80000000) {
+		    byteOffset = -0x80000000
+		  }
+		  byteOffset = +byteOffset  // Coerce to Number.
+		  if (isNaN(byteOffset)) {
+		    // byteOffset: it it's undefined, null, NaN, "foo", etc, search whole buffer
+		    byteOffset = dir ? 0 : (buffer.length - 1)
+		  }
+
+		  // Normalize byteOffset: negative offsets start from the end of the buffer
+		  if (byteOffset < 0) byteOffset = buffer.length + byteOffset
+		  if (byteOffset >= buffer.length) {
+		    if (dir) return -1
+		    else byteOffset = buffer.length - 1
+		  } else if (byteOffset < 0) {
+		    if (dir) byteOffset = 0
+		    else return -1
+		  }
+
+		  // Normalize val
+		  if (typeof val === 'string') {
+		    val = Buffer.from(val, encoding)
+		  }
+
+		  // Finally, search either indexOf (if dir is true) or lastIndexOf
+		  if (Buffer.isBuffer(val)) {
+		    // Special case: looking for empty string/buffer always fails
+		    if (val.length === 0) {
+		      return -1
+		    }
+		    return arrayIndexOf(buffer, val, byteOffset, encoding, dir)
+		  } else if (typeof val === 'number') {
+		    val = val & 0xFF // Search for a byte value [0-255]
+		    if (Buffer.TYPED_ARRAY_SUPPORT &&
+		        typeof Uint8Array.prototype.indexOf === 'function') {
+		      if (dir) {
+		        return Uint8Array.prototype.indexOf.call(buffer, val, byteOffset)
+		      } else {
+		        return Uint8Array.prototype.lastIndexOf.call(buffer, val, byteOffset)
+		      }
+		    }
+		    return arrayIndexOf(buffer, [ val ], byteOffset, encoding, dir)
+		  }
+
+		  throw new TypeError('val must be string, number or Buffer')
+		}
+
+		function arrayIndexOf (arr, val, byteOffset, encoding, dir) {
+		  var indexSize = 1
+		  var arrLength = arr.length
+		  var valLength = val.length
+
+		  if (encoding !== undefined) {
+		    encoding = String(encoding).toLowerCase()
+		    if (encoding === 'ucs2' || encoding === 'ucs-2' ||
+		        encoding === 'utf16le' || encoding === 'utf-16le') {
+		      if (arr.length < 2 || val.length < 2) {
+		        return -1
+		      }
+		      indexSize = 2
+		      arrLength /= 2
+		      valLength /= 2
+		      byteOffset /= 2
+		    }
+		  }
+
+		  function read (buf, i) {
+		    if (indexSize === 1) {
+		      return buf[i]
+		    } else {
+		      return buf.readUInt16BE(i * indexSize)
+		    }
+		  }
+
+		  var i
+		  if (dir) {
+		    var foundIndex = -1
+		    for (i = byteOffset; i < arrLength; i++) {
+		      if (read(arr, i) === read(val, foundIndex === -1 ? 0 : i - foundIndex)) {
+		        if (foundIndex === -1) foundIndex = i
+		        if (i - foundIndex + 1 === valLength) return foundIndex * indexSize
+		      } else {
+		        if (foundIndex !== -1) i -= i - foundIndex
+		        foundIndex = -1
+		      }
+		    }
+		  } else {
+		    if (byteOffset + valLength > arrLength) byteOffset = arrLength - valLength
+		    for (i = byteOffset; i >= 0; i--) {
+		      var found = true
+		      for (var j = 0; j < valLength; j++) {
+		        if (read(arr, i + j) !== read(val, j)) {
+		          found = false
+		          break
+		        }
+		      }
+		      if (found) return i
+		    }
+		  }
+
+		  return -1
+		}
+
+		Buffer.prototype.includes = function includes (val, byteOffset, encoding) {
+		  return this.indexOf(val, byteOffset, encoding) !== -1
+		}
+
+		Buffer.prototype.indexOf = function indexOf (val, byteOffset, encoding) {
+		  return bidirectionalIndexOf(this, val, byteOffset, encoding, true)
+		}
+
+		Buffer.prototype.lastIndexOf = function lastIndexOf (val, byteOffset, encoding) {
+		  return bidirectionalIndexOf(this, val, byteOffset, encoding, false)
+		}
+
+		function hexWrite (buf, string, offset, length) {
+		  offset = Number(offset) || 0
+		  var remaining = buf.length - offset
+		  if (!length) {
+		    length = remaining
+		  } else {
+		    length = Number(length)
+		    if (length > remaining) {
+		      length = remaining
+		    }
+		  }
+
+		  // must be an even number of digits
+		  var strLen = string.length
+		  if (strLen % 2 !== 0) throw new TypeError('Invalid hex string')
+
+		  if (length > strLen / 2) {
+		    length = strLen / 2
+		  }
+		  for (var i = 0; i < length; ++i) {
+		    var parsed = parseInt(string.substr(i * 2, 2), 16)
+		    if (isNaN(parsed)) return i
+		    buf[offset + i] = parsed
+		  }
+		  return i
+		}
+
+		function utf8Write (buf, string, offset, length) {
+		  return blitBuffer(utf8ToBytes(string, buf.length - offset), buf, offset, length)
+		}
+
+		function asciiWrite (buf, string, offset, length) {
+		  return blitBuffer(asciiToBytes(string), buf, offset, length)
+		}
+
+		function latin1Write (buf, string, offset, length) {
+		  return asciiWrite(buf, string, offset, length)
+		}
+
+		function base64Write (buf, string, offset, length) {
+		  return blitBuffer(base64ToBytes(string), buf, offset, length)
+		}
+
+		function ucs2Write (buf, string, offset, length) {
+		  return blitBuffer(utf16leToBytes(string, buf.length - offset), buf, offset, length)
+		}
+
+		Buffer.prototype.write = function write (string, offset, length, encoding) {
+		  // Buffer#write(string)
+		  if (offset === undefined) {
+		    encoding = 'utf8'
+		    length = this.length
+		    offset = 0
+		  // Buffer#write(string, encoding)
+		  } else if (length === undefined && typeof offset === 'string') {
+		    encoding = offset
+		    length = this.length
+		    offset = 0
+		  // Buffer#write(string, offset[, length][, encoding])
+		  } else if (isFinite(offset)) {
+		    offset = offset | 0
+		    if (isFinite(length)) {
+		      length = length | 0
+		      if (encoding === undefined) encoding = 'utf8'
+		    } else {
+		      encoding = length
+		      length = undefined
+		    }
+		  // legacy write(string, encoding, offset, length) - remove in v0.13
+		  } else {
+		    throw new Error(
+		      'Buffer.write(string, encoding, offset[, length]) is no longer supported'
+		    )
+		  }
+
+		  var remaining = this.length - offset
+		  if (length === undefined || length > remaining) length = remaining
+
+		  if ((string.length > 0 && (length < 0 || offset < 0)) || offset > this.length) {
+		    throw new RangeError('Attempt to write outside buffer bounds')
+		  }
+
+		  if (!encoding) encoding = 'utf8'
+
+		  var loweredCase = false
+		  for (;;) {
+		    switch (encoding) {
+		      case 'hex':
+		        return hexWrite(this, string, offset, length)
+
+		      case 'utf8':
+		      case 'utf-8':
+		        return utf8Write(this, string, offset, length)
+
+		      case 'ascii':
+		        return asciiWrite(this, string, offset, length)
+
+		      case 'latin1':
+		      case 'binary':
+		        return latin1Write(this, string, offset, length)
+
+		      case 'base64':
+		        // Warning: maxLength not taken into account in base64Write
+		        return base64Write(this, string, offset, length)
+
+		      case 'ucs2':
+		      case 'ucs-2':
+		      case 'utf16le':
+		      case 'utf-16le':
+		        return ucs2Write(this, string, offset, length)
+
+		      default:
+		        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
+		        encoding = ('' + encoding).toLowerCase()
+		        loweredCase = true
+		    }
+		  }
+		}
+
+		Buffer.prototype.toJSON = function toJSON () {
+		  return {
+		    type: 'Buffer',
+		    data: Array.prototype.slice.call(this._arr || this, 0)
+		  }
+		}
+
+		function base64Slice (buf, start, end) {
+		  if (start === 0 && end === buf.length) {
+		    return base64.fromByteArray(buf)
+		  } else {
+		    return base64.fromByteArray(buf.slice(start, end))
+		  }
+		}
+
+		function utf8Slice (buf, start, end) {
+		  end = Math.min(buf.length, end)
+		  var res = []
+
+		  var i = start
+		  while (i < end) {
+		    var firstByte = buf[i]
+		    var codePoint = null
+		    var bytesPerSequence = (firstByte > 0xEF) ? 4
+		      : (firstByte > 0xDF) ? 3
+		      : (firstByte > 0xBF) ? 2
+		      : 1
+
+		    if (i + bytesPerSequence <= end) {
+		      var secondByte, thirdByte, fourthByte, tempCodePoint
+
+		      switch (bytesPerSequence) {
+		        case 1:
+		          if (firstByte < 0x80) {
+		            codePoint = firstByte
+		          }
+		          break
+		        case 2:
+		          secondByte = buf[i + 1]
+		          if ((secondByte & 0xC0) === 0x80) {
+		            tempCodePoint = (firstByte & 0x1F) << 0x6 | (secondByte & 0x3F)
+		            if (tempCodePoint > 0x7F) {
+		              codePoint = tempCodePoint
+		            }
+		          }
+		          break
+		        case 3:
+		          secondByte = buf[i + 1]
+		          thirdByte = buf[i + 2]
+		          if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80) {
+		            tempCodePoint = (firstByte & 0xF) << 0xC | (secondByte & 0x3F) << 0x6 | (thirdByte & 0x3F)
+		            if (tempCodePoint > 0x7FF && (tempCodePoint < 0xD800 || tempCodePoint > 0xDFFF)) {
+		              codePoint = tempCodePoint
+		            }
+		          }
+		          break
+		        case 4:
+		          secondByte = buf[i + 1]
+		          thirdByte = buf[i + 2]
+		          fourthByte = buf[i + 3]
+		          if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80 && (fourthByte & 0xC0) === 0x80) {
+		            tempCodePoint = (firstByte & 0xF) << 0x12 | (secondByte & 0x3F) << 0xC | (thirdByte & 0x3F) << 0x6 | (fourthByte & 0x3F)
+		            if (tempCodePoint > 0xFFFF && tempCodePoint < 0x110000) {
+		              codePoint = tempCodePoint
+		            }
+		          }
+		      }
+		    }
+
+		    if (codePoint === null) {
+		      // we did not generate a valid codePoint so insert a
+		      // replacement char (U+FFFD) and advance only 1 byte
+		      codePoint = 0xFFFD
+		      bytesPerSequence = 1
+		    } else if (codePoint > 0xFFFF) {
+		      // encode to utf16 (surrogate pair dance)
+		      codePoint -= 0x10000
+		      res.push(codePoint >>> 10 & 0x3FF | 0xD800)
+		      codePoint = 0xDC00 | codePoint & 0x3FF
+		    }
+
+		    res.push(codePoint)
+		    i += bytesPerSequence
+		  }
+
+		  return decodeCodePointsArray(res)
+		}
+
+		// Based on http://stackoverflow.com/a/22747272/680742, the browser with
+		// the lowest limit is Chrome, with 0x10000 args.
+		// We go 1 magnitude less, for safety
+		var MAX_ARGUMENTS_LENGTH = 0x1000
+
+		function decodeCodePointsArray (codePoints) {
+		  var len = codePoints.length
+		  if (len <= MAX_ARGUMENTS_LENGTH) {
+		    return String.fromCharCode.apply(String, codePoints) // avoid extra slice()
+		  }
+
+		  // Decode in chunks to avoid "call stack size exceeded".
+		  var res = ''
+		  var i = 0
+		  while (i < len) {
+		    res += String.fromCharCode.apply(
+		      String,
+		      codePoints.slice(i, i += MAX_ARGUMENTS_LENGTH)
+		    )
+		  }
+		  return res
+		}
+
+		function asciiSlice (buf, start, end) {
+		  var ret = ''
+		  end = Math.min(buf.length, end)
+
+		  for (var i = start; i < end; ++i) {
+		    ret += String.fromCharCode(buf[i] & 0x7F)
+		  }
+		  return ret
+		}
+
+		function latin1Slice (buf, start, end) {
+		  var ret = ''
+		  end = Math.min(buf.length, end)
+
+		  for (var i = start; i < end; ++i) {
+		    ret += String.fromCharCode(buf[i])
+		  }
+		  return ret
+		}
+
+		function hexSlice (buf, start, end) {
+		  var len = buf.length
+
+		  if (!start || start < 0) start = 0
+		  if (!end || end < 0 || end > len) end = len
+
+		  var out = ''
+		  for (var i = start; i < end; ++i) {
+		    out += toHex(buf[i])
+		  }
+		  return out
+		}
+
+		function utf16leSlice (buf, start, end) {
+		  var bytes = buf.slice(start, end)
+		  var res = ''
+		  for (var i = 0; i < bytes.length; i += 2) {
+		    res += String.fromCharCode(bytes[i] + bytes[i + 1] * 256)
+		  }
+		  return res
+		}
+
+		Buffer.prototype.slice = function slice (start, end) {
+		  var len = this.length
+		  start = ~~start
+		  end = end === undefined ? len : ~~end
+
+		  if (start < 0) {
+		    start += len
+		    if (start < 0) start = 0
+		  } else if (start > len) {
+		    start = len
+		  }
+
+		  if (end < 0) {
+		    end += len
+		    if (end < 0) end = 0
+		  } else if (end > len) {
+		    end = len
+		  }
+
+		  if (end < start) end = start
+
+		  var newBuf
+		  if (Buffer.TYPED_ARRAY_SUPPORT) {
+		    newBuf = this.subarray(start, end)
+		    newBuf.__proto__ = Buffer.prototype
+		  } else {
+		    var sliceLen = end - start
+		    newBuf = new Buffer(sliceLen, undefined)
+		    for (var i = 0; i < sliceLen; ++i) {
+		      newBuf[i] = this[i + start]
+		    }
+		  }
+
+		  return newBuf
+		}
+
+		/*
+		 * Need to make sure that buffer isn't trying to write out of bounds.
+		 */
+		function checkOffset (offset, ext, length) {
+		  if ((offset % 1) !== 0 || offset < 0) throw new RangeError('offset is not uint')
+		  if (offset + ext > length) throw new RangeError('Trying to access beyond buffer length')
+		}
+
+		Buffer.prototype.readUIntLE = function readUIntLE (offset, byteLength, noAssert) {
+		  offset = offset | 0
+		  byteLength = byteLength | 0
+		  if (!noAssert) checkOffset(offset, byteLength, this.length)
+
+		  var val = this[offset]
+		  var mul = 1
+		  var i = 0
+		  while (++i < byteLength && (mul *= 0x100)) {
+		    val += this[offset + i] * mul
+		  }
+
+		  return val
+		}
+
+		Buffer.prototype.readUIntBE = function readUIntBE (offset, byteLength, noAssert) {
+		  offset = offset | 0
+		  byteLength = byteLength | 0
+		  if (!noAssert) {
+		    checkOffset(offset, byteLength, this.length)
+		  }
+
+		  var val = this[offset + --byteLength]
+		  var mul = 1
+		  while (byteLength > 0 && (mul *= 0x100)) {
+		    val += this[offset + --byteLength] * mul
+		  }
+
+		  return val
+		}
+
+		Buffer.prototype.readUInt8 = function readUInt8 (offset, noAssert) {
+		  if (!noAssert) checkOffset(offset, 1, this.length)
+		  return this[offset]
+		}
+
+		Buffer.prototype.readUInt16LE = function readUInt16LE (offset, noAssert) {
+		  if (!noAssert) checkOffset(offset, 2, this.length)
+		  return this[offset] | (this[offset + 1] << 8)
+		}
+
+		Buffer.prototype.readUInt16BE = function readUInt16BE (offset, noAssert) {
+		  if (!noAssert) checkOffset(offset, 2, this.length)
+		  return (this[offset] << 8) | this[offset + 1]
+		}
+
+		Buffer.prototype.readUInt32LE = function readUInt32LE (offset, noAssert) {
+		  if (!noAssert) checkOffset(offset, 4, this.length)
+
+		  return ((this[offset]) |
+		      (this[offset + 1] << 8) |
+		      (this[offset + 2] << 16)) +
+		      (this[offset + 3] * 0x1000000)
+		}
+
+		Buffer.prototype.readUInt32BE = function readUInt32BE (offset, noAssert) {
+		  if (!noAssert) checkOffset(offset, 4, this.length)
+
+		  return (this[offset] * 0x1000000) +
+		    ((this[offset + 1] << 16) |
+		    (this[offset + 2] << 8) |
+		    this[offset + 3])
+		}
+
+		Buffer.prototype.readIntLE = function readIntLE (offset, byteLength, noAssert) {
+		  offset = offset | 0
+		  byteLength = byteLength | 0
+		  if (!noAssert) checkOffset(offset, byteLength, this.length)
+
+		  var val = this[offset]
+		  var mul = 1
+		  var i = 0
+		  while (++i < byteLength && (mul *= 0x100)) {
+		    val += this[offset + i] * mul
+		  }
+		  mul *= 0x80
+
+		  if (val >= mul) val -= Math.pow(2, 8 * byteLength)
+
+		  return val
+		}
+
+		Buffer.prototype.readIntBE = function readIntBE (offset, byteLength, noAssert) {
+		  offset = offset | 0
+		  byteLength = byteLength | 0
+		  if (!noAssert) checkOffset(offset, byteLength, this.length)
+
+		  var i = byteLength
+		  var mul = 1
+		  var val = this[offset + --i]
+		  while (i > 0 && (mul *= 0x100)) {
+		    val += this[offset + --i] * mul
+		  }
+		  mul *= 0x80
+
+		  if (val >= mul) val -= Math.pow(2, 8 * byteLength)
+
+		  return val
+		}
+
+		Buffer.prototype.readInt8 = function readInt8 (offset, noAssert) {
+		  if (!noAssert) checkOffset(offset, 1, this.length)
+		  if (!(this[offset] & 0x80)) return (this[offset])
+		  return ((0xff - this[offset] + 1) * -1)
+		}
+
+		Buffer.prototype.readInt16LE = function readInt16LE (offset, noAssert) {
+		  if (!noAssert) checkOffset(offset, 2, this.length)
+		  var val = this[offset] | (this[offset + 1] << 8)
+		  return (val & 0x8000) ? val | 0xFFFF0000 : val
+		}
+
+		Buffer.prototype.readInt16BE = function readInt16BE (offset, noAssert) {
+		  if (!noAssert) checkOffset(offset, 2, this.length)
+		  var val = this[offset + 1] | (this[offset] << 8)
+		  return (val & 0x8000) ? val | 0xFFFF0000 : val
+		}
+
+		Buffer.prototype.readInt32LE = function readInt32LE (offset, noAssert) {
+		  if (!noAssert) checkOffset(offset, 4, this.length)
+
+		  return (this[offset]) |
+		    (this[offset + 1] << 8) |
+		    (this[offset + 2] << 16) |
+		    (this[offset + 3] << 24)
+		}
+
+		Buffer.prototype.readInt32BE = function readInt32BE (offset, noAssert) {
+		  if (!noAssert) checkOffset(offset, 4, this.length)
+
+		  return (this[offset] << 24) |
+		    (this[offset + 1] << 16) |
+		    (this[offset + 2] << 8) |
+		    (this[offset + 3])
+		}
+
+		Buffer.prototype.readFloatLE = function readFloatLE (offset, noAssert) {
+		  if (!noAssert) checkOffset(offset, 4, this.length)
+		  return ieee754.read(this, offset, true, 23, 4)
+		}
+
+		Buffer.prototype.readFloatBE = function readFloatBE (offset, noAssert) {
+		  if (!noAssert) checkOffset(offset, 4, this.length)
+		  return ieee754.read(this, offset, false, 23, 4)
+		}
+
+		Buffer.prototype.readDoubleLE = function readDoubleLE (offset, noAssert) {
+		  if (!noAssert) checkOffset(offset, 8, this.length)
+		  return ieee754.read(this, offset, true, 52, 8)
+		}
+
+		Buffer.prototype.readDoubleBE = function readDoubleBE (offset, noAssert) {
+		  if (!noAssert) checkOffset(offset, 8, this.length)
+		  return ieee754.read(this, offset, false, 52, 8)
+		}
+
+		function checkInt (buf, value, offset, ext, max, min) {
+		  if (!Buffer.isBuffer(buf)) throw new TypeError('"buffer" argument must be a Buffer instance')
+		  if (value > max || value < min) throw new RangeError('"value" argument is out of bounds')
+		  if (offset + ext > buf.length) throw new RangeError('Index out of range')
+		}
+
+		Buffer.prototype.writeUIntLE = function writeUIntLE (value, offset, byteLength, noAssert) {
+		  value = +value
+		  offset = offset | 0
+		  byteLength = byteLength | 0
+		  if (!noAssert) {
+		    var maxBytes = Math.pow(2, 8 * byteLength) - 1
+		    checkInt(this, value, offset, byteLength, maxBytes, 0)
+		  }
+
+		  var mul = 1
+		  var i = 0
+		  this[offset] = value & 0xFF
+		  while (++i < byteLength && (mul *= 0x100)) {
+		    this[offset + i] = (value / mul) & 0xFF
+		  }
+
+		  return offset + byteLength
+		}
+
+		Buffer.prototype.writeUIntBE = function writeUIntBE (value, offset, byteLength, noAssert) {
+		  value = +value
+		  offset = offset | 0
+		  byteLength = byteLength | 0
+		  if (!noAssert) {
+		    var maxBytes = Math.pow(2, 8 * byteLength) - 1
+		    checkInt(this, value, offset, byteLength, maxBytes, 0)
+		  }
+
+		  var i = byteLength - 1
+		  var mul = 1
+		  this[offset + i] = value & 0xFF
+		  while (--i >= 0 && (mul *= 0x100)) {
+		    this[offset + i] = (value / mul) & 0xFF
+		  }
+
+		  return offset + byteLength
+		}
+
+		Buffer.prototype.writeUInt8 = function writeUInt8 (value, offset, noAssert) {
+		  value = +value
+		  offset = offset | 0
+		  if (!noAssert) checkInt(this, value, offset, 1, 0xff, 0)
+		  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
+		  this[offset] = (value & 0xff)
+		  return offset + 1
+		}
+
+		function objectWriteUInt16 (buf, value, offset, littleEndian) {
+		  if (value < 0) value = 0xffff + value + 1
+		  for (var i = 0, j = Math.min(buf.length - offset, 2); i < j; ++i) {
+		    buf[offset + i] = (value & (0xff << (8 * (littleEndian ? i : 1 - i)))) >>>
+		      (littleEndian ? i : 1 - i) * 8
+		  }
+		}
+
+		Buffer.prototype.writeUInt16LE = function writeUInt16LE (value, offset, noAssert) {
+		  value = +value
+		  offset = offset | 0
+		  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
+		  if (Buffer.TYPED_ARRAY_SUPPORT) {
+		    this[offset] = (value & 0xff)
+		    this[offset + 1] = (value >>> 8)
+		  } else {
+		    objectWriteUInt16(this, value, offset, true)
+		  }
+		  return offset + 2
+		}
+
+		Buffer.prototype.writeUInt16BE = function writeUInt16BE (value, offset, noAssert) {
+		  value = +value
+		  offset = offset | 0
+		  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
+		  if (Buffer.TYPED_ARRAY_SUPPORT) {
+		    this[offset] = (value >>> 8)
+		    this[offset + 1] = (value & 0xff)
+		  } else {
+		    objectWriteUInt16(this, value, offset, false)
+		  }
+		  return offset + 2
+		}
+
+		function objectWriteUInt32 (buf, value, offset, littleEndian) {
+		  if (value < 0) value = 0xffffffff + value + 1
+		  for (var i = 0, j = Math.min(buf.length - offset, 4); i < j; ++i) {
+		    buf[offset + i] = (value >>> (littleEndian ? i : 3 - i) * 8) & 0xff
+		  }
+		}
+
+		Buffer.prototype.writeUInt32LE = function writeUInt32LE (value, offset, noAssert) {
+		  value = +value
+		  offset = offset | 0
+		  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)
+		  if (Buffer.TYPED_ARRAY_SUPPORT) {
+		    this[offset + 3] = (value >>> 24)
+		    this[offset + 2] = (value >>> 16)
+		    this[offset + 1] = (value >>> 8)
+		    this[offset] = (value & 0xff)
+		  } else {
+		    objectWriteUInt32(this, value, offset, true)
+		  }
+		  return offset + 4
+		}
+
+		Buffer.prototype.writeUInt32BE = function writeUInt32BE (value, offset, noAssert) {
+		  value = +value
+		  offset = offset | 0
+		  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)
+		  if (Buffer.TYPED_ARRAY_SUPPORT) {
+		    this[offset] = (value >>> 24)
+		    this[offset + 1] = (value >>> 16)
+		    this[offset + 2] = (value >>> 8)
+		    this[offset + 3] = (value & 0xff)
+		  } else {
+		    objectWriteUInt32(this, value, offset, false)
+		  }
+		  return offset + 4
+		}
+
+		Buffer.prototype.writeIntLE = function writeIntLE (value, offset, byteLength, noAssert) {
+		  value = +value
+		  offset = offset | 0
+		  if (!noAssert) {
+		    var limit = Math.pow(2, 8 * byteLength - 1)
+
+		    checkInt(this, value, offset, byteLength, limit - 1, -limit)
+		  }
+
+		  var i = 0
+		  var mul = 1
+		  var sub = 0
+		  this[offset] = value & 0xFF
+		  while (++i < byteLength && (mul *= 0x100)) {
+		    if (value < 0 && sub === 0 && this[offset + i - 1] !== 0) {
+		      sub = 1
+		    }
+		    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF
+		  }
+
+		  return offset + byteLength
+		}
+
+		Buffer.prototype.writeIntBE = function writeIntBE (value, offset, byteLength, noAssert) {
+		  value = +value
+		  offset = offset | 0
+		  if (!noAssert) {
+		    var limit = Math.pow(2, 8 * byteLength - 1)
+
+		    checkInt(this, value, offset, byteLength, limit - 1, -limit)
+		  }
+
+		  var i = byteLength - 1
+		  var mul = 1
+		  var sub = 0
+		  this[offset + i] = value & 0xFF
+		  while (--i >= 0 && (mul *= 0x100)) {
+		    if (value < 0 && sub === 0 && this[offset + i + 1] !== 0) {
+		      sub = 1
+		    }
+		    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF
+		  }
+
+		  return offset + byteLength
+		}
+
+		Buffer.prototype.writeInt8 = function writeInt8 (value, offset, noAssert) {
+		  value = +value
+		  offset = offset | 0
+		  if (!noAssert) checkInt(this, value, offset, 1, 0x7f, -0x80)
+		  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
+		  if (value < 0) value = 0xff + value + 1
+		  this[offset] = (value & 0xff)
+		  return offset + 1
+		}
+
+		Buffer.prototype.writeInt16LE = function writeInt16LE (value, offset, noAssert) {
+		  value = +value
+		  offset = offset | 0
+		  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
+		  if (Buffer.TYPED_ARRAY_SUPPORT) {
+		    this[offset] = (value & 0xff)
+		    this[offset + 1] = (value >>> 8)
+		  } else {
+		    objectWriteUInt16(this, value, offset, true)
+		  }
+		  return offset + 2
+		}
+
+		Buffer.prototype.writeInt16BE = function writeInt16BE (value, offset, noAssert) {
+		  value = +value
+		  offset = offset | 0
+		  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
+		  if (Buffer.TYPED_ARRAY_SUPPORT) {
+		    this[offset] = (value >>> 8)
+		    this[offset + 1] = (value & 0xff)
+		  } else {
+		    objectWriteUInt16(this, value, offset, false)
+		  }
+		  return offset + 2
+		}
+
+		Buffer.prototype.writeInt32LE = function writeInt32LE (value, offset, noAssert) {
+		  value = +value
+		  offset = offset | 0
+		  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
+		  if (Buffer.TYPED_ARRAY_SUPPORT) {
+		    this[offset] = (value & 0xff)
+		    this[offset + 1] = (value >>> 8)
+		    this[offset + 2] = (value >>> 16)
+		    this[offset + 3] = (value >>> 24)
+		  } else {
+		    objectWriteUInt32(this, value, offset, true)
+		  }
+		  return offset + 4
+		}
+
+		Buffer.prototype.writeInt32BE = function writeInt32BE (value, offset, noAssert) {
+		  value = +value
+		  offset = offset | 0
+		  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
+		  if (value < 0) value = 0xffffffff + value + 1
+		  if (Buffer.TYPED_ARRAY_SUPPORT) {
+		    this[offset] = (value >>> 24)
+		    this[offset + 1] = (value >>> 16)
+		    this[offset + 2] = (value >>> 8)
+		    this[offset + 3] = (value & 0xff)
+		  } else {
+		    objectWriteUInt32(this, value, offset, false)
+		  }
+		  return offset + 4
+		}
+
+		function checkIEEE754 (buf, value, offset, ext, max, min) {
+		  if (offset + ext > buf.length) throw new RangeError('Index out of range')
+		  if (offset < 0) throw new RangeError('Index out of range')
+		}
+
+		function writeFloat (buf, value, offset, littleEndian, noAssert) {
+		  if (!noAssert) {
+		    checkIEEE754(buf, value, offset, 4, 3.4028234663852886e+38, -3.4028234663852886e+38)
+		  }
+		  ieee754.write(buf, value, offset, littleEndian, 23, 4)
+		  return offset + 4
+		}
+
+		Buffer.prototype.writeFloatLE = function writeFloatLE (value, offset, noAssert) {
+		  return writeFloat(this, value, offset, true, noAssert)
+		}
+
+		Buffer.prototype.writeFloatBE = function writeFloatBE (value, offset, noAssert) {
+		  return writeFloat(this, value, offset, false, noAssert)
+		}
+
+		function writeDouble (buf, value, offset, littleEndian, noAssert) {
+		  if (!noAssert) {
+		    checkIEEE754(buf, value, offset, 8, 1.7976931348623157E+308, -1.7976931348623157E+308)
+		  }
+		  ieee754.write(buf, value, offset, littleEndian, 52, 8)
+		  return offset + 8
+		}
+
+		Buffer.prototype.writeDoubleLE = function writeDoubleLE (value, offset, noAssert) {
+		  return writeDouble(this, value, offset, true, noAssert)
+		}
+
+		Buffer.prototype.writeDoubleBE = function writeDoubleBE (value, offset, noAssert) {
+		  return writeDouble(this, value, offset, false, noAssert)
+		}
+
+		// copy(targetBuffer, targetStart=0, sourceStart=0, sourceEnd=buffer.length)
+		Buffer.prototype.copy = function copy (target, targetStart, start, end) {
+		  if (!start) start = 0
+		  if (!end && end !== 0) end = this.length
+		  if (targetStart >= target.length) targetStart = target.length
+		  if (!targetStart) targetStart = 0
+		  if (end > 0 && end < start) end = start
+
+		  // Copy 0 bytes; we're done
+		  if (end === start) return 0
+		  if (target.length === 0 || this.length === 0) return 0
+
+		  // Fatal error conditions
+		  if (targetStart < 0) {
+		    throw new RangeError('targetStart out of bounds')
+		  }
+		  if (start < 0 || start >= this.length) throw new RangeError('sourceStart out of bounds')
+		  if (end < 0) throw new RangeError('sourceEnd out of bounds')
+
+		  // Are we oob?
+		  if (end > this.length) end = this.length
+		  if (target.length - targetStart < end - start) {
+		    end = target.length - targetStart + start
+		  }
+
+		  var len = end - start
+		  var i
+
+		  if (this === target && start < targetStart && targetStart < end) {
+		    // descending copy from end
+		    for (i = len - 1; i >= 0; --i) {
+		      target[i + targetStart] = this[i + start]
+		    }
+		  } else if (len < 1000 || !Buffer.TYPED_ARRAY_SUPPORT) {
+		    // ascending copy from start
+		    for (i = 0; i < len; ++i) {
+		      target[i + targetStart] = this[i + start]
+		    }
+		  } else {
+		    Uint8Array.prototype.set.call(
+		      target,
+		      this.subarray(start, start + len),
+		      targetStart
+		    )
+		  }
+
+		  return len
+		}
+
+		// Usage:
+		//    buffer.fill(number[, offset[, end]])
+		//    buffer.fill(buffer[, offset[, end]])
+		//    buffer.fill(string[, offset[, end]][, encoding])
+		Buffer.prototype.fill = function fill (val, start, end, encoding) {
+		  // Handle string cases:
+		  if (typeof val === 'string') {
+		    if (typeof start === 'string') {
+		      encoding = start
+		      start = 0
+		      end = this.length
+		    } else if (typeof end === 'string') {
+		      encoding = end
+		      end = this.length
+		    }
+		    if (val.length === 1) {
+		      var code = val.charCodeAt(0)
+		      if (code < 256) {
+		        val = code
+		      }
+		    }
+		    if (encoding !== undefined && typeof encoding !== 'string') {
+		      throw new TypeError('encoding must be a string')
+		    }
+		    if (typeof encoding === 'string' && !Buffer.isEncoding(encoding)) {
+		      throw new TypeError('Unknown encoding: ' + encoding)
+		    }
+		  } else if (typeof val === 'number') {
+		    val = val & 255
+		  }
+
+		  // Invalid ranges are not set to a default, so can range check early.
+		  if (start < 0 || this.length < start || this.length < end) {
+		    throw new RangeError('Out of range index')
+		  }
+
+		  if (end <= start) {
+		    return this
+		  }
+
+		  start = start >>> 0
+		  end = end === undefined ? this.length : end >>> 0
+
+		  if (!val) val = 0
+
+		  var i
+		  if (typeof val === 'number') {
+		    for (i = start; i < end; ++i) {
+		      this[i] = val
+		    }
+		  } else {
+		    var bytes = Buffer.isBuffer(val)
+		      ? val
+		      : utf8ToBytes(new Buffer(val, encoding).toString())
+		    var len = bytes.length
+		    for (i = 0; i < end - start; ++i) {
+		      this[i + start] = bytes[i % len]
+		    }
+		  }
+
+		  return this
+		}
+
+		// HELPER FUNCTIONS
+		// ================
+
+		var INVALID_BASE64_RE = /[^+\/0-9A-Za-z-_]/g
+
+		function base64clean (str) {
+		  // Node strips out invalid characters like \n and \t from the string, base64-js does not
+		  str = stringtrim(str).replace(INVALID_BASE64_RE, '')
+		  // Node converts strings with length < 2 to ''
+		  if (str.length < 2) return ''
+		  // Node allows for non-padded base64 strings (missing trailing ===), base64-js does not
+		  while (str.length % 4 !== 0) {
+		    str = str + '='
+		  }
+		  return str
+		}
+
+		function stringtrim (str) {
+		  if (str.trim) return str.trim()
+		  return str.replace(/^\s+|\s+$/g, '')
+		}
+
+		function toHex (n) {
+		  if (n < 16) return '0' + n.toString(16)
+		  return n.toString(16)
+		}
+
+		function utf8ToBytes (string, units) {
+		  units = units || Infinity
+		  var codePoint
+		  var length = string.length
+		  var leadSurrogate = null
+		  var bytes = []
+
+		  for (var i = 0; i < length; ++i) {
+		    codePoint = string.charCodeAt(i)
+
+		    // is surrogate component
+		    if (codePoint > 0xD7FF && codePoint < 0xE000) {
+		      // last char was a lead
+		      if (!leadSurrogate) {
+		        // no lead yet
+		        if (codePoint > 0xDBFF) {
+		          // unexpected trail
+		          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+		          continue
+		        } else if (i + 1 === length) {
+		          // unpaired lead
+		          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+		          continue
+		        }
+
+		        // valid lead
+		        leadSurrogate = codePoint
+
+		        continue
+		      }
+
+		      // 2 leads in a row
+		      if (codePoint < 0xDC00) {
+		        if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+		        leadSurrogate = codePoint
+		        continue
+		      }
+
+		      // valid surrogate pair
+		      codePoint = (leadSurrogate - 0xD800 << 10 | codePoint - 0xDC00) + 0x10000
+		    } else if (leadSurrogate) {
+		      // valid bmp char, but last char was a lead
+		      if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
+		    }
+
+		    leadSurrogate = null
+
+		    // encode utf8
+		    if (codePoint < 0x80) {
+		      if ((units -= 1) < 0) break
+		      bytes.push(codePoint)
+		    } else if (codePoint < 0x800) {
+		      if ((units -= 2) < 0) break
+		      bytes.push(
+		        codePoint >> 0x6 | 0xC0,
+		        codePoint & 0x3F | 0x80
+		      )
+		    } else if (codePoint < 0x10000) {
+		      if ((units -= 3) < 0) break
+		      bytes.push(
+		        codePoint >> 0xC | 0xE0,
+		        codePoint >> 0x6 & 0x3F | 0x80,
+		        codePoint & 0x3F | 0x80
+		      )
+		    } else if (codePoint < 0x110000) {
+		      if ((units -= 4) < 0) break
+		      bytes.push(
+		        codePoint >> 0x12 | 0xF0,
+		        codePoint >> 0xC & 0x3F | 0x80,
+		        codePoint >> 0x6 & 0x3F | 0x80,
+		        codePoint & 0x3F | 0x80
+		      )
+		    } else {
+		      throw new Error('Invalid code point')
+		    }
+		  }
+
+		  return bytes
+		}
+
+		function asciiToBytes (str) {
+		  var byteArray = []
+		  for (var i = 0; i < str.length; ++i) {
+		    // Node's code seems to be doing this and not & 0x7F..
+		    byteArray.push(str.charCodeAt(i) & 0xFF)
+		  }
+		  return byteArray
+		}
+
+		function utf16leToBytes (str, units) {
+		  var c, hi, lo
+		  var byteArray = []
+		  for (var i = 0; i < str.length; ++i) {
+		    if ((units -= 2) < 0) break
+
+		    c = str.charCodeAt(i)
+		    hi = c >> 8
+		    lo = c % 256
+		    byteArray.push(lo)
+		    byteArray.push(hi)
+		  }
+
+		  return byteArray
+		}
+
+		function base64ToBytes (str) {
+		  return base64.toByteArray(base64clean(str))
+		}
+
+		function blitBuffer (src, dst, offset, length) {
+		  for (var i = 0; i < length; ++i) {
+		    if ((i + offset >= dst.length) || (i >= src.length)) break
+		    dst[i + offset] = src[i]
+		  }
+		  return i
+		}
+
+		function isnan (val) {
+		  return val !== val // eslint-disable-line no-self-compare
+		}
+
+		/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+	/***/ }),
+	/* 2 */
+	/***/ (function(module, exports) {
+
+		'use strict'
+
+		exports.byteLength = byteLength
+		exports.toByteArray = toByteArray
+		exports.fromByteArray = fromByteArray
+
+		var lookup = []
+		var revLookup = []
+		var Arr = typeof Uint8Array !== 'undefined' ? Uint8Array : Array
+
+		var code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+		for (var i = 0, len = code.length; i < len; ++i) {
+		  lookup[i] = code[i]
+		  revLookup[code.charCodeAt(i)] = i
+		}
+
+		revLookup['-'.charCodeAt(0)] = 62
+		revLookup['_'.charCodeAt(0)] = 63
+
+		function placeHoldersCount (b64) {
+		  var len = b64.length
+		  if (len % 4 > 0) {
+		    throw new Error('Invalid string. Length must be a multiple of 4')
+		  }
+
+		  // the number of equal signs (place holders)
+		  // if there are two placeholders, than the two characters before it
+		  // represent one byte
+		  // if there is only one, then the three characters before it represent 2 bytes
+		  // this is just a cheap hack to not do indexOf twice
+		  return b64[len - 2] === '=' ? 2 : b64[len - 1] === '=' ? 1 : 0
+		}
+
+		function byteLength (b64) {
+		  // base64 is 4/3 + up to two characters of the original data
+		  return (b64.length * 3 / 4) - placeHoldersCount(b64)
+		}
+
+		function toByteArray (b64) {
+		  var i, l, tmp, placeHolders, arr
+		  var len = b64.length
+		  placeHolders = placeHoldersCount(b64)
+
+		  arr = new Arr((len * 3 / 4) - placeHolders)
+
+		  // if there are placeholders, only get up to the last complete 4 chars
+		  l = placeHolders > 0 ? len - 4 : len
+
+		  var L = 0
+
+		  for (i = 0; i < l; i += 4) {
+		    tmp = (revLookup[b64.charCodeAt(i)] << 18) | (revLookup[b64.charCodeAt(i + 1)] << 12) | (revLookup[b64.charCodeAt(i + 2)] << 6) | revLookup[b64.charCodeAt(i + 3)]
+		    arr[L++] = (tmp >> 16) & 0xFF
+		    arr[L++] = (tmp >> 8) & 0xFF
+		    arr[L++] = tmp & 0xFF
+		  }
+
+		  if (placeHolders === 2) {
+		    tmp = (revLookup[b64.charCodeAt(i)] << 2) | (revLookup[b64.charCodeAt(i + 1)] >> 4)
+		    arr[L++] = tmp & 0xFF
+		  } else if (placeHolders === 1) {
+		    tmp = (revLookup[b64.charCodeAt(i)] << 10) | (revLookup[b64.charCodeAt(i + 1)] << 4) | (revLookup[b64.charCodeAt(i + 2)] >> 2)
+		    arr[L++] = (tmp >> 8) & 0xFF
+		    arr[L++] = tmp & 0xFF
+		  }
+
+		  return arr
+		}
+
+		function tripletToBase64 (num) {
+		  return lookup[num >> 18 & 0x3F] + lookup[num >> 12 & 0x3F] + lookup[num >> 6 & 0x3F] + lookup[num & 0x3F]
+		}
+
+		function encodeChunk (uint8, start, end) {
+		  var tmp
+		  var output = []
+		  for (var i = start; i < end; i += 3) {
+		    tmp = (uint8[i] << 16) + (uint8[i + 1] << 8) + (uint8[i + 2])
+		    output.push(tripletToBase64(tmp))
+		  }
+		  return output.join('')
+		}
+
+		function fromByteArray (uint8) {
+		  var tmp
+		  var len = uint8.length
+		  var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes
+		  var output = ''
+		  var parts = []
+		  var maxChunkLength = 16383 // must be multiple of 3
+
+		  // go through the array every three bytes, we'll deal with trailing stuff later
+		  for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
+		    parts.push(encodeChunk(uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)))
+		  }
+
+		  // pad the end with zeros, but make sure to not forget the extra bytes
+		  if (extraBytes === 1) {
+		    tmp = uint8[len - 1]
+		    output += lookup[tmp >> 2]
+		    output += lookup[(tmp << 4) & 0x3F]
+		    output += '=='
+		  } else if (extraBytes === 2) {
+		    tmp = (uint8[len - 2] << 8) + (uint8[len - 1])
+		    output += lookup[tmp >> 10]
+		    output += lookup[(tmp >> 4) & 0x3F]
+		    output += lookup[(tmp << 2) & 0x3F]
+		    output += '='
+		  }
+
+		  parts.push(output)
+
+		  return parts.join('')
+		}
+
+
+	/***/ }),
+	/* 3 */
+	/***/ (function(module, exports) {
+
+		exports.read = function (buffer, offset, isLE, mLen, nBytes) {
+		  var e, m
+		  var eLen = nBytes * 8 - mLen - 1
+		  var eMax = (1 << eLen) - 1
+		  var eBias = eMax >> 1
+		  var nBits = -7
+		  var i = isLE ? (nBytes - 1) : 0
+		  var d = isLE ? -1 : 1
+		  var s = buffer[offset + i]
+
+		  i += d
+
+		  e = s & ((1 << (-nBits)) - 1)
+		  s >>= (-nBits)
+		  nBits += eLen
+		  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+
+		  m = e & ((1 << (-nBits)) - 1)
+		  e >>= (-nBits)
+		  nBits += mLen
+		  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
+
+		  if (e === 0) {
+		    e = 1 - eBias
+		  } else if (e === eMax) {
+		    return m ? NaN : ((s ? -1 : 1) * Infinity)
+		  } else {
+		    m = m + Math.pow(2, mLen)
+		    e = e - eBias
+		  }
+		  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
+		}
+
+		exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
+		  var e, m, c
+		  var eLen = nBytes * 8 - mLen - 1
+		  var eMax = (1 << eLen) - 1
+		  var eBias = eMax >> 1
+		  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
+		  var i = isLE ? 0 : (nBytes - 1)
+		  var d = isLE ? 1 : -1
+		  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
+
+		  value = Math.abs(value)
+
+		  if (isNaN(value) || value === Infinity) {
+		    m = isNaN(value) ? 1 : 0
+		    e = eMax
+		  } else {
+		    e = Math.floor(Math.log(value) / Math.LN2)
+		    if (value * (c = Math.pow(2, -e)) < 1) {
+		      e--
+		      c *= 2
+		    }
+		    if (e + eBias >= 1) {
+		      value += rt / c
+		    } else {
+		      value += rt * Math.pow(2, 1 - eBias)
+		    }
+		    if (value * c >= 2) {
+		      e++
+		      c /= 2
+		    }
+
+		    if (e + eBias >= eMax) {
+		      m = 0
+		      e = eMax
+		    } else if (e + eBias >= 1) {
+		      m = (value * c - 1) * Math.pow(2, mLen)
+		      e = e + eBias
+		    } else {
+		      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
+		      e = 0
+		    }
+		  }
+
+		  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
+
+		  e = (e << mLen) | m
+		  eLen += mLen
+		  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
+
+		  buffer[offset + i - d] |= s * 128
+		}
+
+
+	/***/ }),
+	/* 4 */
+	/***/ (function(module, exports) {
+
+		var toString = {}.toString;
+
+		module.exports = Array.isArray || function (arr) {
+		  return toString.call(arr) == '[object Array]';
+		};
+
+
+	/***/ })
+	/******/ ]);
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4).Buffer))
+
+/***/ },
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {'use strict';
@@ -71789,7 +75097,7 @@ module.exports =
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _ecl = __webpack_require__(13);
+	var _ecl = __webpack_require__(16);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -72157,10 +75465,10 @@ module.exports =
 	}();
 
 	exports.default = TextReader;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4).Buffer))
 
 /***/ },
-/* 13 */
+/* 16 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -72448,7 +75756,7 @@ module.exports =
 	exports.JCT8836 = JCT8836;
 
 /***/ },
-/* 14 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -72459,23 +75767,2509 @@ module.exports =
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _MMDNode = __webpack_require__(3);
+	var _MMDNode = __webpack_require__(8);
 
 	var _MMDNode2 = _interopRequireDefault(_MMDNode);
 
-	var _MMDProgram = __webpack_require__(10);
-
-	var _MMDProgram2 = _interopRequireDefault(_MMDProgram);
-
-	var _MMDReader2 = __webpack_require__(11);
+	var _MMDReader2 = __webpack_require__(13);
 
 	var _MMDReader3 = _interopRequireDefault(_MMDReader2);
 
-	var _MMDIKConstraint = __webpack_require__(1);
+	var _MMDSceneSource = __webpack_require__(18);
+
+	var _MMDSceneSource2 = _interopRequireDefault(_MMDSceneSource);
+
+	var _MMDCameraNode = __webpack_require__(2);
+
+	var _MMDCameraNode2 = _interopRequireDefault(_MMDCameraNode);
+
+	var _jscenekit = __webpack_require__(3);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	/**
+	 * @access private
+	 */
+	var MMDVMDInfo =
+	/**
+	 * @access public
+	 * @constructor
+	 * @param {MMDPMMReader} reader -
+	 */
+	function MMDVMDInfo(reader) {
+	  _classCallCheck(this, MMDVMDInfo);
+
+	  this.frameNo = reader.readUnsignedInt();
+	  this.prev = reader.readUnsignedInt();
+	  this.next = reader.readUnsignedInt();
+
+	  var interpolation = [];
+	  for (var i = 0; i < 16; i++) {
+	    interpolation.push(reader.readUnsignedByte() / 127.0);
+	  }
+
+	  this.posX = reader.readFloat();
+	  this.posY = reader.readFloat();
+	  this.posZ = -reader.readFloat();
+	  var quat = new _jscenekit.SCNVector4(-reader.readFloat(), -reader.readFloat(), reader.readFloat(), reader.readFloat());
+	  this.rotate = quat.normalize();
+
+	  this.timingX = _jscenekit.CAMediaTimingFunction.functionWithControlPoints(interpolation[0], interpolation[1], interpolation[2], interpolation[3]);
+	  this.timingY = _jscenekit.CAMediaTimingFunction.functionWithControlPoints(interpolation[4], interpolation[5], interpolation[6], interpolation[7]);
+	  this.timingZ = _jscenekit.CAMediaTimingFunction.functionWithControlPoints(interpolation[8], interpolation[9], interpolation[10], interpolation[11]);
+	  this.timingRot = _jscenekit.CAMediaTimingFunction.functionWithControlPoints(interpolation[12], interpolation[13], interpolation[14], interpolation[15]);
+
+	  if (reader.version > 1) {
+	    reader.skip(1); // unknown
+	  }
+
+	  var isSelected = reader.readUnsignedByte();
+	};
+
+	/**
+	 * @access private
+	 */
+
+
+	var MMDVMDFaceInfo =
+	/**
+	 * @access public
+	 * @constructor
+	 * @param {MMDPMMReader} reader -
+	 */
+	function MMDVMDFaceInfo(reader) {
+	  _classCallCheck(this, MMDVMDFaceInfo);
+
+	  this.frameNo = reader.readUnsignedInt();
+	  this.prev = reader.readUnsignedInt();
+	  this.next = reader.readUnsignedInt();
+
+	  this.weight = reader.readFloat();
+
+	  var selected = reader.readUnsignedByte();
+	};
+
+	/**
+	 * @access private
+	 */
+
+
+	var MMDVMDCameraInfo =
+	/**
+	 * @access public
+	 * @constructor
+	 * @param {MMDPMMReader} reader -
+	 */
+	function MMDVMDCameraInfo(reader) {
+	  _classCallCheck(this, MMDVMDCameraInfo);
+
+	  this.frameNo = reader.readUnsignedInt();
+	  this.prev = reader.readUnsignedInt();
+	  this.next = reader.readUnsignedInt();
+
+	  this.distance = -reader.readFloat();
+	  this.posX = reader.readFloat();
+	  this.posY = reader.readFloat();
+	  this.posZ = reader.readFloat();
+	  this.rotX = reader.readFloat();
+	  this.rotY = reader.readFloat();
+	  this.rotZ = reader.readFloat();
+
+	  var followModelIndex = -1;
+	  var followBoneIndex = 0;
+
+	  if (reader.version > 1) {
+	    followModelIndex = reader.readInt();
+	    followBoneIndex = reader.readUnsignedInt();
+	  }
+
+	  if (followModelIndex >= 0) {
+	    //const model = reader.models[followModelIndex]
+	  }
+
+	  var interpolation = [];
+	  for (var i = 0; i < 24; i++) {
+	    interpolation.push(reader.readUnsignedByte() / 127.0);
+	  }
+
+	  this.timingX = _jscenekit.CAMediaTimingFunction.functionWithControlPoints(interpolation[0], interpolation[1], interpolation[2], interpolation[3]);
+	  this.timingY = _jscenekit.CAMediaTimingFunction.functionWithControlPoints(interpolation[4], interpolation[5], interpolation[6], interpolation[7]);
+	  this.timingZ = _jscenekit.CAMediaTimingFunction.functionWithControlPoints(interpolation[8], interpolation[9], interpolation[10], interpolation[11]);
+	  this.timingRot = _jscenekit.CAMediaTimingFunction.functionWithControlPoints(interpolation[12], interpolation[13], interpolation[14], interpolation[15]);
+	  this.timingDistance = _jscenekit.CAMediaTimingFunction.functionWithControlPoints(interpolation[16], interpolation[17], interpolation[18], interpolation[19]);
+	  this.timingAngle = _jscenekit.CAMediaTimingFunction.functionWithControlPoints(interpolation[20], interpolation[21], interpolation[22], interpolation[23]);
+
+	  var perspective = reader.readUnsignedByte();
+	  this.useOrtho = perspective !== 0;
+	  this.angle = reader.readInt();
+
+	  var isSelected = reader.readUnsignedByte();
+	};
+
+	/**
+	 * @access private
+	 */
+
+
+	var MMDVMDLightInfo =
+	/**
+	 * @access public
+	 * @constructor
+	 * @param {MMDPMMReader} reader -
+	 */
+	function MMDVMDLightInfo(reader) {
+	  _classCallCheck(this, MMDVMDLightInfo);
+
+	  this.frameNo = reader.readUnsignedInt();
+	  this.prev = reader.readUnsignedInt();
+	  this.next = reader.readUnsignedInt();
+
+	  var color = new _jscenekit.SKColor(reader.readFloat(), reader.readFloat(), reader.readFloat(), 1.0);
+	  this.color = color;
+
+	  var rotX = -reader.readFloat();
+	  var rotY = -reader.readFloat();
+	  var rotZ = reader.readFloat();
+
+	  var cosX = Math.cos(rotX / 2);
+	  var cosY = Math.cos(rotY / 2);
+	  var cosZ = Math.cos(rotZ / 2);
+	  var sinX = Math.sin(rotX / 2);
+	  var sinY = Math.sin(rotY / 2);
+	  var sinZ = Math.sin(rotZ / 2);
+
+	  var quat = new _jscenekit.SCNVector4();
+	  quat.x = sinX * cosY * cosZ + cosX * sinY * sinZ;
+	  quat.y = cosX * sinY * cosZ - cosX * cosY * sinZ;
+	  quat.z = cosX * cosY * sinZ - sinX * sinY * cosZ;
+	  quat.w = cosX * cosY * cosZ + sinX * sinY * sinZ;
+
+	  this.direction = quat.normalize();
+
+	  var isSelected = reader.readUnsignedByte();
+	};
+
+	/**
+	 * @access private
+	 */
+
+
+	var MMDVMDAccessoryInfo =
+	/**
+	 * @access public
+	 * @constructor
+	 * @param {MMDPMMReader} reader -
+	 */
+	function MMDVMDAccessoryInfo(reader) {
+	  _classCallCheck(this, MMDVMDAccessoryInfo);
+
+	  this.frameNo = reader.readUnsignedInt();
+	  this.prev = reader.readUnsignedInt();
+	  this.next = reader.readUnsignedInt();
+
+	  var visibility = reader.readUnsignedByte();
+	  var isVisible = visibility & 0x01;
+	  var opacity = (100 - (visibility >> 1)) * 0.01;
+
+	  this.isHidden = isVisible === 0;
+	  this.opacity = opacity;
+
+	  var modelIndex = reader.readUnsignedInt();
+	  if (modelIndex === 0xFFFFFFFF) {
+	    modelIndex = -1;
+	  }
+	  var boneIndex = reader.readUnsignedInt();
+
+	  var parentNode = null;
+	  if (modelIndex >= 0 && modelIndex < reader.models.length) {
+	    var parentModel = reader.models[modelIndex];
+
+	    if (boneIndex < parentModel.boneArray.length) {
+	      var boneName = parentModel.boneArray[boneIndex].name;
+	      if (boneName === null) {
+	        throw new Error('bone.name === null');
+	      }
+	      parentNode = parentModel.childNodeWithNameRecursively(boneName, true);
+	      if (parentNode === null) {
+	        throw new Error('parentNode === null');
+	      }
+	    }
+	  }
+	  this.parent = parentNode;
+
+	  var pos = new _jscenekit.SCNVector3(reader.readFloat(), reader.readFloat(), reader.readFloat());
+	  this.position = pos;
+
+	  var rotX = -reader.readFloat();
+	  var rotY = -reader.readFloat();
+	  var rotZ = reader.readFloat();
+
+	  var cosX = Math.cos(rotX / 2);
+	  var cosY = Math.cos(rotY / 2);
+	  var cosZ = Math.cos(rotZ / 2);
+	  var sinX = Math.sin(rotX / 2);
+	  var sinY = Math.sin(rotY / 2);
+	  var sinZ = Math.sin(rotZ / 2);
+
+	  var quat = new _jscenekit.SCNVector4();
+	  quat.x = sinX * cosY * cosZ + cosX * sinY * sinZ;
+	  quat.y = cosX * sinY * cosZ - cosX * cosY * sinZ;
+	  quat.z = cosX * cosY * sinZ - sinX * sinY * cosZ;
+	  quat.w = cosX * cosY * cosZ + sinX * sinY * sinZ;
+
+	  this.rotation = quat.normalize();
+	  var scale = reader.readFloat() * 10.0;
+	  this.scale = new _jscenekit.SCNVector3(scale, scale, scale);
+
+	  var flag = reader.readUnsignedByte();
+	  if ((flag & 0x01) === 0) {
+	    this.additive = _jscenekit.SCNBlendMode.add;
+	  } else {
+	    this.additive = _jscenekit.SCNBlendMode.alpha;
+	  }
+	  var isSelected = reader.readUnsignedByte();
+
+	  console.log('=====');
+	  console.log('frameNo: ' + this.frameNo);
+	  console.log('prev: ' + this.prev);
+	  console.log('next: ' + this.next);
+	  console.log('visibility: ' + visibility);
+	  console.log('modelIndex: ' + modelIndex);
+	  console.log('boneIndex: ' + boneIndex);
+	};
+
+	var _userFilePathPattern = new RegExp(/\\UserFile\\(.*)$/);
+
+	/**
+	 *
+	 * @access public
+	 * @extends {MMDReader}
+	 */
+
+	var MMDPMMReader = function (_MMDReader) {
+	  _inherits(MMDPMMReader, _MMDReader);
+
+	  /**
+	   *
+	   * @access public
+	   * @constructor
+	   * @param {Buffer} data -
+	   * @param {string} directoryPath -
+	   */
+	  function MMDPMMReader(data, directoryPath) {
+	    _classCallCheck(this, MMDPMMReader);
+
+	    var isBinary = true;
+	    var isBigEndian = false;
+	    var encoding = 'sjis';
+
+	    /** @type {MMDScene} */
+	    var _this = _possibleConstructorReturn(this, (MMDPMMReader.__proto__ || Object.getPrototypeOf(MMDPMMReader)).call(this, data, directoryPath, isBinary, isBigEndian, encoding));
+
+	    _this._workingNode = null;
+
+	    // header
+	    _this._pmmMagic = '';
+	    _this.version = 0.0;
+
+	    _this.fps = 30.0;
+
+	    _this._boneCount = 0;
+	    _this._boneNameArray = null;
+
+	    _this._faceCount = 0;
+	    _this._faceNameArray = null;
+
+	    _this._ikCount = 0;
+	    _this._ikIndexArray = null;
+
+	    _this._parentCount = 0;
+
+	    _this._accessoryCount = 0;
+	    _this._accessoryNameCount = null;
+	    _this._accessories = [];
+
+	    _this._modelCount = 0;
+	    _this.models = [];
+	    _this._workingModel = null;
+	    _this._motions = [];
+
+	    _this._substituteModels = null;
+
+	    // for animation
+	    _this._frameLength = 0;
+	    _this._workingAnimationGroup = null;
+	    _this._animationHash = null;
+	    _this._faceAnimationHash = null;
+
+	    _this._initialBoneFrame = null;
+	    _this._boneFrameHash = null;
+	    _this._initialFaceFrame = null;
+	    _this._faceFrameHash = null;
+
+	    // for accessory animation
+	    _this._initialAccessoryFrame = null;
+	    _this._accessoryFrameHash = null;
+	    _this._accessoryMotions = [];
+
+	    // for camera animation
+	    _this._workingCameraAnimationGroup = null;
+	    _this._initialCameraFrame = null;
+	    _this._cameraFrameHash = null;
+
+	    // for light animation
+	    _this._workingLightAnimationGroup = null;
+	    _this._initialLightFrame = null;
+	    _this._lightFrameHash = null;
+	    return _this;
+	  }
+
+	  /**
+	   * @access public
+	   * @param {Buffer} data -
+	   * @param {string} directoryPath -
+	   * @param {MMDNode[]} [models = null] -
+	   * @param {CAAnimation[]} [motions = null] -
+	   * @returns {SCNScene} -
+	   */
+
+
+	  _createClass(MMDPMMReader, [{
+	    key: 'loadPMMFile',
+
+
+	    /**
+	     * @access private
+	     * @param {MMDNode[]} [models = null] -
+	     * @param {CAAnimation[]} [motions = null] -
+	     * @returns {?SCNScene} -
+	     */
+	    value: function loadPMMFile() {
+	      var _this2 = this;
+
+	      var models = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+	      var motions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+	      // initialize working variables
+	      this._workingScene = new _jscenekit.SCNScene();
+	      this._workingScene._dataLoadedPromise = new Promise(function (resolve, reject) {
+	        _this2._resolveFunction = resolve;
+	        _this2._rejectFunction = reject;
+	      });
+
+	      this._pmmMagic = '';
+	      this.version = 0;
+
+	      this._substituteModels = models;
+	      if (this._substituteModels === null) {
+	        this._substituteModels = [];
+	      }
+
+	      // read contents of the file
+	      this._readPMMHeader();
+	      if (this.version !== 1 && this.version !== 2) {
+	        // unknown file format
+	        console.error('unknown file format: ' + this._pmmMagic);
+	        return null;
+	      }
+
+	      this._readModels().then(function () {
+	        _this2._readCameras();
+	        _this2._readLights();
+	        return _this2._readAccessories();
+	      }).then(function () {
+	        _this2._readSettings();
+
+	        _this2._setupScene();
+
+	        _this2._resolveFunction();
+	      });
+
+	      return this._workingScene;
+	    }
+
+	    /**
+	     * read PMD header data
+	     * @access private
+	     */
+
+	  }, {
+	    key: '_readPMMHeader',
+	    value: function _readPMMHeader() {
+	      this._pmmMagic = this.readString(30);
+
+	      if (this._pmmMagic === 'Polygon Movie maker 0001') {
+	        this.version = 1;
+	      } else if (this._pmmMagic === 'Polygon Movie maker 0002') {
+	        this.version = 2;
+	      }
+
+	      var movieWidth = this.readInt();
+	      var movieHeight = this.readInt();
+	      var frameWindowWidth = this.readInt();
+	      var viewAngle = this.readFloat();
+	      var isCameraMode = this.readUnsignedByte();
+
+	      this.skip(6); // skip unknown bytes
+
+	      if (this.version === 2) {
+	        this.skip(1); // unknown data
+	      }
+	    }
+
+	    /**
+	     * @access private
+	     */
+
+	  }, {
+	    key: '_readModels',
+	    value: function _readModels() {
+	      var _this3 = this;
+
+	      this._modelCount = this.readUnsignedByte();
+
+	      if (this.version === 1) {
+	        for (var i = 0; i < this._modelCount; i++) {
+	          var modelName = this.readString(20);
+	          console.log('modelName: ' + modelName);
+	        }
+	      }
+
+	      if (this._modelCount > this._substituteModels.length) {
+	        for (var _i = 0; _i < this._modelCount - this._substituteModels.length; _i++) {
+	          this._substituteModels.push(null);
+	        }
+	      }
+
+	      var prevPromise = Promise.resolve();
+
+	      var _loop = function _loop(modelNo) {
+	        prevPromise = prevPromise.then(function () {
+	          if (_this3._substituteModels[modelNo]) {
+	            var model = _this3._substituteModels[modelNo];
+
+	            // just skip data
+	            _this3.skip(1);
+	            if (_this3.version === 1) {
+	              _this3.skip(20);
+	            } else {
+	              var a = _this3._readPascalString();
+	              var b = _this3._readPascalString();
+	            }
+	            _this3.skip(257);
+	            return model;
+	          }
+
+	          var no = _this3.readUnsignedByte();
+	          if (_this3.version === 1) {
+	            var _modelName = _this3.readString(20);
+	          } else {
+	            var _modelName2 = _this3._readPascalString();
+	            var englishName = _this3._readPascalString();
+	          }
+
+	          var filePath = _this3.readString(256);
+	          _this3.skip(1); // unknown flag
+
+	          var paths = filePath.match(_userFilePathPattern);
+	          if (paths) {
+	            var replaced = paths[1].replace(/\\/g, '/');
+	            filePath = _this3.directoryPath + '/' + replaced;
+	          } else {
+	            filePath = filePath.replace(/\\/g, '/');
+	          }
+
+	          var modelSceneSource = _MMDSceneSource2.default.sceneSourceWithURLOptions(filePath);
+	          return modelSceneSource.didLoad.then(function () {
+	            var newModel = modelSceneSource.getModel();
+	            return newModel.didLoad.then(function () {
+	              return newModel;
+	            }).catch(function (error) {
+	              console.error('cannot get model data: ' + filePath + ': ' + error);
+	              return Promise.reject(error);
+	            });
+	          }).catch(function (error) {
+	            console.error('cannot read file: ' + filePath + ': ' + error);
+	            return Promise.reject(error);
+	          });
+	        }).then(function (model) {
+	          _this3._workingModel = model;
+
+	          if (_this3.version === 1) {
+	            _this3._boneCount = model.boneArray.length - 1;
+	            _this3._boneNameArray = [];
+
+	            var _iteratorNormalCompletion = true;
+	            var _didIteratorError = false;
+	            var _iteratorError = undefined;
+
+	            try {
+	              for (var _iterator = model.boneArray[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	                var bone = _step.value;
+
+	                _this3._boneNameArray.push(bone.name);
+	              }
+	            } catch (err) {
+	              _didIteratorError = true;
+	              _iteratorError = err;
+	            } finally {
+	              try {
+	                if (!_iteratorNormalCompletion && _iterator.return) {
+	                  _iterator.return();
+	                }
+	              } finally {
+	                if (_didIteratorError) {
+	                  throw _iteratorError;
+	                }
+	              }
+	            }
+
+	            _this3._faceCount = model.geometryMorpher.targets.length;
+	            _this3._faceNameArray = [];
+	            var _iteratorNormalCompletion2 = true;
+	            var _didIteratorError2 = false;
+	            var _iteratorError2 = undefined;
+
+	            try {
+	              for (var _iterator2 = model.geometryMorpher.targets[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	                var face = _step2.value;
+
+	                _this3._faceNameArray.push(face.name);
+	              }
+	            } catch (err) {
+	              _didIteratorError2 = true;
+	              _iteratorError2 = err;
+	            } finally {
+	              try {
+	                if (!_iteratorNormalCompletion2 && _iterator2.return) {
+	                  _iterator2.return();
+	                }
+	              } finally {
+	                if (_didIteratorError2) {
+	                  throw _iteratorError2;
+	                }
+	              }
+	            }
+
+	            _this3._ikCount = model.ikArray.length;
+	            _this3._ikIndexArray = [];
+	            // TODO: set ikIndexArray
+
+	            _this3._parentCount = 0;
+	          } else {
+	            _this3._readBone();
+	            _this3._readFace();
+	            _this3._readIK();
+	            _this3._readParent();
+
+	            _this3.skip(1); // unknown flag
+	          }
+
+	          var visible = _this3.readUnsignedByte();
+	          var selectedBone = _this3.readUnsignedInt();
+	          var morph_eyebrows = _this3.readUnsignedInt();
+	          var morph_eyes = _this3.readUnsignedInt();
+	          var morph_lips = _this3.readUnsignedInt();
+	          var morph_etc = _this3.readUnsignedInt();
+
+	          var frameCount = _this3.readUnsignedByte();
+	          for (var _i2 = 0; _i2 < frameCount; _i2++) {
+	            _this3.readUnsignedByte();
+	          }
+
+	          _this3.skip(4); // unknown data
+
+	          // read motions
+	          var lastFrame = _this3.readUnsignedInt();
+
+	          _this3._workingAnimationGroup = new _jscenekit.CAAnimationGroup();
+	          _this3._workingAnimationGroup.animations = [];
+
+	          _this3._animationHash = {};
+	          _this3._faceAnimationHash = {};
+
+	          _this3._frameLength = 0;
+
+	          _this3._readBoneFrames();
+	          _this3._readFaceFrames();
+	          _this3._readIKFrames();
+
+	          _this3._createAnimations();
+
+	          _this3._readBoneStatus();
+	          _this3._readFaceStatus();
+	          _this3._readIKStatus();
+	          _this3._readParentStatus();
+
+	          if (_this3.version > 1) {
+	            _this3.skip(7); // unknown data
+	          }
+
+	          _this3.models.push(model);
+	        });
+	      };
+
+	      for (var modelNo = 0; modelNo < this._modelCount; modelNo++) {
+	        _loop(modelNo);
+	      }
+	      return prevPromise;
+	    }
+	  }, {
+	    key: '_readBone',
+	    value: function _readBone() {
+	      this._boneCount = this.readUnsignedInt();
+
+	      this._boneNameArray = [];
+	      for (var i = 0; i < this._boneCount; i++) {
+	        this._boneNameArray.push(this._readPascalString());
+	      }
+
+	      var _iteratorNormalCompletion3 = true;
+	      var _didIteratorError3 = false;
+	      var _iteratorError3 = undefined;
+
+	      try {
+	        for (var _iterator3 = this._boneNameArray[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+	          var boneName = _step3.value;
+
+	          console.log('    bone: ' + boneName);
+	        }
+	      } catch (err) {
+	        _didIteratorError3 = true;
+	        _iteratorError3 = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion3 && _iterator3.return) {
+	            _iterator3.return();
+	          }
+	        } finally {
+	          if (_didIteratorError3) {
+	            throw _iteratorError3;
+	          }
+	        }
+	      }
+	    }
+	  }, {
+	    key: '_readFace',
+	    value: function _readFace() {
+	      this._faceCount = this.readUnsignedInt();
+	      this._faceNameArray = [];
+	      for (var i = 0; i < this._faceCount; i++) {
+	        this._faceNameArray.push(this._readPascalString());
+	      }
+
+	      var _iteratorNormalCompletion4 = true;
+	      var _didIteratorError4 = false;
+	      var _iteratorError4 = undefined;
+
+	      try {
+	        for (var _iterator4 = this._faceNameArray[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+	          var faceName = _step4.value;
+
+	          console.log('    face: ' + faceName);
+	        }
+	      } catch (err) {
+	        _didIteratorError4 = true;
+	        _iteratorError4 = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion4 && _iterator4.return) {
+	            _iterator4.return();
+	          }
+	        } finally {
+	          if (_didIteratorError4) {
+	            throw _iteratorError4;
+	          }
+	        }
+	      }
+	    }
+	  }, {
+	    key: '_readIK',
+	    value: function _readIK() {
+	      this._ikCount = this.readUnsignedInt();
+	      this._ikIndexArray = [];
+	      for (var i = 0; i < this._ikCount; i++) {
+	        this._ikIndexArray.push(this.readUnsignedInt());
+	      }
+	    }
+	  }, {
+	    key: '_readParent',
+	    value: function _readParent() {
+	      this._parentCount = this.readUnsignedInt();
+	      for (var i = 0; i < this._parentCount; i++) {
+	        this.readUnsignedInt();
+	      }
+	    }
+
+	    // MARK: - Bone Frame
+
+	  }, {
+	    key: '_readBoneFrames',
+	    value: function _readBoneFrames() {
+	      this._initialBoneFrame = [];
+	      this._boneFrameHash = {};
+
+	      for (var i = 0; i < this._boneCount; i++) {
+	        this._readOneBoneFrame(false);
+	      }
+
+	      var boneFrameCount = this.readUnsignedInt();
+	      for (var _i3 = 0; _i3 < boneFrameCount; _i3++) {
+	        this._readOneBoneFrame();
+	      }
+
+	      // create animation data
+	      for (var index = 0; index < this._boneCount; index++) {
+	        var boneName = this._boneNameArray[index];
+
+	        console.log('===== bone animation: ' + boneName + ' =====');
+
+	        var posXMotion = new _jscenekit.CAKeyframeAnimation('/' + boneName + '.transform.translation.x');
+	        var posYMotion = new _jscenekit.CAKeyframeAnimation('/' + boneName + '.transform.translation.y');
+	        var posZMotion = new _jscenekit.CAKeyframeAnimation('/' + boneName + '.transform.translation.z');
+	        var rotMotion = new _jscenekit.CAKeyframeAnimation('/' + boneName + '.transform.quaternion');
+
+	        posXMotion.values = [];
+	        posYMotion.values = [];
+	        posZMotion.values = [];
+	        rotMotion.values = [];
+
+	        posXMotion.keyTimes = [];
+	        posYMotion.keyTimes = [];
+	        posZMotion.keyTimes = [];
+	        rotMotion.keyTimes = [];
+
+	        posXMotion.timingFunctions = [];
+	        posYMotion.timingFunctions = [];
+	        posZMotion.timingFunctions = [];
+	        rotMotion.timingFunctions = [];
+
+	        this._animationHash['posX:' + boneName] = posXMotion;
+	        this._animationHash['posY:' + boneName] = posYMotion;
+	        this._animationHash['posZ:' + boneName] = posZMotion;
+	        this._animationHash['rot:' + boneName] = rotMotion;
+
+	        this._addMotionRecursive(this._initialBoneFrame[index], posXMotion, posYMotion, posZMotion, rotMotion);
+	      }
+	    }
+
+	    /**
+	     * @access private
+	     * @param {MMDVMDInfo} info -
+	     * @param {CAKeyframeAnimation} posXMotion -
+	     * @param {CAKeyframeAnimation} posYMotion -
+	     * @param {CAKeyframeAnimation} posZMotion -
+	     * @param {CAKeyframeAnimation} rotMotion -
+	     * @returns {void}
+	     */
+
+	  }, {
+	    key: '_addMotionRecursive',
+	    value: function _addMotionRecursive(info, posXMotion, posYMotion, posZMotion, rotMotion) {
+	      var motion = info;
+	      while (motion) {
+	        var frameIndex = posXMotion.keyTimes.length - 1;
+
+	        // the frame number mihgt not be sorted
+	        while (frameIndex >= 0) {
+	          var k = posXMotion.keyTimes[frameIndex];
+	          if (k < motion.frameNo) {
+	            break;
+	          }
+
+	          frameIndex -= 1;
+	        }
+	        frameIndex += 1;
+
+	        if (motion.frameNo > this._frameLength) {
+	          this._frameLength = motion.frameNo;
+	        }
+
+	        posXMotion.keyTimes.splice(frameIndex, 0, motion.frameNo);
+	        posYMotion.keyTimes.splice(frameIndex, 0, motion.frameNo);
+	        posZMotion.keyTimes.splice(frameIndex, 0, motion.frameNo);
+	        rotMotion.keyTimes.splice(frameIndex, 0, motion.frameNo);
+
+	        posXMotion.timingFunctions.splice(frameIndex, 0, motion.timingX);
+	        posYMotion.timingFunctions.splice(frameIndex, 0, motion.timingY);
+	        posZMotion.timingFunctions.splice(frameIndex, 0, motion.timingZ);
+	        rotMotion.timingFunctions.splice(frameIndex, 0, motion.timingRot);
+
+	        posXMotion.values.splice(frameIndex, 0, motion.posX);
+	        posYMotion.values.splice(frameIndex, 0, motion.posY);
+	        posZMotion.values.splice(frameIndex, 0, motion.posZ);
+	        rotMotion.values.splice(frameIndex, 0, motion.rotate);
+
+	        console.log('frameNo: ' + motion.frameNo);
+	        console.log('pos: ' + motion.posX + ', ' + motion.posY + ', ' + motion.posZ);
+	        console.log('rot: ' + motion.rotate);
+
+	        if (motion.next <= 0) {
+	          break;
+	        }
+
+	        var _motion = this._boneFrameHash[motion.next];
+	        if (!_motion) {
+	          console.error('error: the frame index(' + motion.next + ') does not exist');
+	        }
+	        motion = _motion;
+	      }
+	    }
+
+	    /**
+	     * @access private
+	     * @param {boolean} [hasIndex = true] -
+	     * @returns {void}
+	     */
+
+	  }, {
+	    key: '_readOneBoneFrame',
+	    value: function _readOneBoneFrame() {
+	      var hasIndex = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+	      var index = 0;
+	      if (hasIndex) {
+	        index = this.readUnsignedInt();
+	      }
+
+	      var vmdInfo = new MMDVMDInfo(this);
+	      if (hasIndex) {
+	        this._boneFrameHash[index] = vmdInfo;
+	      } else {
+	        this._initialBoneFrame.push(vmdInfo);
+	      }
+	    }
+
+	    // MARK: - Face Frame
+
+	  }, {
+	    key: '_readFaceFrames',
+	    value: function _readFaceFrames() {
+	      this._initialFaceFrame = [];
+	      this._faceFrameHash = {};
+
+	      console.log('faceCount: ' + this._faceCount);
+	      for (var i = 0; i < this._faceCount; i++) {
+	        this._readOneFaceFrame(false);
+	      }
+	      var faceFrameCount = this.readUnsignedInt();
+	      console.log('faceFrameCount: ' + faceFrameCount);
+	      for (var _i4 = 0; _i4 < faceFrameCount; _i4++) {
+	        this._readOneFaceFrame();
+	      }
+
+	      // create animation data
+	      for (var index = 0; index < this._faceCount; index++) {
+	        var faceName = this._faceNameArray[index];
+
+	        var faceMotion = new _jscenekit.CAKeyframeAnimation('morpher.weights.' + faceName);
+	        faceMotion.values = [];
+	        faceMotion.keyTimes = [];
+	        faceMotion.timingFunctions = [];
+
+	        this._faceAnimationHash[faceName] = faceMotion;
+
+	        this._addFaceMotionRecursive(this._initialFaceFrame[index], faceMotion);
+	      }
+	    }
+
+	    /**
+	     * @access private
+	     * @param {boolean} [hasIndex = true] -
+	     * @returns {void}
+	     */
+
+	  }, {
+	    key: '_readOneFaceFrame',
+	    value: function _readOneFaceFrame() {
+	      var hasIndex = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+	      var index = 0;
+	      if (hasIndex) {
+	        index = this.readUnsignedInt();
+	      }
+	      var faceInfo = new MMDVMDFaceInfo(this);
+	      if (hasIndex) {
+	        this._faceFrameHash[index] = faceInfo;
+	      } else {
+	        this._initialFaceFrame.push(faceInfo);
+	      }
+	    }
+
+	    /**
+	     * @access private
+	     * @param {MMDVMDFaceInfo} info -
+	     * @param {CAKeyframeAnimation} faceMotion -
+	     * @returns {void}
+	     */
+
+	  }, {
+	    key: '_addFaceMotionRecursive',
+	    value: function _addFaceMotionRecursive(info, faceMotion) {
+	      var motion = info;
+	      while (motion) {
+	        var frameIndex = faceMotion.keyTimes.length - 1;
+
+	        // the frame number might not be sorted.
+	        while (frameIndex >= 0) {
+	          var k = faceMotion.keyTimes[frameIndex];
+	          if (k < motion.frameNo) {
+	            break;
+	          }
+	          frameIndex -= 1;
+	        }
+	        frameIndex += 1;
+
+	        if (motion.frameNo > this._frameLength) {
+	          this._frameLength = motion.frameNo;
+	        }
+	        var timingFunc = _jscenekit.CAMediaTimingFunction.functionWithName(_jscenekit.kCAMediaTimingFunctionLinear);
+
+	        faceMotion.keyTimes.splice(frameIndex, 0, motion.frameNo);
+	        faceMotion.timingFunctions.splice(frameIndex, 0, timingFunc);
+	        faceMotion.values.splice(frameIndex, 0, motion.weight);
+
+	        if (motion.next <= 0) {
+	          break;
+	        }
+
+	        var _motion = this._faceFrameHash[motion.next];
+	        if (!_motion) {
+	          console.error('error: the face frame index(' + motion.next + ') does not exist.');
+	        }
+	        motion = _motion;
+	      }
+	    }
+
+	    // MARK: - IK Frame
+
+	  }, {
+	    key: '_readIKFrames',
+	    value: function _readIKFrames() {
+	      this._readOneIKFrame(false);
+
+	      var boneIKCount = this.readUnsignedInt();
+	      for (var i = 0; i < boneIKCount; i++) {
+	        this._readOneIKFrame();
+	      }
+	    }
+
+	    /**
+	     * @access private
+	     * @param {boolean} [hasIndex = true] -
+	     * @returns {void}
+	     */
+
+	  }, {
+	    key: '_readOneIKFrame',
+	    value: function _readOneIKFrame() {
+	      var hasIndex = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+	      var index = 0;
+	      if (hasIndex) {
+	        index = this.readUnsignedInt();
+	      }
+	      var frameNo = this.readUnsignedInt();
+	      var prev = this.readUnsignedInt();
+	      var next = this.readUnsignedInt();
+
+	      var isVisible = this.readUnsignedByte();
+	      for (var i = 0; i < this._ikCount; i++) {
+	        var isEnable = this.readUnsignedByte();
+	      }
+
+	      // If the version is 1.0, parentCount is 0.
+	      for (var _i5 = 0; _i5 < this._parentCount; _i5++) {
+	        var modelIndex = this.readUnsignedInt();
+	        var boneIndex = this.readUnsignedInt();
+	      }
+
+	      var isSelected = this.readUnsignedByte();
+	    }
+
+	    // MARK: - Create Animation
+
+	  }, {
+	    key: '_createAnimations',
+	    value: function _createAnimations() {
+	      var duration = this._frameLength / this.fps;
+
+	      var _iteratorNormalCompletion5 = true;
+	      var _didIteratorError5 = false;
+	      var _iteratorError5 = undefined;
+
+	      try {
+	        for (var _iterator5 = Object.keys(this._animationHash)[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+	          var name = _step5.value;
+
+	          var motion = this._animationHash[name];
+	          var motionLength = motion.keyTimes[motion.keyTimes.length - 1];
+
+	          for (var num = 0; num < motion.keyTimes.length; num++) {
+	            var keyTime = motion.keyTimes[num] / motionLength;
+	            motion.keyTimes[num] = keyTime;
+	          }
+
+	          motion.duration = motionLength / this.fps;
+	          motion.usesSceneTimeBase = false;
+	          motion.isRemovedOnCompletion = false;
+	          motion.fillMode = _jscenekit.kCAFillModeForwards;
+
+	          if (motion.keyTimes.length === 1) {
+	            motion.repeatCount = Infinity;
+	          }
+
+	          this._workingAnimationGroup.animations.push(motion);
+	        }
+	      } catch (err) {
+	        _didIteratorError5 = true;
+	        _iteratorError5 = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion5 && _iterator5.return) {
+	            _iterator5.return();
+	          }
+	        } finally {
+	          if (_didIteratorError5) {
+	            throw _iteratorError5;
+	          }
+	        }
+	      }
+
+	      var _iteratorNormalCompletion6 = true;
+	      var _didIteratorError6 = false;
+	      var _iteratorError6 = undefined;
+
+	      try {
+	        for (var _iterator6 = Object.keys(this._faceAnimationHash)[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+	          var _name = _step6.value;
+
+	          var _motion2 = this._faceAnimationHash[_name];
+	          var _motionLength = _motion2.keyTimes[_motion2.keyTimes.length - 1];
+
+	          for (var _num = 0; _num < _motion2.keyTimes.length; _num++) {
+	            var _keyTime = _motion2.keyTimes[_num] / _motionLength;
+	            _motion2.keyTimes[_num] = _keyTime;
+	          }
+
+	          _motion2.duration = _motionLength / this.fps;
+	          _motion2.usesSceneTimeBase = false;
+	          _motion2.isRemovedOnCompletion = false;
+	          _motion2.fillMode = _jscenekit.kCAFillModeForwards;
+
+	          this._workingAnimationGroup.animations.push(_motion2);
+	        }
+	      } catch (err) {
+	        _didIteratorError6 = true;
+	        _iteratorError6 = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion6 && _iterator6.return) {
+	            _iterator6.return();
+	          }
+	        } finally {
+	          if (_didIteratorError6) {
+	            throw _iteratorError6;
+	          }
+	        }
+	      }
+
+	      this._workingAnimationGroup.duration = duration;
+	      this._workingAnimationGroup.usesSceneTimeBase = false;
+	      this._workingAnimationGroup.isRemovedOnCompletion = false;
+	      this._workingAnimationGroup.fillMode = _jscenekit.kCAFillModeForwards;
+
+	      this._motions.push(this._workingAnimationGroup);
+	    }
+	  }, {
+	    key: '_readBoneStatus',
+	    value: function _readBoneStatus() {
+	      // float3 translation
+	      // float4 rotation
+	      // bool isMoving?
+	      // bool enabledPhysics?
+	      // bool isSelected
+
+	      // just ignore data
+	      if (this.version === 1) {
+	        this.skip(34 * this._boneCount);
+	      } else {
+	        this.skip(31 * this._boneCount);
+	      }
+	    }
+	  }, {
+	    key: '_readFaceStatus',
+	    value: function _readFaceStatus() {
+	      // float skinValue
+
+	      // just ignore data
+	      this.skip(4 * this._faceCount);
+	    }
+	  }, {
+	    key: '_readIKStatus',
+	    value: function _readIKStatus() {
+	      // bool isIsEnable
+	      this.skip(this._ikCount);
+	    }
+	  }, {
+	    key: '_readParentStatus',
+	    value: function _readParentStatus() {
+	      // int4 parentStatus
+	      this.skip(16 * this._parentCount);
+	    }
+
+	    // MARK: - Camera Frame
+
+	  }, {
+	    key: '_readCameras',
+	    value: function _readCameras() {
+	      this._workingCameraAnimationGroup = new _jscenekit.CAAnimationGroup();
+	      this._workingCameraAnimationGroup.animations = [];
+	      this._cameraFrameHash = {};
+
+	      this._frameLength = 0;
+
+	      this._readOneCameraFrame(false);
+
+	      var cameraFrameCount = this.readUnsignedInt();
+	      for (var i = 0; i < cameraFrameCount; i++) {
+	        this._readOneCameraFrame();
+	      }
+
+	      this._createCameraAnimation();
+
+	      this._readCameraStatus();
+	    }
+
+	    /**
+	     * @access private
+	     * @param {boolean} [hasIndex = true] -
+	     * @returns {void}
+	     */
+
+	  }, {
+	    key: '_readOneCameraFrame',
+	    value: function _readOneCameraFrame() {
+	      var hasIndex = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+	      var index = -1;
+	      if (hasIndex) {
+	        index = this.readUnsignedInt();
+	      }
+	      var cameraInfo = new MMDVMDCameraInfo(this);
+	      if (hasIndex) {
+	        this._cameraFrameHash[index] = cameraInfo;
+	      } else {
+	        this._initialCameraFrame = cameraInfo;
+	      }
+	    }
+
+	    /**
+	     * @access private
+	     * @param {MMDVMDCameraInfo} info -
+	     * @param {CAKeyframeAnimation} distanceMotion -
+	     * @param {CAKeyframeAnimation} posXMotion -
+	     * @param {CAKeyframeAnimation} posYMotion -
+	     * @param {CAKeyframeAnimation} posZMotion -
+	     * @param {CAKeyframeAnimation} rotXMotion -
+	     * @param {CAKeyframeAnimation} rotYMotion -
+	     * @param {CAKeyframeAnimation} rotZMotion -
+	     * @param {CAKeyframeAnimation} angleMotion -
+	     * @param {CAKeyframeAnimation} persMotion -
+	     * @returns {void}
+	     */
+
+	  }, {
+	    key: '_addCameraMotionRecursive',
+	    value: function _addCameraMotionRecursive(info, distanceMotion, posXMotion, posYMotion, posZMotion, rotXMotion, rotYMotion, rotZMotion, angleMotion, persMotion) {
+
+	      var motion = info;
+	      while (motion) {
+	        var frameIndex = distanceMotion.keyTimes.length - 1;
+
+	        // the frame number might not be sorted.
+	        while (frameIndex >= 0) {
+	          var k = distanceMotion.keyTimes[frameIndex];
+	          if (k < motion.frameNo) {
+	            break;
+	          }
+
+	          frameIndex -= 1;
+	        }
+	        frameIndex += 1;
+
+	        if (motion.frameNo > this.frameLength) {
+	          this._frameLength = motion.frameNo;
+	        }
+	        console.log('camera frameNo: ' + motion.frameNo);
+
+	        distanceMotion.keyTimes.splice(frameIndex, 0, motion.frameNo);
+	        posXMotion.keyTimes.splice(frameIndex, 0, motion.frameNo);
+	        posYMotion.keyTimes.splice(frameIndex, 0, motion.frameNo);
+	        posZMotion.keyTimes.splice(frameIndex, 0, motion.frameNo);
+	        rotXMotion.keyTimes.splice(frameIndex, 0, motion.frameNo);
+	        rotYMotion.keyTimes.splice(frameIndex, 0, motion.frameNo);
+	        rotZMotion.keyTimes.splice(frameIndex, 0, motion.frameNo);
+	        angleMotion.keyTimes.splice(frameIndex, 0, motion.frameNo);
+	        persMotion.keyTimes.splice(frameIndex, 0, motion.frameNo);
+
+	        distanceMotion.timingFunctions.splice(frameIndex, 0, motion.timingDistance);
+	        posXMotion.timingFunctions.splice(frameIndex, 0, motion.timingX);
+	        posYMotion.timingFunctions.splice(frameIndex, 0, motion.timingY);
+	        posZMotion.timingFunctions.splice(frameIndex, 0, motion.timingZ);
+	        rotXMotion.timingFunctions.splice(frameIndex, 0, motion.timingRot);
+	        rotYMotion.timingFunctions.splice(frameIndex, 0, motion.timingRot);
+	        rotZMotion.timingFunctions.splice(frameIndex, 0, motion.timingRot);
+	        angleMotion.timingFunctions.splice(frameIndex, 0, motion.timingAngle);
+
+	        distanceMotion.values.splice(frameIndex, 0, motion.distance);
+	        posXMotion.values.splice(frameIndex, 0, motion.posX);
+	        posYMotion.values.splice(frameIndex, 0, motion.posY);
+	        posZMotion.values.splice(frameIndex, 0, motion.posZ);
+	        rotXMotion.values.splice(frameIndex, 0, motion.rotX);
+	        rotYMotion.values.splice(frameIndex, 0, motion.rotY);
+	        rotZMotion.values.splice(frameIndex, 0, motion.rotZ);
+	        angleMotion.values.splice(frameIndex, 0, motion.angle);
+	        persMotion.values.splice(frameIndex, 0, motion.useOrtho);
+
+	        if (motion.next <= 0) {
+	          break;
+	        }
+
+	        var _motion = this._cameraFrameHash[motion.next];
+	        if (!_motion) {
+	          console.error('error: the camera frame index(' + motion.next + ') does not exist.');
+	        }
+	        motion = _motion;
+	      }
+	    }
+	  }, {
+	    key: '_createCameraAnimation',
+	    value: function _createCameraAnimation() {
+	      var distanceMotion = new _jscenekit.CAKeyframeAnimation('/' + _MMDCameraNode.MMD_CAMERA_NODE_NAME + '.translation.z');
+	      var posXMotion = new _jscenekit.CAKeyframeAnimation('transform.translation.x');
+	      var posYMotion = new _jscenekit.CAKeyframeAnimation('transform.translation.y');
+	      var posZMotion = new _jscenekit.CAKeyframeAnimation('transform.translation.z');
+	      var rotZMotion = new _jscenekit.CAKeyframeAnimation('/' + _MMDCameraNode.MMD_CAMERA_ROTZ_NODE_NAME + '.eulerAngles.z');
+	      var rotXMotion = new _jscenekit.CAKeyframeAnimation('/' + _MMDCameraNode.MMD_CAMERA_ROTX_NODE_NAME + '.eulerAngles.x');
+	      var rotYMotion = new _jscenekit.CAKeyframeAnimation('eulerAngles.y');
+	      var angleMotion = new _jscenekit.CAKeyframeAnimation('/' + _MMDCameraNode.MMD_CAMERA_NODE_NAME + '.camera.yFov');
+	      var persMotion = new _jscenekit.CAKeyframeAnimation('/' + _MMDCameraNode.MMD_CAMERA_NODE_NAME + '.camera.usesOrthographicProjection');
+
+	      distanceMotion.values = [];
+	      posXMotion.values = [];
+	      posYMotion.values = [];
+	      posZMotion.values = [];
+	      rotXMotion.values = [];
+	      rotYMotion.values = [];
+	      rotZMotion.values = [];
+	      angleMotion.values = [];
+	      persMotion.values = [];
+
+	      distanceMotion.keyTimes = [];
+	      posXMotion.keyTimes = [];
+	      posYMotion.keyTimes = [];
+	      posZMotion.keyTimes = [];
+	      rotXMotion.keyTimes = [];
+	      rotYMotion.keyTimes = [];
+	      rotZMotion.keyTimes = [];
+	      angleMotion.keyTimes = [];
+	      persMotion.keyTimes = [];
+
+	      distanceMotion.timingFunctions = [];
+	      posXMotion.timingFunctions = [];
+	      posYMotion.timingFunctions = [];
+	      posZMotion.timingFunctions = [];
+	      rotXMotion.timingFunctions = [];
+	      rotYMotion.timingFunctions = [];
+	      rotZMotion.timingFunctions = [];
+	      angleMotion.timingFunctions = [];
+	      //persMotion.timingFunctions = []
+
+	      this._frameLength = 0;
+	      this._addCameraMotionRecursive(this._initialCameraFrame, distanceMotion, posXMotion, posYMotion, posZMotion, rotXMotion, rotYMotion, rotZMotion, angleMotion, persMotion);
+
+	      var duration = this._frameLength / this.fps;
+
+	      var _arr = [distanceMotion, posXMotion, posYMotion, posZMotion, rotXMotion, rotYMotion, rotZMotion, angleMotion, persMotion];
+	      for (var _i6 = 0; _i6 < _arr.length; _i6++) {
+	        var motion = _arr[_i6];
+	        var motionLength = motion.keyTimes[motion.keyTimes.length - 1];
+	        motion.duration = motionLength / this.fps;
+	        motion.usesSceneTimeBase = false;
+	        motion.isRemovedOnCompletion = false;
+	        motion.fillMode = _jscenekit.kCAFillModeForwards;
+
+	        for (var num = 0; num < motion.keyTimes.length; num++) {
+	          var keyTime = motion.keyTimes[num] / motionLength;
+	          motion.keyTimes[num] = keyTime;
+	        }
+
+	        this._workingCameraAnimationGroup.animations.push(motion);
+	        this._workingCameraAnimationGroup.duration = duration;
+	        this._workingCameraAnimationGroup.usesSceneTimeBase = false;
+	        this._workingCameraAnimationGroup.isRemovedOnCompletion = false;
+	        this._workingCameraAnimationGroup.fillMode = _jscenekit.kCAFillModeForwards;
+	      }
+	    }
+	  }, {
+	    key: '_readCameraStatus',
+	    value: function _readCameraStatus() {
+	      // float3 pos
+	      // float3 lookat?
+	      // float3 rot
+	      // usesParse
+
+	      // just ignore data
+	      this.skip(37);
+	    }
+
+	    // MARK: - Light Frame
+
+	  }, {
+	    key: '_readLights',
+	    value: function _readLights() {
+	      this._workingLightAnimationGroup = new _jscenekit.CAAnimationGroup();
+	      this._workingLightAnimationGroup.animations = [];
+	      this._lightFrameHash = {};
+
+	      this._readOneLightFrame(false);
+
+	      var lightFrameCount = this.readUnsignedInt();
+	      for (var i = 0; i < lightFrameCount; i++) {
+	        this._readOneLightFrame();
+	      }
+
+	      this._createLightAnimation();
+
+	      this._readLightStatus();
+	    }
+
+	    /**
+	     * @access private
+	     * @param {boolean} [hasIndex = true] -
+	     * @returns {void}
+	     */
+
+	  }, {
+	    key: '_readOneLightFrame',
+	    value: function _readOneLightFrame() {
+	      var hasIndex = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+	      var index = -1;
+	      if (hasIndex) {
+	        index = this.readUnsignedInt();
+	      }
+
+	      var info = new MMDVMDLightInfo(this);
+	      if (hasIndex) {
+	        this._lightFrameHash[index] = info;
+	      } else {
+	        this._initialLightFrame = info;
+	      }
+	    }
+	  }, {
+	    key: '_createLightAnimation',
+	    value: function _createLightAnimation() {
+	      var colorMotion = new _jscenekit.CAKeyframeAnimation('light.color');
+	      var directionMotion = new _jscenekit.CAKeyframeAnimation('transform.quaternion');
+
+	      colorMotion.values = [];
+	      directionMotion.values = [];
+
+	      colorMotion.keyTimes = [];
+	      directionMotion.keyTimes = [];
+
+	      this._frameLength = 0;
+	      this._addLightMotionRecursive(this._initialLightFrame, colorMotion, directionMotion);
+
+	      var duration = this._frameLength / this.fps;
+
+	      var _arr2 = [colorMotion, directionMotion];
+	      for (var _i7 = 0; _i7 < _arr2.length; _i7++) {
+	        var motion = _arr2[_i7];
+	        motion.duration = duration;
+	        motion.usesSceneTimeBase = false;
+	        motion.isRemovedOnCompletion = false;
+	        motion.fillMode = _jscenekit.kCAFillModeForwards;
+
+	        for (var num = 0; num < motion.keyTimes.length; num++) {
+	          var keyTime = motion.keyTimes[num] / this._frameLength;
+	          motion.keyTimes[num] = keyTime;
+	        }
+
+	        this._workingLightAnimationGroup.animations.push(motion);
+	      }
+
+	      this._workingLightAnimationGroup.duration = duration;
+	      this._workingLightAnimationGroup.usesSceneTimeBase = false;
+	      this._workingLightAnimationGroup.isRemovedOnCompletion = false;
+	      this._workingLightAnimationGroup.fillMode = _jscenekit.kCAFillModeForwards;
+	    }
+
+	    /**
+	     * @access private
+	     * @param {MMDVMDLightInfo} info -
+	     * @param {CAKeyframeAnimation} colorMotion -
+	     * @param {CAKeyframeAnimation} directionMotion -
+	     * @returns {void}
+	     */
+
+	  }, {
+	    key: '_addLightMotionRecursive',
+	    value: function _addLightMotionRecursive(info, colorMotion, directionMotion) {
+	      var motion = info;
+	      while (motion) {
+	        var frameIndex = colorMotion.keyTimes.length - 1;
+
+	        // the frame number might not be sorted.
+	        while (frameIndex >= 0) {
+	          var k = colorMotion.keyTimes[frameIndex];
+	          if (k < motion.frameNo) {
+	            break;
+	          }
+
+	          frameIndex -= 1;
+	        }
+	        frameIndex += 1;
+
+	        if (motion.frameNo > this._frameLength) {
+	          this._frameLength = motion.frameNo;
+	        }
+
+	        colorMotion.keyTimes.splice(frameIndex, 0, motion.frameNo);
+	        directionMotion.keyTimes.splice(frameIndex, 0, motion.frameNo);
+
+	        colorMotion.values.splice(frameIndex, 0, motion.color);
+	        directionMotion.values.splice(frameIndex, 0, motion.direction);
+
+	        if (motion.next <= 0) {
+	          break;
+	        }
+
+	        var _motion = this._lightFrameHash[motion.next];
+	        if (!_motion) {
+	          console.error('error: the light frame index(' + motion.next + ') does not exist.');
+	        }
+	        motion = _motion;
+	      }
+	    }
+	  }, {
+	    key: '_readLightStatus',
+	    value: function _readLightStatus() {
+	      // float3 rgb
+	      // float3 pos
+	      // byte5 unknown
+
+	      // just ignore data
+	      this.skip(29);
+	    }
+
+	    // MARK: - Accessory Frame
+
+	  }, {
+	    key: '_readAccessories',
+	    value: function _readAccessories() {
+	      var _this4 = this;
+
+	      this._accessoryCount = this.readUnsignedByte();
+	      this._accessoryNameArray = [];
+
+	      for (var i = 0; i < this._accessoryCount; i++) {
+	        this._accessoryNameArray.push(this.readString(100));
+	      }
+	      for (var index = 0; index < this._accessoryCount; index++) {
+	        console.log('[' + index + ']: ' + this._accessoryNameArray[index]);
+	      }
+
+	      if (this._modelCount + this._accessoryCount > this._substituteModels.length) {
+	        var len = this._modelCount + this._accessoryCount - this._substituteModels.length;
+	        for (var _i8 = 0; _i8 < len; _i8++) {
+	          this._substituteModels.push(null);
+	        }
+	      }
+
+	      this._accessoryFrameHash = {};
+
+	      var prevPromise = Promise.resolve();
+
+	      var _loop2 = function _loop2(_index) {
+	        prevPromise = prevPromise.then(function () {
+	          //let accessory = new MMDNode()
+	          var m = _this4._substituteModels[_this4._modelCount + _index];
+	          if (m) {
+	            // just skip accessory data
+	            _this4.skip(358);
+
+	            return m;
+	          }
+
+	          var no = _this4.readUnsignedByte();
+	          var name = _this4.readString(100);
+	          var filePath = _this4.readString(256);
+
+	          //accessory.name = name
+
+	          var paths = filePath.match(_userFilePathPattern);
+	          if (paths) {
+	            var replaced = paths[1].replace(/\\/g, '/');
+	            filePath = _this4.directoryPath + '/' + replaced;
+	          } else {
+	            filePath = filePath.replace(/\\/g, '/');
+	          }
+
+	          if (!filePath) {
+	            var accessory = new _MMDNode2.default();
+	            accessory.name = name;
+	            return accessory;
+	          }
+
+	          var accessorySceneSource = _MMDSceneSource2.default.sceneSourceWithURLOptions(filePath);
+	          return accessorySceneSource.didLoad.then(function () {
+	            var newAccessory = accessorySceneSource.getModel();
+	            return newAccessory.didLoad.then(function () {
+	              return newAccessory;
+	            }).catch(function (error) {
+	              console.error('cannot get accessory data: ' + filePath);
+	              return Promise.reject(error);
+	            });
+	          }).catch(function (error) {
+	            console.error('cannot read file: ' + filePath);
+	            return Promise.reject(error);
+	          });
+	        }).then(function (accessory) {
+
+	          // set the default scale for accessory (x10)
+	          accessory.scale = new _jscenekit.SCNVector3Make(10.0, 10.0, 10.0);
+
+	          var accessoryIndex = _this4.readUnsignedByte();
+	          console.log('accessoryIndex: ' + accessoryIndex);
+
+	          _this4._readOneAccessoryFrame(false);
+
+	          var accessoryFrameCount = _this4.readUnsignedInt();
+	          console.log('accessoryFrameCount: ' + accessoryFrameCount);
+	          for (var _i9 = 0; _i9 < accessoryFrameCount; _i9++) {
+	            _this4._readOneAccessoryFrame();
+	          }
+
+	          _this4._createAccessoryAnimation();
+
+	          _this4._readAccessoryStatus();
+
+	          _this4._accessories.push(accessory);
+	        });
+	      };
+
+	      for (var _index = 0; _index < this._accessoryCount; _index++) {
+	        _loop2(_index);
+	      }
+	      return prevPromise;
+	    }
+
+	    /**
+	     * @access private
+	     * @param {boolean} [hasIndex = true] -
+	     * @returns {void}
+	     */
+
+	  }, {
+	    key: '_readOneAccessoryFrame',
+	    value: function _readOneAccessoryFrame() {
+	      var hasIndex = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+	      var index = 0;
+	      if (hasIndex) {
+	        index = this.readUnsignedInt();
+	      }
+
+	      var info = new MMDVMDAccessoryInfo(this);
+	      if (hasIndex) {
+	        this._accessoryFrameHash[index] = info;
+	      } else {
+	        this._initialAccessoryFrame = info;
+	      }
+	    }
+	  }, {
+	    key: '_createAccessoryAnimation',
+	    value: function _createAccessoryAnimation() {
+	      var animation = new _jscenekit.CAAnimationGroup();
+	      animation.animations = [];
+
+	      var posMotion = new _jscenekit.CAKeyframeAnimation('position');
+	      var rotMotion = new _jscenekit.CAKeyframeAnimation('transform.quaternion');
+	      var scaleMotion = new _jscenekit.CAKeyframeAnimation('scale');
+	      var hiddenMotion = new _jscenekit.CAKeyframeAnimation('hidden');
+	      var opacityMotion = new _jscenekit.CAKeyframeAnimation('opacity');
+	      var additiveMotion = new _jscenekit.CAKeyframeAnimation('/Geometry.materials.blendMode');
+	      var parentMotion = new _jscenekit.CAKeyframeAnimation('parent.motionParentNode');
+
+	      posMotion.values = [];
+	      rotMotion.values = [];
+	      scaleMotion.values = [];
+	      hiddenMotion.values = [];
+	      opacityMotion.values = [];
+	      additiveMotion.values = [];
+	      parentMotion.values = [];
+
+	      posMotion.keyTimes = [];
+	      rotMotion.keyTimes = [];
+	      scaleMotion.keyTimes = [];
+	      hiddenMotion.keyTimes = [];
+	      opacityMotion.keyTimes = [];
+	      additiveMotion.keyTimes = [];
+	      parentMotion.keyTimes = [];
+
+	      this._frameLength = 0;
+	      this._addAccessoryMotionRecursive(this._initialAccessoryFrame, posMotion, rotMotion, scaleMotion, hiddenMotion, opacityMotion, additiveMotion, parentMotion);
+
+	      var duration = this._frameLength / this.fps;
+
+	      var _arr3 = [posMotion, rotMotion, scaleMotion, hiddenMotion, opacityMotion, additiveMotion, parentMotion];
+	      for (var _i10 = 0; _i10 < _arr3.length; _i10++) {
+	        var motion = _arr3[_i10];
+	        motion.duration = duration;
+	        motion.usesSceneTimeBase = false;
+	        motion.isRemovedOnCompletion = false;
+	        motion.fillMode = _jscenekit.kCAFillModeForwards;
+
+	        for (var _num2 = 0; _num2 < motion.keyTimes.length; _num2++) {
+	          var _keyTime2 = motion.keyTimes[_num2] / this._frameLength;
+	          if (this._frameLength <= 0) {
+	            _keyTime2 = 0.0;
+	          }
+	          motion.keyTimes[_num2] = _keyTime2;
+	        }
+	      }
+	      hiddenMotion.calculationMode = _jscenekit.kCAAnimationDiscrete;
+	      additiveMotion.calculationMode = _jscenekit.kCAAnimationDiscrete;
+	      parentMotion.calculationMode = _jscenekit.kCAAnimationDiscrete;
+
+	      for (var num = 0; num < hiddenMotion.keyTimes.length; num++) {
+	        var keyTime = hiddenMotion.keyTimes[num];
+	        var value = hiddenMotion.values[num];
+	        console.log('isHidden @' + keyTime + ': ' + value);
+	      }
+
+	      animation.animations.push(posMotion);
+	      animation.animations.push(rotMotion);
+	      animation.animations.push(scaleMotion);
+	      animation.animations.push(hiddenMotion);
+	      animation.animations.push(opacityMotion);
+	      animation.duration = duration;
+	      animation.usesScaleTimeBase = false;
+	      animation.isRemovedOnCompletion = false;
+	      animation.fillMode = _jscenekit.kCAFillModeForwards;
+
+	      var parentEvents = [];
+	      var prevParent = null;
+
+	      var _loop3 = function _loop3(index) {
+	        var keyTime = parentMotion.keyTimes[index];
+	        var value = parentMotion.values[index];
+
+	        if (value) {
+	          var mmdParentNode = value;
+	          // TODO: implement for playingBackward
+	          var parentEvent = new _jscenekit.SCNAnimationEvent(keyTime, function (_animation, animatedObject, playingBackward) {
+	            var node = animatedObject;
+	            if (animatedObject) {
+	              if (playingBackward) {
+	                if (parent === prevParent) {
+	                  parent.addChildNode(node);
+	                }
+	              } else {
+	                value.addChildNode(node);
+	              }
+	            }
+	          });
+
+	          parentEvents.push(parentEvent);
+	          prevParent = mmdParentNode;
+	        }
+	      };
+
+	      for (var index = 0; index < parentMotion.keyTimes.length; index++) {
+	        _loop3(index);
+	      }
+
+	      var prevBlendMode = _jscenekit.SCNBlendMode.alpha;
+
+	      var _loop4 = function _loop4(index) {
+	        var keyTime = additiveMotion.keyTimes[index];
+	        var value = additiveMotion.values[index];
+
+	        var additiveEvent = new _jscenekit.SCNAnimationEvent(keyTime, function (_animation, animatedObject, playingBackward) {
+	          var geometry = animatedObject.childNodeWithNameRecursively('Geometry', true).geometry;
+	          if (geometry) {
+	            var blendMode = value;
+	            if (playingBackward) {
+	              blendMode = prevBlendMode;
+	            }
+	            //if(blendMode === SCNBlendMode.add){
+	            //  console.log('.add')
+	            //}else if(blendMode === SCNBlendMode.alpha){
+	            //  console.log('.alpha')
+	            //}
+	            var _iteratorNormalCompletion7 = true;
+	            var _didIteratorError7 = false;
+	            var _iteratorError7 = undefined;
+
+	            try {
+	              for (var _iterator7 = geometry.materials[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+	                var material = _step7.value;
+
+	                material.blendMode = blendMode;
+	              }
+	            } catch (err) {
+	              _didIteratorError7 = true;
+	              _iteratorError7 = err;
+	            } finally {
+	              try {
+	                if (!_iteratorNormalCompletion7 && _iterator7.return) {
+	                  _iterator7.return();
+	                }
+	              } finally {
+	                if (_didIteratorError7) {
+	                  throw _iteratorError7;
+	                }
+	              }
+	            }
+	          }
+	        });
+	        parentEvents.push(additiveEvent);
+	        prevBlendMode = value;
+	      };
+
+	      for (var index = 0; index < additiveMotion.keyTimes.length; index++) {
+	        _loop4(index);
+	      }
+
+	      animation.animationEvents = parentEvents;
+
+	      this._accessoryMotions.push(animation);
+	    }
+
+	    /**
+	     * @access private
+	     * @param {MMDVMDAccessoryInfo} info -
+	     * @param {CAKeyframeAnimation} posMotion -
+	     * @param {CAKeyframeAnimation} rotMotion -
+	     * @param {CAKeyframeAnimation} scaleMotion -
+	     * @param {CAKeyframeAnimation} hiddenMotion -
+	     * @param {CAKeyframeAnimation} opacityMotion -
+	     * @param {CAKeyframeAnimation} additiveMotion -
+	     * @param {CAKeyframeAnimation} parentMotion -
+	     * @returns {void}
+	     */
+
+	  }, {
+	    key: '_addAccessoryMotionRecursive',
+	    value: function _addAccessoryMotionRecursive(info, posMotion, rotMotion, scaleMotion, hiddenMotion, opacityMotion, additiveMotion, parentMotion) {
+
+	      var motion = info;
+	      while (motion) {
+	        var frameIndex = posMotion.keyTimes.length - 1;
+
+	        // the frame number might not be sorted
+	        while (frameIndex >= 0) {
+	          var k = posMotion.keyTimes[frameIndex];
+	          if (k < motion.frameNo) {
+	            break;
+	          }
+	          frameIndex -= 1;
+	        }
+	        frameIndex += 1;
+
+	        if (motion.frameNo > this._frameLength) {
+	          this._frameLength = motion.frameNo;
+	        }
+
+	        posMotion.keyTimes.splice(frameIndex, 0, motion.frameNo);
+	        rotMotion.keyTimes.splice(frameIndex, 0, motion.frameNo);
+	        scaleMotion.keyTimes.splice(frameIndex, 0, motion.frameNo);
+	        hiddenMotion.keyTimes.splice(frameIndex, 0, motion.frameNo);
+	        opacityMotion.keyTimes.splice(frameIndex, 0, motion.frameNo);
+	        additiveMotion.keyTimes.splice(frameIndex, 0, motion.frameNo);
+	        parentMotion.keyTimes.splice(frameIndex, 0, motion.frameNo);
+
+	        posMotion.values.splice(frameIndex, 0, motion.position);
+	        rotMotion.values.splice(frameIndex, 0, motion.rotation);
+	        scaleMotion.values.splice(frameIndex, 0, motion.scale);
+	        hiddenMotion.values.splice(frameIndex, 0, motion.isHidden);
+	        opacityMotion.values.splice(frameIndex, 0, motion.opacity);
+	        additiveMotion.values.splice(frameIndex, 0, motion.additive);
+	        parentMotion.values.splice(frameIndex, 0, motion.parent);
+
+	        if (motion.next <= 0) {
+	          break;
+	        }
+
+	        var _motion = this._accessoryFrameHash[motion.next];
+	        if (!_motion) {
+	          console.error('error: the accessory frame index(' + motion.next + ') does not exist.');
+	        }
+	        motion = _motion;
+	      }
+	    }
+	  }, {
+	    key: '_readAccessoryStatus',
+	    value: function _readAccessoryStatus() {
+	      // byte opacity?
+	      // int modelIndex
+	      // int boneIndex
+	      // float3 pos
+	      // float scale
+	      // float3 rot
+	      // byte flag1?
+	      // byte flat2?
+
+	      this.skip(38);
+	      if (this.version >= 2) {
+	        this.skip(1);
+	      }
+	    }
+
+	    // MARK: - other settings
+
+	  }, {
+	    key: '_readSettings',
+	    value: function _readSettings() {
+	      var numObjects = this._modelCount + this._accessoryCount;
+
+	      var viewFlag = this.readUnsignedByte();
+
+	      // wav file
+	      var usesWav = this.readUnsignedByte();
+	      var wavPath = this.readString(256);
+
+	      // background movie
+	      var bgMoviePath = this.readString(256);
+	      var usesMovie = this.readUnsignedByte();
+
+	      // background image
+	      var bgImagePath = this.readString(256);
+	      var usesImage = this.readUnsignedByte();
+
+	      // misc.
+	      var showInfo = this.readUnsignedByte();
+	      var showGrid = this.readUnsignedByte();
+	      var shadow = this.readUnsignedByte();
+	      this.skip(3); // ?
+
+	      var screenCapture = this.readUnsignedByte();
+	      this.skip(7); // ?
+
+	      var shadowColor = this.readFloat(); // ?
+
+	      this.skip(numObjects);
+
+	      this.skip(4 * this._modelCount);
+
+	      this.skip(62); // ?
+
+	      var usesPhysics = this.readUnsignedByte();
+	      var gravity = this.readFloat();
+	      var noise = 0.0;
+	      if (this.version === 1) {
+	        noise = this.readFloat();
+	      }
+	      var gravityX = this.readFloat();
+	      var gravityY = this.readFloat();
+	      var gravityZ = this.readFloat();
+
+	      this.skip(24); // ?
+
+	      this.skip(this._modelCount);
+
+	      this.skip(5);
+	    }
+	  }, {
+	    key: '_setupScene',
+	    value: function _setupScene() {
+	      // camera
+	      var cameraNode = new _MMDCameraNode2.default();
+	      cameraNode.prepareAnimationForKey(this._workingCameraAnimationGroup, 'motion');
+	      cameraNode.playPreparedAnimationForKey('motion');
+	      cameraNode.getCamera().automaticallyAdjustsZRange = true;
+
+	      this._workingScene.rootNode.addChildNode(cameraNode);
+
+	      // light
+	      var lightNode = new _jscenekit.SCNNode();
+	      lightNode.light = new _jscenekit.SCNLight();
+	      lightNode.light.type = _jscenekit.SCNLight.LightType.directional;
+	      lightNode.light.castsShadow = true;
+	      lightNode.addAnimationForKey(this._workingLightAnimationGroup, 'motion');
+	      lightNode.name = 'MMDLight';
+
+	      this._workingScene.rootNode.addChildNode(lightNode);
+
+	      // model and motion
+	      for (var index = 0; index < this.models.count; index++) {
+	        var model = this.models[index];
+	        var motion = this._motions[index];
+
+	        model.prepareAnimationForKey(motion, 'motion');
+	        model.playPreparedAnimationForKey('motion');
+	        this._workingScene.rootNode.addChildNode(model);
+	      }
+
+	      // accessory
+	      for (var _index2 = 0; _index2 < this._accessories.length; _index2++) {
+	        var accessory = this._accessories[_index2];
+	        var _motion3 = this._accessoryMotions[_index2];
+
+	        accessory.prepareAnimationForKey(_motion3, 'motion');
+	        accessory.playPreparedAnimationForKey('motion');
+
+	        this._workingScene.rootNode.addChildNode(accessory);
+	      }
+	    }
+
+	    /**
+	     * @access private
+	     * @returns {string} -
+	     */
+
+	  }, {
+	    key: '_getPascalString',
+	    value: function _getPascalString() {
+	      var strlen = this.readUnsignedByte();
+	      var str = this.readString(strlen);
+	      if (str) {
+	        return str;
+	      }
+	      return '';
+	    }
+	  }], [{
+	    key: 'getScene',
+	    value: function getScene(data, directoryPath) {
+	      var models = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+	      var motions = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+
+	      var reader = new MMDPMMReader(data, directoryPath);
+	      var scene = reader.loadPMMFile(models, motions);
+
+	      return scene;
+	    }
+	  }]);
+
+	  return MMDPMMReader;
+	}(_MMDReader3.default);
+
+	exports.default = MMDPMMReader;
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	var _jscenekit = __webpack_require__(3);
+
+	var _MMDNode = __webpack_require__(8);
+
+	var _MMDNode2 = _interopRequireDefault(_MMDNode);
+
+	var _MMDPMDReader = __webpack_require__(11);
+
+	var _MMDPMDReader2 = _interopRequireDefault(_MMDPMDReader);
+
+	var _MMDPMMReader = __webpack_require__(17);
+
+	var _MMDPMMReader2 = _interopRequireDefault(_MMDPMMReader);
+
+	var _MMDPMXReader = __webpack_require__(19);
+
+	var _MMDPMXReader2 = _interopRequireDefault(_MMDPMXReader);
+
+	var _MMDVACReader = __webpack_require__(20);
+
+	var _MMDVACReader2 = _interopRequireDefault(_MMDVACReader);
+
+	var _MMDVMDReader = __webpack_require__(21);
+
+	var _MMDVMDReader2 = _interopRequireDefault(_MMDVMDReader);
+
+	var _MMDVPDReader = __webpack_require__(23);
+
+	var _MMDVPDReader2 = _interopRequireDefault(_MMDVPDReader);
+
+	var _MMDXReader = __webpack_require__(24);
+
+	var _MMDXReader2 = _interopRequireDefault(_MMDXReader);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _MMDFileType = {
+	  pmm: 'pmm',
+	  pmd: 'pmd',
+	  vmd: 'vmd',
+	  vpd: 'vpd',
+	  x: 'x',
+	  vac: 'vac',
+	  pmx: 'pmx',
+	  obj: 'obj',
+	  dae: 'dae',
+	  abc: 'abc',
+	  scn: 'scn',
+	  unknown: 'unknown'
+	};
+
+	var _LoadingOption = {
+	  animationImportPolicy: 'kSceneSourceAnimationLoadingMode',
+	  assetDirectoryURLs: 'kSceneSourceAssetDirectoryURLs',
+	  checkConsistency: 'kSceneSourceCheckConsistency',
+	  convertToYUp: 'kSceneSourceConvertToYUpIfNeeded',
+	  convertUnitsToMeters: 'kSceneSourceConvertToUnit',
+	  createNormalsIfAbsent: 'kSceneSourceCreateNormalsIfAbsent',
+	  flattenScene: 'kSceneSourceFlattenScene',
+	  overrideAssetURLs: 'kSceneSourceOverrideAssetURLs',
+	  preserveOriginalTopology: 'kSceneSourcePreserveOriginalTopology',
+	  strictConformance: 'kSceneSourceStrictConformanceKey',
+	  useSafeMode: 'kSceneSourceUseSafeMode'
+
+	  // for node
+	  //import fs from 'fs'
+
+	  /**
+	   *
+	   * @access public
+	   * @extends {SCNSceneSource}
+	   */
+	};
+	var MMDSceneSource = function (_SCNSceneSource) {
+	  _inherits(MMDSceneSource, _SCNSceneSource);
+
+	  // Creating a Scene Source
+
+	  /**
+	   * Initializes a scene source for reading the scene graph from a specified file.
+	   * @access public
+	   * @constructor
+	   * @param {string|Buffer|ArrayBuffer} data -
+	   * @param {?Map<SCNSceneSource.LoadingOption, Object>} [options = null] - A dictionary containing options that affect scene loading. See Scene Loading Options for available keys and values. Pass nil to use default options.
+	   * @param {string} directoryPath -
+	   * @param {MMDNode[]} models -
+	   * @param {CAAnimation[]} motions -
+	   * @desc If you have the contents of a scene file but not the file itself (for example, if your app downloads scene files from the network), use the init(data:options:) method instead.
+	   * @see https://developer.apple.com/reference/scenekit/scnscenesource/1522629-init
+	   */
+	  function MMDSceneSource(data, options, directoryPath, models, motions) {
+	    _classCallCheck(this, MMDSceneSource);
+
+	    var _this = _possibleConstructorReturn(this, (MMDSceneSource.__proto__ || Object.getPrototypeOf(MMDSceneSource)).call(this, data, options));
+
+	    _this._fileType = _MMDFileType.unknown;
+	    _this._directoryPath = directoryPath;
+	    _this._workingScene = null;
+	    _this._workingNode = null;
+	    _this._workingAnimationGroup = null;
+
+	    //if(typeof data === 'undefined'){
+	    //  return
+	    //}
+	    //this._loadData(data, options)
+	    return _this;
+	  }
+
+	  _createClass(MMDSceneSource, [{
+	    key: '_loadData',
+
+
+	    /**
+	     *
+	     * @access private
+	     * @param {Buffer} data -
+	     * @param {Map<SCNSceneSource.LoadingOption, object>} options -
+	     * @param {?MMDNode[]} [models = null] -
+	     * @param {?CAAnimation[]} [motions = null] -
+	     * @returns {void}
+	     */
+	    value: function _loadData(data, options) {
+	      var _this2 = this;
+
+	      var models = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+	      var motions = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+
+	      console.warn('MMDSceneSource _loadData');
+	      //this._workingScene = new MMDScene()
+	      this._workingScene = new _jscenekit.SCNScene();
+	      this._checkFileTypeFromData(data);
+
+	      if (this._fileType === _MMDFileType.pmd) {
+	        var pmdNode = _MMDPMDReader2.default.getNode(data, this._directoryPath);
+	        if (pmdNode) {
+	          this._workingNode = pmdNode;
+	        }
+	      } else if (this._fileType === _MMDFileType.vmd) {
+	        var vmdMotion = _MMDVMDReader2.default.getMotion(data);
+	        if (vmdMotion) {
+	          this._workingAnimationGroup = vmdMotion;
+	        }
+	      } else if (this._fileType === _MMDFileType.x) {
+	        var xNode = _MMDXReader2.default.getNode(data, this._directoryPath);
+	        if (xNode) {
+	          this._workingNode = xNode;
+	        }
+	      } else if (this._fileType === _MMDFileType.pmx) {
+	        var pmxNode = _MMDPMXReader2.default.getNode(data, this._directoryPath);
+	        if (pmxNode) {
+	          this._workingNode = pmxNode;
+	          pmxNode.didLoad.then(function () {
+	            console.error('pmxNode.didLoad');
+	          });
+	        }
+	      } else if (this._fileType === _MMDFileType.vpd) {
+	        var vpdAnimation = _MMDVPDReader2.default.getAnimation(data);
+	        if (vpdAnimation) {
+	          this.workingAnimationGroup = vpdAnimation;
+	        }
+	      } else if (this._fileType === _MMDFileType.pmm) {
+	        var pmmScene = _MMDPMMReader2.default.getScene(data, this._directoryPath, models, motions);
+	        if (pmmScene) {
+	          pmmScene.rootNode.childNodes.forEach(function (node) {
+	            _this2._workingScene.rootNode.addChildNode(node);
+	          });
+	        }
+	      } else if (this._fileType === _MMDFileType.vac) {
+	        var vacNode = _MMDVACReader2.default.getNode(data, this._directoryPath);
+	        if (vacNode) {
+	          this._workingNode = vacNode;
+	        }
+	      } else if (this._fileType === _MMDFileType.obj || this._fileType === _MMDFileType.dae || this._fileType === _MMDFileType.scn) {
+	        var sceneSource = new _jscenekit.SCNSceneSource(data, options);
+	        if (sceneSource) {
+	          var scene = sceneSource.scene(options);
+	          var mmdNode = new _MMDNode2.default();
+	          scene.rootNode.childNodes.forEach(function (child) {
+	            mmdNode.addChildNode(child);
+	          });
+	          this._workingNode = mmdNode;
+	        }
+	      } else if (this._fileType === _MMDFileType.abc) {
+	        // ?
+	      } else {
+	        // try SCNSceneSource to load the data
+	        this._data = data;
+	        this._workingScene = _get(MMDSceneSource.prototype.__proto__ || Object.getPrototypeOf(MMDSceneSource.prototype), 'scene', this).call(this, options);
+	      }
+
+	      if (this._workingNode) {
+	        this._workingScene.rootNode.addChildNode(this._workingNode);
+	      }
+	      if (this._workingAnimationGroup) {
+	        this._workingScene.rootNode.addAnimationForKey(this._workingAnimationGroup, null);
+	      }
+	    }
+	  }, {
+	    key: 'scene',
+	    value: function scene() {
+	      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+	      var statusHandler = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+	      var _options = options;
+	      if (!_options) {
+	        if (this._options) {
+	          _options = this._options;
+	        } else {
+	          _options = new Map();
+	        }
+	      }
+
+	      var url = this._url;
+	      var assetDirectoryURLs = _options.get(_LoadingOption.assetDirectoryURLs);
+	      if (assetDirectoryURLs) {
+	        var dir = assetDirectoryURLs;
+	        if (Array.isArray(dir)) {
+	          dir = dir[0];
+	        }
+	        url = dir + '/';
+	        if (this._url) {
+	          url += this._url.split('/').pop();
+	        }
+	      }
+	      if (!this._directoryPath) {
+	        var paths = url.split('/');
+	        paths.pop();
+	        this._directoryPath = paths.join('/') + '/';
+	      }
+
+	      this._loadData(this._data, _options);
+
+	      return this.getScene();
+	    }
+	  }, {
+	    key: 'modelNodes',
+	    value: function modelNodes() {
+	      var nodeArray = [];
+	      if (this._fileType === _MMDFileType.pmd || this._fileType === _MMDFileType.pmx || this._fileType === _MMDFileType.x || this._fileType === _MMDFileType.vac) {
+	        nodeArray.push(this._workingNode);
+	      } else if (this._fileType === _MMDFileType.pmm) {
+	        this._workingScene.rootNode.childNodes.forEach(function (node) {
+	          if (node instanceof _MMDNode2.default) {
+	            nodeArray.push(node); // FIXME: clone node
+	          }
+	        });
+	      }
+	      return nodeArray;
+	    }
+	  }, {
+	    key: 'getScene',
+	    value: function getScene() {
+	      return this._workingScene;
+	    }
+	  }, {
+	    key: 'getModel',
+	    value: function getModel() {
+	      if (this._workingScene === null) {
+	        this.scene();
+	      }
+
+	      if (this._fileType === _MMDFileType.pmd || this._fileType === _MMDFileType.pmx || this._fileType === _MMDFileType.x || this._fileType === _MMDFileType.vac) {
+	        this._workingNode.didLoad.then(function () {
+	          console.error('workingNode.didLoad');
+	        });
+	        return this._workingNode;
+	      } else if (this._fileType === _MMDFileType.pmm) {
+	        return this._workingScene.rootNode.childNodes.find(function (node) {
+	          return node instanceof _MMDNode2.default;
+	        });
+	      }
+	      throw new Error('getModel not implemented for the file type');
+	    }
+	  }, {
+	    key: 'getMotion',
+	    value: function getMotion() {
+	      if (this._workingScene === null) {
+	        this.scene();
+	      }
+
+	      return this._workingAnimationGroup;
+	    }
+
+	    /**
+	     *
+	     * @access public
+	     * @returns {Map<string, CAAnimation>} -
+	     */
+
+	  }, {
+	    key: 'animations',
+	    value: function animations() {
+	      var animationHash = new Map();
+	      animationHash.set('animation', this._workingAnimationGroup); // FIXME
+	      return animationHash;
+	    }
+
+	    /**
+	     * 
+	     * @access private
+	     * @param {Buffer} data -
+	     * @returns {Symbol} -
+	     */
+
+	  }, {
+	    key: '_checkFileTypeFromData',
+	    value: function _checkFileTypeFromData(data) {
+	      var str = data.toString('ascii', 0, 25);
+	      if (str.startsWith('Pmd')) {
+	        this._fileType = _MMDFileType.pmd;
+	      } else if (str.startsWith('xof ')) {
+	        this._fileType = _MMDFileType.x;
+	      } else if (str.startsWith('PMX ')) {
+	        this._fileType = _MMDFileType.pmx;
+	      } else if (str.startsWith('Vocaloid Pose Data File')) {
+	        this._fileType = _MMDFileType.vpd;
+	      } else if (str.startsWith('Polygon Movie maker 0001') || str.startsWith('Polygon Movie maker 0002')) {
+	        this._fileType = _MMDFileType.pmm;
+	      } else if (str.startsWith('Vocaloid Motion Data 0002')) {
+	        this._fileType = _MMDFileType.vmd;
+	      }
+
+	      return this._fileType;
+	    }
+	  }, {
+	    key: 'cameraNodes',
+	    get: function get() {
+	      var cameraArray = [];
+	      // TODO: implement
+	      return cameraArray;
+	    }
+	  }, {
+	    key: 'lightNodes',
+	    get: function get() {
+	      var lightArray = [];
+	      // TODO: implement
+	      return lightArray;
+	    }
+	  }], [{
+	    key: 'sceneSourceWithDataOptions',
+	    value: function sceneSourceWithDataOptions(data, options, directoryPath) {
+	      var models = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+	      var motions = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
+
+	      return new MMDSceneSource(data, options, directoryPath, models, motions);
+	    }
+	  }, {
+	    key: 'sceneSourceWithURLOptions',
+	    value: function sceneSourceWithURLOptions(url) {
+	      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+	      var models = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+	      var motions = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+
+	      var _options = options;
+	      if (_options === null) {
+	        _options = new Map();
+	      }
+	      if (typeof _options.get(_LoadingOption.assetDirectoryURLs) === 'undefined') {
+	        var paths = url.split('/');
+	        var name = paths.pop();
+	        var directory = paths.join('/');
+
+	        _options.set(_LoadingOption.assetDirectoryURLs, directory);
+	      }
+
+	      var source = new MMDSceneSource();
+	      source._url = url;
+	      _jscenekit._BinaryRequest.get(url).then(function (data) {
+	        source._data = data;
+	        source._options = _options;
+	        source._resolveFunction();
+	      });
+
+	      // check file type from the file extension
+	      if (url.endsWith('.vac')) {
+	        source._fileType = _MMDFileType.vac;
+	      } else if (url.endsWith('.obj')) {
+	        source._fileType = _MMDFileType.obj;
+	      } else if (url.endsWith('.dae')) {
+	        source._fileType = _MMDFileType.dae;
+	      } else if (url.endsWith('.abc')) {
+	        source._fileType = _MMDFileType.abc;
+	      } else if (url.endsWith('.scn')) {
+	        source._fileType = _MMDFileType.scn;
+	      }
+
+	      return source;
+	    }
+	  }, {
+	    key: 'sceneSourceWithPathOptions',
+	    value: function sceneSourceWithPathOptions(path, options) {
+	      var models = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+	      var motions = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+
+	      var paths = path.split('/');
+	      var fileName = paths.pop();
+	      var directoryPath = paths.join('/') + '/';
+
+	      // for node
+	      /*
+	      const promise = new Promise((resolve, reject) => {
+	        fs.readFile(path, null, (err, data) => {
+	          if(err){
+	            reject(err)
+	            return
+	          }
+	           const source = new MMDSceneSource(data, options, directoryPath, models, motions)
+	          resolve(source)
+	        })
+	      })
+	      */
+
+	      // for browser
+	      /*
+	      const promise = BinaryRequest.get(path)
+	        .then((data) => {
+	          const source = new MMDSceneSource(data, options, models, motions)
+	          Promise.reject(error)
+	          Promise.resolve(source)
+	        })
+	      */
+
+	      var promise = new Promise(function (resolve, reject) {
+	        var file = new _jscenekit._File([], path);
+	        var reader = new _jscenekit._FileReader();
+	        reader.onloadend = function () {
+	          var data = reader.result;
+	          var source = new MMDSceneSource(data, options, directoryPath, models, motions);
+	          resolve(source);
+	        };
+	        reader.onerror = function () {
+	          reject(reader.error);
+	        };
+	        reader.readAsBinaryString(file);
+	      });
+
+	      return promise;
+	    }
+	  }, {
+	    key: 'sceneSource',
+	    value: function sceneSource() {
+	      return new MMDSceneSource();
+	    }
+	  }, {
+	    key: 'FileType',
+	    get: function get() {
+	      return _MMDFileType;
+	    }
+	  }]);
+
+	  return MMDSceneSource;
+	}(_jscenekit.SCNSceneSource);
+
+	exports.default = MMDSceneSource;
+
+/***/ },
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _MMDNode = __webpack_require__(8);
+
+	var _MMDNode2 = _interopRequireDefault(_MMDNode);
+
+	var _MMDProgram = __webpack_require__(12);
+
+	var _MMDProgram2 = _interopRequireDefault(_MMDProgram);
+
+	var _MMDReader2 = __webpack_require__(13);
+
+	var _MMDReader3 = _interopRequireDefault(_MMDReader2);
+
+	var _MMDIKConstraint = __webpack_require__(9);
 
 	var _MMDIKConstraint2 = _interopRequireDefault(_MMDIKConstraint);
 
-	var _jscenekit = __webpack_require__(4);
+	var _jscenekit = __webpack_require__(3);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -72969,8 +78763,9 @@ module.exports =
 	        var toonTextureNo = 0;
 
 	        if (textureNo < _this3._texturePromiseArray.length) {
-	          _this3._texturePromiseArray[textureNo].then(function () {
+	          material.diffuse._loadedPromise = _this3._texturePromiseArray[textureNo].then(function () {
 	            material.diffuse.contents = _this3._textureArray[textureNo];
+	            console.warn('material.diffuse promise resolve');
 	          });
 	        }
 
@@ -73703,11 +79498,11 @@ module.exports =
 	        this._elementArray.push(element);
 	      }
 
-	      var program = new _MMDProgram2.default();
-	      // TODO: implement MMD renderer
-	      this._materialArray.forEach(function (material) {
-	        material.program = program;
-	      });
+	      //const program = new MMDProgram()
+	      //// TODO: implement MMD renderer
+	      //this._materialArray.forEach((material) => {
+	      //  material.program = program
+	      //})
 	      var geometry = new _jscenekit.SCNGeometry([this._vertexSource, this._normalSource, this._texcoordSource], this._elementArray);
 	      geometry.materials = this._materialArray;
 	      geometry.name = 'Geometry';
@@ -74019,7 +79814,7 @@ module.exports =
 	exports.default = MMDPMXReader;
 
 /***/ },
-/* 15 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -74030,11 +79825,19 @@ module.exports =
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _jscenekit = __webpack_require__(4);
+	var _MMDNode = __webpack_require__(8);
 
-	var _MMDSceneSource = __webpack_require__(16);
+	var _MMDNode2 = _interopRequireDefault(_MMDNode);
+
+	var _MMDReader2 = __webpack_require__(13);
+
+	var _MMDReader3 = _interopRequireDefault(_MMDReader2);
+
+	var _MMDSceneSource = __webpack_require__(18);
 
 	var _MMDSceneSource2 = _interopRequireDefault(_MMDSceneSource);
+
+	var _jscenekit = __webpack_require__(3);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -74043,513 +79846,134 @@ module.exports =
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var _mmdFileExtensions = ['pmm', 'pmd', 'vmd', 'vpd', 'x', 'vac', 'pmx'];
 
 	/**
 	 *
 	 * @access public
-	 * @extends {MMDScene}
+	 * @extends {MMDReader}
 	 */
-
-	var MMDScene = function (_SCNScene) {
-	  _inherits(MMDScene, _SCNScene);
+	var MMDVACReader = function (_MMDReader) {
+	  _inherits(MMDVACReader, _MMDReader);
 
 	  /**
-	   * Loads a MMD scene from the specified URL.
+	   * 
 	   * @access public
 	   * @constructor
-	   * @param {string} url - The URL to the scene file to load.
-	   * @param {?Map<SCNSceneSource.LoadingOption, Object>} [options = null] - A dictionary of options affecting scene loading, or nil for default options. For available keys, see Scene Loading Options.
-	   * @param {function} onload -
-	   * @param {function} onerror -
-	   * @throws {Error}
-	   */
-	  function MMDScene(url) {
-	    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-	    var onload = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-	    var onerror = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
-
-	    _classCallCheck(this, MMDScene);
-
-	    return _possibleConstructorReturn(this, (MMDScene.__proto__ || Object.getPrototypeOf(MMDScene)).call(this, url, options, onload, onerror));
-	  }
-
-	  /**
-	   * Overrided function of SCNSceneSource
-	   * @access private
-	   * @param {Blob} data -
-	   * @param {Object} options -
-	   * @returns {MMDScene} -
-	   */
-
-
-	  _createClass(MMDScene, [{
-	    key: '_loadSceneWithData',
-	    value: function _loadSceneWithData(data, options) {
-	      var source = new _MMDSceneSource2.default(data, options);
-	      return source.scene();
-	    }
-
-	    /**
-	     * Loads a MMD scene from the specified URL.
-	     * @access public
-	     * @param {string} url -
-	     * @param {Object} options -
-	     * @returns {MMDScene} -
-	     */
-
-	  }], [{
-	    key: 'scene',
-	    value: function scene(url) {
-	      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-
-	      return new MMDScene(url, options);
-	    }
-	  }]);
-
-	  return MMDScene;
-	}(_jscenekit.SCNScene);
-
-	exports.default = MMDScene;
-
-/***/ },
-/* 16 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-	var _jscenekit = __webpack_require__(4);
-
-	var _MMDNode = __webpack_require__(3);
-
-	var _MMDNode2 = _interopRequireDefault(_MMDNode);
-
-	var _MMDPMDReader = __webpack_require__(9);
-
-	var _MMDPMDReader2 = _interopRequireDefault(_MMDPMDReader);
-
-	var _MMDPMXReader = __webpack_require__(14);
-
-	var _MMDPMXReader2 = _interopRequireDefault(_MMDPMXReader);
-
-	var _MMDVMDReader = __webpack_require__(17);
-
-	var _MMDVMDReader2 = _interopRequireDefault(_MMDVMDReader);
-
-	var _MMDXReader = __webpack_require__(19);
-
-	var _MMDXReader2 = _interopRequireDefault(_MMDXReader);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var _MMDFileType = {
-	  pmm: 'pmm',
-	  pmd: 'pmd',
-	  vmd: 'vmd',
-	  vpd: 'vpd',
-	  x: 'x',
-	  vac: 'vac',
-	  pmx: 'pmx',
-	  obj: 'obj',
-	  dae: 'dae',
-	  abc: 'abc',
-	  scn: 'scn',
-	  unknown: 'unknown'
-	};
-
-	var _LoadingOption = {
-	  animationImportPolicy: 'kSceneSourceAnimationLoadingMode',
-	  assetDirectoryURLs: 'kSceneSourceAssetDirectoryURLs',
-	  checkConsistency: 'kSceneSourceCheckConsistency',
-	  convertToYUp: 'kSceneSourceConvertToYUpIfNeeded',
-	  convertUnitsToMeters: 'kSceneSourceConvertToUnit',
-	  createNormalsIfAbsent: 'kSceneSourceCreateNormalsIfAbsent',
-	  flattenScene: 'kSceneSourceFlattenScene',
-	  overrideAssetURLs: 'kSceneSourceOverrideAssetURLs',
-	  preserveOriginalTopology: 'kSceneSourcePreserveOriginalTopology',
-	  strictConformance: 'kSceneSourceStrictConformanceKey',
-	  useSafeMode: 'kSceneSourceUseSafeMode'
-
-	  // for node
-	  //import fs from 'fs'
-
-	  /**
-	   *
-	   * @access public
-	   * @extends {SCNSceneSource}
-	   */
-	};
-	var MMDSceneSource = function (_SCNSceneSource) {
-	  _inherits(MMDSceneSource, _SCNSceneSource);
-
-	  // Creating a Scene Source
-
-	  /**
-	   * Initializes a scene source for reading the scene graph from a specified file.
-	   * @access public
-	   * @constructor
-	   * @param {string|Buffer|ArrayBuffer} data -
-	   * @param {?Map<SCNSceneSource.LoadingOption, Object>} [options = null] - A dictionary containing options that affect scene loading. See Scene Loading Options for available keys and values. Pass nil to use default options.
+	   * @param {Buffer} data -
 	   * @param {string} directoryPath -
-	   * @param {MMDNode[]} models -
-	   * @param {CAAnimation[]} motions -
-	   * @desc If you have the contents of a scene file but not the file itself (for example, if your app downloads scene files from the network), use the init(data:options:) method instead.
-	   * @see https://developer.apple.com/reference/scenekit/scnscenesource/1522629-init
 	   */
-	  function MMDSceneSource(data, options, directoryPath, models, motions) {
-	    _classCallCheck(this, MMDSceneSource);
+	  function MMDVACReader(data, directoryPath) {
+	    _classCallCheck(this, MMDVACReader);
 
-	    var _this = _possibleConstructorReturn(this, (MMDSceneSource.__proto__ || Object.getPrototypeOf(MMDSceneSource)).call(this, data, options));
-
-	    _this._fileType = _MMDFileType.unknown;
-	    _this._directoryPath = directoryPath;
-	    _this._workingScene = null;
-	    _this._workingNode = null;
-	    _this._workingAnimationGroup = null;
-
-	    //if(typeof data === 'undefined'){
-	    //  return
-	    //}
-	    //this._loadData(data, options)
-	    return _this;
+	    var isBinary = false;
+	    var isBigEndian = false;
+	    var encoding = 'sjis';
+	    return _possibleConstructorReturn(this, (MMDVACReader.__proto__ || Object.getPrototypeOf(MMDVACReader)).call(this, data, directoryPath, isBinary, isBigEndian, encoding));
 	  }
 
-	  _createClass(MMDSceneSource, [{
-	    key: '_loadData',
+	  /**
+	   * @access public
+	   * @param {Buffer} data -
+	   * @param {string} directoryPath -
+	   * @returns {?MMDNode} -
+	   */
+
+
+	  _createClass(MMDVACReader, [{
+	    key: 'loadVACFile',
 
 
 	    /**
-	     *
 	     * @access private
-	     * @param {Buffer} data -
-	     * @param {Map<SCNSceneSource.LoadingOption, object>} options -
-	     * @param {?MMDNode[]} [models = null] -
-	     * @param {?CAAnimation[]} [motions = null] -
-	     * @returns {void}
+	     * @returns {?MMDNode} -
 	     */
-	    value: function _loadData(data, options) {
-	      var models = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-	      var motions = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+	    value: function loadVACFile() {
+	      var _this2 = this;
 
-	      console.warn('MMDSceneSource _loadData');
-	      //this._workingScene = new MMDScene()
-	      this._workingScene = new _jscenekit.SCNScene();
-	      this._checkFileTypeFromData(data);
+	      var lines = this.binaryData.split('\r\n');
+	      if (lines.length < 6) {
+	        return null;
+	      }
+	      var name = lines[0];
+	      var fileName = lines[1];
+	      var scaleStr = lines[2];
+	      var positions = lines[3].split(',');
+	      var rotations = lines[4].split(',');
+	      var boneName = lines[5];
 
-	      if (this._fileType === _MMDFileType.pmd) {
-	        var pmdNode = _MMDPMDReader2.default.getNode(data, this._directoryPath);
-	        if (pmdNode) {
-	          this._workingNode = pmdNode;
+	      var xFilePath = this.directoryPath + '/' + fileName;
+	      var xNode = new _MMDNode2.default();
+	      xNode._loadedPromise = new Promise(function (resolve, reject) {
+	        _this2._resolveFunction = resolve;
+	        _this2._rejectFunction = reject;
+	      });
+
+	      var source = _MMDSceneSource2.default.sceneSourceWithURLOptions(xFilePath);
+	      source.didLoad.then(function () {
+	        //if(!scene){
+	        //  console.error(`cannot read file: ${xFilePath}`)
+	        //  return null
+	        //}
+
+	        _this2._model = source.getModel();
+	        if (!_this2._model) {
+	          throw new Error('model load error');
 	        }
-	      } else if (this._fileType === _MMDFileType.vmd) {
-	        var vmdMotion = _MMDVMDReader2.default.getMotion(data);
-	        if (vmdMotion) {
-	          this._workingAnimationGroup = vmdMotion;
-	        }
-	      } else if (this._fileType === _MMDFileType.x) {
-	        var xNode = _MMDXReader2.default.getNode(data, this._directoryPath);
-	        if (xNode) {
-	          this._workingNode = xNode;
-	        }
-	      } else if (this._fileType === _MMDFileType.pmx) {
-	        var pmxNode = _MMDPMXReader2.default.getNode(data, this._directoryPath);
-	        if (pmxNode) {
-	          this._workingNode = pmxNode;
-	        }
-	      }
-	      /*
-	      }else if(this._fileType === _MMDFileType.vpd){
-	        const vpdAnimation = MMDVPDReader.getAnimation(data)
-	        if(vpdAnimation){
-	          this.workingAnimationGroup = vpdAnimation
-	        }
-	      }else if(this._fileType === _MMDFileType.pmm){
-	        const pmmScene = MMDPMMReader.getScene(data, this._directoryPath, models, motions)
-	        if(pmmScene){
-	          pmmScene.rootNode.childNodes.forEach((node) => {
-	            this._workingScene.rootNode.addChildNode(node)
-	          })
-	        }
-	      }else if(this._fileType === _MMDFileType.vac){
-	        const vacNode = MMDVACReader.getNode(data, this._directoryPath)
-	        if(vacNode){
-	          this._workingNode = vacNode
-	        }
-	      }else if(this._fileType === _MMDFileType.obj
-	              || this._fileType === _MMDFileType.dae
-	              || this._fileType === _MMDFileType.scn){
-	        const sceneSource = new SCNSceneSource(data, options)
-	        if(sceneSource){
-	          const scene = sceneSource.scene(options)
-	          const mmdNode = new MMDNode()
-	          scene.rootNode.childNodes.forEach((child) => {
-	            mmdNode.addChildNode(child)
-	          })
-	          this._workingNode = mmdNode
-	        }
-	      }else if(this._fileType === _MMDFileType.abc){
-	        // ?
-	      }else{
-	        // unknown file
-	      }
-	      */
-	      else {
-	          // try SCNSceneSource to load the data
-	          this._data = data;
-	          this._workingScene = _get(MMDSceneSource.prototype.__proto__ || Object.getPrototypeOf(MMDSceneSource.prototype), 'scene', this).call(this, options);
+	        return _this2._model.didLoad;
+	      }).then(function () {
+	        _this2._model.name = name;
+	        var scale = parseFloat(scaleStr);
+	        if (!isNaN(scale)) {
+	          var s = scale * 10.0;
+	          _this2._model.scale = new _jscenekit.SCNVector3(s, s, s);
+	        } else {
+	          _this2._model.scale = new _jscenekit.SCNVector3(10.0, 10.0, 10.0);
 	        }
 
-	      if (this._workingNode) {
-	        this._workingScene.rootNode.addChildNode(this._workingNode);
-	      }
-	      if (this._workingAnimationGroup) {
-	        this._workingScene.rootNode.addAnimationForKey(this._workingAnimationGroup, null);
-	      }
-	    }
-	  }, {
-	    key: 'scene',
-	    value: function scene() {
-	      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-	      var statusHandler = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-
-	      var _options = options;
-	      if (!_options) {
-	        if (this._options) {
-	          _options = this._options;
-	        }
-	      }
-
-	      var url = this._url;
-	      var assetDirectoryURLs = _options.get(_LoadingOption.assetDirectoryURLs);
-	      if (assetDirectoryURLs) {
-	        var dir = assetDirectoryURLs;
-	        if (Array.isArray(dir)) {
-	          dir = dir[0];
-	        }
-	        url = dir + '/';
-	        if (this._url) {
-	          url += this._url.split('/').pop();
-	        }
-	      }
-	      if (!this._directoryPath) {
-	        var paths = url.split('/');
-	        paths.pop();
-	        this._directoryPath = paths.join('/') + '/';
-	      }
-
-	      this._loadData(this._data, _options);
-
-	      return this.getScene();
-	    }
-	  }, {
-	    key: 'modelNodes',
-	    value: function modelNodes() {
-	      var nodeArray = [];
-	      if (this._fileType === _MMDFileType.pmd || this._fileType === _MMDFileType.pmx || this._fileType === _MMDFileType.x || this._fileType === _MMDFileType.vac) {
-	        nodeArray.push(this._workingNode);
-	      } else if (this._fileType === _MMDFileType.pmm) {
-	        this._workingScene.rootNode.childNodes.forEach(function (node) {
-	          if (node instanceof _MMDNode2.default) {
-	            nodeArray.push(node); // FIXME: clone node
+	        if (positions.length >= 3) {
+	          var posX = parseFloat(positions[0]);
+	          var posY = parseFloat(positions[1]);
+	          var posZ = parseFloat(positions[2]);
+	          if (!isNaN(posX) && !isNaN(posY) && !isNaN(posZ)) {
+	            _this2._model.position = new _jscenekit.SCNVector3(posX, posY, posZ);
 	          }
-	        });
-	      }
-	      return nodeArray;
-	    }
-	  }, {
-	    key: 'getScene',
-	    value: function getScene() {
-	      return this._workingScene;
-	    }
-	  }, {
-	    key: 'getModel',
-	    value: function getModel() {
-	      if (this._fileType === _MMDFileType.pmd || this._fileType === _MMDFileType.pmx || this._fileType === _MMDFileType.x || this._fileType === _MMDFileType.vac) {
-	        return this._workingNode;
-	      } else if (this._fileType === _MMDFileType.pmm) {
-	        return this._workingScene.rootNode.childNodes.find(function (node) {
-	          return node instanceof _MMDNode2.default;
-	        });
-	      }
-	      throw new Error('getModel not implemented for the file type');
-	    }
-	  }, {
-	    key: 'getMotion',
-	    value: function getMotion() {
-	      return this._workingAnimationGroup;
-	    }
+	        }
 
-	    /**
-	     *
-	     * @access public
-	     * @returns {Map<string, CAAnimation>} -
-	     */
+	        if (rotations.length >= 3) {
+	          var rotX = parseFloat(rotations[0]);
+	          var rotY = parseFloat(rotations[1]);
+	          var rotZ = parseFloat(rotations[2]);
+	          if (!isNaN(rotX) && !isNaN(rotY) && !isNaN(rotZ)) {
+	            // TODO: implement
+	          }
+	        }
 
-	  }, {
-	    key: 'animations',
-	    value: function animations() {
-	      var animationHash = new Map();
-	      animationHash.set('animation', this._workingAnimationGroup); // FIXME
-	      return animationHash;
-	    }
+	        xNode.copySCNNodeValues(_this2._model);
+	        xNode.copyValues(_this2._model);
 
-	    /**
-	     * 
-	     * @access private
-	     * @param {Buffer} data -
-	     * @returns {Symbol} -
-	     */
-
-	  }, {
-	    key: '_checkFileTypeFromData',
-	    value: function _checkFileTypeFromData(data) {
-	      var str = data.toString('ascii', 0, 25);
-	      if (str.startsWith('Pmd')) {
-	        this._fileType = _MMDFileType.pmd;
-	      } else if (str.startsWith('xof ')) {
-	        this._fileType = _MMDFileType.x;
-	      } else if (str.startsWith('PMX ')) {
-	        this._fileType = _MMDFileType.pmx;
-	      } else if (str.startsWith('Vocaloid Pose Data File')) {
-	        this._fileType = _MMDFileType.vpd;
-	      } else if (str.startsWith('Polygon Movie maker 0001') || str.startsWith('Polygon Movie maker 0002')) {
-	        this._fileType = _MMDFileType.pmm;
-	      } else if (str.startsWith('Vocaloid Motion Data 0002')) {
-	        this._fileType = _MMDFileType.vmd;
-	      }
-
-	      return this._fileType;
-	    }
-	  }, {
-	    key: 'cameraNodes',
-	    get: function get() {
-	      var cameraArray = [];
-	      // TODO: implement
-	      return cameraArray;
-	    }
-	  }, {
-	    key: 'lightNodes',
-	    get: function get() {
-	      var lightArray = [];
-	      // TODO: implement
-	      return lightArray;
+	        _this2._resolveFunction();
+	      }).catch(function (error) {
+	        throw new Error('model load error: ' + error);
+	      });
+	      return xNode;
 	    }
 	  }], [{
-	    key: 'sceneSourceWithDataOptions',
-	    value: function sceneSourceWithDataOptions(data, options, directoryPath) {
-	      var models = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
-	      var motions = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
+	    key: 'getNode',
+	    value: function getNode(data, directoryPath) {
+	      var reader = new MMDVACReader(data, directoryPath);
+	      var node = reader.loadVACFile();
 
-	      return new MMDSceneSource(data, options, directoryPath, models, motions);
-	    }
-	  }, {
-	    key: 'sceneSourceWithURLOptions',
-	    value: function sceneSourceWithURLOptions(url) {
-	      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-	      var models = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-	      var motions = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
-
-	      var _options = options;
-	      if (_options === null) {
-	        _options = new Map();
-	      }
-	      if (typeof _options.get(_LoadingOption.assetDirectoryURLs) === 'undefined') {
-	        var paths = url.split('/');
-	        var name = paths.pop();
-	        var directory = paths.join('/');
-
-	        _options.set(_LoadingOption.assetDirectoryURLs, directory);
-	      }
-
-	      var promise = _jscenekit._BinaryRequest.get(url).then(function (data) {
-	        return new MMDSceneSource(data, _options);
-	      });
-	      return promise;
-	    }
-	  }, {
-	    key: 'sceneSourceWithPathOptions',
-	    value: function sceneSourceWithPathOptions(path, options) {
-	      var models = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-	      var motions = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
-
-	      var paths = path.split('/');
-	      var fileName = paths.pop();
-	      var directoryPath = paths.join('/') + '/';
-
-	      // for node
-	      /*
-	      const promise = new Promise((resolve, reject) => {
-	        fs.readFile(path, null, (err, data) => {
-	          if(err){
-	            reject(err)
-	            return
-	          }
-	           const source = new MMDSceneSource(data, options, directoryPath, models, motions)
-	          resolve(source)
-	        })
-	      })
-	      */
-
-	      // for browser
-	      /*
-	      const promise = BinaryRequest.get(path)
-	        .then((data) => {
-	          const source = new MMDSceneSource(data, options, models, motions)
-	          Promise.reject(error)
-	          Promise.resolve(source)
-	        })
-	      */
-
-	      var promise = new Promise(function (resolve, reject) {
-	        var file = new _jscenekit._File([], path);
-	        var reader = new _jscenekit._FileReader();
-	        reader.onloadend = function () {
-	          var data = reader.result;
-	          var source = new MMDSceneSource(data, options, directoryPath, models, motions);
-	          resolve(source);
-	        };
-	        reader.onerror = function () {
-	          reject(reader.error);
-	        };
-	        reader.readAsBinaryString(file);
-	      });
-
-	      return promise;
-	    }
-	  }, {
-	    key: 'sceneSource',
-	    value: function sceneSource() {
-	      return new MMDSceneSource();
-	    }
-	  }, {
-	    key: 'FileType',
-	    get: function get() {
-	      return _MMDFileType;
+	      return node;
 	    }
 	  }]);
 
-	  return MMDSceneSource;
-	}(_jscenekit.SCNSceneSource);
+	  return MMDVACReader;
+	}(_MMDReader3.default);
 
-	exports.default = MMDSceneSource;
+	exports.default = MMDVACReader;
 
 /***/ },
-/* 17 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -74560,17 +79984,17 @@ module.exports =
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _MMDNode = __webpack_require__(3);
+	var _MMDNode = __webpack_require__(8);
 
 	var _MMDNode2 = _interopRequireDefault(_MMDNode);
 
-	var _MMDReader2 = __webpack_require__(11);
+	var _MMDReader2 = __webpack_require__(13);
 
 	var _MMDReader3 = _interopRequireDefault(_MMDReader2);
 
-	var _constants = __webpack_require__(18);
+	var _constants = __webpack_require__(22);
 
-	var _jscenekit = __webpack_require__(4);
+	var _jscenekit = __webpack_require__(3);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -75325,7 +80749,7 @@ module.exports =
 	exports.default = MMDVMDReader;
 
 /***/ },
-/* 18 */
+/* 22 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -75337,7 +80761,7 @@ module.exports =
 	exports.MMD_CAMERA_ROTZ_NODE_NAME = 'MMD_CAMERA_ROTZ_NODE';
 
 /***/ },
-/* 19 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -75348,15 +80772,180 @@ module.exports =
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _MMDNode = __webpack_require__(3);
-
-	var _MMDNode2 = _interopRequireDefault(_MMDNode);
-
-	var _MMDReader2 = __webpack_require__(11);
+	var _MMDReader2 = __webpack_require__(13);
 
 	var _MMDReader3 = _interopRequireDefault(_MMDReader2);
 
-	var _jscenekit = __webpack_require__(4);
+	var _jscenekit = __webpack_require__(3);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	/**
+	 *
+	 * @access public
+	 * @extends {MMDReader}
+	 */
+	var MMDVPDReader = function (_MMDReader) {
+	  _inherits(MMDVPDReader, _MMDReader);
+
+	  /**
+	   * 
+	   * @access public
+	   * @constructor
+	   * @param {Buffer} data -
+	   * @param {string} directoryPath -
+	   */
+	  function MMDVPDReader(data, directoryPath) {
+	    _classCallCheck(this, MMDVPDReader);
+
+	    var isBinary = false;
+	    var isBigEndian = false;
+	    var encoding = 'sjis';
+
+	    /**
+	     * @access private
+	     * @type {CAAnimationGroup}
+	     */
+	    var _this = _possibleConstructorReturn(this, (MMDVPDReader.__proto__ || Object.getPrototypeOf(MMDVPDReader)).call(this, data, directoryPath, isBinary, isBigEndian, encoding));
+
+	    _this.workingAnimationGroup = null;
+	    return _this;
+	  }
+
+	  /**
+	   * @access public
+	   * @param {Buffer} data -
+	   * @param {string} [directoryPath = ''] -
+	   * @returns {?CAAnimationGroup} -
+	   */
+
+
+	  _createClass(MMDVPDReader, [{
+	    key: 'loadVPDFile',
+
+
+	    /**
+	     * @access private
+	     * @returns {?CAAnimationGroup} -
+	     */
+	    value: function loadVPDFile() {
+	      var lines = this.binaryData.split('\r\n');
+
+	      this.workingAnimationGroup = new _jscenekit.CAAnimationGroup();
+	      this.workingAnimationGroup.animations = [];
+
+	      var magic = lines[0];
+	      if (magic !== 'Vocaloid Pose Data file') {
+	        console.error('Unknown file format: ' + magic);
+	        return null;
+	      }
+
+	      var modelName = lines[2].split(';')[0];
+	      var numBonesText = lines[3].split(';')[0];
+	      var numBones = parseInt(numBonesText);
+	      if (isNaN(numBones)) {
+	        return null;
+	      }
+
+	      var line = 5;
+	      for (var boneNo = 0; boneNo < numBones; boneNo++) {
+	        var boneName = lines[line + 0].split('{')[1];
+	        var posText = lines[line + 1].split(';')[0].split(',');
+	        var rotText = lines[line + 2].split(';')[0].split(',');
+
+	        var posX = this.getFloatFromText(posText[0]);
+	        var posY = this.getFloatFromText(posText[1]);
+	        var posZ = this.getFloatFromText(posText[2]);
+	        var pos = new _jscenekit.SCNVector3(posX, posY, posZ);
+
+	        var rotX = this.getFloatFromText(rotText[0]);
+	        var rotY = this.getFloatFromText(rotText[1]);
+	        var rotZ = this.getFloatFromText(rotText[2]);
+	        var rotW = this.getFloatFromText(rotText[3]);
+	        var rot = new _jscenekit.SCNVector4(-rotX, -rotY, rotZ, rotW);
+
+	        var posMotion = new _jscenekit.CAKeyframeAnimation('/' + boneName + '.transform.translation');
+	        var rotMotion = new _jscenekit.CAKeyframeAnimation('/' + boneName + '.transform.quaternion');
+
+	        posMotion.values = [pos];
+	        rotMotion.values = [rot];
+
+	        posMotion.keyTimes = [0.0];
+	        rotMotion.keyTimes = [0.0];
+
+	        this.workingAnimationGroup.animations.push(posMotion);
+	        this.workingANimationGroup.animations.push(rotMotion);
+
+	        line += 5;
+	      }
+
+	      this.workingAnimationGroup.duration = 0;
+	      this.workingAnimationGroup.usesSceneTimeBase = false;
+	      this.workingAnimationGroup.isRemovedOnCompletion = false;
+	      this.workingAnimationGroup.fillMode = _jscenekit.kCAFillModeForwards;
+
+	      return this.workingAnimationGroup;
+	    }
+
+	    /**
+	     * @access private
+	     * @param {string} text -
+	     * @returns {Float} -
+	     */
+
+	  }, {
+	    key: 'getFloatFromText',
+	    value: function getFloatFromText(text) {
+	      var value = parseFloat(text);
+	      if (!isNaN(value)) {
+	        return value;
+	      }
+	      return 0;
+	    }
+	  }], [{
+	    key: 'getAnimation',
+	    value: function getAnimation(data) {
+	      var directoryPath = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+
+	      var reader = new MMDVPDReader(data, directoryPath);
+	      var animation = reader.loadVPDFile();
+
+	      return animation;
+	    }
+	  }]);
+
+	  return MMDVPDReader;
+	}(_MMDReader3.default);
+
+	exports.default = MMDVPDReader;
+
+/***/ },
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _MMDNode = __webpack_require__(8);
+
+	var _MMDNode2 = _interopRequireDefault(_MMDNode);
+
+	var _MMDReader2 = __webpack_require__(13);
+
+	var _MMDReader3 = _interopRequireDefault(_MMDReader2);
+
+	var _jscenekit = __webpack_require__(3);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -76096,7 +81685,102 @@ module.exports =
 	exports.default = MMDXReader;
 
 /***/ },
-/* 20 */
+/* 25 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _jscenekit = __webpack_require__(3);
+
+	var _MMDSceneSource = __webpack_require__(18);
+
+	var _MMDSceneSource2 = _interopRequireDefault(_MMDSceneSource);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _mmdFileExtensions = ['pmm', 'pmd', 'vmd', 'vpd', 'x', 'vac', 'pmx'];
+
+	/**
+	 *
+	 * @access public
+	 * @extends {MMDScene}
+	 */
+
+	var MMDScene = function (_SCNScene) {
+	  _inherits(MMDScene, _SCNScene);
+
+	  /**
+	   * Loads a MMD scene from the specified URL.
+	   * @access public
+	   * @constructor
+	   * @param {string} url - The URL to the scene file to load.
+	   * @param {?Map<SCNSceneSource.LoadingOption, Object>} [options = null] - A dictionary of options affecting scene loading, or nil for default options. For available keys, see Scene Loading Options.
+	   * @param {function} onload -
+	   * @param {function} onerror -
+	   * @throws {Error}
+	   */
+	  function MMDScene(url) {
+	    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+	    var onload = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+	    var onerror = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+
+	    _classCallCheck(this, MMDScene);
+
+	    return _possibleConstructorReturn(this, (MMDScene.__proto__ || Object.getPrototypeOf(MMDScene)).call(this, url, options, onload, onerror));
+	  }
+
+	  /**
+	   * Overrided function of SCNSceneSource
+	   * @access private
+	   * @param {Blob} data -
+	   * @param {Object} options -
+	   * @returns {MMDScene} -
+	   */
+
+
+	  _createClass(MMDScene, [{
+	    key: '_loadSceneWithData',
+	    value: function _loadSceneWithData(data, options) {
+	      var source = new _MMDSceneSource2.default(data, options);
+	      return source.scene();
+	    }
+
+	    /**
+	     * Loads a MMD scene from the specified URL.
+	     * @access public
+	     * @param {string} url -
+	     * @param {Object} options -
+	     * @returns {MMDScene} -
+	     */
+
+	  }], [{
+	    key: 'scene',
+	    value: function scene(url) {
+	      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+	      return new MMDScene(url, options);
+	    }
+	  }]);
+
+	  return MMDScene;
+	}(_jscenekit.SCNScene);
+
+	exports.default = MMDScene;
+
+/***/ },
+/* 26 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -76264,7 +81948,7 @@ module.exports =
 	};
 
 /***/ },
-/* 21 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -76276,7 +81960,7 @@ module.exports =
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _jscenekit = __webpack_require__(4);
+	var _jscenekit = __webpack_require__(3);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 

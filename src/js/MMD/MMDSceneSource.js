@@ -10,8 +10,11 @@ import {
 } from 'jscenekit'
 import MMDNode from './MMDNode'
 import MMDPMDReader from './MMDPMDReader'
+import MMDPMMReader from './MMDPMMReader'
 import MMDPMXReader from './MMDPMXReader'
+import MMDVACReader from './MMDVACReader'
 import MMDVMDReader from './MMDVMDReader'
+import MMDVPDReader from './MMDVPDReader'
 import MMDXReader from './MMDXReader'
 
 const _MMDFileType = {
@@ -99,11 +102,28 @@ export default class MMDSceneSource extends SCNSceneSource {
       _options.set(_LoadingOption.assetDirectoryURLs, directory)
     }
 
-    const promise = _BinaryRequest.get(url)
-      .then((data) => {
-        return new MMDSceneSource(data, _options)
-      })
-    return promise
+    const source = new MMDSceneSource()
+    source._url = url
+    _BinaryRequest.get(url).then((data) => {
+      source._data = data
+      source._options = _options
+      source._resolveFunction()
+    })
+
+    // check file type from the file extension
+    if(url.endsWith('.vac')){
+      source._fileType = _MMDFileType.vac
+    }else if(url.endsWith('.obj')){
+      source._fileType = _MMDFileType.obj
+    }else if(url.endsWith('.dae')){
+      source._fileType = _MMDFileType.dae
+    }else if(url.endsWith('.abc')){
+      source._fileType = _MMDFileType.abc
+    }else if(url.endsWith('.scn')){
+      source._fileType = _MMDFileType.scn
+    }
+
+    return source
   }
 
   static sceneSourceWithPathOptions(path, options, models = null, motions = null) {
@@ -187,9 +207,10 @@ export default class MMDSceneSource extends SCNSceneSource {
       const pmxNode = MMDPMXReader.getNode(data, this._directoryPath)
       if(pmxNode){
         this._workingNode = pmxNode
+        pmxNode.didLoad.then(() => {
+          console.error('pmxNode.didLoad')
+        })
       }
-    }
-    /*
     }else if(this._fileType === _MMDFileType.vpd){
       const vpdAnimation = MMDVPDReader.getAnimation(data)
       if(vpdAnimation){
@@ -222,10 +243,6 @@ export default class MMDSceneSource extends SCNSceneSource {
     }else if(this._fileType === _MMDFileType.abc){
       // ?
     }else{
-      // unknown file
-    }
-    */
-    else{
       // try SCNSceneSource to load the data
       this._data = data
       this._workingScene = super.scene(options)
@@ -248,6 +265,8 @@ export default class MMDSceneSource extends SCNSceneSource {
     if(!_options){
       if(this._options){
         _options = this._options
+      }else{
+        _options = new Map()
       }
     }
 
@@ -308,10 +327,17 @@ export default class MMDSceneSource extends SCNSceneSource {
   }
 
   getModel() {
+    if(this._workingScene === null){
+      this.scene()
+    }
+
     if(this._fileType === _MMDFileType.pmd
       || this._fileType === _MMDFileType.pmx
       || this._fileType === _MMDFileType.x
       || this._fileType === _MMDFileType.vac){
+      this._workingNode.didLoad.then(() => {
+        console.error('workingNode.didLoad')
+      })
       return this._workingNode
     }else if(this._fileType === _MMDFileType.pmm){
       return this._workingScene.rootNode.childNodes.find((node) => node instanceof MMDNode)
@@ -320,6 +346,10 @@ export default class MMDSceneSource extends SCNSceneSource {
   }
 
   getMotion() {
+    if(this._workingScene === null){
+      this.scene()
+    }
+
     return this._workingAnimationGroup
   }
 

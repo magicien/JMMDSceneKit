@@ -1,9 +1,9 @@
 'use strict'
 
 import {
-  _BinaryReader,
-  _TGAImage
+  _BinaryReader
 } from 'jscenekit'
+import TGAImage from 'TGAImage'
 import _TextReader from '../util/_TextReader'
 
 /**
@@ -98,7 +98,7 @@ export default class MMDReader {
     const promise = new Promise((resolve, reject) => {
       const fileName = this.directoryPath + filePath
       if(fileName.endsWith('tga')){
-        const tga = _TGAImage.imageWithURL(fileName)
+        const tga = TGAImage.imageWithURL(fileName)
         tga.didLoad.then(() => {
           resolve(tga.image)
         })

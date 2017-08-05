@@ -486,10 +486,10 @@ export default class MMDPMXReader extends MMDReader {
       let toonTextureNo = 0
 
       if(textureNo < this._texturePromiseArray.length){
-        this._texturePromiseArray[textureNo]
-          .then(() => {
-            material.diffuse.contents = this._textureArray[textureNo]
-          })
+        material.diffuse._loadedPromise = this._texturePromiseArray[textureNo].then(() => {
+          material.diffuse.contents = this._textureArray[textureNo]
+          console.warn('material.diffuse promise resolve')
+        })
       }
 
       if(toonFlag === 0){
@@ -1168,11 +1168,11 @@ export default class MMDPMXReader extends MMDReader {
       this._elementArray.push(element)
     }
 
-    const program = new MMDProgram()
-    // TODO: implement MMD renderer
-    this._materialArray.forEach((material) => {
-      material.program = program
-    })
+    //const program = new MMDProgram()
+    //// TODO: implement MMD renderer
+    //this._materialArray.forEach((material) => {
+    //  material.program = program
+    //})
     const geometry = new SCNGeometry([this._vertexSource, this._normalSource, this._texcoordSource], this._elementArray)
     geometry.materials = this._materialArray
     geometry.name = 'Geometry'

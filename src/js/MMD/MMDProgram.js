@@ -111,6 +111,7 @@ const _vertexShader =
     out vec4 v_directionalShadowDepth[NUM_DIRECTIONAL_SHADOW_LIGHTS];
     out vec4 v_directionalShadowTexcoord[NUM_DIRECTIONAL_SHADOW_LIGHTS];
   #endif
+  out vec2 v_sptex;
 
   layout (std140) uniform fogUniform {
     vec4 color;
@@ -216,27 +217,61 @@ const _vertexShader =
     // Lighting
     int numLights = 0;
 
+    v_color.rgb = material.emission.rgb;
+
     #if NUM_AMBIENT_LIGHTS > 0
       for(int i=0; i<NUM_AMBIENT_LIGHTS; i++){
-        v_color += light.ambient[i].color * material.ambient;
+        v_color.rgb += light.ambient[i].color.rgb * material.ambient.rgb;
       }
     #endif
 
     #if NUM_DIRECTIONAL_LIGHTS > 0
-      for(int i=0; i<NUM_DIRECTIONAL_LIGHTS; i++){
-        v_light[numLights + i] = -light.directional[i].direction.xyz;
+      if(!useToon){
+        for(int i=0; i<NUM_DIRECTIONAL_LIGHTS; i++){
+          v_light[numLights + i] = -light.directional[i].direction.xyz;
+
+          vec4 diffuseColor = material.diffuse * vec4(light.directional[i].color.rgb, 1.0);
+          vec3 lightVec = normalize(v_light[numLights + i]);
+          float diffuse = clamp(dot(lightVec, _surface.normal), 0.0f, 1.0f);
+          v_color.rgb += diffuse * diffuseColor.rgb;
+          //v_color.a = diffuseColor.a;
+          v_color = clamp(v_color, 0.0f, 1.0f);
+        }
       }
+      v_color.a = material.diffuse.a;
+
       numLights += NUM_DIRECTIONAL_LIGHTS;
     #endif
 
     #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0
-      for(int i=0; i<NUM_DIRECTIONAL_SHADOW_LIGHTS; i++){
-        v_light[numLights + i] = -light.directionalShadow[i].direction.xyz;
-        v_directionalShadowDepth[i] = light.directionalShadow[i].viewProjectionTransform * vec4(pos, 1.0);
-        v_directionalShadowTexcoord[i] = light.directionalShadow[i].shadowProjectionTransform * vec4(pos, 1.0);
+      if(!useToon){
+        for(int i=0; i<NUM_DIRECTIONAL_SHADOW_LIGHTS; i++){
+          v_light[numLights + i] = -light.directionalShadow[i].direction.xyz;
+          v_directionalShadowDepth[i] = light.directionalShadow[i].viewProjectionTransform * vec4(pos, 1.0);
+          v_directionalShadowTexcoord[i] = light.directionalShadow[i].shadowProjectionTransform * vec4(pos, 1.0);
+
+          vec4 diffuseColor = material.diffuse * vec4(light.directionalShadow[i].color.rgb, 1.0);
+          vec3 lightVec = normalize(v_light[numLights + i]);
+          float diffuse = clamp(dot(lightVec, _surface.normal), 0.0f, 1.0f);
+          v_color.rgb += diffuse * diffuseColor.rgb;
+          v_color.a = diffuseColor.a;
+          v_color = clamp(v_color, 0.0f, 1.0f);
+        }
       }
+      v_color.a = material.diffuse.a;
+
       numLights += NUM_DIRECTIONAL_SHADOW_LIGHTS;
     #endif
+
+    if(useSphereMap){
+      if(useSubTexture){
+        v_sptex = 
+      }else{
+        vec2 normalWV = vec2(camera.viewTransform * vec4(v_normal, 1.0));
+        v_sptex.x = normalWV.x * 0.5 + 0.5;
+        v_sptex.y = normalWV.y * (-0.5) + 0.5;
+      }
+    }
 
     #if NUM_OMNI_LIGHTS > 0
       for(int i=0; i<NUM_OMNI_LIGHTS; i++){
@@ -259,7 +294,6 @@ const _vertexShader =
     #if NUM_PROBE_LIGHTS > 0
       // TODO: implement
     #endif
-
 
     float distance = length(viewVec);
     v_fogFactor = clamp((distance - fog.startDistance) / (fog.endDistance - fog.startDistance), 0.0, 1.0);
@@ -487,6 +521,8 @@ const _fragmentShader =
 
     
   void main() {
+    bool spadd = true;
+
     _output.color = v_color;
 
     //vec3 viewVec = normalize(v_eye);
@@ -498,26 +534,26 @@ const _fragmentShader =
     _surface.bitangent = normalize(v_bitangent);
 
     // normal texture
-    if(textureFlags[TEXTURE_NORMAL_INDEX]){
-      mat3 tsInv = mat3(_surface.tangent, _surface.bitangent, _surface.normal);
-      vec3 color = normalize(texture(u_normalTexture, v_texcoord0).rgb * 2.0 - 1.0); // FIXME: check mappingChannel to decide which texture you use.
-      _surface.normal = normalize(tsInv * color);
-    }
+    //if(textureFlags[TEXTURE_NORMAL_INDEX]){
+    //  mat3 tsInv = mat3(_surface.tangent, _surface.bitangent, _surface.normal);
+    //  vec3 color = normalize(texture(u_normalTexture, v_texcoord0).rgb * 2.0 - 1.0); // FIXME: check mappingChannel to decide which texture you use.
+    //  _surface.normal = normalize(tsInv * color);
+    //}
 
     #if USE_SHADER_MODIFIER_SURFACE
       shaderModifierSurface();
     #endif
 
     // emission texture
-    if(textureFlags[TEXTURE_EMISSION_INDEX]){
-      if(selfIllumination){
-        vec4 color = texture(u_emissionTexture, v_texcoord1); // FIXME: check mappingChannel to decide which texture you use.
-        _output.color += color;
-      }else{
-        vec4 color = texture(u_emissionTexture, v_texcoord0);
-        _output.color = color * _output.color;
-      }
-    }
+    //if(textureFlags[TEXTURE_EMISSION_INDEX]){
+    //  if(selfIllumination){
+    //    vec4 color = texture(u_emissionTexture, v_texcoord1); // FIXME: check mappingChannel to decide which texture you use.
+    //    _output.color += color;
+    //  }else{
+    //    vec4 color = texture(u_emissionTexture, v_texcoord0);
+    //    _output.color = color * _output.color;
+    //  }
+    //}
 
     vec4 specularColor;
     if(textureFlags[TEXTURE_SPECULAR_INDEX]){
@@ -527,7 +563,42 @@ const _fragmentShader =
       specularColor = material.specular;
     }
       
-    _output.color.a = material.diffuse.a;
+    //_output.color.a = material.diffuse.a;
+    vec4 shadowColor = vec4(clamp(material.ambient.rgb, 0.0f, 1.0f), v_color.a);
+    if(textureFlags[TEXTURE_DIFFUSE_INDEX]){
+      vec4 texColor = texture(u_diffuseTexture, v_texcoord0);
+      vec4 textureMulValue = vec4(1);
+      vec4 textureAddValue = vec4(0);
+
+      if(textureFlags[TEXTURE_EMISSION_INDEX]){
+        textureAddValue = texture(u_emissionTexture, v_texcoord0);
+      }
+      if(textureFlags[TEXTURE_MULTIPLY_INDEX]){
+        textureMulValue = texture(u_multiplyTexture, v_texcoord0);
+      }
+      texColor.rgb = mix(vec3(1), texColor.rgb * textureMulValue.rgb + textureAddValue.rgb, textureMulValue.a + textureAddValue.a);
+      _output.color *= texColor;
+      shadowColor *= texColor;
+
+    }
+    if(textureFlags[TEXTURE_REFLECTIVE_INDEX]){
+      vec4 sphereMulValue = vec4(1);
+      vec4 sphereAddValue = vec4(0);
+
+      vec3 r = reflect(_surface.view, _surface.normal);
+      vec4 texColor = texture(u_reflectiveTexture, r);
+      texColor.rgb = mix(spadd ? vec3(0) : vec3(1), texColor.rgb * sphereMulValue.rgb + sphereAddValue.rgb, sphereMulValue.a + sphereAddValue.a);
+      if(spadd){
+        _output.color.rgb += texColor.rgb;
+        shadowColor.rgb += texColor.rgb;
+      }else{
+        _output.color.rgb *= texColor.rgb;
+        shadowColor.rgb *= texColor.rgb;
+      }
+      _output.color.a *= texColor.a;
+      shadowColor.a *= texColor.a;
+    }
+    _output.color.rgb += specularColor.rgb;
 
     // Lighting
     int numLights = 0;
@@ -536,38 +607,55 @@ const _fragmentShader =
       // nothing to do for ambient lights
     #endif
 
+    vec4 outSpecular = vec4(0, 0, 0, 1);
     #if NUM_DIRECTIONAL_LIGHTS > 0
-      for(int i=0; i<NUM_DIRECTIONAL_LIGHTS; i++){
-        // diffuse
-        vec3 lightVec = normalize(v_light[numLights + i]);
-        float diffuse = clamp(dot(lightVec, _surface.normal), 0.0f, 1.0f);
-        _output.color.rgb += light.directional[i].color.rgb * material.diffuse.rgb * diffuse;
+      //for(int i=0; i<NUM_DIRECTIONAL_LIGHTS; i++){
+      //  // diffuse
+      //  vec3 lightVec = normalize(v_light[numLights + i]);
+      //  float diffuse = clamp(dot(lightVec, _surface.normal), 0.0f, 1.0f);
+      //  _output.color.rgb += light.directional[i].color.rgb * material.diffuse.rgb * diffuse;
+      //  _output.color.a = material.diffuse.a;
 
-        // specular
-        if(diffuse > 0.0f){
-          vec3 halfVec = normalize(lightVec + _surface.view);
-          float specular = pow(dot(halfVec, _surface.normal), material.shininess);
-          _output.color.rgb += specularColor.rgb * specular;
-        }
+      //  // specular
+      //  if(diffuse > 0.0f){
+      //    vec3 halfVec = normalize(lightVec + _surface.view);
+      //    float specular = pow(dot(halfVec, _surface.normal), material.shininess);
+      //    _output.color.rgb += specularColor.rgb * specular;
+      //  }
+      //}
+      for(int i=0; i<NUM_DIRECTIONAL_LIGHTS; i++){
+        vec3 lightVec = normalize(v_light[numLights + i]);
+        vec3 halfVector = normalize(lightVec + _surface.view);
+        float specular = pow(max(0, dot(halfVec, _surface.normal)), material.shininess);
+        outSpecular = specular * specularColor;
       }
       numLights += NUM_DIRECTIONAL_LIGHTS;
     #endif
 
-    #if NUM_OMNI_LIGHTS > 0
-      for(int i=0; i<NUM_OMNI_LIGHTS; i++){
-        // diffuse
+    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0
+      for(int i=0; i<NUM_DIRECTIONAL_SHADOW_LIGHTS; i++){
         vec3 lightVec = normalize(v_light[numLights + i]);
-        float diffuse = clamp(dot(lightVec, _surface.normal), 0.0f, 1.0f);
-        _output.color.rgb += light.omni[i].color.rgb * material.diffuse.rgb * diffuse;
-
-        // specular
-        if(diffuse > 0.0f){
-          vec3 halfVec = normalize(lightVec + _surface.view);
-          float specular = pow(dot(halfVec, _surface.normal), material.shininess);
-          //outColor.rgb += material.specular.rgb * specular; // TODO: get the light color of specular
-          _output.color.rgb += specularColor.rgb * specular;
-        }
+        vec3 halfVector = normalize(lightVec + _surface.view);
+        float specular = pow(max(0, dot(halfVec, _surface.normal)), material.shininess);
+        outSpecular = specular * specularColor;
       }
+    #endif
+
+    #if NUM_OMNI_LIGHTS > 0
+      //for(int i=0; i<NUM_OMNI_LIGHTS; i++){
+      //  // diffuse
+      //  vec3 lightVec = normalize(v_light[numLights + i]);
+      //  float diffuse = clamp(dot(lightVec, _surface.normal), 0.0f, 1.0f);
+      //  _output.color.rgb += light.omni[i].color.rgb * material.diffuse.rgb * diffuse;
+
+      //  // specular
+      //  if(diffuse > 0.0f){
+      //    vec3 halfVec = normalize(lightVec + _surface.view);
+      //    float specular = pow(dot(halfVec, _surface.normal), material.shininess);
+      //    //outColor.rgb += material.specular.rgb * specular; // TODO: get the light color of specular
+      //    _output.color.rgb += specularColor.rgb * specular;
+      //  }
+      //}
       numLights += NUM_OMNI_LIGHTS;
     #endif
 
@@ -583,26 +671,24 @@ const _fragmentShader =
       // TODO: implement
     #endif
 
-    __FS_LIGHTING__
-    
 
     // diffuse texture
-    if(textureFlags[TEXTURE_DIFFUSE_INDEX]){
-      vec4 color = texture(u_diffuseTexture, v_texcoord0);
-      _output.color = color * _output.color;
-    }
+    //if(textureFlags[TEXTURE_DIFFUSE_INDEX]){
+    //  vec4 color = texture(u_diffuseTexture, v_texcoord0);
+    //  _output.color = color * _output.color;
+    //}
 
     // fresnel reflection
-    if(textureFlags[TEXTURE_REFLECTIVE_INDEX]){
-      vec3 r = reflect(_surface.view, _surface.normal);
-      //float f0 = 0.0; // TODO: calculate f0
-      //float fresnel = f0 + (1.0 - f0) * pow(1.0 - clamp(dot(viewVec, nom), 0.0, 1.0), material.fresnelExponent);
-      float fresnel = 0.4 * pow(1.0 - clamp(dot(_surface.view, _surface.normal), 0.0, 1.0), material.fresnelExponent);
-      _output.color.rgb += texture(u_reflectiveTexture, r).rgb * fresnel;
-    }
+    //if(textureFlags[TEXTURE_REFLECTIVE_INDEX]){
+    //  vec3 r = reflect(_surface.view, _surface.normal);
+    //  //float f0 = 0.0; // TODO: calculate f0
+    //  //float fresnel = f0 + (1.0 - f0) * pow(1.0 - clamp(dot(viewVec, nom), 0.0, 1.0), material.fresnelExponent);
+    //  float fresnel = 0.4 * pow(1.0 - clamp(dot(_surface.view, _surface.normal), 0.0, 1.0), material.fresnelExponent);
+    //  _output.color.rgb += texture(u_reflectiveTexture, r).rgb * fresnel;
+    //}
 
-    float fogFactor = pow(v_fogFactor, fog.densityExponent);
-    _output.color = mix(_output.color, fog.color, fogFactor);
+    //float fogFactor = pow(v_fogFactor, fog.densityExponent);
+    //_output.color = mix(_output.color, fog.color, fogFactor);
 
     #if USE_SHADER_MODIFIER_FRAGMENT
       shaderModifierFragment();
