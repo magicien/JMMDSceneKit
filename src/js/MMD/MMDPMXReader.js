@@ -4,6 +4,7 @@ import MMDNode from './MMDNode'
 import MMDProgram from './MMDProgram'
 import MMDReader from './MMDReader'
 import MMDIKConstraint from './MMDIKConstraint'
+import _MMDFragmentShader from './_MMDFragmentShader'
 import {
   SCNBox,
   SCNCapsule,
@@ -12,6 +13,7 @@ import {
   SCNGeometryPrimitiveType,
   SCNGeometrySource,
   SCNMaterial,
+  SCNMaterialProperty,
   SCNMatrix4,
   SCNMatrix4MakeTranslation,
   SCNMatrix4Rotate,
@@ -22,9 +24,11 @@ import {
   SCNPhysicsBody,
   SCNPhysicsBodyType,
   SCNPhysicsShape,
+  SCNShaderModifierEntryPoint,
   SCNSkinner,
   SCNSphere,
   SCNVector3,
+  SCNWrapMode,
   SKColor
 } from 'jscenekit'
 
@@ -106,6 +110,7 @@ export default class MMDPMXReader extends MMDReader {
     this._materialShapeArray = []
     this._materialIndexCountArray = []
     this._separatedIndexArray = []
+    this._shaderModifiers = {}
 
     // bone data
     this._boneCount = 0
@@ -152,6 +157,9 @@ export default class MMDPMXReader extends MMDReader {
     if(this._pmxMagic !== 'PMX '){
       throw new Error(`PMX file magic error: ${this._pmxMagic}`)
     }
+
+    // load shader modifiers
+    this._shaderModifiers[SCNShaderModifierEntryPoint.fragment] = _MMDFragmentShader
 
     // read basic data
     this._readVertex()
@@ -486,16 +494,61 @@ export default class MMDPMXReader extends MMDReader {
       let toonTextureNo = 0
 
       if(textureNo < this._texturePromiseArray.length){
-        material.diffuse._loadedPromise = this._texturePromiseArray[textureNo].then(() => {
-          material.diffuse.contents = this._textureArray[textureNo]
+        material.multiply._loadedPromise = this._texturePromiseArray[textureNo].then(() => {
+          material.multiply.contents = this._textureArray[textureNo]
+          material.multiply.wrapS = SCNWrapMode.repeat
+          material.multiply.wrapT = SCNWrapMode.repeat
           console.warn('material.diffuse promise resolve')
         })
+        material.setValueForKey(1.0, 'useTexture')
+      }else{
+        material.setValueForKey(0.0, 'useTexture')
+      }
+
+      if(sphereTextureNo < this._texturePromiseArray.length){
+        this._texturePromiseArray[sphereTextureNo].then(() => {
+          const prop = new SCNMaterialProperty(this._textureArray[sphereTextureNo])
+          material.setValueForKey(prop, 'sphereTexture')
+        })
+      }
+      if(sphereMode === 0){
+        // disabled
+        material.setValueForKey(0.0, 'useSphereMap')
+        material.setValueForKey(0.0, 'spadd')
+        material.setValueForKey(0.0, 'useSubtexture')
+      }else if(sphereMode === 1){
+        // sph
+        material.setValueForKey(1.0, 'useSphereMap')
+        material.setValueForKey(0.0, 'spadd')
+        material.setValueForKey(0.0, 'useSubtexture')
+      }else if(sphereMode === 2){
+        // spa
+        material.setValueForKey(1.0, 'useSphereMap')
+        material.setValueForKey(1.0, 'spadd')
+        material.setValueForKey(0.0, 'useSubtexture')
+      }else if(sphereMode === 3){
+        // subtexture
+        material.setValueForKey(0.0, 'useSphereMap')
+        material.setValueForKey(0.0, 'spadd')
+        material.setValueForKey(1.0, 'useSubtexture')
+      }else{
+        throw new Error(`unknown sphereMode: ${sphereMode}`)
       }
 
       if(toonFlag === 0){
         toonTextureNo = this.readInteger(this._textureIndexSize)
+        if(toonTextureNo < this._texturePromiseArray.length){
+          material.transparent._loadedPromise = this._texturePromiseArray[toonTextureNo].then(() => {
+            material.transparent.contents = this._textureArray[toonTextureNo]
+          })
+          material.setValueForKey(1.0, 'useToon')
+        }else{
+          material.setValueForKey(0.0, 'useToon')
+        }
       }else if(toonFlag === 1){
         toonTextureNo = this.readUnsignedByte()
+        material.transparent.contents = MMDReader.toonTextures[toonTextureNo]
+        material.setValueForKey(1.0, 'useToon')
       }else{
         throw new Error(`unknown toon flag: ${toonFlag}`)
       }
@@ -585,6 +638,8 @@ export default class MMDPMXReader extends MMDReader {
           arrayPos += 3
         }
       }
+
+      material.shaderModifiers = this._shaderModifiers
 
       this._materialIndexCountArray.push(newIndexCount)
       this._materialArray.push(material)
@@ -1209,7 +1264,7 @@ export default class MMDPMXReader extends MMDReader {
     this._workingNode.boneWeightsArray = this._boneWeight
     this._workingNode.indexCount = this._indexCount
     this._workingNode.materialCount = this._materialCount
-    this._workingNode.materialArray = this._mateiralArray
+    this._workingNode.materialArray = this._materialArray
     this._workingNode.materialIndexCountArray = this._materialIndexCountArray
     this._workingNode.rootBone = this._rootBone
   }

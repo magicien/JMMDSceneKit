@@ -5,6 +5,7 @@ import {
 } from 'jscenekit'
 import TGAImage from 'TGAImage'
 import _TextReader from '../util/_TextReader'
+import _ToonImages from './_ToonImages'
 
 /**
  *
@@ -48,6 +49,10 @@ export default class MMDReader {
     }else{
       this._reader = new _TextReader(data, encoding)
     }
+  }
+
+  static get toonTextures() {
+    return _ToonImages
   }
 
   skip(length, noAssert = false) {

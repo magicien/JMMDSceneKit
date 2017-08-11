@@ -1,4 +1,5 @@
 import _MMDFragmentShader from './MMD/_MMDFragmentShader'
+import _ToonImages from './MMD/_ToonImages'
 import MMDCameraNode from './MMD/MMDCameraNode'
 import MMDIKConstraint from './MMD/MMDIKConstraint'
 import MMDIKController from './MMD/MMDIKController'
@@ -21,6 +22,7 @@ import _TextRequest from './util/_TextRequest'
 
 /*global exports*/
 exports._MMDFragmentShader = _MMDFragmentShader
+exports._ToonImages = _ToonImages
 exports.MMDCameraNode = MMDCameraNode
 exports.MMDIKConstraint = MMDIKConstraint
 exports.MMDIKController = MMDIKController

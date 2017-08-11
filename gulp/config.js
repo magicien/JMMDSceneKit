@@ -38,7 +38,7 @@ module.exports = {
         libraryTarget: 'commonjs2'
       },
       resolve: {
-        extensions: ['', '.js']
+        extensions: ['.js']
       },
       plugins: [
         new webpack.DefinePlugin({'process.env.BROWSER': false})
@@ -69,7 +69,7 @@ module.exports = {
         libraryTarget: 'commonjs2'
       },
       resolve: {
-        extensions: ['', '.js']
+        extensions: ['.js']
       },
       plugins: [
         new webpack.DefinePlugin({'process.env.BROWSER': true})
