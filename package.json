@@ -70,6 +70,6 @@
   "dependencies": {
     "babel-preset-es2015": "^6.22.0",
     "babel-register": "^6.24.1",
-    "jscenekit": "^0.2.18"
+    "jscenekit": "^0.2.20"
   }
 }
