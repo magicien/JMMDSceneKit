@@ -146,7 +146,14 @@ export default class MMDReader {
   }
 } 
 
-for(const image of _toonImages){
-  _toonMaterials.push(MMDReader.getToonMaterial(image)) 
+for(let i=0; i<_toonImages.length; i++){
+  const image = _toonImages[i]
+  if(image.complete){
+    _toonMaterials[i] = MMDReader.getToonMaterial(image)
+  }else{
+    image.onload = () => {
+      _toonMaterials[i] = MMDReader.getToonMaterial(image)
+    }
+  }
 }
 
