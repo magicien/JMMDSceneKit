@@ -67,9 +67,11 @@
     "webpack": "^3.5.4",
     "webpack-stream": "^4.0.0"
   },
+  "peerDependencies": {
+    "jscenekit": "^0.2.21"
+  },
   "dependencies": {
     "babel-preset-es2015": "^6.22.0",
-    "babel-register": "^6.24.1",
-    "jscenekit": "^0.2.21"
+    "babel-register": "^6.24.1"
   }
 }

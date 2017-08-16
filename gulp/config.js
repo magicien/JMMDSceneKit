@@ -57,7 +57,8 @@ module.exports = {
         ]
       },
       externals: {
-        fs: 'fs'
+        fs: 'fs',
+        jscenekit: 'jscenekit'
       }
     },
     web: {
@@ -92,6 +93,7 @@ module.exports = {
       },
       externals: {
         //fs: 'fs'
+        jscenekit: 'jscenekit'
       }
     }
   },
