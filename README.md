@@ -18,7 +18,14 @@ https://magicien.github.io/JMMDSceneKit/
 ### Examples
 
 [ElectronMMDSample](https://github.com/magicien/ElectronMMDSample/)
+
 ![ScreenShot](https://github.com/magicien/ElectronMMDSample/blob/readme/readme/screenshot.png)
+
+
+[JMMDSceneKitExample](https://github.com/magicien/JMMDSceneKitExample/)
+
+![ScreenShot2](https://github.com/magicien/JMMDSceneKitExample/blob/readme/readme/jmmd_ex1_screenshot.png)
+
 
 ### See also
 
