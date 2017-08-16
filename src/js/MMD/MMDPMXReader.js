@@ -28,6 +28,7 @@ import {
   SCNSkinner,
   SCNSphere,
   SCNVector3,
+  SCNVector4,
   SCNWrapMode,
   SKColor
 } from 'jscenekit'
@@ -103,6 +104,7 @@ export default class MMDPMXReader extends MMDReader {
     this._textureCount = 0
     this._texturePromiseArray = []
     this._textureArray = []
+    this._toonMaterials = []
 
     // material data
     this._materialCount = 0
@@ -446,6 +448,7 @@ export default class MMDPMXReader extends MMDReader {
         this.loadTexture(textureFile)
           .then((texture) => {
             this._textureArray[index] = texture
+            this._toonMaterials[index] = MMDReader.getToonMaterial(texture)
           })
       )
     }
@@ -540,15 +543,18 @@ export default class MMDPMXReader extends MMDReader {
         if(toonTextureNo < this._texturePromiseArray.length){
           material.transparent._loadedPromise = this._texturePromiseArray[toonTextureNo].then(() => {
             material.transparent.contents = this._textureArray[toonTextureNo]
+            material.setValueForKey(this._toonMaterials[toonTextureNo], 'materialToon')
           })
           material.setValueForKey(1.0, 'useToon')
         }else{
+          material.setValueForKey(SKColor.black, 'materialToon')
           material.setValueForKey(0.0, 'useToon')
         }
       }else if(toonFlag === 1){
         toonTextureNo = this.readUnsignedByte()
         material.transparent.contents = MMDReader.toonTextures[toonTextureNo]
         material.setValueForKey(1.0, 'useToon')
+        material.setValueForKey(MMDReader.toonMaterials[toonTextureNo], 'materialToon')
       }else{
         throw new Error(`unknown toon flag: ${toonFlag}`)
       }
@@ -558,6 +564,13 @@ export default class MMDPMXReader extends MMDReader {
       }else{
         material.isDoubleSided = false
       }
+
+      material.setValueForKey(new SCNVector4(0, 0, 0, 0), 'textureAddValue')
+      material.setValueForKey(new SCNVector4(1, 1, 1, 1), 'textureMulValue')
+      material.setValueForKey(new SCNVector4(0, 0, 0, 0), 'sphereAddValue')
+      material.setValueForKey(new SCNVector4(1, 1, 1, 1), 'sphereMulValue')
+      material.setValueForKey(0.0, 'parthf')
+      material.setValueForKey(0.0, 'transp')
 
       // FIXME: use floorShadow, shadowMap property
       // FIXME: use drawEdge property

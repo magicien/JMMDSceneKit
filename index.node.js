@@ -131,7 +131,7 @@ module.exports =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 115);
+/******/ 	return __webpack_require__(__webpack_require__.s = 124);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -9844,7 +9844,7 @@ var SCNGeometry = function (_NSObject) {
         ambient[3] *= opacity;
       }
 
-      var materialData = new Float32Array([].concat(_toConsumableArray(ambient), _toConsumableArray(diffuse), _toConsumableArray(material.specular.float32Array()), _toConsumableArray(material.normal.float32Array()), _toConsumableArray(material.reflective.float32Array()), _toConsumableArray(material.emission.float32Array()), _toConsumableArray(material.transparent.float32Array()), _toConsumableArray(material.multiply.float32Array()), _toConsumableArray(material.ambientOcclusion.float32Array()), [material.shininess * 100.0, material.fresnelExponent, 0, 0 // needs padding for 16-byte alignment
+      var materialData = new Float32Array([].concat(_toConsumableArray(ambient), _toConsumableArray(diffuse), _toConsumableArray(material.specular.float32Array()), _toConsumableArray(material.normal.float32Array()), _toConsumableArray(material.reflective.float32Array()), _toConsumableArray(material.emission.float32Array()), _toConsumableArray(material.transparent.float32Array()), _toConsumableArray(material.multiply.float32Array()), _toConsumableArray(material.ambientOcclusion.float32Array()), _toConsumableArray(material.selfIllumination.float32Array()), _toConsumableArray(material.metalness.float32Array()), _toConsumableArray(material.roughness.float32Array()), [material.shininess * 100.0, material.fresnelExponent, 0, 0 // needs padding for 16-byte alignment
       ]));
 
       gl.bindBuffer(gl.UNIFORM_BUFFER, this._materialBuffer);
@@ -9885,6 +9885,18 @@ var SCNGeometry = function (_NSObject) {
 
       // normal
       );this._setTextureToName(gl, material._normal, 'TEXTURE7', textureFlags
+
+      // ambientOcclusion
+      );this._setTextureToName(gl, material._ambientOcclusion, 'TEXTURE8', textureFlags
+
+      // selfIllumination
+      );this._setTextureToName(gl, material._selfIllumination, 'TEXTURE9', textureFlags
+
+      // metalness
+      );this._setTextureToName(gl, material._metalness, 'TEXTURE10', textureFlags
+
+      // roughness
+      );this._setTextureToName(gl, material._roughness, 'TEXTURE11', textureFlags
 
       // TODO: cache uniform location
       );gl.uniform1iv(gl.getUniformLocation(program, 'textureFlags'), new Int32Array(textureFlags));
@@ -9938,6 +9950,9 @@ var SCNGeometry = function (_NSObject) {
       0, 0, 0, 1, // transparent
       1, 1, 1, 1, // multiply
       0, 0, 0, 1, // ambientOcclusion
+      0, 0, 0, 1, // selfIllumination
+      0, 0, 0, 1, // metalness
+      0, 0, 0, 1, // roughness
       0, // shininess
       0, // fresnelExponent
       0, 0 // needs padding for 16-byte alignment
@@ -9963,6 +9978,10 @@ var SCNGeometry = function (_NSObject) {
       );textureFlags.push(0 // transparent
       );textureFlags.push(0 // multiply
       );textureFlags.push(0 // normal
+      );textureFlags.push(0 // ambientOcclusion
+      );textureFlags.push(0 // selfIllumination
+      );textureFlags.push(0 // metalness
+      );textureFlags.push(0 // roughness
 
       // TODO: cache uniform location
       );gl.uniform1iv(gl.getUniformLocation(program, 'textureFlags'), new Int32Array(textureFlags));
@@ -11452,11 +11471,11 @@ var _NSObject2 = __webpack_require__(0);
 
 var _NSObject3 = _interopRequireDefault(_NSObject2);
 
-var _SCNBlendMode = __webpack_require__(78);
+var _SCNBlendMode = __webpack_require__(87);
 
 var _SCNBlendMode2 = _interopRequireDefault(_SCNBlendMode);
 
-var _SCNColorMask = __webpack_require__(79);
+var _SCNColorMask = __webpack_require__(88);
 
 var _SCNColorMask2 = _interopRequireDefault(_SCNColorMask);
 
@@ -11464,7 +11483,7 @@ var _SCNCullMode = __webpack_require__(47);
 
 var _SCNCullMode2 = _interopRequireDefault(_SCNCullMode);
 
-var _SCNFillMode = __webpack_require__(80);
+var _SCNFillMode = __webpack_require__(89);
 
 var _SCNFillMode2 = _interopRequireDefault(_SCNFillMode);
 
@@ -11476,7 +11495,7 @@ var _SCNOrderedDictionary = __webpack_require__(21);
 
 var _SCNOrderedDictionary2 = _interopRequireDefault(_SCNOrderedDictionary);
 
-var _SCNTransparencyMode = __webpack_require__(83);
+var _SCNTransparencyMode = __webpack_require__(92);
 
 var _SCNTransparencyMode2 = _interopRequireDefault(_SCNTransparencyMode);
 
@@ -12528,7 +12547,7 @@ var _SCNVector3 = __webpack_require__(11);
 
 var _SCNVector4 = _interopRequireDefault(_SCNVector3);
 
-var _SCNMovabilityHint = __webpack_require__(77);
+var _SCNMovabilityHint = __webpack_require__(86);
 
 var _SCNMovabilityHint2 = _interopRequireDefault(_SCNMovabilityHint);
 
@@ -15435,6 +15454,11 @@ var SCNNode = function (_NSObject) {
     key: 'viewTransform',
     get: function get() {
       return this.worldTransform.invert();
+    }
+  }, {
+    key: 'inverseViewTransform',
+    get: function get() {
+      return this.worldTransform;
     }
   }, {
     key: 'projectionTransform',
@@ -20501,7 +20525,7 @@ var _NSObject2 = __webpack_require__(0);
 
 var _NSObject3 = _interopRequireDefault(_NSObject2);
 
-var _SCNFilterMode = __webpack_require__(81);
+var _SCNFilterMode = __webpack_require__(90);
 
 var _SCNFilterMode2 = _interopRequireDefault(_SCNFilterMode);
 
@@ -20517,7 +20541,7 @@ var _SCNTransaction = __webpack_require__(35);
 
 var _SCNTransaction2 = _interopRequireDefault(_SCNTransaction);
 
-var _SCNWrapMode = __webpack_require__(82);
+var _SCNWrapMode = __webpack_require__(91);
 
 var _SCNWrapMode2 = _interopRequireDefault(_SCNWrapMode);
 
@@ -22116,7 +22140,7 @@ var _SCNPhysicsBodyType = __webpack_require__(50);
 
 var _SCNPhysicsBodyType2 = _interopRequireDefault(_SCNPhysicsBodyType);
 
-var _SCNPhysicsContact = __webpack_require__(84);
+var _SCNPhysicsContact = __webpack_require__(93);
 
 var _SCNPhysicsContact2 = _interopRequireDefault(_SCNPhysicsContact);
 
@@ -24679,6 +24703,10 @@ _ClassList.registerClass = function (classObj, className) {
   //  }
   //  className = classObj.prototype.constructor.name
   //}
+  if (className.startsWith('_')) {
+    return;
+  }
+
   classObj._className = className;
 
   // copy utility functions
@@ -26741,7 +26769,7 @@ var _File2 = __webpack_require__(31);
 
 var _File3 = _interopRequireDefault(_File2);
 
-var _fs = __webpack_require__(130);
+var _fs = __webpack_require__(139);
 
 var _fs2 = _interopRequireDefault(_fs);
 
@@ -29094,7 +29122,7 @@ var _CGSize = __webpack_require__(8);
 
 var _CGSize2 = _interopRequireDefault(_CGSize);
 
-var _SKTextureFilteringMode = __webpack_require__(109);
+var _SKTextureFilteringMode = __webpack_require__(118);
 
 var _SKTextureFilteringMode2 = _interopRequireDefault(_SKTextureFilteringMode);
 
@@ -34231,6 +34259,170 @@ exports.default = CAKeyframeAnimation;
 
 
 /**
+ * @type {string}
+ */
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var _SCNDefaultFragmentShader = '#version 300 es\n  precision mediump float;\n  precision highp sampler2DShadow;\n\n  uniform bool[12] textureFlags;\n  #define TEXTURE_EMISSION_INDEX 0\n  #define TEXTURE_AMBIENT_INDEX 1\n  #define TEXTURE_DIFFUSE_INDEX 2\n  #define TEXTURE_SPECULAR_INDEX 3\n  #define TEXTURE_REFLECTIVE_INDEX 4\n  #define TEXTURE_TRANSPARENT_INDEX 5\n  #define TEXTURE_MULTIPLY_INDEX 6\n  #define TEXTURE_NORMAL_INDEX 7\n  #define TEXTURE_AMBIENT_OCCLUSION_INDEX 8\n  #define TEXTURE_SELF_ILLUMINATION_INDEX 9\n  #define TEXTURE_METALNESS_INDEX 10\n  #define TEXTURE_ROUGHNESS_INDEX 11\n\n  uniform bool selfIllumination;\n\n  uniform sampler2D u_emissionTexture;\n  uniform sampler2D u_ambientTexture;\n  uniform sampler2D u_diffuseTexture;\n  uniform sampler2D u_specularTexture;\n  uniform samplerCube u_reflectiveTexture;\n  uniform sampler2D u_transparentTexture;\n  uniform sampler2D u_multiplyTexture;\n  uniform sampler2D u_normalTexture;\n  uniform sampler2D u_ambientOcclusionTexture;\n  uniform sampler2D u_selfIlluminationTexture;\n  uniform sampler2D u_metalnessTexture;\n  uniform sampler2D u_roughnessTexture;\n\n  #define NUM_AMBIENT_LIGHTS __NUM_AMBIENT_LIGHTS__\n  #define NUM_DIRECTIONAL_LIGHTS __NUM_DIRECTIONAL_LIGHTS__\n  #define NUM_DIRECTIONAL_SHADOW_LIGHTS __NUM_DIRECTIONAL_SHADOW_LIGHTS__\n  #define NUM_OMNI_LIGHTS __NUM_OMNI_LIGHTS__\n  #define NUM_SPOT_LIGHTS __NUM_SPOT_LIGHTS__\n  #define NUM_IES_LIGHTS __NUM_IES_LIGHTS__\n  #define NUM_PROBE_LIGHTS __NUM_PROBE_LIGHTS__\n\n  #define NUM_SHADOW_LIGHTS (NUM_DIRECTIONAL_LIGHTS + NUM_DIRECTIONAL_SHADOW_LIGHTS + NUM_OMNI_LIGHTS + NUM_SPOT_LIGHTS)\n  #define NUM_LIGHTS (NUM_AMBIENT_LIGHTS + NUM_DIRECTIONAL_LIGHTS + NUM_DIRECTIONAL_SHADOW_LIGHTS + NUM_OMNI_LIGHTS + NUM_SPOT_LIGHTS + NUM_IES_LIGHTS + NUM_PROBE_LIGHTS)\n\n  #define USE_SHADER_MODIFIER_SURFACE __USE_SHADER_MODIFIER_SURFACE__\n  #define USE_SHADER_MODIFIER_FRAGMENT __USE_SHADER_MODIFIER_FRAGMENT__\n\n  layout (std140) uniform cameraUniform {\n    vec4 position;\n    mat4 viewTransform;\n    mat4 inverseViewTransform;\n    mat4 viewProjectionTransform;\n  } camera;\n\n  layout (std140) uniform materialUniform {\n    vec4 ambient;\n    vec4 diffuse;\n    vec4 specular;\n    vec4 normal;\n    vec4 reflective;\n    vec4 emission;\n    vec4 transparent;\n    vec4 multiply;\n    vec4 ambientOcclusion;\n    vec4 selfIllumination;\n    vec4 metalness;\n    vec4 roughness;\n    float shininess;\n    float fresnelExponent;\n  } material;\n\n  struct AmbientLight {\n    vec4 color;\n  };\n\n  struct SCNShaderLightingContribution {\n    vec3 ambient;\n    vec3 diffuse;\n    vec3 specular;\n  } _lightingContribution;\n\n  struct DirectionalLight {\n    vec4 color;\n    vec4 direction; // should use vec4; vec3 might cause problem for the layout\n  };\n\n  struct DirectionalShadowLight {\n    vec4 color;\n    vec4 direction; // should use vec4; vec3 might cause problem for the layout\n    vec4 shadowColor;\n    mat4 viewProjectionTransform;\n    mat4 shadowProjectionTransform;\n  };\n\n  struct OmniLight {\n    vec4 color;\n    vec4 position; // should use vec4; vec3 might cause problem for the layout\n  };\n\n  struct ProbeLight {\n    // TODO: implement\n    vec4 color;\n  };\n\n  struct SpotLight {\n    // TODO: implement\n    vec4 color;\n  };\n\n  layout (std140) uniform lightUniform {\n    #if NUM_AMBIENT_LIGHTS > 0\n      AmbientLight ambient[NUM_AMBIENT_LIGHTS];\n    #endif\n    #if NUM_DIRECTIONAL_LIGHTS > 0\n      DirectionalLight directional[NUM_DIRECTIONAL_LIGHTS];\n    #endif\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0\n      DirectionalShadowLight directionalShadow[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n    #endif\n    #if NUM_OMNI_LIGHTS > 0\n      OmniLight omni[NUM_OMNI_LIGHTS];\n    #endif\n    #if NUM_SPOT_LIGHTS > 0\n      SpotLight spot[NUM_SPOT_LIGHTS];\n    #endif\n    #if NUM_IES_LIGHTS > 0\n      IESLight ies[NUM_IES_LIGHTS];\n    #endif\n    #if NUM_PROBE_LIGHTS > 0\n      ProbeLight probe[NUM_PROBE_LIGHTS];\n    #endif\n    #if NUM_LIGHTS == 0\n      vec4 dummy;\n    #endif\n  } light;\n  #if NUM_SHADOW_LIGHTS > 0\n    in vec3 v_light[NUM_SHADOW_LIGHTS];\n  #endif\n  #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0\n    in vec4 v_directionalShadowDepth[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n    in vec4 v_directionalShadowTexcoord[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n    uniform sampler2D u_shadowTexture0;\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 1\n      uniform sampler2D u_shadowTexture1;\n    #endif\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 2\n      uniform sampler2D u_shadowTexture2;\n    #endif\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 3\n      uniform sampler2D u_shadowTexture3;\n    #endif\n  #endif\n\n  layout (std140) uniform SCNLightsUniform {\n    vec4 direction0;\n    mat4 shadowMatrix0;\n  } scn_lights;\n\n  layout (std140) uniform fogUniform {\n    vec4 color;\n    float startDistance;\n    float endDistance;\n    float densityExponent;\n  } fog;\n\n  struct SCNShaderSurface {\n    vec3 view;\n    vec3 position;\n    vec3 normal;\n    vec2 normalTexcoord;\n    vec3 geometryNormal;\n    vec3 tangent;\n    vec3 bitangent;\n    vec4 ambient;\n    vec2 ambientTexcoord;\n    vec4 diffuse;\n    vec2 diffuseTexcoord;\n    vec4 specular;\n    vec2 specularTexcoord;\n    vec4 emission;\n    vec2 emissionTexcoord;\n    vec4 multiply;\n    vec2 multiplyTexcoord;\n    vec4 transparent;\n    vec2 transparentTexcoord;\n    vec4 reflective;\n    float ambientOcclusion;\n    float shininess;\n    float fresnel;\n    __USER_CUSTOM_SURFACE__\n  } _surface;\n\n  struct SCNShaderOutput {\n    vec4 color;\n  } _output;\n\n  vec2 poissonDisk[4] = vec2[](\n    vec2( -0.94201624, -0.39906216 ),\n    vec2( 0.94558609, -0.76890725 ),\n    vec2( -0.094184101, -0.92938870 ),\n    vec2( 0.34495938, 0.29387760 )\n  );\n\n  //#define kSCNTexcoordCount 2\n  //struct SCNShaderGeometry {\n  //  vec3 position;\n  //  vec3 normal;\n  //  vec4 tangent;\n  //  vec4 color;\n  //  vec2 texcoords[kSCNTexcoordCount];\n  //};\n\n  uniform float u_time;\n\n  in vec3 v_position;\n  in vec3 v_normal;\n  in vec2 v_texcoord0;\n  in vec2 v_texcoord1;\n  //in vec4 v_color;\n  in vec3 v_eye;\n  in vec3 v_tangent;\n  in vec3 v_bitangent;\n  in float v_fogFactor;\n\n  //in SCNShaderGeometry _geometry;\n\n  out vec4 outColor;\n\n  __USER_CUSTOM_UNIFORM__\n\n  float saturate(float value) {\n    return clamp(value, 0.0, 1.0);\n  }\n\n  float convDepth(vec4 color) {\n    const float rMask = 1.0;\n    const float gMask = 1.0 / 255.0;\n    const float bMask = 1.0 / (255.0 * 255.0);\n    const float aMask = 1.0 / (255.0 * 255.0 * 255.0);\n    float depth = dot(color, vec4(rMask, gMask, bMask, aMask));\n    return depth * 2.0 - 1.0;\n  }\n\n  #if USE_SHADER_MODIFIER_SURFACE\n  void shaderModifierSurface() {\n    __SHADER_MODIFIER_SURFACE__\n  }\n  #endif\n\n  #if USE_SHADER_MODIFIER_FRAGMENT\n  void shaderModifierFragment() {\n    __SHADER_MODIFIER_FRAGMENT__\n  }\n  #endif\n\n    \n  void main() {\n    //_output.color = v_color;\n    //_output.color = vec4(0, 0, 0, 1);\n\n    //vec3 viewVec = normalize(v_eye);\n    //vec3 nom = normalize(v_normal);\n    _surface.view = normalize(v_eye);\n    _surface.position = v_position;\n    _surface.normal = normalize(v_normal);\n    _surface.tangent = normalize(v_tangent);\n    _surface.bitangent = normalize(v_bitangent);\n\n    // normal texture\n    if(textureFlags[TEXTURE_NORMAL_INDEX]){\n      mat3 tsInv = mat3(_surface.tangent, _surface.bitangent, _surface.normal);\n      vec3 color = normalize(texture(u_normalTexture, v_texcoord0).rgb * 2.0 - 1.0); // FIXME: check mappingChannel to decide which texture you use.\n      _surface.normal = normalize(tsInv * color);\n    }\n\n    //_surface.ambient = material.ambient;\n    _surface.ambient = vec4(0, 0, 0, 1); // FIXME: check: lock ambient with diffuse\n    _surface.diffuse = material.diffuse;\n    _surface.specular = material.specular;\n    _surface.emission = material.emission;\n    _surface.multiply = material.multiply;\n    _surface.transparent = material.transparent;\n    _surface.reflective = material.reflective;\n    _surface.ambientOcclusion = 1.0; // TODO: calculate AO\n    _surface.shininess = material.shininess;\n    _surface.fresnel = 0.4 * pow(1.0 - clamp(dot(_surface.view, _surface.normal), 0.0, 1.0), material.fresnelExponent); // TODO: calculate coefficient\n\n    // TODO: check mapping channel for each material\n    _surface.ambientTexcoord = v_texcoord0;\n    _surface.diffuseTexcoord = v_texcoord0;\n    _surface.specularTexcoord = v_texcoord0;\n    if(selfIllumination){\n      _surface.emissionTexcoord = v_texcoord1;\n    }else{\n      _surface.emissionTexcoord = v_texcoord0;\n    }\n    _surface.multiplyTexcoord = v_texcoord0;\n    _surface.transparentTexcoord = v_texcoord0;\n\n    if(textureFlags[TEXTURE_AMBIENT_INDEX]){\n      _surface.ambient = texture(u_ambientTexture, _surface.ambientTexcoord);\n    }\n    if(textureFlags[TEXTURE_DIFFUSE_INDEX]){\n      _surface.diffuse = texture(u_diffuseTexture, _surface.diffuseTexcoord);\n      _surface.diffuse.a *= material.diffuse.a;\n    }\n    if(textureFlags[TEXTURE_SPECULAR_INDEX]){\n      _surface.specular = texture(u_specularTexture, _surface.specularTexcoord);\n    }\n    if(textureFlags[TEXTURE_EMISSION_INDEX]){\n      _surface.emission = texture(u_emissionTexture, _surface.emissionTexcoord);\n    }\n    if(textureFlags[TEXTURE_MULTIPLY_INDEX]){\n      _surface.multiply = texture(u_multiplyTexture, _surface.multiplyTexcoord);\n    }\n    if(textureFlags[TEXTURE_TRANSPARENT_INDEX]){\n      _surface.transparent = texture(u_transparentTexture, _surface.transparentTexcoord);\n    }\n\n    __USER_CUSTOM_TEXCOORD__\n\n    #if USE_SHADER_MODIFIER_SURFACE\n      shaderModifierSurface();\n    #endif\n\n    // Lighting\n    int numLights = 0;\n    _lightingContribution.ambient = vec3(0);\n    _lightingContribution.diffuse = vec3(0);\n    _lightingContribution.specular = vec3(0);\n\n    #if NUM_AMBIENT_LIGHTS > 0\n      for(int i=0; i<NUM_AMBIENT_LIGHTS; i++){\n        _lightingContribution.ambient += light.ambient[i].color.rgb;\n      }\n    #endif\n\n    #if NUM_DIRECTIONAL_LIGHTS > 0\n      for(int i=0; i<NUM_DIRECTIONAL_LIGHTS; i++){\n        // diffuse\n        vec3 lightVec = normalize(v_light[numLights + i]);\n        float diffuse = clamp(dot(lightVec, _surface.normal), 0.0f, 1.0f);\n        //_output.color.rgb += light.directional[i].color.rgb * material.diffuse.rgb * diffuse;\n        _lightingContribution.diffuse += light.directional[i].color.rgb * diffuse;\n\n        // specular\n        if(diffuse > 0.0f){\n          vec3 halfVec = normalize(lightVec + _surface.view);\n          float specular = pow(dot(halfVec, _surface.normal), _surface.shininess);\n          // TODO: use intensity\n          _lightingContribution.specular += vec3(specular);\n        }\n      }\n      numLights += NUM_DIRECTIONAL_LIGHTS;\n    #endif\n\n    #if NUM_OMNI_LIGHTS > 0\n      for(int i=0; i<NUM_OMNI_LIGHTS; i++){\n        // diffuse\n        vec3 lightVec = normalize(v_light[numLights + i]);\n        float diffuse = clamp(dot(lightVec, _surface.normal), 0.0f, 1.0f);\n        //_output.color.rgb += light.omni[i].color.rgb * material.diffuse.rgb * diffuse;\n        _lightingContribution.diffuse += light.omni[i].color.rgb * diffuse;\n\n        // specular\n        if(diffuse > 0.0f){\n          vec3 halfVec = normalize(lightVec + _surface.view);\n          float specular = pow(dot(halfVec, _surface.normal), _surface.shininess);\n          // TODO: use intensity\n          _lightingContribution.specular += vec3(1, 1, 1) * specular;\n        }\n      }\n      numLights += NUM_OMNI_LIGHTS;\n    #endif\n\n    #if NUM_SPOT_LIGHTS > 0\n      // TODO: implement\n    #endif\n\n    #if NUM_IES_LIGHTS > 0\n      // TODO: implement\n    #endif\n\n    #if NUM_PROBE_LIGHTS > 0\n      // TODO: implement\n    #endif\n\n    __FS_LIGHTING__\n\n\n    // calculate color\n    _output.color = vec4(0, 0, 0, _surface.diffuse.a);\n\n    vec3 D = _lightingContribution.diffuse;\n\n    // lock ambient with diffuse\n    D += _lightingContribution.ambient * _surface.ambientOcclusion;\n\n    // emission\n    if(selfIllumination){\n      D += _surface.emission.rgb;\n    }\n\n    // diffuse\n    _output.color.rgb = _surface.diffuse.rgb * D;\n\n    vec3 S = _lightingContribution.specular;\n    //S += _surface.reflective.rgb * _surface.ambientOcclusion;\n    S *= _surface.specular.rgb;\n    _output.color.rgb += S;\n\n    // ambient\n    _output.color.rgb += _surface.ambient.rgb * _lightingContribution.ambient;\n\n    if(!selfIllumination){\n      _output.color.rgb += _surface.emission.rgb;\n    }\n\n    // multiply\n    _output.color.rgb *= _surface.multiply.rgb;\n\n    // fresnel reflection\n    if(textureFlags[TEXTURE_REFLECTIVE_INDEX]){\n      vec3 r = reflect(_surface.view, _surface.normal);\n      //float fresnel = f0 + (1.0 - f0) * pow(1.0 - clamp(dot(viewVec, nom), 0.0, 1.0), material.fresnelExponent);\n      //float fresnel = 0.4 * pow(1.0 - clamp(dot(_surface.view, _surface.normal), 0.0, 1.0), material.fresnelExponent);\n      _output.color.rgb += texture(u_reflectiveTexture, r).rgb * _surface.fresnel;\n    }\n\n    float fogFactor = pow(v_fogFactor, fog.densityExponent);\n    _output.color = mix(_output.color, fog.color, fogFactor);\n\n    _output.color.rgb *= _surface.diffuse.a;\n\n    #if USE_SHADER_MODIFIER_FRAGMENT\n      shaderModifierFragment();\n    #endif\n\n    if(_output.color.a <= 0.0){\n      // avoid overwriting the depth buffer\n      discard;\n    }\n\n    outColor = _output.color;\n\n    // linear To sRGB\n    //outColor.rgb = pow(_output.color.rgb, vec3(1.0/2.2));\n    //outColor.a = _output.color.a;\n  }\n';
+
+exports.default = _SCNDefaultFragmentShader;
+
+/***/ }),
+/* 78 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * @type {string}
+ */
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var _SCNDefaultHitTestFragmentShader = '#version 300 es\n  precision mediump float;\n\n  uniform int objectID;\n  uniform int geometryID;\n\n  in vec3 v_normal;\n  in vec3 v_position;\n\n  layout(location = 0) out vec4 out_objectID;\n  layout(location = 1) out vec4 out_faceID;\n  layout(location = 2) out vec4 out_position;\n  layout(location = 3) out vec4 out_normal;\n\n  void main() {\n    out_objectID = vec4(\n      float(objectID >> 8) / 255.0,\n      float(objectID & 0xFF) / 255.0,\n      float(geometryID >> 8) / 255.0,\n      float(geometryID & 0xFF) / 255.0\n    );\n    //out_faceID = vec4(\n    //  (gl_PrimitiveID >> 24) / 255.0,\n    //  ((gl_PrimitiveID >> 16) & 0xFF) / 255.0,\n    //  ((gl_PrimitiveID >> 8) & 0xFF) / 255.0,\n    //  (gl_PrimitiveID & 0xFF) / 255.0\n    //);\n    out_faceID = vec4(0, 0, 0, 0); // TODO: implement\n    vec3 n = normalize(v_normal);\n    out_normal = vec4((n.x + 1.0) * 0.5, (n.y + 1.0) * 0.5, (n.z + 1.0) * 0.5, 0);\n    //out_position = vec4((v_position.x + 1.0) * 0.5, (v_position.y + 1.0) * 0.5, (v_position.z + 1.0) * 0.5, 0);\n    float r = (v_position.z + 1.0) * 0.5;\n    float g = fract(r * 255.0);\n    float b = fract(g * 255.0);\n    float a = fract(b * 255.0);\n    float coef = 1.0 / 255.0;\n\n    r -= g * coef;\n    g -= b * coef;\n    b -= a * coef;\n    out_position = vec4(r, g, b, a);\n  }\n';
+
+exports.default = _SCNDefaultHitTestFragmentShader;
+
+/***/ }),
+/* 79 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * @type {string}
+ */
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var _SCNDefaultHitTestVertexShader = '#version 300 es\n  precision mediump float;\n\n  uniform mat4 viewProjectionTransform;\n  uniform vec4[765] skinningJoints;\n  uniform int numSkinningJoints;\n\n  in vec3 position;\n  in vec3 normal;\n  in vec4 boneIndices;\n  in vec4 boneWeights;\n  \n  out vec3 v_normal;\n  out vec3 v_position;\n\n  void main() {\n    vec3 pos = vec3(0, 0, 0);\n    vec3 nom = vec3(0, 0, 0);\n    if(numSkinningJoints > 0){\n      for(int i=0; i<numSkinningJoints; i++){\n        float weight = boneWeights[i];\n        if(int(boneIndices[i]) < 0){\n          continue;\n        }\n        int idx = int(boneIndices[i]) * 3;\n        mat4 jointMatrix = transpose(mat4(skinningJoints[idx],\n                                          skinningJoints[idx+1],\n                                          skinningJoints[idx+2],\n                                          vec4(0, 0, 0, 1)));\n        pos += (jointMatrix * vec4(position, 1.0)).xyz * weight;\n        nom += (mat3(jointMatrix) * normal) * weight;\n      }\n    }else{\n      mat4 jointMatrix = transpose(mat4(skinningJoints[0],\n                                        skinningJoints[1],\n                                        skinningJoints[2],\n                                        vec4(0, 0, 0, 1)));\n      pos = (jointMatrix * vec4(position, 1.0)).xyz;\n      nom = mat3(jointMatrix) * normal;\n    }\n    //v_position = pos;\n    v_normal = nom;\n\n    gl_Position = viewProjectionTransform * vec4(pos, 1.0);\n    v_position = gl_Position.xyz / gl_Position.w;\n  }\n';
+
+exports.default = _SCNDefaultHitTestVertexShader;
+
+/***/ }),
+/* 80 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * @type {string}
+ */
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var _SCNDefaultParticleFragmentShader = '#version 300 es\n  precision mediump float;\n\n  uniform sampler2D particleTexture;\n\n  in vec2 v_texcoord;\n  in vec4 v_color;\n\n  out vec4 outColor;\n\n  void main() {\n    vec4 texColor = texture(particleTexture, v_texcoord);\n    if(texColor.a <= 0.0){\n      // avoid overwriting the depth buffer\n      discard;\n    }\n\n    texColor.rgb *= texColor.a;\n    outColor = v_color * texColor;\n  }\n';
+
+exports.default = _SCNDefaultParticleFragmentShader;
+
+/***/ }),
+/* 81 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * @type {string}
+ */
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var _SCNDefaultParticleVertexShader = '#version 300 es\n  precision mediump float;\n\n  uniform mat4 modelTransform;\n  uniform mat4 viewTransform;\n  uniform mat4 projectionTransform;\n  uniform int orientationMode;\n  uniform float stretchFactor;\n\n  in vec3 position;\n  in vec3 velocity;\n  in vec4 rotation;\n  in vec4 color;\n  in float size;\n  //in float life;\n  in vec2 corner;\n  in vec2 texcoord;\n\n  out vec2 v_texcoord;\n  out vec4 v_color;\n\n  void main() {\n    vec4 pos = viewTransform * vec4(position, 1.0);\n    vec3 d;\n\n    if(stretchFactor > 0.0){\n      vec4 v = viewTransform * vec4(velocity, 0.0) * stretchFactor;\n      if(corner.y > 0.0){\n        pos.xyz += v.xyz;\n      }\n      vec2 cy = normalize(v.xy);\n      vec2 cx = vec2(-cy.y, cy.x);\n      d = vec3(cx * corner.x + cy * corner.y, 0) * size;\n    }else{\n      float sinAngle = sin(rotation.w);\n      float cosAngle = cos(rotation.w);\n      float tcos = 1.0 - cosAngle;\n\n      d = vec3(\n          corner.x * (rotation.x * rotation.x * tcos + cosAngle)\n        + corner.y * (rotation.x * rotation.y * tcos - rotation.z * sinAngle),\n          corner.x * (rotation.y * rotation.x * tcos + rotation.z * sinAngle)\n        + corner.y * (rotation.y * rotation.y * tcos + cosAngle),\n          corner.x * (rotation.z * rotation.x * tcos - rotation.y * sinAngle)\n        + corner.y * (rotation.z * rotation.y * tcos + rotation.x * sinAngle)) * size;\n      if(orientationMode == 2){\n        // orientation: free\n        d = mat3(viewTransform) * mat3(modelTransform) * d;\n      }\n    }\n    pos.xyz += d;\n\n    v_color = color;\n    v_texcoord = texcoord;\n    gl_Position = projectionTransform * pos;\n  }\n';
+
+exports.default = _SCNDefaultParticleVertexShader;
+
+/***/ }),
+/* 82 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * @type {string}
+ */
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var _SCNDefaultPBRFragmentShader = '#version 300 es\n  precision mediump float;\n  precision highp sampler2DShadow;\n\n  uniform bool[12] textureFlags;\n  #define TEXTURE_EMISSION_INDEX 0\n  #define TEXTURE_AMBIENT_INDEX 1\n  #define TEXTURE_DIFFUSE_INDEX 2\n  #define TEXTURE_SPECULAR_INDEX 3\n  #define TEXTURE_REFLECTIVE_INDEX 4\n  #define TEXTURE_TRANSPARENT_INDEX 5\n  #define TEXTURE_MULTIPLY_INDEX 6\n  #define TEXTURE_NORMAL_INDEX 7\n  #define TEXTURE_AMBIENT_OCCLUSION_INDEX 8\n  #define TEXTURE_SELF_ILLUMINATION_INDEX 9\n  #define TEXTURE_METALNESS_INDEX 10\n  #define TEXTURE_ROUGHNESS_INDEX 11\n\n  uniform bool selfIllumination;\n\n  uniform sampler2D u_emissionTexture;\n  uniform sampler2D u_ambientTexture;\n  uniform sampler2D u_diffuseTexture;\n  uniform sampler2D u_specularTexture;\n  uniform samplerCube u_reflectiveTexture;\n  uniform sampler2D u_transparentTexture;\n  uniform sampler2D u_multiplyTexture;\n  uniform sampler2D u_normalTexture;\n  uniform sampler2D u_ambientOcclusionTexture;\n  uniform sampler2D u_selfIlluminationTexture;\n  uniform sampler2D u_metalnessTexture;\n  uniform sampler2D u_roughnessTexture;\n\n  #define NUM_AMBIENT_LIGHTS __NUM_AMBIENT_LIGHTS__\n  #define NUM_DIRECTIONAL_LIGHTS __NUM_DIRECTIONAL_LIGHTS__\n  #define NUM_DIRECTIONAL_SHADOW_LIGHTS __NUM_DIRECTIONAL_SHADOW_LIGHTS__\n  #define NUM_OMNI_LIGHTS __NUM_OMNI_LIGHTS__\n  #define NUM_SPOT_LIGHTS __NUM_SPOT_LIGHTS__\n  #define NUM_IES_LIGHTS __NUM_IES_LIGHTS__\n  #define NUM_PROBE_LIGHTS __NUM_PROBE_LIGHTS__\n\n  #define NUM_SHADOW_LIGHTS (NUM_DIRECTIONAL_LIGHTS + NUM_DIRECTIONAL_SHADOW_LIGHTS + NUM_OMNI_LIGHTS + NUM_SPOT_LIGHTS)\n  #define NUM_LIGHTS (NUM_AMBIENT_LIGHTS + NUM_DIRECTIONAL_LIGHTS + NUM_DIRECTIONAL_SHADOW_LIGHTS + NUM_OMNI_LIGHTS + NUM_SPOT_LIGHTS + NUM_IES_LIGHTS + NUM_PROBE_LIGHTS)\n\n  #define USE_SHADER_MODIFIER_SURFACE __USE_SHADER_MODIFIER_SURFACE__\n  #define USE_SHADER_MODIFIER_FRAGMENT __USE_SHADER_MODIFIER_FRAGMENT__\n\n  layout (std140) uniform cameraUniform {\n    vec4 position;\n    mat4 viewTransform;\n    mat4 inverseViewTransform;\n    mat4 viewProjectionTransform;\n  } camera;\n\n  layout (std140) uniform materialUniform {\n    vec4 ambient;\n    vec4 diffuse;\n    vec4 specular;\n    vec4 normal;\n    vec4 reflective;\n    vec4 emission;\n    vec4 transparent;\n    vec4 multiply;\n    vec4 ambientOcclusion;\n    vec4 selfIllumination;\n    vec4 metalness;\n    vec4 roughness;\n    float shininess;\n    float fresnelExponent;\n  } material;\n\n  struct AmbientLight {\n    vec4 color;\n  };\n\n  struct SCNShaderLightingContribution {\n    vec3 ambient;\n    vec3 diffuse;\n    vec3 specular;\n  } _lightingContribution;\n\n  struct DirectionalLight {\n    vec4 color;\n    vec4 direction; // should use vec4; vec3 might cause problem for the layout\n  };\n\n  struct DirectionalShadowLight {\n    vec4 color;\n    vec4 direction; // should use vec4; vec3 might cause problem for the layout\n    vec4 shadowColor;\n    mat4 viewProjectionTransform;\n    mat4 shadowProjectionTransform;\n  };\n\n  struct OmniLight {\n    vec4 color;\n    vec4 position; // should use vec4; vec3 might cause problem for the layout\n  };\n\n  struct ProbeLight {\n    // TODO: implement\n    vec4 color;\n  };\n\n  struct SpotLight {\n    // TODO: implement\n    vec4 color;\n  };\n\n  layout (std140) uniform lightUniform {\n    #if NUM_AMBIENT_LIGHTS > 0\n      AmbientLight ambient[NUM_AMBIENT_LIGHTS];\n    #endif\n    #if NUM_DIRECTIONAL_LIGHTS > 0\n      DirectionalLight directional[NUM_DIRECTIONAL_LIGHTS];\n    #endif\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0\n      DirectionalShadowLight directionalShadow[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n    #endif\n    #if NUM_OMNI_LIGHTS > 0\n      OmniLight omni[NUM_OMNI_LIGHTS];\n    #endif\n    #if NUM_SPOT_LIGHTS > 0\n      SpotLight spot[NUM_SPOT_LIGHTS];\n    #endif\n    #if NUM_IES_LIGHTS > 0\n      IESLight ies[NUM_IES_LIGHTS];\n    #endif\n    #if NUM_PROBE_LIGHTS > 0\n      ProbeLight probe[NUM_PROBE_LIGHTS];\n    #endif\n    #if NUM_LIGHTS == 0\n      vec4 dummy;\n    #endif\n  } light;\n  #if NUM_SHADOW_LIGHTS > 0\n    in vec3 v_light[NUM_SHADOW_LIGHTS];\n  #endif\n  #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0\n    in vec4 v_directionalShadowDepth[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n    in vec4 v_directionalShadowTexcoord[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n    uniform sampler2D u_shadowTexture0;\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 1\n      uniform sampler2D u_shadowTexture1;\n    #endif\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 2\n      uniform sampler2D u_shadowTexture2;\n    #endif\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 3\n      uniform sampler2D u_shadowTexture3;\n    #endif\n  #endif\n\n  layout (std140) uniform SCNLightsUniform {\n    vec4 direction0;\n    mat4 shadowMatrix0;\n  } scn_lights;\n\n  layout (std140) uniform fogUniform {\n    vec4 color;\n    float startDistance;\n    float endDistance;\n    float densityExponent;\n  } fog;\n\n  struct SCNShaderSurface {\n    vec3 view;\n    vec3 position;\n    vec3 normal;\n    vec2 normalTexcoord;\n    vec3 geometryNormal;\n    vec3 tangent;\n    vec3 bitangent;\n    vec4 ambient;\n    vec2 ambientTexcoord;\n    vec4 diffuse;\n    vec2 diffuseTexcoord;\n    vec4 specular;\n    vec2 specularTexcoord;\n    vec4 emission;\n    vec2 emissionTexcoord;\n    vec4 multiply;\n    vec2 multiplyTexcoord;\n    vec4 transparent;\n    vec2 transparentTexcoord;\n    vec4 reflective;\n    vec2 metalnessTexcoord;\n    vec2 roughnessTexcoord;\n    float ambientOcclusion;\n    float shininess;\n    float fresnel;\n    float metalness;\n    float roughness;\n    __USER_CUSTOM_SURFACE__\n  } _surface;\n\n  struct SCNShaderOutput {\n    vec4 color;\n  } _output;\n\n  vec2 poissonDisk[4] = vec2[](\n    vec2( -0.94201624, -0.39906216 ),\n    vec2( 0.94558609, -0.76890725 ),\n    vec2( -0.094184101, -0.92938870 ),\n    vec2( 0.34495938, 0.29387760 )\n  );\n\n  //#define kSCNTexcoordCount 2\n  //struct SCNShaderGeometry {\n  //  vec3 position;\n  //  vec3 normal;\n  //  vec4 tangent;\n  //  vec4 color;\n  //  vec2 texcoords[kSCNTexcoordCount];\n  //};\n\n  uniform float u_time;\n\n  in vec3 v_position;\n  in vec3 v_normal;\n  in vec2 v_texcoord0;\n  in vec2 v_texcoord1;\n  //in vec4 v_color;\n  in vec3 v_eye;\n  in vec3 v_tangent;\n  in vec3 v_bitangent;\n  in float v_fogFactor;\n\n  //in SCNShaderGeometry _geometry;\n\n  out vec4 outColor;\n\n  __USER_CUSTOM_UNIFORM__\n\n  float saturate(float value) {\n    return clamp(value, 0.0, 1.0);\n  }\n\n  float convDepth(vec4 color) {\n    const float rMask = 1.0;\n    const float gMask = 1.0 / 255.0;\n    const float bMask = 1.0 / (255.0 * 255.0);\n    const float aMask = 1.0 / (255.0 * 255.0 * 255.0);\n    float depth = dot(color, vec4(rMask, gMask, bMask, aMask));\n    return depth * 2.0 - 1.0;\n  }\n\n  #if USE_SHADER_MODIFIER_SURFACE\n  void shaderModifierSurface() {\n    __SHADER_MODIFIER_SURFACE__\n  }\n  #endif\n\n  #if USE_SHADER_MODIFIER_FRAGMENT\n  void shaderModifierFragment() {\n    __SHADER_MODIFIER_FRAGMENT__\n  }\n  #endif\n\n    \n  void main() {\n    //_output.color = v_color;\n    //_output.color = vec4(0, 0, 0, 1);\n\n    //vec3 viewVec = normalize(v_eye);\n    //vec3 nom = normalize(v_normal);\n    _surface.view = normalize(v_eye);\n    _surface.position = v_position;\n    _surface.normal = normalize(v_normal);\n    _surface.tangent = normalize(v_tangent);\n    _surface.bitangent = normalize(v_bitangent);\n\n    // normal texture\n    if(textureFlags[TEXTURE_NORMAL_INDEX]){\n      mat3 tsInv = mat3(_surface.tangent, _surface.bitangent, _surface.normal);\n      vec3 color = normalize(texture(u_normalTexture, v_texcoord0).rgb * 2.0 - 1.0); // FIXME: check mappingChannel to decide which texture you use.\n      _surface.normal = normalize(tsInv * color);\n    }\n\n    //_surface.ambient = material.ambient;\n    _surface.ambient = vec4(0, 0, 0, 1); // FIXME: check: lock ambient with diffuse\n    _surface.diffuse = material.diffuse;\n    _surface.specular = material.specular;\n    _surface.emission = material.emission;\n    _surface.multiply = material.multiply;\n    _surface.transparent = material.transparent;\n    _surface.reflective = material.reflective;\n    _surface.ambientOcclusion = material.ambientOcclusion.r;\n    _surface.shininess = material.shininess;\n    _surface.fresnel = 0.4 * pow(1.0 - clamp(dot(_surface.view, _surface.normal), 0.0, 1.0), material.fresnelExponent); // TODO: calculate coefficient\n    _surface.metalness = material.metalness.r;\n    _surface.roughness = material.roughness.r;\n\n    // TODO: check mapping channel for each material\n    _surface.ambientTexcoord = v_texcoord0;\n    _surface.diffuseTexcoord = v_texcoord0;\n    _surface.specularTexcoord = v_texcoord0;\n    if(selfIllumination){\n      _surface.emissionTexcoord = v_texcoord1;\n    }else{\n      _surface.emissionTexcoord = v_texcoord0;\n    }\n    _surface.multiplyTexcoord = v_texcoord0;\n    _surface.transparentTexcoord = v_texcoord0;\n    _surface.metalnessTexcoord = v_texcoord0;\n    _surface.roughnessTexcoord = v_texcoord0;\n\n    if(textureFlags[TEXTURE_AMBIENT_INDEX]){\n      _surface.ambient = texture(u_ambientTexture, _surface.ambientTexcoord);\n    }\n    if(textureFlags[TEXTURE_DIFFUSE_INDEX]){\n      _surface.diffuse = texture(u_diffuseTexture, _surface.diffuseTexcoord);\n      _surface.diffuse.a *= material.diffuse.a;\n    }\n    if(textureFlags[TEXTURE_SPECULAR_INDEX]){\n      _surface.specular = texture(u_specularTexture, _surface.specularTexcoord);\n    }\n    if(textureFlags[TEXTURE_EMISSION_INDEX]){\n      _surface.emission = texture(u_emissionTexture, _surface.emissionTexcoord);\n    }\n    if(textureFlags[TEXTURE_MULTIPLY_INDEX]){\n      _surface.multiply = texture(u_multiplyTexture, _surface.multiplyTexcoord);\n    }\n    if(textureFlags[TEXTURE_TRANSPARENT_INDEX]){\n      _surface.transparent = texture(u_transparentTexture, _surface.transparentTexcoord);\n    }\n    if(textureFlags[TEXTURE_METALNESS_INDEX]){\n      _surface.metalness = texture(u_metalnessTexture, _surface.metalnessTexcoord).r;\n    }\n    if(textureFlags[TEXTURE_ROUGHNESS_INDEX]){\n      _surface.roughness = texture(u_roughnessTexture, _surface.roughnessTexcoord).r;\n    }\n\n    __USER_CUSTOM_TEXCOORD__\n\n    #if USE_SHADER_MODIFIER_SURFACE\n      shaderModifierSurface();\n    #endif\n\n    // Lighting\n    int numLights = 0;\n    _lightingContribution.ambient = vec3(0);\n    _lightingContribution.diffuse = vec3(0);\n    _lightingContribution.specular = vec3(0);\n\n    #if NUM_AMBIENT_LIGHTS > 0\n      for(int i=0; i<NUM_AMBIENT_LIGHTS; i++){\n        _lightingContribution.ambient += light.ambient[i].color.rgb;\n      }\n    #endif\n\n    #if NUM_DIRECTIONAL_LIGHTS > 0\n      for(int i=0; i<NUM_DIRECTIONAL_LIGHTS; i++){\n        // diffuse\n        vec3 lightVec = normalize(v_light[numLights + i]);\n        float diffuse = clamp(dot(lightVec, _surface.normal), 0.0f, 1.0f);\n        _lightingContribution.diffuse += light.directional[i].color.rgb * diffuse;\n\n        // specular\n        if(diffuse > 0.0f){\n          vec3 halfVec = normalize(lightVec + _surface.view);\n          float specular = pow(dot(halfVec, _surface.normal), _surface.shininess);\n          _lightingContribution.specular += vec3(specular);\n        }\n      }\n      numLights += NUM_DIRECTIONAL_LIGHTS;\n    #endif\n\n    #if NUM_OMNI_LIGHTS > 0\n      for(int i=0; i<NUM_OMNI_LIGHTS; i++){\n        // diffuse\n        vec3 lightVec = normalize(v_light[numLights + i]);\n        float diffuse = clamp(dot(lightVec, _surface.normal), 0.0f, 1.0f);\n        //_output.color.rgb += light.omni[i].color.rgb * material.diffuse.rgb * diffuse;\n        _lightingContribution.diffuse += light.omni[i].color.rgb * diffuse;\n\n        // specular\n        if(diffuse > 0.0f){\n          vec3 halfVec = normalize(lightVec + _surface.view);\n          float specular = pow(dot(halfVec, _surface.normal), _surface.shininess);\n          // TODO: use intensity\n          _lightingContribution.specular += vec3(1, 1, 1) * specular;\n        }\n      }\n      numLights += NUM_OMNI_LIGHTS;\n    #endif\n\n    #if NUM_SPOT_LIGHTS > 0\n      // TODO: implement\n    #endif\n\n    #if NUM_IES_LIGHTS > 0\n      // TODO: implement\n    #endif\n\n    #if NUM_PROBE_LIGHTS > 0\n      // TODO: implement\n    #endif\n\n    __FS_LIGHTING__\n\n\n    // calculate color\n    _output.color = vec4(0, 0, 0, _surface.diffuse.a);\n\n    //vec3 D = _lightingContribution.diffuse;\n    //// lock ambient with diffuse\n    //D += _lightingContribution.ambient * _surface.ambientOcclusion;\n    //// emission\n    //if(selfIllumination){\n    //  D += _surface.emission.rgb;\n    //}\n    //// diffuse\n    //_output.color.rgb = _surface.diffuse.rgb * D;\n    //vec3 S = _lightingContribution.specular;\n    ////S += _surface.reflective.rgb * _surface.ambientOcclusion;\n    //S *= _surface.specular.rgb;\n    //_output.color.rgb += S;\n    //// ambient\n    //_output.color.rgb += _surface.ambient.rgb * _lightingContribution.ambient;\n    //if(!selfIllumination){\n    //  _output.color.rgb += _surface.emission.rgb;\n    //}\n    //// multiply\n    //_output.color.rgb *= _surface.multiply.rgb;\n    //// fresnel reflection\n    //if(textureFlags[TEXTURE_REFLECTIVE_INDEX]){\n    //  vec3 r = reflect(_surface.view, _surface.normal);\n    //  //float fresnel = f0 + (1.0 - f0) * pow(1.0 - clamp(dot(viewVec, nom), 0.0, 1.0), material.fresnelExponent);\n    //  //float fresnel = 0.4 * pow(1.0 - clamp(dot(_surface.view, _surface.normal), 0.0, 1.0), material.fresnelExponent);\n    //  _output.color.rgb += texture(u_reflectiveTexture, r).rgb * _surface.fresnel;\n    //}\n    //float fogFactor = pow(v_fogFactor, fog.densityExponent);\n    //_output.color = mix(_output.color, fog.color, fogFactor);\n    //_output.color.rgb *= _surface.diffuse.a;\n\n    #define pi 3.14159265\n    vec4 debugColor;\n    float alpha = pow(_surface.roughness, 4.0);\n    float invAlpha = 1.0 - alpha;\n    float nv = clamp(dot(_surface.normal, _surface.view), 0.0, 1.0);\n    float f0 = 0.6;\n    float Gv = 1.0 / (nv + sqrt(alpha + invAlpha * nv * nv));\n    for(int i=0; i<NUM_SHADOW_LIGHTS; i++){\n      vec3 lightVec = normalize(v_light[i]);\n      vec3 halfVec = normalize(lightVec + _surface.view);\n\n      float nh = clamp(dot(_surface.normal, halfVec), 0.0, 1.0);\n      float nl = clamp(dot(_surface.normal, lightVec), 0.0, 1.0);\n      //float vh = clamp(dot(_surface.view, halfVec), 0.0, 1.0);\n\n      float D = alpha / (pi * pow(nh * nh * (alpha - 1.0) + 1.0, 2.0));\n      //float F = f0 + (1.0 - f0) * pow(vh, 5.0);\n      float F = f0 + (1.0 - f0) * pow(1.0 - nh, 5.0);\n      float G = Gv / (nl + sqrt(alpha + invAlpha * nl * nl));\n      float specular = D * F * G;\n      float diffuse = (1.0 - F) * nl / pi;\n      _output.color.rgb += _surface.diffuse.rgb * mix(diffuse, specular, _surface.metalness);\n\n      debugColor = vec4(F, nl, diffuse, 1.0);\n    }\n\n    #if USE_SHADER_MODIFIER_FRAGMENT\n      shaderModifierFragment();\n    #endif\n\n    if(_output.color.a <= 0.0){\n      // avoid overwriting the depth buffer\n      discard;\n    }\n\n    outColor = _output.color;\n\n    // linear To sRGB\n    //outColor.rgb = pow(_output.color.rgb, vec3(1.0/2.2));\n    //outColor.a = _output.color.a;\n\n    //outColor = vec4(1.0, 0.0, 0.0, 1.0);\n    //outColor = debugColor;\n  }\n\n';
+
+exports.default = _SCNDefaultPBRFragmentShader;
+
+/***/ }),
+/* 83 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * @access private
+ * @type {string}
+ */
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var _SCNDefaultShadowFragmentShader = '#version 300 es\n  precision mediump float;\n\n  in vec3 v_position;\n\n  layout(location = 0) out vec4 out_depth;\n  //layout(location = 0) out float out_depth;\n\n  void main() {\n    float r = (v_position.z + 1.0) * 0.5;\n    float g = fract(r * 255.0);\n    float b = fract(g * 255.0);\n    float a = fract(b * 255.0);\n    float coef = 1.0 / 255.0;\n\n    r -= g * coef;\n    g -= b * coef;\n    b -= a * coef;\n    out_depth = vec4(r, g, b, a);\n    //out_depth = v_position.z;\n  }\n';
+
+exports.default = _SCNDefaultShadowFragmentShader;
+
+/***/ }),
+/* 84 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * @access private
+ * @type {string}
+ */
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var _SCNDefaultShadowVertexShader = '#version 300 es\n  precision mediump float;\n\n  uniform mat4 viewProjectionTransform;\n  uniform vec4[765] skinningJoints;\n  uniform int numSkinningJoints;\n\n  in vec3 position;\n  //in vec3 normal;\n  in vec4 boneIndices;\n  in vec4 boneWeights;\n\n  out vec3 v_position;\n\n  void main() {\n    vec3 pos = vec3(0, 0, 0);\n    if(numSkinningJoints > 0){\n      for(int i=0; i<numSkinningJoints; i++){\n        float weight = boneWeights[i];\n        if(int(boneIndices[i]) < 0){\n          continue;\n        }\n        int idx = int(boneIndices[i]) * 3;\n        mat4 jointMatrix = transpose(mat4(skinningJoints[idx],\n                                          skinningJoints[idx+1],\n                                          skinningJoints[idx+2],\n                                          vec4(0, 0, 0, 1)));\n        pos += (jointMatrix * vec4(position, 1.0)).xyz * weight;\n      }\n    }else{\n      mat4 jointMatrix = transpose(mat4(skinningJoints[0],\n                                        skinningJoints[1],\n                                        skinningJoints[2],\n                                        vec4(0, 0, 0, 1)));\n      pos = (jointMatrix * vec4(position, 1.0)).xyz;\n    }\n    //v_position = pos;\n\n    gl_Position = viewProjectionTransform * vec4(pos, 1.0);\n    v_position = gl_Position.xyz / gl_Position.w;\n  }\n';
+
+exports.default = _SCNDefaultShadowVertexShader;
+
+/***/ }),
+/* 85 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * @type {string}
+ */
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var _SCNDefaultVertexShader = '#version 300 es\n  precision mediump float;\n\n  #define NUM_AMBIENT_LIGHTS __NUM_AMBIENT_LIGHTS__\n  #define NUM_DIRECTIONAL_LIGHTS __NUM_DIRECTIONAL_LIGHTS__\n  #define NUM_DIRECTIONAL_SHADOW_LIGHTS __NUM_DIRECTIONAL_SHADOW_LIGHTS__\n  #define NUM_OMNI_LIGHTS __NUM_OMNI_LIGHTS__\n  #define NUM_SPOT_LIGHTS __NUM_SPOT_LIGHTS__\n  #define NUM_IES_LIGHTS __NUM_IES_LIGHTS__\n  #define NUM_PROBE_LIGHTS __NUM_PROBE_LIGHTS__\n\n  #define NUM_SHADOW_LIGHTS (NUM_DIRECTIONAL_LIGHTS + NUM_DIRECTIONAL_SHADOW_LIGHTS + NUM_OMNI_LIGHTS + NUM_SPOT_LIGHTS)\n  #define NUM_LIGHTS (NUM_AMBIENT_LIGHTS + NUM_DIRECTIONAL_LIGHTS + NUM_DIRECTIONAL_SHADOW_LIGHTS + NUM_OMNI_LIGHTS + NUM_SPOT_LIGHTS + NUM_IES_LIGHTS + NUM_PROBE_LIGHTS)\n\n  #define USE_SHADER_MODIFIER_GEOMETRY __USE_SHADER_MODIFIER_GEOMETRY__\n\n  layout (std140) uniform cameraUniform {\n    vec4 position;\n    mat4 viewTransform;\n    mat4 inverseViewTransform;\n    mat4 viewProjectionTransform;\n  } camera;\n\n  layout (std140) uniform materialUniform {\n    vec4 ambient;\n    vec4 diffuse;\n    vec4 specular;\n    vec4 normal;\n    vec4 reflective;\n    vec4 emission;\n    vec4 transparent;\n    vec4 multiply;\n    vec4 ambientOcclusion;\n    vec4 selfIllumination;\n    vec4 metalness;\n    vec4 roughness;\n    float shininess;\n    float fresnelExponent;\n  } material;\n\n  struct AmbientLight {\n    vec4 color;\n  };\n\n  struct DirectionalLight {\n    vec4 color;\n    vec4 direction; // should use vec4; vec3 might cause problem for the layout\n  };\n\n  struct DirectionalShadowLight {\n    vec4 color;\n    vec4 direction; // should use vec4; vec3 might cause problem for the layout\n    vec4 shadowColor;\n    mat4 viewProjectionTransform;\n    mat4 shadowProjectionTransform;\n  };\n\n  struct OmniLight {\n    vec4 color;\n    vec4 position; // should use vec4; vec3 might cause problem for the layout\n  };\n\n  struct SpotLight {\n    // TODO: implement\n    vec4 color;\n  };\n\n  struct IESLight {\n    // TODO: implement\n    vec4 color;\n  };\n\n  struct ProbeLight {\n    // TODO: implement\n    vec4 color;\n  };\n\n  layout (std140) uniform lightUniform {\n    #if NUM_AMBIENT_LIGHTS > 0\n      AmbientLight ambient[NUM_AMBIENT_LIGHTS];\n    #endif\n    #if NUM_DIRECTIONAL_LIGHTS > 0\n      DirectionalLight directional[NUM_DIRECTIONAL_LIGHTS];\n    #endif\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0\n      DirectionalShadowLight directionalShadow[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n    #endif\n    #if NUM_OMNI_LIGHTS > 0\n      OmniLight omni[NUM_OMNI_LIGHTS];\n    #endif\n    #if NUM_SPOT_LIGHTS > 0\n      SpotLight spot[NUM_SPOT_LIGHTS];\n    #endif\n    #if NUM_IES_LIGHTS > 0\n      IESLight ies[NUM_IES_LIGHTS];\n    #endif\n    #if NUM_PROBE_LIGHTS > 0\n      ProbeLight probe[NUM_PROBE_LIGHTS];\n    #endif\n    #if NUM_LIGHTS == 0\n      vec4 dummy;\n    #endif\n  } light;\n\n  #if NUM_SHADOW_LIGHTS > 0\n    out vec3 v_light[NUM_SHADOW_LIGHTS];\n  #endif\n  #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0\n    out vec4 v_directionalShadowDepth[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n    out vec4 v_directionalShadowTexcoord[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n  #endif\n\n  layout (std140) uniform fogUniform {\n    vec4 color;\n    float startDistance;\n    float endDistance;\n    float densityExponent;\n  } fog;\n\n  #define kSCNTexcoordCount 2\n  struct SCNShaderGeometry {\n    vec3 position;\n    vec3 normal;\n    vec4 tangent;\n    vec4 color;\n    vec2 texcoords[kSCNTexcoordCount];\n  };\n  //struct _SCNShaderGeometry {\n  //  vec3 position;\n  //  vec3 normal;\n  //  vec4 tangent;\n  //  vec4 color;\n  //  vec2 texcoord0;\n  //  vec2 texcoord1;\n  //};\n\n  uniform float u_time;\n  //uniform mat3x4[255] skinningJoints;\n  uniform vec4[765] skinningJoints;\n  uniform int numSkinningJoints;\n  uniform mat4 modelTransform;\n\n  in vec3 position;\n  in vec3 normal;\n  in vec3 tangent;\n  in vec4 color;\n  in vec2 texcoord0;\n  in vec2 texcoord1;\n  in vec4 boneIndices;\n  in vec4 boneWeights;\n\n  out vec3 v_position;\n  out vec3 v_normal;\n  out vec3 v_tangent;\n  out vec3 v_bitangent;\n  out vec2 v_texcoord0;\n  out vec2 v_texcoord1;\n  //out vec4 v_color;\n  out vec3 v_eye;\n  out float v_fogFactor;\n\n  //out _SCNShaderGeometry __geometry;\n\n  __USER_CUSTOM_UNIFORM__\n\n  #if USE_SHADER_MODIFIER_GEOMETRY\n  void shaderModifierGeometry(inout SCNShaderGeometry _geometry) {\n    __SHADER_MODIFIER_GEOMETRY__\n  }\n  #endif\n\n  void main() {\n    SCNShaderGeometry _geometry;\n    _geometry.position = position;\n    _geometry.normal = normal;\n    _geometry.tangent = vec4(tangent, 1.0);\n    _geometry.color = color;\n    _geometry.texcoords[0] = texcoord0;\n    _geometry.texcoords[1] = texcoord1;\n    \n    #if USE_SHADER_MODIFIER_GEOMETRY\n      shaderModifierGeometry(_geometry);\n    #endif\n\n    vec3 pos = vec3(0, 0, 0);\n    vec3 nom = vec3(0, 0, 0);\n    vec3 tng = vec3(0, 0, 0);\n    vec4 col = _geometry.color;\n\n    if(numSkinningJoints > 0){\n      for(int i=0; i<numSkinningJoints; i++){\n        float weight = boneWeights[i];\n        if(int(boneIndices[i]) < 0){\n          continue;\n        }\n        int idx = int(boneIndices[i]) * 3;\n        mat4 jointMatrix = transpose(mat4(skinningJoints[idx],\n                                          skinningJoints[idx+1],\n                                          skinningJoints[idx+2],\n                                          vec4(0, 0, 0, 1)));\n        pos += (jointMatrix * vec4(_geometry.position, 1.0)).xyz * weight;\n        nom += (mat3(jointMatrix) * _geometry.normal) * weight;\n        tng += (mat3(jointMatrix) * _geometry.tangent.xyz) * weight;\n      }\n    }else{\n      mat4 jointMatrix = transpose(mat4(skinningJoints[0],\n                                        skinningJoints[1],\n                                        skinningJoints[2],\n                                        vec4(0, 0, 0, 1)));\n      pos = (jointMatrix * vec4(_geometry.position, 1.0)).xyz;\n      nom = mat3(jointMatrix) * _geometry.normal;\n      tng = mat3(jointMatrix) * _geometry.tangent.xyz;\n    }\n    //v_position = pos;\n    //v_normal = normalize(nom);\n    //v_tangent = normalize(tng);\n    v_position = (camera.viewTransform * vec4(pos, 1.0)).xyz;\n    v_normal = normalize((camera.viewTransform * vec4(nom, 0.0)).xyz);\n    v_tangent = normalize((camera.viewTransform * vec4(tng, 0.0)).xyz);\n    v_bitangent = cross(v_tangent, v_normal);\n\n    //vec3 viewVec = camera.position.xyz - pos;\n    vec3 viewVec = (camera.viewTransform * vec4(camera.position.xyz - pos, 0.0)).xyz;\n    v_eye = viewVec;\n\n    //v_color = material.emission;\n\n    // Lighting\n    int numLights = 0;\n\n    //#if NUM_AMBIENT_LIGHTS > 0\n    //  for(int i=0; i<NUM_AMBIENT_LIGHTS; i++){\n    //    v_color += light.ambient[i].color * material.ambient;\n    //    v_ambient += light.ambient[i].color;\n    //  }\n    //#endif\n\n    #if NUM_DIRECTIONAL_LIGHTS > 0\n      for(int i=0; i<NUM_DIRECTIONAL_LIGHTS; i++){\n        //v_light[numLights + i] = -light.directional[i].direction.xyz;\n        v_light[numLights + i] = (camera.viewTransform * (-light.directional[i].direction)).xyz;\n      }\n      numLights += NUM_DIRECTIONAL_LIGHTS;\n    #endif\n\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0\n      for(int i=0; i<NUM_DIRECTIONAL_SHADOW_LIGHTS; i++){\n        //v_light[numLights + i] = -light.directionalShadow[i].direction.xyz;\n        v_light[numLights + i] = (camera.viewTransform * (-light.directionalShadow[i].direction)).xyz;\n        v_directionalShadowDepth[i] = light.directionalShadow[i].viewProjectionTransform * vec4(pos, 1.0);\n        v_directionalShadowTexcoord[i] = light.directionalShadow[i].shadowProjectionTransform * vec4(pos, 1.0);\n      }\n      numLights += NUM_DIRECTIONAL_SHADOW_LIGHTS;\n    #endif\n\n    #if NUM_OMNI_LIGHTS > 0\n      for(int i=0; i<NUM_OMNI_LIGHTS; i++){\n        //v_light[numLights + i] = light.omni[i].position.xyz - pos;\n        v_light[numLights + i] = (camera.viewTransform * vec4(light.omni[i].position.xyz - pos, 0.0)).xyz;\n      }\n      numLights += NUM_OMNI_LIGHTS;\n    #endif\n\n    #if NUM_SPOT_LIGHTS > 0\n      for(int i=0; i<NUM_SPOT_LIGHTS; i++){\n        //v_light[numLights + i] = light.spot[i].position.xyz - pos;\n        v_light[numLights + i] = (camera.viewTransform * vec4(light.spot[i].position.xyz - pos, 0.0)).xyz;\n      }\n      numLights += NUM_SPOT_LIGHTS;\n    #endif\n\n    #if NUM_IES_LIGHTS > 0\n      // TODO: implement\n    #endif\n\n    #if NUM_PROBE_LIGHTS > 0\n      // TODO: implement\n    #endif\n\n\n    float distance = length(viewVec);\n    v_fogFactor = clamp((distance - fog.startDistance) / (fog.endDistance - fog.startDistance), 0.0, 1.0);\n\n    v_texcoord0 = _geometry.texcoords[0];\n    v_texcoord1 = _geometry.texcoords[1];\n    gl_Position = camera.viewProjectionTransform * vec4(pos, 1.0);\n  }\n';
+
+exports.default = _SCNDefaultVertexShader;
+
+/***/ }),
+/* 86 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
  * Values that inform SceneKit’s rendering for movement-related effects, used by the movabilityHint property.
  * @typedef {Object} SCNMovabilityHint
  * @property {number} fixed - The node is not expected to move over time.
@@ -34249,7 +34441,7 @@ var SCNMovabilityHint = {
 exports.default = SCNMovabilityHint;
 
 /***/ }),
-/* 78 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34282,7 +34474,7 @@ var SCNBlendMode = {
 exports.default = SCNBlendMode;
 
 /***/ }),
-/* 79 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34314,7 +34506,7 @@ var SCNColorMask = {
 exports.default = SCNColorMask;
 
 /***/ }),
-/* 80 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34339,7 +34531,7 @@ var SCNFillMode = {
 exports.default = SCNFillMode;
 
 /***/ }),
-/* 81 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34366,7 +34558,7 @@ var SCNFilterMode = {
 exports.default = SCNFilterMode;
 
 /***/ }),
-/* 82 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34395,7 +34587,7 @@ var SCNWrapMode = {
 exports.default = SCNWrapMode;
 
 /***/ }),
-/* 83 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34420,7 +34612,7 @@ var SCNTransparencyMode = {
 exports.default = SCNTransparencyMode;
 
 /***/ }),
-/* 84 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34565,7 +34757,7 @@ var SCNPhysicsContact = function (_NSObject) {
 exports.default = SCNPhysicsContact;
 
 /***/ }),
-/* 85 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34795,7 +34987,7 @@ var SCNAnimation = function (_NSObject) {
 exports.default = SCNAnimation;
 
 /***/ }),
-/* 86 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34826,7 +35018,7 @@ var SCNAntialiasingMode = {
 exports.default = SCNAntialiasingMode;
 
 /***/ }),
-/* 87 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34842,7 +35034,7 @@ var _NSObject2 = __webpack_require__(0);
 
 var _NSObject3 = _interopRequireDefault(_NSObject2);
 
-var _SCNCameraProjectionDirection = __webpack_require__(88);
+var _SCNCameraProjectionDirection = __webpack_require__(97);
 
 var _SCNCameraProjectionDirection2 = _interopRequireDefault(_SCNCameraProjectionDirection);
 
@@ -35429,7 +35621,7 @@ var SCNCamera = function (_NSObject) {
 exports.default = SCNCamera;
 
 /***/ }),
-/* 88 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35454,7 +35646,7 @@ var SCNCameraProjectionDirection = {
 exports.default = SCNCameraProjectionDirection;
 
 /***/ }),
-/* 89 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35481,7 +35673,7 @@ var SCNTessellationSmoothingMode = {
 exports.default = SCNTessellationSmoothingMode;
 
 /***/ }),
-/* 90 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35520,7 +35712,7 @@ var SCNHitTestOption = {
 exports.default = SCNHitTestOption;
 
 /***/ }),
-/* 91 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35979,14 +36171,14 @@ var SCNLight = function (_NSObject) {
         // orthographic
         // FIXME: use orthographicScale, adjust x/y scale automatically
         //m.m11 = 2 / (right - left)
-        m.m11 = 0.2;
+        m.m11 = 0.1;
         //m.m11 = 2 / (right - left)
         m.m12 = 0;
         m.m13 = 0;
         m.m14 = 0;
         m.m21 = 0;
         //m.m22 = 2 / (top - bottom)
-        m.m22 = 0.2;
+        m.m22 = 0.1;
         m.m23 = 0;
         m.m24 = 0;
         m.m31 = 0;
@@ -36091,7 +36283,7 @@ var SCNLight = function (_NSObject) {
 exports.default = SCNLight;
 
 /***/ }),
-/* 92 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36123,7 +36315,7 @@ var SCNMatrix4MakeScale = function SCNMatrix4MakeScale(sx, sy, sz) {
 exports.default = SCNMatrix4MakeScale;
 
 /***/ }),
-/* 93 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36148,7 +36340,7 @@ var SCNMorpherCalculationMode = {
 exports.default = SCNMorpherCalculationMode;
 
 /***/ }),
-/* 94 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36175,7 +36367,7 @@ var SCNParticleBirthDirection = {
 exports.default = SCNParticleBirthDirection;
 
 /***/ }),
-/* 95 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36202,7 +36394,7 @@ var SCNParticleBirthLocation = {
 exports.default = SCNParticleBirthLocation;
 
 /***/ }),
-/* 96 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36235,7 +36427,7 @@ var SCNParticleBlendMode = {
 exports.default = SCNParticleBlendMode;
 
 /***/ }),
-/* 97 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36262,7 +36454,7 @@ var SCNParticleImageSequenceAnimationMode = {
 exports.default = SCNParticleImageSequenceAnimationMode;
 
 /***/ }),
-/* 98 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36291,7 +36483,7 @@ var SCNParticleOrientationMode = {
 exports.default = SCNParticleOrientationMode;
 
 /***/ }),
-/* 99 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36322,7 +36514,7 @@ var SCNParticleSortingMode = {
 exports.default = SCNParticleSortingMode;
 
 /***/ }),
-/* 100 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36612,7 +36804,7 @@ var SCNPhysicsField = function (_NSObject) {
 exports.default = SCNPhysicsField;
 
 /***/ }),
-/* 101 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36622,7 +36814,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _SCNPhysicsField2 = __webpack_require__(100);
+var _SCNPhysicsField2 = __webpack_require__(109);
 
 var _SCNPhysicsField3 = _interopRequireDefault(_SCNPhysicsField2);
 
@@ -36664,7 +36856,7 @@ var SCNPhysicsNoiseField = function (_SCNPhysicsField) {
 exports.default = SCNPhysicsNoiseField;
 
 /***/ }),
-/* 102 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36921,9 +37113,9 @@ var SCNProgram = function (_NSObject) {
       var gl = context;
       this._createDummyTextureForContext(gl);
 
-      var texNames = [gl.TEXTURE0, gl.TEXTURE1, gl.TEXTURE2, gl.TEXTURE3, gl.TEXTURE4, gl.TEXTURE5, gl.TEXTURE6, gl.TEXTURE7];
-      var texSymbols = ['u_emissionTexture', 'u_ambientTexture', 'u_diffuseTexture', 'u_specularTexture', 'u_reflectiveTexture', 'u_transparentTexture', 'u_multiplyTexture', 'u_normalTexture'];
-      var isCubeMap = [false, false, false, false, true, false, false, false];
+      var texNames = [gl.TEXTURE0, gl.TEXTURE1, gl.TEXTURE2, gl.TEXTURE3, gl.TEXTURE4, gl.TEXTURE5, gl.TEXTURE6, gl.TEXTURE7, gl.TEXTURE8, gl.TEXTURE9, gl.TEXTURE10, gl.TEXTURE11];
+      var texSymbols = ['u_emissionTexture', 'u_ambientTexture', 'u_diffuseTexture', 'u_specularTexture', 'u_reflectiveTexture', 'u_transparentTexture', 'u_multiplyTexture', 'u_normalTexture', 'u_ambientOcclusionTexture', 'u_selfIlluminationTexture', 'u_metalnessTexture', 'u_roughnessTexture'];
+      var isCubeMap = [false, false, false, false, true, false, false, false, false, false, false, false];
       for (var i = 0; i < texNames.length; i++) {
         var texName = texNames[i];
         var symbol = texSymbols[i];
@@ -36979,7 +37171,7 @@ var SCNProgram = function (_NSObject) {
 exports.default = SCNProgram;
 
 /***/ }),
-/* 103 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37006,7 +37198,7 @@ var SCNQuaternion = _SCNVector2.default;
 exports.default = SCNQuaternion;
 
 /***/ }),
-/* 104 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37031,7 +37223,7 @@ var SCNReferenceLoadingPolicy = {
 exports.default = SCNReferenceLoadingPolicy;
 
 /***/ }),
-/* 105 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37067,7 +37259,7 @@ var _SCNGeometrySource = __webpack_require__(6);
 
 var _SCNGeometrySource2 = _interopRequireDefault(_SCNGeometrySource);
 
-var _SCNSceneSource = __webpack_require__(106);
+var _SCNSceneSource = __webpack_require__(115);
 
 var _SCNSceneSource2 = _interopRequireDefault(_SCNSceneSource);
 
@@ -37677,7 +37869,7 @@ var SCNScene = function (_NSObject) {
 exports.default = SCNScene;
 
 /***/ }),
-/* 106 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38045,7 +38237,7 @@ var SCNSceneSource = function (_NSObject) {
 exports.default = SCNSceneSource;
 
 /***/ }),
-/* 107 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38093,7 +38285,7 @@ var _SCNNode = __webpack_require__(14);
 
 var _SCNNode2 = _interopRequireDefault(_SCNNode);
 
-var _SCNProgram = __webpack_require__(102);
+var _SCNProgram = __webpack_require__(111);
 
 var _SCNProgram2 = _interopRequireDefault(_SCNProgram);
 
@@ -38101,11 +38293,11 @@ var _SCNPhysicsWorld = __webpack_require__(33);
 
 var _SCNPhysicsWorld2 = _interopRequireDefault(_SCNPhysicsWorld);
 
-var _SCNCamera = __webpack_require__(87);
+var _SCNCamera = __webpack_require__(96);
 
 var _SCNCamera2 = _interopRequireDefault(_SCNCamera);
 
-var _SCNLight = __webpack_require__(91);
+var _SCNLight = __webpack_require__(100);
 
 var _SCNLight2 = _interopRequireDefault(_SCNLight);
 
@@ -38125,7 +38317,7 @@ var _SCNGeometrySource = __webpack_require__(6);
 
 var _SCNGeometrySource2 = _interopRequireDefault(_SCNGeometrySource);
 
-var _SCNHitTestOption = __webpack_require__(90);
+var _SCNHitTestOption = __webpack_require__(99);
 
 var _SCNHitTestOption2 = _interopRequireDefault(_SCNHitTestOption);
 
@@ -38137,13 +38329,49 @@ var _SKColor = __webpack_require__(2);
 
 var _SKColor2 = _interopRequireDefault(_SKColor);
 
-var _SKSpriteNode = __webpack_require__(108);
+var _SKSpriteNode = __webpack_require__(117);
 
 var _SKSpriteNode2 = _interopRequireDefault(_SKSpriteNode);
 
 var _SKTexture = __webpack_require__(54);
 
 var _SKTexture2 = _interopRequireDefault(_SKTexture);
+
+var _SCNDefaultVertexShader2 = __webpack_require__(85);
+
+var _SCNDefaultVertexShader3 = _interopRequireDefault(_SCNDefaultVertexShader2);
+
+var _SCNDefaultFragmentShader2 = __webpack_require__(77);
+
+var _SCNDefaultFragmentShader3 = _interopRequireDefault(_SCNDefaultFragmentShader2);
+
+var _SCNDefaultPBRFragmentShader2 = __webpack_require__(82);
+
+var _SCNDefaultPBRFragmentShader3 = _interopRequireDefault(_SCNDefaultPBRFragmentShader2);
+
+var _SCNDefaultShadowVertexShader2 = __webpack_require__(84);
+
+var _SCNDefaultShadowVertexShader3 = _interopRequireDefault(_SCNDefaultShadowVertexShader2);
+
+var _SCNDefaultShadowFragmentShader2 = __webpack_require__(83);
+
+var _SCNDefaultShadowFragmentShader3 = _interopRequireDefault(_SCNDefaultShadowFragmentShader2);
+
+var _SCNDefaultParticleVertexShader2 = __webpack_require__(81);
+
+var _SCNDefaultParticleVertexShader3 = _interopRequireDefault(_SCNDefaultParticleVertexShader2);
+
+var _SCNDefaultParticleFragmentShader2 = __webpack_require__(80);
+
+var _SCNDefaultParticleFragmentShader3 = _interopRequireDefault(_SCNDefaultParticleFragmentShader2);
+
+var _SCNDefaultHitTestVertexShader2 = __webpack_require__(79);
+
+var _SCNDefaultHitTestVertexShader3 = _interopRequireDefault(_SCNDefaultHitTestVertexShader2);
+
+var _SCNDefaultHitTestFragmentShader2 = __webpack_require__(78);
+
+var _SCNDefaultHitTestFragmentShader3 = _interopRequireDefault(_SCNDefaultHitTestFragmentShader2);
 
 var _InstanceOf2 = __webpack_require__(3);
 
@@ -38164,63 +38392,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 //import SCNAntialiasingMode from './SCNAntialiasingMode'
 
 
-/**
- * @access private
- * @type {string}
- */
-var _defaultVertexShader = '#version 300 es\n  precision mediump float;\n\n  #define NUM_AMBIENT_LIGHTS __NUM_AMBIENT_LIGHTS__\n  #define NUM_DIRECTIONAL_LIGHTS __NUM_DIRECTIONAL_LIGHTS__\n  #define NUM_DIRECTIONAL_SHADOW_LIGHTS __NUM_DIRECTIONAL_SHADOW_LIGHTS__\n  #define NUM_OMNI_LIGHTS __NUM_OMNI_LIGHTS__\n  #define NUM_SPOT_LIGHTS __NUM_SPOT_LIGHTS__\n  #define NUM_IES_LIGHTS __NUM_IES_LIGHTS__\n  #define NUM_PROBE_LIGHTS __NUM_PROBE_LIGHTS__\n\n  #define NUM_SHADOW_LIGHTS (NUM_DIRECTIONAL_LIGHTS + NUM_DIRECTIONAL_SHADOW_LIGHTS + NUM_OMNI_LIGHTS + NUM_SPOT_LIGHTS)\n  #define NUM_LIGHTS (NUM_AMBIENT_LIGHTS + NUM_DIRECTIONAL_LIGHTS + NUM_DIRECTIONAL_SHADOW_LIGHTS + NUM_OMNI_LIGHTS + NUM_SPOT_LIGHTS + NUM_IES_LIGHTS + NUM_PROBE_LIGHTS)\n\n  #define USE_SHADER_MODIFIER_GEOMETRY __USE_SHADER_MODIFIER_GEOMETRY__\n\n  layout (std140) uniform cameraUniform {\n    vec4 position;\n    mat4 viewTransform;\n    mat4 viewProjectionTransform;\n  } camera;\n\n  layout (std140) uniform materialUniform {\n    vec4 ambient;\n    vec4 diffuse;\n    vec4 specular;\n    vec4 normal;\n    vec4 reflective;\n    vec4 emission;\n    vec4 transparent;\n    vec4 multiply;\n    vec4 ambientOcclusion;\n    float shininess;\n    float fresnelExponent;\n  } material;\n\n  struct AmbientLight {\n    vec4 color;\n  };\n\n  struct DirectionalLight {\n    vec4 color;\n    vec4 direction; // should use vec4; vec3 might cause problem for the layout\n  };\n\n  struct DirectionalShadowLight {\n    vec4 color;\n    vec4 direction; // should use vec4; vec3 might cause problem for the layout\n    vec4 shadowColor;\n    mat4 viewProjectionTransform;\n    mat4 shadowProjectionTransform;\n  };\n\n  struct OmniLight {\n    vec4 color;\n    vec4 position; // should use vec4; vec3 might cause problem for the layout\n  };\n\n  struct SpotLight {\n    // TODO: implement\n    vec4 color;\n  };\n\n  struct IESLight {\n    // TODO: implement\n    vec4 color;\n  };\n\n  struct ProbeLight {\n    // TODO: implement\n    vec4 color;\n  };\n\n  layout (std140) uniform lightUniform {\n    #if NUM_AMBIENT_LIGHTS > 0\n      AmbientLight ambient[NUM_AMBIENT_LIGHTS];\n    #endif\n    #if NUM_DIRECTIONAL_LIGHTS > 0\n      DirectionalLight directional[NUM_DIRECTIONAL_LIGHTS];\n    #endif\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0\n      DirectionalShadowLight directionalShadow[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n    #endif\n    #if NUM_OMNI_LIGHTS > 0\n      OmniLight omni[NUM_OMNI_LIGHTS];\n    #endif\n    #if NUM_SPOT_LIGHTS > 0\n      SpotLight spot[NUM_SPOT_LIGHTS];\n    #endif\n    #if NUM_IES_LIGHTS > 0\n      IESLight ies[NUM_IES_LIGHTS];\n    #endif\n    #if NUM_PROBE_LIGHTS > 0\n      ProbeLight probe[NUM_PROBE_LIGHTS];\n    #endif\n    #if NUM_LIGHTS == 0\n      vec4 dummy;\n    #endif\n  } light;\n\n  #if NUM_SHADOW_LIGHTS > 0\n    out vec3 v_light[NUM_SHADOW_LIGHTS];\n  #endif\n  #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0\n    out vec4 v_directionalShadowDepth[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n    out vec4 v_directionalShadowTexcoord[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n  #endif\n\n  layout (std140) uniform fogUniform {\n    vec4 color;\n    float startDistance;\n    float endDistance;\n    float densityExponent;\n  } fog;\n\n  #define kSCNTexcoordCount 2\n  struct SCNShaderGeometry {\n    vec3 position;\n    vec3 normal;\n    vec4 tangent;\n    vec4 color;\n    vec2 texcoords[kSCNTexcoordCount];\n  };\n\n  uniform float u_time;\n  //uniform mat3x4[255] skinningJoints;\n  uniform vec4[765] skinningJoints;\n  uniform int numSkinningJoints;\n  uniform mat4 modelTransform;\n\n  in vec3 position;\n  in vec3 normal;\n  in vec3 tangent;\n  in vec4 color;\n  in vec2 texcoord0;\n  in vec2 texcoord1;\n  in vec4 boneIndices;\n  in vec4 boneWeights;\n\n  out vec3 v_position;\n  out vec3 v_normal;\n  out vec3 v_tangent;\n  out vec3 v_bitangent;\n  out vec2 v_texcoord0;\n  out vec2 v_texcoord1;\n  //out vec4 v_color;\n  out vec3 v_eye;\n  out float v_fogFactor;\n\n  __USER_CUSTOM_UNIFORM__\n\n  #if USE_SHADER_MODIFIER_GEOMETRY\n  void shaderModifierGeometry(inout SCNShaderGeometry _geometry) {\n    __SHADER_MODIFIER_GEOMETRY__\n  }\n  #endif\n\n  void main() {\n    SCNShaderGeometry _geometry;\n    _geometry.position = position;\n    _geometry.normal = normal;\n    _geometry.tangent = vec4(tangent, 1.0);\n    _geometry.color = color;\n    _geometry.texcoords[0] = texcoord0;\n    _geometry.texcoords[1] = texcoord1;\n    \n    #if USE_SHADER_MODIFIER_GEOMETRY\n      shaderModifierGeometry(_geometry);\n    #endif\n\n    vec3 pos = vec3(0, 0, 0);\n    vec3 nom = vec3(0, 0, 0);\n    vec3 tng = vec3(0, 0, 0);\n    vec4 col = _geometry.color;\n\n    if(numSkinningJoints > 0){\n      for(int i=0; i<numSkinningJoints; i++){\n        float weight = boneWeights[i];\n        if(int(boneIndices[i]) < 0){\n          continue;\n        }\n        int idx = int(boneIndices[i]) * 3;\n        mat4 jointMatrix = transpose(mat4(skinningJoints[idx],\n                                          skinningJoints[idx+1],\n                                          skinningJoints[idx+2],\n                                          vec4(0, 0, 0, 1)));\n        pos += (jointMatrix * vec4(_geometry.position, 1.0)).xyz * weight;\n        nom += (mat3(jointMatrix) * _geometry.normal) * weight;\n        tng += (mat3(jointMatrix) * _geometry.tangent.xyz) * weight;\n      }\n    }else{\n      mat4 jointMatrix = transpose(mat4(skinningJoints[0],\n                                        skinningJoints[1],\n                                        skinningJoints[2],\n                                        vec4(0, 0, 0, 1)));\n      pos = (jointMatrix * vec4(_geometry.position, 1.0)).xyz;\n      nom = mat3(jointMatrix) * _geometry.normal;\n      tng = mat3(jointMatrix) * _geometry.tangent.xyz;\n    }\n    //v_position = pos;\n    //v_normal = normalize(nom);\n    //v_tangent = normalize(tng);\n    v_position = (camera.viewTransform * vec4(pos, 1.0)).xyz;\n    v_normal = normalize((camera.viewTransform * vec4(nom, 0.0)).xyz);\n    v_tangent = normalize((camera.viewTransform * vec4(tng, 0.0)).xyz);\n    v_bitangent = cross(v_tangent, v_normal);\n\n    //vec3 viewVec = camera.position.xyz - pos;\n    vec3 viewVec = (camera.viewTransform * vec4(camera.position.xyz - pos, 0.0)).xyz;\n    v_eye = viewVec;\n\n    //v_color = material.emission;\n\n    // Lighting\n    int numLights = 0;\n\n    //#if NUM_AMBIENT_LIGHTS > 0\n    //  for(int i=0; i<NUM_AMBIENT_LIGHTS; i++){\n    //    v_color += light.ambient[i].color * material.ambient;\n    //    v_ambient += light.ambient[i].color;\n    //  }\n    //#endif\n\n    #if NUM_DIRECTIONAL_LIGHTS > 0\n      for(int i=0; i<NUM_DIRECTIONAL_LIGHTS; i++){\n        //v_light[numLights + i] = -light.directional[i].direction.xyz;\n        v_light[numLights + i] = (camera.viewTransform * (-light.directional[i].direction)).xyz;\n      }\n      numLights += NUM_DIRECTIONAL_LIGHTS;\n    #endif\n\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0\n      for(int i=0; i<NUM_DIRECTIONAL_SHADOW_LIGHTS; i++){\n        //v_light[numLights + i] = -light.directionalShadow[i].direction.xyz;\n        v_light[numLights + i] = (camera.viewTransform * (-light.directionalShadow[i].direction)).xyz;\n        v_directionalShadowDepth[i] = light.directionalShadow[i].viewProjectionTransform * vec4(pos, 1.0);\n        v_directionalShadowTexcoord[i] = light.directionalShadow[i].shadowProjectionTransform * vec4(pos, 1.0);\n      }\n      numLights += NUM_DIRECTIONAL_SHADOW_LIGHTS;\n    #endif\n\n    #if NUM_OMNI_LIGHTS > 0\n      for(int i=0; i<NUM_OMNI_LIGHTS; i++){\n        //v_light[numLights + i] = light.omni[i].position.xyz - pos;\n        v_light[numLights + i] = (camera.viewTransform * vec4(light.omni[i].position.xyz - pos, 0.0)).xyz;\n      }\n      numLights += NUM_OMNI_LIGHTS;\n    #endif\n\n    #if NUM_SPOT_LIGHTS > 0\n      for(int i=0; i<NUM_SPOT_LIGHTS; i++){\n        //v_light[numLights + i] = light.spot[i].position.xyz - pos;\n        v_light[numLights + i] = (camera.viewTransform * vec4(light.spot[i].position.xyz - pos, 0.0)).xyz;\n      }\n      numLights += NUM_SPOT_LIGHTS;\n    #endif\n\n    #if NUM_IES_LIGHTS > 0\n      // TODO: implement\n    #endif\n\n    #if NUM_PROBE_LIGHTS > 0\n      // TODO: implement\n    #endif\n\n\n    float distance = length(viewVec);\n    v_fogFactor = clamp((distance - fog.startDistance) / (fog.endDistance - fog.startDistance), 0.0, 1.0);\n\n    v_texcoord0 = _geometry.texcoords[0];\n    v_texcoord1 = _geometry.texcoords[1];\n    gl_Position = camera.viewProjectionTransform * vec4(pos, 1.0);\n  }\n';
-
 var _cameraLoc = 0;
 var _materialLoc = 1;
 var _lightLoc = 2;
 var _scnLightsLoc = 3;
 var _fogLoc = 4;
 
-/**
- * @access private
- * @type {string}
- */
-var _defaultFragmentShader = '#version 300 es\n  precision mediump float;\n  precision highp sampler2DShadow;\n\n  uniform bool[8] textureFlags;\n  #define TEXTURE_EMISSION_INDEX 0\n  #define TEXTURE_AMBIENT_INDEX 1\n  #define TEXTURE_DIFFUSE_INDEX 2\n  #define TEXTURE_SPECULAR_INDEX 3\n  #define TEXTURE_REFLECTIVE_INDEX 4\n  #define TEXTURE_TRANSPARENT_INDEX 5\n  #define TEXTURE_MULTIPLY_INDEX 6\n  #define TEXTURE_NORMAL_INDEX 7\n\n  uniform bool selfIllumination;\n\n  uniform sampler2D u_emissionTexture;\n  uniform sampler2D u_ambientTexture;\n  uniform sampler2D u_diffuseTexture;\n  uniform sampler2D u_specularTexture;\n  uniform samplerCube u_reflectiveTexture;\n  uniform sampler2D u_transparentTexture;\n  uniform sampler2D u_multiplyTexture;\n  uniform sampler2D u_normalTexture;\n\n  #define NUM_AMBIENT_LIGHTS __NUM_AMBIENT_LIGHTS__\n  #define NUM_DIRECTIONAL_LIGHTS __NUM_DIRECTIONAL_LIGHTS__\n  #define NUM_DIRECTIONAL_SHADOW_LIGHTS __NUM_DIRECTIONAL_SHADOW_LIGHTS__\n  #define NUM_OMNI_LIGHTS __NUM_OMNI_LIGHTS__\n  #define NUM_SPOT_LIGHTS __NUM_SPOT_LIGHTS__\n  #define NUM_IES_LIGHTS __NUM_IES_LIGHTS__\n  #define NUM_PROBE_LIGHTS __NUM_PROBE_LIGHTS__\n\n  #define NUM_SHADOW_LIGHTS (NUM_DIRECTIONAL_LIGHTS + NUM_DIRECTIONAL_SHADOW_LIGHTS + NUM_OMNI_LIGHTS + NUM_SPOT_LIGHTS)\n  #define NUM_LIGHTS (NUM_AMBIENT_LIGHTS + NUM_DIRECTIONAL_LIGHTS + NUM_DIRECTIONAL_SHADOW_LIGHTS + NUM_OMNI_LIGHTS + NUM_SPOT_LIGHTS + NUM_IES_LIGHTS + NUM_PROBE_LIGHTS)\n\n  #define USE_SHADER_MODIFIER_SURFACE __USE_SHADER_MODIFIER_SURFACE__\n  #define USE_SHADER_MODIFIER_FRAGMENT __USE_SHADER_MODIFIER_FRAGMENT__\n\n  layout (std140) uniform cameraUniform {\n    vec4 position;\n    mat4 viewTransform;\n    mat4 viewProjectionTransform;\n  } camera;\n\n  layout (std140) uniform materialUniform {\n    vec4 ambient;\n    vec4 diffuse;\n    vec4 specular;\n    vec4 normal;\n    vec4 reflective;\n    vec4 emission;\n    vec4 transparent;\n    vec4 multiply;\n    vec4 ambientOcclusion;\n    float shininess;\n    float fresnelExponent;\n  } material;\n\n  struct AmbientLight {\n    vec4 color;\n  };\n\n  struct SCNShaderLightingContribution {\n    vec3 ambient;\n    vec3 diffuse;\n    vec3 specular;\n  } _lightingContribution;\n\n  struct DirectionalLight {\n    vec4 color;\n    vec4 direction; // should use vec4; vec3 might cause problem for the layout\n  };\n\n  struct DirectionalShadowLight {\n    vec4 color;\n    vec4 direction; // should use vec4; vec3 might cause problem for the layout\n    vec4 shadowColor;\n    mat4 viewProjectionTransform;\n    mat4 shadowProjectionTransform;\n  };\n\n  struct OmniLight {\n    vec4 color;\n    vec4 position; // should use vec4; vec3 might cause problem for the layout\n  };\n\n  struct ProbeLight {\n    // TODO: implement\n    vec4 color;\n  };\n\n  struct SpotLight {\n    // TODO: implement\n    vec4 color;\n  };\n\n  layout (std140) uniform lightUniform {\n    #if NUM_AMBIENT_LIGHTS > 0\n      AmbientLight ambient[NUM_AMBIENT_LIGHTS];\n    #endif\n    #if NUM_DIRECTIONAL_LIGHTS > 0\n      DirectionalLight directional[NUM_DIRECTIONAL_LIGHTS];\n    #endif\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0\n      DirectionalShadowLight directionalShadow[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n    #endif\n    #if NUM_OMNI_LIGHTS > 0\n      OmniLight omni[NUM_OMNI_LIGHTS];\n    #endif\n    #if NUM_SPOT_LIGHTS > 0\n      SpotLight spot[NUM_SPOT_LIGHTS];\n    #endif\n    #if NUM_IES_LIGHTS > 0\n      IESLight ies[NUM_IES_LIGHTS];\n    #endif\n    #if NUM_PROBE_LIGHTS > 0\n      ProbeLight probe[NUM_PROBE_LIGHTS];\n    #endif\n    #if NUM_LIGHTS == 0\n      vec4 dummy;\n    #endif\n  } light;\n  #if NUM_SHADOW_LIGHTS > 0\n    in vec3 v_light[NUM_SHADOW_LIGHTS];\n  #endif\n  #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0\n    in vec4 v_directionalShadowDepth[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n    in vec4 v_directionalShadowTexcoord[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n    uniform sampler2D u_shadowTexture0;\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 1\n      uniform sampler2D u_shadowTexture1;\n    #endif\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 2\n      uniform sampler2D u_shadowTexture2;\n    #endif\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 3\n      uniform sampler2D u_shadowTexture3;\n    #endif\n  #endif\n\n  layout (std140) uniform SCNLightsUniform {\n    vec4 direction0;\n    mat4 shadowMatrix0;\n  } scn_lights;\n\n  layout (std140) uniform fogUniform {\n    vec4 color;\n    float startDistance;\n    float endDistance;\n    float densityExponent;\n  } fog;\n\n  struct SCNShaderSurface {\n    vec3 view;\n    vec3 position;\n    vec3 normal;\n    vec2 normalTexcoord;\n    vec3 geometryNormal;\n    vec3 tangent;\n    vec3 bitangent;\n    vec4 ambient;\n    vec2 ambientTexcoord;\n    vec4 diffuse;\n    vec2 diffuseTexcoord;\n    vec4 specular;\n    vec2 specularTexcoord;\n    vec4 emission;\n    vec2 emissionTexcoord;\n    vec4 multiply;\n    vec2 multiplyTexcoord;\n    vec4 transparent;\n    vec2 transparentTexcoord;\n    vec4 reflective;\n    float ambientOcclusion;\n    float shininess;\n    float fresnel;\n    __USER_CUSTOM_SURFACE__\n  } _surface;\n\n  struct SCNShaderOutput {\n    vec4 color;\n  } _output;\n\n  vec2 poissonDisk[4] = vec2[](\n    vec2( -0.94201624, -0.39906216 ),\n    vec2( 0.94558609, -0.76890725 ),\n    vec2( -0.094184101, -0.92938870 ),\n    vec2( 0.34495938, 0.29387760 )\n  );\n\n  uniform float u_time;\n\n  in vec3 v_position;\n  in vec3 v_normal;\n  in vec2 v_texcoord0;\n  in vec2 v_texcoord1;\n  //in vec4 v_color;\n  in vec3 v_eye;\n  in vec3 v_tangent;\n  in vec3 v_bitangent;\n  in float v_fogFactor;\n\n  out vec4 outColor;\n\n  __USER_CUSTOM_UNIFORM__\n\n  float saturate(float value) {\n    return clamp(value, 0.0, 1.0);\n  }\n\n  float convDepth(vec4 color) {\n    const float rMask = 1.0;\n    const float gMask = 1.0 / 255.0;\n    const float bMask = 1.0 / (255.0 * 255.0);\n    const float aMask = 1.0 / (255.0 * 255.0 * 255.0);\n    float depth = dot(color, vec4(rMask, gMask, bMask, aMask));\n    return depth * 2.0 - 1.0;\n  }\n\n  #if USE_SHADER_MODIFIER_SURFACE\n  void shaderModifierSurface() {\n    __SHADER_MODIFIER_SURFACE__\n  }\n  #endif\n\n  #if USE_SHADER_MODIFIER_FRAGMENT\n  void shaderModifierFragment() {\n    __SHADER_MODIFIER_FRAGMENT__\n  }\n  #endif\n\n    \n  void main() {\n    //_output.color = v_color;\n    //_output.color = vec4(0, 0, 0, 1);\n\n    //vec3 viewVec = normalize(v_eye);\n    //vec3 nom = normalize(v_normal);\n    _surface.view = normalize(v_eye);\n    _surface.position = v_position;\n    _surface.normal = normalize(v_normal);\n    _surface.tangent = normalize(v_tangent);\n    _surface.bitangent = normalize(v_bitangent);\n\n    // normal texture\n    if(textureFlags[TEXTURE_NORMAL_INDEX]){\n      mat3 tsInv = mat3(_surface.tangent, _surface.bitangent, _surface.normal);\n      vec3 color = normalize(texture(u_normalTexture, v_texcoord0).rgb * 2.0 - 1.0); // FIXME: check mappingChannel to decide which texture you use.\n      _surface.normal = normalize(tsInv * color);\n    }\n\n    //_surface.ambient = material.ambient;\n    _surface.ambient = vec4(0, 0, 0, 1); // FIXME: check: lock ambient with diffuse\n    _surface.diffuse = material.diffuse;\n    _surface.specular = material.specular;\n    _surface.emission = material.emission;\n    _surface.multiply = material.multiply;\n    _surface.transparent = material.transparent;\n    _surface.reflective = material.reflective;\n    _surface.ambientOcclusion = 1.0; // TODO: calculate AO\n    _surface.shininess = material.shininess;\n    _surface.fresnel = 0.4 * pow(1.0 - clamp(dot(_surface.view, _surface.normal), 0.0, 1.0), material.fresnelExponent); // TODO: calculate coefficient\n\n    // TODO: check mapping channel for each material\n    _surface.ambientTexcoord = v_texcoord0;\n    _surface.diffuseTexcoord = v_texcoord0;\n    _surface.specularTexcoord = v_texcoord0;\n    if(selfIllumination){\n      _surface.emissionTexcoord = v_texcoord1;\n    }else{\n      _surface.emissionTexcoord = v_texcoord0;\n    }\n    _surface.multiplyTexcoord = v_texcoord0;\n    _surface.transparentTexcoord = v_texcoord0;\n\n    if(textureFlags[TEXTURE_AMBIENT_INDEX]){\n      _surface.ambient = texture(u_ambientTexture, _surface.ambientTexcoord);\n    }\n    if(textureFlags[TEXTURE_DIFFUSE_INDEX]){\n      _surface.diffuse = texture(u_diffuseTexture, _surface.diffuseTexcoord);\n    }\n    if(textureFlags[TEXTURE_SPECULAR_INDEX]){\n      _surface.specular = texture(u_specularTexture, _surface.specularTexcoord);\n    }\n    if(textureFlags[TEXTURE_EMISSION_INDEX]){\n      _surface.emission = texture(u_emissionTexture, _surface.emissionTexcoord);\n    }\n    if(textureFlags[TEXTURE_MULTIPLY_INDEX]){\n      _surface.multiply = texture(u_multiplyTexture, _surface.multiplyTexcoord);\n    }\n    if(textureFlags[TEXTURE_TRANSPARENT_INDEX]){\n      _surface.transparent = texture(u_transparentTexture, _surface.transparentTexcoord);\n    }\n\n    __USER_CUSTOM_TEXCOORD__\n\n    #if USE_SHADER_MODIFIER_SURFACE\n      shaderModifierSurface();\n    #endif\n\n    // Lighting\n    int numLights = 0;\n    _lightingContribution.ambient = vec3(0);\n    _lightingContribution.diffuse = vec3(0);\n    _lightingContribution.specular = vec3(0);\n\n    #if NUM_AMBIENT_LIGHTS > 0\n      for(int i=0; i<NUM_AMBIENT_LIGHTS; i++){\n        _lightingContribution.ambient += light.ambient[i].color.rgb;\n      }\n    #endif\n\n    #if NUM_DIRECTIONAL_LIGHTS > 0\n      for(int i=0; i<NUM_DIRECTIONAL_LIGHTS; i++){\n        // diffuse\n        vec3 lightVec = normalize(v_light[numLights + i]);\n        float diffuse = clamp(dot(lightVec, _surface.normal), 0.0f, 1.0f);\n        //_output.color.rgb += light.directional[i].color.rgb * material.diffuse.rgb * diffuse;\n        _lightingContribution.diffuse += light.directional[i].color.rgb * diffuse;\n\n        // specular\n        if(diffuse > 0.0f){\n          vec3 halfVec = normalize(lightVec + _surface.view);\n          float specular = pow(dot(halfVec, _surface.normal), _surface.shininess);\n          // TODO: use intensity\n          _lightingContribution.specular += vec3(specular);\n        }\n      }\n      numLights += NUM_DIRECTIONAL_LIGHTS;\n    #endif\n\n    #if NUM_OMNI_LIGHTS > 0\n      for(int i=0; i<NUM_OMNI_LIGHTS; i++){\n        // diffuse\n        vec3 lightVec = normalize(v_light[numLights + i]);\n        float diffuse = clamp(dot(lightVec, _surface.normal), 0.0f, 1.0f);\n        //_output.color.rgb += light.omni[i].color.rgb * material.diffuse.rgb * diffuse;\n        _lightingContribution.diffuse += light.omni[i].color.rgb * diffuse;\n\n        // specular\n        if(diffuse > 0.0f){\n          vec3 halfVec = normalize(lightVec + _surface.view);\n          float specular = pow(dot(halfVec, _surface.normal), _surface.shininess);\n          // TODO: use intensity\n          _lightingContribution.specular += vec3(1, 1, 1) * specular;\n        }\n      }\n      numLights += NUM_OMNI_LIGHTS;\n    #endif\n\n    #if NUM_SPOT_LIGHTS > 0\n      // TODO: implement\n    #endif\n\n    #if NUM_IES_LIGHTS > 0\n      // TODO: implement\n    #endif\n\n    #if NUM_PROBE_LIGHTS > 0\n      // TODO: implement\n    #endif\n\n    __FS_LIGHTING__\n\n\n    // calculate color\n    _output.color = vec4(0, 0, 0, _surface.diffuse.a);\n\n    vec3 D = _lightingContribution.diffuse;\n\n    // lock ambient with diffuse\n    D += _lightingContribution.ambient * _surface.ambientOcclusion;\n\n    // emission\n    if(selfIllumination){\n      D += _surface.emission.rgb;\n    }\n\n    // diffuse\n    _output.color.rgb = _surface.diffuse.rgb * D;\n\n    vec3 S = _lightingContribution.specular;\n    //S += _surface.reflective.rgb * _surface.ambientOcclusion;\n    S *= _surface.specular.rgb;\n    _output.color.rgb += S;\n\n    // ambient\n    _output.color.rgb += _surface.ambient.rgb * _lightingContribution.ambient;\n\n    if(!selfIllumination){\n      _output.color.rgb += _surface.emission.rgb;\n    }\n\n    // multiply\n    _output.color.rgb *= _surface.multiply.rgb;\n\n    // fresnel reflection\n    if(textureFlags[TEXTURE_REFLECTIVE_INDEX]){\n      vec3 r = reflect(_surface.view, _surface.normal);\n      //float fresnel = f0 + (1.0 - f0) * pow(1.0 - clamp(dot(viewVec, nom), 0.0, 1.0), material.fresnelExponent);\n      //float fresnel = 0.4 * pow(1.0 - clamp(dot(_surface.view, _surface.normal), 0.0, 1.0), material.fresnelExponent);\n      _output.color.rgb += texture(u_reflectiveTexture, r).rgb * _surface.fresnel;\n    }\n\n    float fogFactor = pow(v_fogFactor, fog.densityExponent);\n    _output.color = mix(_output.color, fog.color, fogFactor);\n\n    _output.color.rgb *= _surface.diffuse.a;\n\n    #if USE_SHADER_MODIFIER_FRAGMENT\n      shaderModifierFragment();\n    #endif\n\n    if(_output.color.a <= 0.0){\n      // avoid overwriting the depth buffer\n      discard;\n    }\n\n    outColor = _output.color;\n\n    // linear To sRGB\n    //outColor.rgb = pow(_output.color.rgb, vec3(1.0/2.2));\n    //outColor.a = _output.color.a;\n  }\n';
+var _shadowTextureBaseIndex = 8;
 
 var _fsDirectionalShadow = '\n  //float shadow = convDepth(texture(u_shadowTexture__I__, v_directionalShadowTexcoord[__I__].xy / v_directionalShadowTexcoord[__I__].w));\n  //if(v_directionalShadowDepth[__I__].z / v_directionalShadowDepth[__I__].w - 0.0001 > shadow){\n  //  _output.color.rgb += material.diffuse.rgb * light.directionalShadow[__I__].shadowColor.rgb;\n  //}else{\n  //  // diffuse\n  //  vec3 lightVec = normalize(v_light[numLights]);\n  //  float diffuse = clamp(dot(lightVec, _surface.normal), 0.0f, 1.0f);\n  //  _output.color.rgb += light.directionalShadow[__I__].color.rgb * material.diffuse.rgb * diffuse;\n\n  //  // specular\n  //  if(diffuse > 0.0f){\n  //    vec3 halfVec = normalize(lightVec + _surface.view);\n  //    float specular = pow(dot(halfVec, _surface.normal), material.shininess);\n  //    _output.color.rgb += specularColor.rgb * specular;\n  //  }\n  //}\n\n  {\n    float shadow = 0.0;\n    for(int i=0; i<4; i++){\n      float d = convDepth(texture(u_shadowTexture__I__, (v_directionalShadowTexcoord[__I__].xy + poissonDisk[i]/700.0) / v_directionalShadowTexcoord[__I__].w));\n      if(v_directionalShadowDepth[__I__].z / v_directionalShadowDepth[__I__].w - 0.0001 > d){\n        shadow += 0.25;\n      }\n    }\n    //vec3 shadowColor = material.diffuse.rgb * light.directionalShadow[__I__].shadowColor.rgb;\n    vec3 shadowColor = light.directionalShadow[__I__].shadowColor.rgb;\n    // diffuse\n    vec3 lightVec = normalize(v_light[numLights]);\n    float diffuse = clamp(dot(lightVec, _surface.normal), 0.0f, 1.0f);\n    vec3 lightDiffuse = light.directionalShadow[__I__].color.rgb * diffuse;\n    _lightingContribution.diffuse += shadowColor * shadow + lightDiffuse * (1.0 - shadow);\n\n    // specular\n    if(diffuse > 0.0f){\n      vec3 halfVec = normalize(lightVec + _surface.view);\n      float specular = pow(dot(halfVec, _surface.normal), _surface.shininess);\n      // TODO: use intensity\n      _lightingContribution.specular += vec3(specular);\n    }\n    //_output.color.rgb += shadowColor * shadow + lightColor * (1.0 - shadow);\n  }\n\n  numLights += 1;\n';
 
 var _defaultCameraDistance = 15;
-
-/**
- * @access private
- * @type {string}
- */
-var _defaultParticleVertexShader = '#version 300 es\n  precision mediump float;\n\n  uniform mat4 modelTransform;\n  uniform mat4 viewTransform;\n  uniform mat4 projectionTransform;\n  uniform int orientationMode;\n  uniform float stretchFactor;\n\n  in vec3 position;\n  in vec3 velocity;\n  in vec4 rotation;\n  in vec4 color;\n  in float size;\n  //in float life;\n  in vec2 corner;\n  in vec2 texcoord;\n\n  out vec2 v_texcoord;\n  out vec4 v_color;\n\n  void main() {\n    vec4 pos = viewTransform * vec4(position, 1.0);\n    vec3 d;\n\n    if(stretchFactor > 0.0){\n      vec4 v = viewTransform * vec4(velocity, 0.0) * stretchFactor;\n      if(corner.y > 0.0){\n        pos.xyz += v.xyz;\n      }\n      vec2 cy = normalize(v.xy);\n      vec2 cx = vec2(-cy.y, cy.x);\n      d = vec3(cx * corner.x + cy * corner.y, 0) * size;\n    }else{\n      float sinAngle = sin(rotation.w);\n      float cosAngle = cos(rotation.w);\n      float tcos = 1.0 - cosAngle;\n\n      d = vec3(\n          corner.x * (rotation.x * rotation.x * tcos + cosAngle)\n        + corner.y * (rotation.x * rotation.y * tcos - rotation.z * sinAngle),\n          corner.x * (rotation.y * rotation.x * tcos + rotation.z * sinAngle)\n        + corner.y * (rotation.y * rotation.y * tcos + cosAngle),\n          corner.x * (rotation.z * rotation.x * tcos - rotation.y * sinAngle)\n        + corner.y * (rotation.z * rotation.y * tcos + rotation.x * sinAngle)) * size;\n      if(orientationMode == 2){\n        // orientation: free\n        d = mat3(viewTransform) * mat3(modelTransform) * d;\n      }\n    }\n    pos.xyz += d;\n\n    v_color = color;\n    v_texcoord = texcoord;\n    gl_Position = projectionTransform * pos;\n  }\n';
-
-/**
- * @access private
- * @type {string}
- */
-var _defaultParticleFragmentShader = '#version 300 es\n  precision mediump float;\n\n  uniform sampler2D particleTexture;\n\n  in vec2 v_texcoord;\n  in vec4 v_color;\n\n  out vec4 outColor;\n\n  void main() {\n    vec4 texColor = texture(particleTexture, v_texcoord);\n    if(texColor.a <= 0.0){\n      // avoid overwriting the depth buffer\n      discard;\n    }\n\n    texColor.rgb *= texColor.a;\n    outColor = v_color * texColor;\n  }\n';
-
-/**
- * @access private
- * @type {string}
- */
-var _defaultHitTestVertexShader = '#version 300 es\n  precision mediump float;\n\n  uniform mat4 viewProjectionTransform;\n  uniform vec4[765] skinningJoints;\n  uniform int numSkinningJoints;\n\n  in vec3 position;\n  in vec3 normal;\n  in vec4 boneIndices;\n  in vec4 boneWeights;\n  \n  out vec3 v_normal;\n  out vec3 v_position;\n\n  void main() {\n    vec3 pos = vec3(0, 0, 0);\n    vec3 nom = vec3(0, 0, 0);\n    if(numSkinningJoints > 0){\n      for(int i=0; i<numSkinningJoints; i++){\n        float weight = boneWeights[i];\n        if(int(boneIndices[i]) < 0){\n          continue;\n        }\n        int idx = int(boneIndices[i]) * 3;\n        mat4 jointMatrix = transpose(mat4(skinningJoints[idx],\n                                          skinningJoints[idx+1],\n                                          skinningJoints[idx+2],\n                                          vec4(0, 0, 0, 1)));\n        pos += (jointMatrix * vec4(position, 1.0)).xyz * weight;\n        nom += (mat3(jointMatrix) * normal) * weight;\n      }\n    }else{\n      mat4 jointMatrix = transpose(mat4(skinningJoints[0],\n                                        skinningJoints[1],\n                                        skinningJoints[2],\n                                        vec4(0, 0, 0, 1)));\n      pos = (jointMatrix * vec4(position, 1.0)).xyz;\n      nom = mat3(jointMatrix) * normal;\n    }\n    //v_position = pos;\n    v_normal = nom;\n\n    gl_Position = viewProjectionTransform * vec4(pos, 1.0);\n    v_position = gl_Position.xyz / gl_Position.w;\n  }\n';
-
-/**
- * @access private
- * @type {string}
- */
-var _defaultHitTestFragmentShader = '#version 300 es\n  precision mediump float;\n\n  uniform int objectID;\n  uniform int geometryID;\n\n  in vec3 v_normal;\n  in vec3 v_position;\n\n  layout(location = 0) out vec4 out_objectID;\n  layout(location = 1) out vec4 out_faceID;\n  layout(location = 2) out vec4 out_position;\n  layout(location = 3) out vec4 out_normal;\n\n  void main() {\n    out_objectID = vec4(\n      float(objectID >> 8) / 255.0,\n      float(objectID & 0xFF) / 255.0,\n      float(geometryID >> 8) / 255.0,\n      float(geometryID & 0xFF) / 255.0\n    );\n    //out_faceID = vec4(\n    //  (gl_PrimitiveID >> 24) / 255.0,\n    //  ((gl_PrimitiveID >> 16) & 0xFF) / 255.0,\n    //  ((gl_PrimitiveID >> 8) & 0xFF) / 255.0,\n    //  (gl_PrimitiveID & 0xFF) / 255.0\n    //);\n    out_faceID = vec4(0, 0, 0, 0); // TODO: implement\n    vec3 n = normalize(v_normal);\n    out_normal = vec4((n.x + 1.0) * 0.5, (n.y + 1.0) * 0.5, (n.z + 1.0) * 0.5, 0);\n    //out_position = vec4((v_position.x + 1.0) * 0.5, (v_position.y + 1.0) * 0.5, (v_position.z + 1.0) * 0.5, 0);\n    float r = (v_position.z + 1.0) * 0.5;\n    float g = fract(r * 255.0);\n    float b = fract(g * 255.0);\n    float a = fract(b * 255.0);\n    float coef = 1.0 / 255.0;\n\n    r -= g * coef;\n    g -= b * coef;\n    b -= a * coef;\n    out_position = vec4(r, g, b, a);\n  }\n';
-
-/**
- * @access private
- * @type {string}
- */
-var _defaultShadowVertexShader = '#version 300 es\n  precision mediump float;\n\n  uniform mat4 viewProjectionTransform;\n  uniform vec4[765] skinningJoints;\n  uniform int numSkinningJoints;\n\n  in vec3 position;\n  //in vec3 normal;\n  in vec4 boneIndices;\n  in vec4 boneWeights;\n\n  out vec3 v_position;\n\n  void main() {\n    vec3 pos = vec3(0, 0, 0);\n    if(numSkinningJoints > 0){\n      for(int i=0; i<numSkinningJoints; i++){\n        float weight = boneWeights[i];\n        if(int(boneIndices[i]) < 0){\n          continue;\n        }\n        int idx = int(boneIndices[i]) * 3;\n        mat4 jointMatrix = transpose(mat4(skinningJoints[idx],\n                                          skinningJoints[idx+1],\n                                          skinningJoints[idx+2],\n                                          vec4(0, 0, 0, 1)));\n        pos += (jointMatrix * vec4(position, 1.0)).xyz * weight;\n      }\n    }else{\n      mat4 jointMatrix = transpose(mat4(skinningJoints[0],\n                                        skinningJoints[1],\n                                        skinningJoints[2],\n                                        vec4(0, 0, 0, 1)));\n      pos = (jointMatrix * vec4(position, 1.0)).xyz;\n    }\n    //v_position = pos;\n\n    gl_Position = viewProjectionTransform * vec4(pos, 1.0);\n    v_position = gl_Position.xyz / gl_Position.w;\n  }\n';
-
-/**
- * @access private
- * @type {string}
- */
-var _defaultShadowFragmentShader = '#version 300 es\n  precision mediump float;\n\n  in vec3 v_position;\n\n  layout(location = 0) out vec4 out_depth;\n  //layout(location = 0) out float out_depth;\n\n  void main() {\n    float r = (v_position.z + 1.0) * 0.5;\n    float g = fract(r * 255.0);\n    float b = fract(g * 255.0);\n    float a = fract(b * 255.0);\n    float coef = 1.0 / 255.0;\n\n    r -= g * coef;\n    g -= b * coef;\n    b -= a * coef;\n    out_depth = vec4(r, g, b, a);\n    //out_depth = v_position.z;\n  }\n';
 
 /**
  * A renderer for displaying SceneKit scene in an an existing Metal workflow or OpenGL context. 
@@ -38404,6 +38586,12 @@ var SCNRenderer = function (_NSObject) {
      * @type {SCNProgram}
      */
     _this.__defaultProgram = null;
+
+    /**
+     * @access private
+     * @type {SCNProgram}
+     */
+    _this.__defaultPBRProgram = null;
 
     /**
      * @access private
@@ -38645,6 +38833,7 @@ var SCNRenderer = function (_NSObject) {
 
       cameraData.push.apply(cameraData, _toConsumableArray(cameraPNode.worldTransform.getTranslation().floatArray()).concat([0]));
       cameraData.push.apply(cameraData, _toConsumableArray(cameraPNode.viewTransform.floatArray()));
+      cameraData.push.apply(cameraData, _toConsumableArray(cameraPNode.inverseViewTransform.floatArray()));
       cameraData.push.apply(cameraData, _toConsumableArray(cameraPNode.viewProjectionTransform.floatArray()));
       gl.bindBuffer(gl.UNIFORM_BUFFER, this._cameraBuffer);
       gl.bufferData(gl.UNIFORM_BUFFER, new Float32Array(cameraData), gl.DYNAMIC_DRAW);
@@ -38813,7 +39002,7 @@ var SCNRenderer = function (_NSObject) {
       ();this._useProgram(p);
       for (var i = 0; i < lights.directionalShadow.length; i++) {
         var node = lights.directionalShadow[i];
-        var symbol = 'TEXTURE' + (i + 8);
+        var symbol = 'TEXTURE' + (i + _shadowTextureBaseIndex);
         gl.activeTexture(gl[symbol]);
         gl.bindTexture(gl.TEXTURE_2D, node.presentation.light._shadowDepthTexture);
       }
@@ -39267,10 +39456,12 @@ var SCNRenderer = function (_NSObject) {
         var materialCount = geometry.materials.length;
         var material = geometry.materials[i % materialCount];
         var p = glProgram;
-        if (material && material.program) {
-          this._switchProgram(material.program
+        if (material && (material.program || material.lightingModel === _SCNMaterial2.default.LightingModel.physicallyBased)) {
+          var _scnProgram = material.program ? material.program : this._defaultPBRProgram;
+          this._switchProgram(_scnProgram
+
           // TODO: refactoring
-          );p = material.program._getGLProgramForContext(gl);
+          );p = _scnProgram._getGLProgramForContext(gl);
           if (node.presentation.skinner !== null) {
             if (node.presentation.skinner._useGPU) {
               gl.uniform1i(gl.getUniformLocation(p, 'numSkinningJoints'), node.presentation.skinner.numSkinningJoints);
@@ -40533,7 +40724,7 @@ var SCNRenderer = function (_NSObject) {
       var obj = program._parentObject;
       if (obj) {
         // bind custom uniforms
-        var textureNo = 12; // TEXTURE0-11 is reserved for the default renderer (0-7: material, 8-11: shadow)
+        var textureNo = 16; // TEXTURE0-15 is reserved for the default renderer (0-11: material, 12-15: shadow)
         var _iteratorNormalCompletion9 = true;
         var _didIteratorError9 = false;
         var _iteratorError9 = undefined;
@@ -40547,6 +40738,10 @@ var SCNRenderer = function (_NSObject) {
               var val = obj._valuesForUndefinedKeys[key];
               if (typeof val === 'number') {
                 gl.uniform1f(loc, val);
+              } else if ((0, _InstanceOf3.default)(val, _SCNVector2.default)) {
+                gl.uniform3fv(loc, val.float32Array());
+              } else if ((0, _InstanceOf3.default)(val, _SCNVector4.default) || (0, _InstanceOf3.default)(val, _SKColor2.default)) {
+                gl.uniform4fv(loc, val.float32Array());
               } else if ((0, _InstanceOf3.default)(val, _SCNMaterialProperty2.default)) {
                 // TODO: refactoring: SCNGeometry has the same function
                 if (val._contents instanceof Image) {
@@ -40631,7 +40826,7 @@ var SCNRenderer = function (_NSObject) {
     value: function _vertexShaderForObject(obj) {
       var txt = obj.program.vertexShader;
       if (!txt) {
-        txt = _defaultVertexShader;
+        txt = _SCNDefaultVertexShader3.default;
       }
 
       return this._replaceTexts(txt, obj);
@@ -40654,7 +40849,7 @@ var SCNRenderer = function (_NSObject) {
     value: function _fragmentShaderForObject(obj) {
       var txt = obj.program.fragmentShader;
       if (!txt) {
-        txt = _defaultFragmentShader;
+        txt = _SCNDefaultFragmentShader3.default;
       }
 
       return this._replaceTexts(txt, obj);
@@ -40840,6 +41035,7 @@ var SCNRenderer = function (_NSObject) {
 
       );_text = _text.replace(/u_modelTransform/g, 'modelTransform' // TODO: use u_modelTransform
       );_text = _text.replace(/u_viewTransform/g, 'camera.viewTransform' // TODO: use u_viewTransform
+      );_text = _text.replace(/u_inverseViewTransform/g, 'camera.inverseViewTransform' // TODO: use u_inverseViewTransform
       );_text = _text.replace(/u_viewProjectionTransform/g, 'caemra.viewProjectionTransform' // TODO: use u_viewTransform
       );_text = _text.replace(/\s*uniform[^;]*;/g, ''
 
@@ -41178,10 +41374,10 @@ var SCNRenderer = function (_NSObject) {
 
       for (var i = 0; i < this._lightNodes.directionalShadow.length; i++) {
         var node = this._lightNodes.directionalShadow[i];
-        var symbol = 'TEXTURE' + (i + 8);
+        var symbol = 'TEXTURE' + (i + _shadowTextureBaseIndex);
         var name = 'u_shadowTexture' + i;
 
-        gl.uniform1i(gl.getUniformLocation(glProgram, name), i + 8);
+        gl.uniform1i(gl.getUniformLocation(glProgram, name), i + _shadowTextureBaseIndex);
         gl.activeTexture(gl[symbol]);
         gl.bindTexture(gl.TEXTURE_2D, node.presentation.light._shadowDepthTexture);
       }
@@ -41821,15 +42017,93 @@ var SCNRenderer = function (_NSObject) {
 
       );return this.__defaultProgram;
     }
+
+    /**
+     * @access private
+     * @type {SCNProgram}
+     */
+
+  }, {
+    key: '_defaultPBRProgram',
+    get: function get() {
+      var numLightsChanged = this._numLightsChanged();
+      if (this.__defaultPBRProgram !== null && !numLightsChanged) {
+        return this.__defaultPBRProgram;
+      }
+
+      var gl = this.context;
+      if (this.__defaultPBRProgram === null) {
+        this.__defaultPBRProgram = new _SCNProgram2.default();
+      }
+      var p = this.__defaultPBRProgram;
+      var glProgram = p._getGLProgramForContext(gl);
+      var vsText = this._defaultVertexShader;
+      var fsText = this._defaultPBRFragmentShader;
+
+      // initialize vertex shader
+      var vertexShader = gl.createShader(gl.VERTEX_SHADER);
+      gl.shaderSource(vertexShader, vsText);
+      gl.compileShader(vertexShader);
+      if (!gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS)) {
+        var info = gl.getShaderInfoLog(vertexShader);
+        throw new Error('vertex shader compile error: ' + info);
+      }
+      this.__defaultPBRProgram._glVertexShader = vertexShader;
+
+      // initialize fragment shader
+      var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
+      gl.shaderSource(fragmentShader, fsText);
+      gl.compileShader(fragmentShader);
+      if (!gl.getShaderParameter(fragmentShader, gl.COMPILE_STATUS)) {
+        var _info5 = gl.getShaderInfoLog(fragmentShader);
+        throw new Error('fragment shader compile error: ' + _info5);
+      }
+      this.__defaultPBRProgram._glFragmentShader = fragmentShader;
+
+      gl.attachShader(glProgram, vertexShader);
+      gl.attachShader(glProgram, fragmentShader
+
+      // link program object
+      );gl.linkProgram(glProgram);
+      if (!gl.getProgramParameter(glProgram, gl.LINK_STATUS)) {
+        var _info6 = gl.getProgramInfoLog(glProgram);
+        throw new Error('program link error: ' + _info6);
+      }
+
+      this._switchProgram(p);
+
+      gl.enable(gl.DEPTH_TEST);
+      gl.depthFunc(gl.LEQUAL);
+      gl.enable(gl.BLEND);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+      gl.enable(gl.CULL_FACE);
+      gl.cullFace(gl.BACK
+
+      // set default textures to prevent warnings
+      //this._setDummyTextureAsDefault(p)
+
+      );return this.__defaultPBRProgram;
+    }
   }, {
     key: '_defaultVertexShader',
     get: function get() {
-      return this._replaceTexts(_defaultVertexShader);
+      return this._replaceTexts(_SCNDefaultVertexShader3.default);
     }
   }, {
     key: '_defaultFragmentShader',
     get: function get() {
-      return this._replaceTexts(_defaultFragmentShader);
+      return this._replaceTexts(_SCNDefaultFragmentShader3.default);
+    }
+
+    /**
+     * @access private
+     * @returns {string} -
+     */
+
+  }, {
+    key: '_defaultPBRFragmentShader',
+    get: function get() {
+      return this._replaceTexts(_SCNDefaultPBRFragmentShader3.default);
     }
   }, {
     key: '_dummyTexture',
@@ -41848,8 +42122,8 @@ var SCNRenderer = function (_NSObject) {
       }
       var p = this.__defaultParticleProgram;
       var glProgram = p._getGLProgramForContext(gl);
-      var vsText = _defaultParticleVertexShader;
-      var fsText = _defaultParticleFragmentShader;
+      var vsText = _SCNDefaultParticleVertexShader3.default;
+      var fsText = _SCNDefaultParticleFragmentShader3.default;
 
       // initialize vertex shader
       var vertexShader = gl.createShader(gl.VERTEX_SHADER);
@@ -41865,8 +42139,8 @@ var SCNRenderer = function (_NSObject) {
       gl.shaderSource(fragmentShader, fsText);
       gl.compileShader(fragmentShader);
       if (!gl.getShaderParameter(fragmentShader, gl.COMPILE_STATUS)) {
-        var _info5 = gl.getShaderInfoLog(fragmentShader);
-        throw new Error('particle fragment shader compile error: ' + _info5);
+        var _info7 = gl.getShaderInfoLog(fragmentShader);
+        throw new Error('particle fragment shader compile error: ' + _info7);
       }
 
       gl.attachShader(glProgram, vertexShader);
@@ -41875,8 +42149,8 @@ var SCNRenderer = function (_NSObject) {
       // link program object
       );gl.linkProgram(glProgram);
       if (!gl.getProgramParameter(glProgram, gl.LINK_STATUS)) {
-        var _info6 = gl.getProgramInfoLog(glProgram);
-        throw new Error('program link error: ' + _info6);
+        var _info8 = gl.getProgramInfoLog(glProgram);
+        throw new Error('program link error: ' + _info8);
       }
 
       //gl.useProgram(glProgram)
@@ -41915,8 +42189,8 @@ var SCNRenderer = function (_NSObject) {
       }
       var p = this.__defaultShadowProgram;
       var glProgram = p._getGLProgramForContext(gl);
-      var vsText = _defaultShadowVertexShader;
-      var fsText = _defaultShadowFragmentShader;
+      var vsText = _SCNDefaultShadowVertexShader3.default;
+      var fsText = _SCNDefaultShadowFragmentShader3.default;
 
       // initialize vertex shader
       var vertexShader = gl.createShader(gl.VERTEX_SHADER);
@@ -41932,8 +42206,8 @@ var SCNRenderer = function (_NSObject) {
       gl.shaderSource(fragmentShader, fsText);
       gl.compileShader(fragmentShader);
       if (!gl.getShaderParameter(fragmentShader, gl.COMPILE_STATUS)) {
-        var _info7 = gl.getShaderInfoLog(fragmentShader);
-        throw new Error('particle fragment shader compile error: ' + _info7);
+        var _info9 = gl.getShaderInfoLog(fragmentShader);
+        throw new Error('particle fragment shader compile error: ' + _info9);
       }
 
       gl.attachShader(glProgram, vertexShader);
@@ -41942,8 +42216,8 @@ var SCNRenderer = function (_NSObject) {
       // link program object
       );gl.linkProgram(glProgram);
       if (!gl.getProgramParameter(glProgram, gl.LINK_STATUS)) {
-        var _info8 = gl.getProgramInfoLog(glProgram);
-        throw new Error('program link error: ' + _info8);
+        var _info10 = gl.getProgramInfoLog(glProgram);
+        throw new Error('program link error: ' + _info10);
       }
 
       //gl.useProgram(glProgram)
@@ -41974,8 +42248,8 @@ var SCNRenderer = function (_NSObject) {
       }
       var p = this.__defaultHitTestProgram;
       var glProgram = p._getGLProgramForContext(gl);
-      var vsText = _defaultHitTestVertexShader;
-      var fsText = _defaultHitTestFragmentShader;
+      var vsText = _SCNDefaultHitTestVertexShader3.default;
+      var fsText = _SCNDefaultHitTestFragmentShader3.default;
 
       // initialize vertex shader
       var vertexShader = gl.createShader(gl.VERTEX_SHADER);
@@ -41991,8 +42265,8 @@ var SCNRenderer = function (_NSObject) {
       gl.shaderSource(fragmentShader, fsText);
       gl.compileShader(fragmentShader);
       if (!gl.getShaderParameter(fragmentShader, gl.COMPILE_STATUS)) {
-        var _info9 = gl.getShaderInfoLog(fragmentShader);
-        throw new Error('hitTest fragment shader compile error: ' + _info9);
+        var _info11 = gl.getShaderInfoLog(fragmentShader);
+        throw new Error('hitTest fragment shader compile error: ' + _info11);
       }
 
       gl.attachShader(glProgram, vertexShader);
@@ -42001,8 +42275,8 @@ var SCNRenderer = function (_NSObject) {
       // link program object
       );gl.linkProgram(glProgram);
       if (!gl.getProgramParameter(glProgram, gl.LINK_STATUS)) {
-        var _info10 = gl.getProgramInfoLog(glProgram);
-        throw new Error('program link error: ' + _info10);
+        var _info12 = gl.getProgramInfoLog(glProgram);
+        throw new Error('program link error: ' + _info12);
       }
 
       //gl.useProgram(glProgram)
@@ -42030,7 +42304,7 @@ var SCNRenderer = function (_NSObject) {
 exports.default = SCNRenderer;
 
 /***/ }),
-/* 108 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42596,7 +42870,7 @@ var SKSpriteNode = function (_SKNode) {
 exports.default = SKSpriteNode;
 
 /***/ }),
-/* 109 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42621,7 +42895,7 @@ var SKTextureFilteringMode = {
 exports.default = SKTextureFilteringMode;
 
 /***/ }),
-/* 110 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42654,7 +42928,7 @@ var SCNRenderingAPI = {
 exports.default = SCNRenderingAPI;
 
 /***/ }),
-/* 111 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42799,7 +43073,7 @@ var SKEffectNode = function (_SKNode) {
 exports.default = SKEffectNode;
 
 /***/ }),
-/* 112 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42826,7 +43100,7 @@ var SKLabelHorizontalAlignmentMode = {
 exports.default = SKLabelHorizontalAlignmentMode;
 
 /***/ }),
-/* 113 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42855,7 +43129,7 @@ var SKLabelVerticalAlignmentMode = {
 exports.default = SKLabelVerticalAlignmentMode;
 
 /***/ }),
-/* 114 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -42884,17 +43158,17 @@ var SKSceneScaleMode = {
 exports.default = SKSceneScaleMode;
 
 /***/ }),
-/* 115 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _NSColor = __webpack_require__(116);
+var _NSColor = __webpack_require__(125);
 
 var _NSColor2 = _interopRequireDefault(_NSColor);
 
-var _NSColorSpaceModel = __webpack_require__(117);
+var _NSColorSpaceModel = __webpack_require__(126);
 
 var _NSColorSpaceModel2 = _interopRequireDefault(_NSColorSpaceModel);
 
@@ -42906,11 +43180,11 @@ var _AVAudioNode = __webpack_require__(56);
 
 var _AVAudioNode2 = _interopRequireDefault(_AVAudioNode);
 
-var _CFAbsoluteTimeGetCurrent = __webpack_require__(118);
+var _CFAbsoluteTimeGetCurrent = __webpack_require__(127);
 
 var _CFAbsoluteTimeGetCurrent2 = _interopRequireDefault(_CFAbsoluteTimeGetCurrent);
 
-var _CGBlendMode = __webpack_require__(119);
+var _CGBlendMode = __webpack_require__(128);
 
 var _CGBlendMode2 = _interopRequireDefault(_CGBlendMode);
 
@@ -42922,19 +43196,19 @@ var _CGLineJoin = __webpack_require__(58);
 
 var _CGLineJoin2 = _interopRequireDefault(_CGLineJoin);
 
-var _CGMutablePath = __webpack_require__(120);
+var _CGMutablePath = __webpack_require__(129);
 
 var _CGMutablePath2 = _interopRequireDefault(_CGMutablePath);
 
-var _CGPath = __webpack_require__(121);
+var _CGPath = __webpack_require__(130);
 
 var _CGPath2 = _interopRequireDefault(_CGPath);
 
-var _CGPathApplierFunction = __webpack_require__(122);
+var _CGPathApplierFunction = __webpack_require__(131);
 
 var _CGPathApplierFunction2 = _interopRequireDefault(_CGPathApplierFunction);
 
-var _CGPathFillRule = __webpack_require__(123);
+var _CGPathFillRule = __webpack_require__(132);
 
 var _CGPathFillRule2 = _interopRequireDefault(_CGPathFillRule);
 
@@ -42958,19 +43232,19 @@ var _DispatchObject = __webpack_require__(60);
 
 var _DispatchObject2 = _interopRequireDefault(_DispatchObject);
 
-var _DispatchQueue = __webpack_require__(124);
+var _DispatchQueue = __webpack_require__(133);
 
 var _DispatchQueue2 = _interopRequireDefault(_DispatchQueue);
 
-var _DispatchTime = __webpack_require__(125);
+var _DispatchTime = __webpack_require__(134);
 
 var _DispatchTime2 = _interopRequireDefault(_DispatchTime);
 
-var _DispatchTimeInterval = __webpack_require__(126);
+var _DispatchTimeInterval = __webpack_require__(135);
 
 var _DispatchTimeInterval2 = _interopRequireDefault(_DispatchTimeInterval);
 
-var _NotificationCenter = __webpack_require__(127);
+var _NotificationCenter = __webpack_require__(136);
 
 var _NotificationCenter2 = _interopRequireDefault(_NotificationCenter);
 
@@ -42982,7 +43256,7 @@ var _NSCoder = __webpack_require__(39);
 
 var _NSCoder2 = _interopRequireDefault(_NSCoder);
 
-var _NSColorSpace = __webpack_require__(128);
+var _NSColorSpace = __webpack_require__(137);
 
 var _NSColorSpace2 = _interopRequireDefault(_NSColorSpace);
 
@@ -42994,7 +43268,7 @@ var _NSDictionary = __webpack_require__(67);
 
 var _NSDictionary2 = _interopRequireDefault(_NSDictionary);
 
-var _NSKeyedArchiver = __webpack_require__(129);
+var _NSKeyedArchiver = __webpack_require__(138);
 
 var _NSKeyedArchiver2 = _interopRequireDefault(_NSKeyedArchiver);
 
@@ -43002,15 +43276,15 @@ var _NSKeyedUnarchiver = __webpack_require__(41);
 
 var _NSKeyedUnarchiver2 = _interopRequireDefault(_NSKeyedUnarchiver);
 
-var _NSMutableArray = __webpack_require__(131);
+var _NSMutableArray = __webpack_require__(140);
 
 var _NSMutableArray2 = _interopRequireDefault(_NSMutableArray);
 
-var _NSMutableData = __webpack_require__(132);
+var _NSMutableData = __webpack_require__(141);
 
 var _NSMutableData2 = _interopRequireDefault(_NSMutableData);
 
-var _NSMutableDictionary = __webpack_require__(133);
+var _NSMutableDictionary = __webpack_require__(142);
 
 var _NSMutableDictionary2 = _interopRequireDefault(_NSMutableDictionary);
 
@@ -43018,11 +43292,11 @@ var _NSNotification = __webpack_require__(61);
 
 var _NSNotification2 = _interopRequireDefault(_NSNotification);
 
-var _NSURL = __webpack_require__(134);
+var _NSURL = __webpack_require__(143);
 
 var _NSURL2 = _interopRequireDefault(_NSURL);
 
-var _NSValue = __webpack_require__(135);
+var _NSValue = __webpack_require__(144);
 
 var _NSValue2 = _interopRequireDefault(_NSValue);
 
@@ -43062,7 +43336,7 @@ var _GKAgent = __webpack_require__(43);
 
 var _GKAgent2 = _interopRequireDefault(_GKAgent);
 
-var _GKAgent2D = __webpack_require__(136);
+var _GKAgent2D = __webpack_require__(145);
 
 var _GKAgent2D2 = _interopRequireDefault(_GKAgent2D);
 
@@ -43086,15 +43360,15 @@ var _GKGoal = __webpack_require__(72);
 
 var _GKGoal2 = _interopRequireDefault(_GKGoal);
 
-var _GKPath = __webpack_require__(137);
+var _GKPath = __webpack_require__(146);
 
 var _GKPath2 = _interopRequireDefault(_GKPath);
 
-var _GKScene = __webpack_require__(138);
+var _GKScene = __webpack_require__(147);
 
 var _GKScene2 = _interopRequireDefault(_GKScene);
 
-var _GKSCNNodeComponent = __webpack_require__(139);
+var _GKSCNNodeComponent = __webpack_require__(148);
 
 var _GKSCNNodeComponent2 = _interopRequireDefault(_GKSCNNodeComponent);
 
@@ -43106,7 +43380,7 @@ var _NSObject = __webpack_require__(0);
 
 var _NSObject2 = _interopRequireDefault(_NSObject);
 
-var _CAAction = __webpack_require__(140);
+var _CAAction = __webpack_require__(149);
 
 var _CAAction2 = _interopRequireDefault(_CAAction);
 
@@ -43114,7 +43388,7 @@ var _CAAnimation = __webpack_require__(23);
 
 var _CAAnimation2 = _interopRequireDefault(_CAAnimation);
 
-var _CAAnimationDelegate = __webpack_require__(141);
+var _CAAnimationDelegate = __webpack_require__(150);
 
 var _CAAnimationDelegate2 = _interopRequireDefault(_CAAnimationDelegate);
 
@@ -43126,7 +43400,7 @@ var _CABasicAnimation = __webpack_require__(44);
 
 var _CABasicAnimation2 = _interopRequireDefault(_CABasicAnimation);
 
-var _CACurrentMediaTime = __webpack_require__(142);
+var _CACurrentMediaTime = __webpack_require__(151);
 
 var _CACurrentMediaTime2 = _interopRequireDefault(_CACurrentMediaTime);
 
@@ -43134,7 +43408,7 @@ var _CAKeyframeAnimation = __webpack_require__(76);
 
 var _CAKeyframeAnimation2 = _interopRequireDefault(_CAKeyframeAnimation);
 
-var _CAMediaTiming = __webpack_require__(143);
+var _CAMediaTiming = __webpack_require__(152);
 
 var _CAMediaTiming2 = _interopRequireDefault(_CAMediaTiming);
 
@@ -43146,11 +43420,47 @@ var _CAPropertyAnimation = __webpack_require__(45);
 
 var _CAPropertyAnimation2 = _interopRequireDefault(_CAPropertyAnimation);
 
-var _CATransform3D = __webpack_require__(144);
+var _CATransform3D = __webpack_require__(153);
 
 var _CATransform3D2 = _interopRequireDefault(_CATransform3D);
 
-var _SCNAccelerationConstraint = __webpack_require__(145);
+var _SCNDefaultFragmentShader2 = __webpack_require__(77);
+
+var _SCNDefaultFragmentShader3 = _interopRequireDefault(_SCNDefaultFragmentShader2);
+
+var _SCNDefaultHitTestFragmentShader2 = __webpack_require__(78);
+
+var _SCNDefaultHitTestFragmentShader3 = _interopRequireDefault(_SCNDefaultHitTestFragmentShader2);
+
+var _SCNDefaultHitTestVertexShader2 = __webpack_require__(79);
+
+var _SCNDefaultHitTestVertexShader3 = _interopRequireDefault(_SCNDefaultHitTestVertexShader2);
+
+var _SCNDefaultParticleFragmentShader2 = __webpack_require__(80);
+
+var _SCNDefaultParticleFragmentShader3 = _interopRequireDefault(_SCNDefaultParticleFragmentShader2);
+
+var _SCNDefaultParticleVertexShader2 = __webpack_require__(81);
+
+var _SCNDefaultParticleVertexShader3 = _interopRequireDefault(_SCNDefaultParticleVertexShader2);
+
+var _SCNDefaultPBRFragmentShader2 = __webpack_require__(82);
+
+var _SCNDefaultPBRFragmentShader3 = _interopRequireDefault(_SCNDefaultPBRFragmentShader2);
+
+var _SCNDefaultShadowFragmentShader2 = __webpack_require__(83);
+
+var _SCNDefaultShadowFragmentShader3 = _interopRequireDefault(_SCNDefaultShadowFragmentShader2);
+
+var _SCNDefaultShadowVertexShader2 = __webpack_require__(84);
+
+var _SCNDefaultShadowVertexShader3 = _interopRequireDefault(_SCNDefaultShadowVertexShader2);
+
+var _SCNDefaultVertexShader2 = __webpack_require__(85);
+
+var _SCNDefaultVertexShader3 = _interopRequireDefault(_SCNDefaultVertexShader2);
+
+var _SCNAccelerationConstraint = __webpack_require__(154);
 
 var _SCNAccelerationConstraint2 = _interopRequireDefault(_SCNAccelerationConstraint);
 
@@ -43158,75 +43468,75 @@ var _SCNAction = __webpack_require__(4);
 
 var _SCNAction2 = _interopRequireDefault(_SCNAction);
 
-var _SCNActionable = __webpack_require__(146);
+var _SCNActionable = __webpack_require__(155);
 
 var _SCNActionable2 = _interopRequireDefault(_SCNActionable);
 
-var _SCNActionCustom = __webpack_require__(147);
+var _SCNActionCustom = __webpack_require__(156);
 
 var _SCNActionCustom2 = _interopRequireDefault(_SCNActionCustom);
 
-var _SCNActionFade = __webpack_require__(148);
+var _SCNActionFade = __webpack_require__(157);
 
 var _SCNActionFade2 = _interopRequireDefault(_SCNActionFade);
 
-var _SCNActionGroup = __webpack_require__(149);
+var _SCNActionGroup = __webpack_require__(158);
 
 var _SCNActionGroup2 = _interopRequireDefault(_SCNActionGroup);
 
-var _SCNActionHide = __webpack_require__(150);
+var _SCNActionHide = __webpack_require__(159);
 
 var _SCNActionHide2 = _interopRequireDefault(_SCNActionHide);
 
-var _SCNActionJavaScript = __webpack_require__(151);
+var _SCNActionJavaScript = __webpack_require__(160);
 
 var _SCNActionJavaScript2 = _interopRequireDefault(_SCNActionJavaScript);
 
-var _SCNActionMove = __webpack_require__(152);
+var _SCNActionMove = __webpack_require__(161);
 
 var _SCNActionMove2 = _interopRequireDefault(_SCNActionMove);
 
-var _SCNActionPerformSelector = __webpack_require__(153);
+var _SCNActionPerformSelector = __webpack_require__(162);
 
 var _SCNActionPerformSelector2 = _interopRequireDefault(_SCNActionPerformSelector);
 
-var _SCNActionPlaySound = __webpack_require__(154);
+var _SCNActionPlaySound = __webpack_require__(163);
 
 var _SCNActionPlaySound2 = _interopRequireDefault(_SCNActionPlaySound);
 
-var _SCNActionReference = __webpack_require__(155);
+var _SCNActionReference = __webpack_require__(164);
 
 var _SCNActionReference2 = _interopRequireDefault(_SCNActionReference);
 
-var _SCNActionRemove = __webpack_require__(156);
+var _SCNActionRemove = __webpack_require__(165);
 
 var _SCNActionRemove2 = _interopRequireDefault(_SCNActionRemove);
 
-var _SCNActionRepeat = __webpack_require__(157);
+var _SCNActionRepeat = __webpack_require__(166);
 
 var _SCNActionRepeat2 = _interopRequireDefault(_SCNActionRepeat);
 
-var _SCNActionRotate = __webpack_require__(158);
+var _SCNActionRotate = __webpack_require__(167);
 
 var _SCNActionRotate2 = _interopRequireDefault(_SCNActionRotate);
 
-var _SCNActionRunAction = __webpack_require__(159);
+var _SCNActionRunAction = __webpack_require__(168);
 
 var _SCNActionRunAction2 = _interopRequireDefault(_SCNActionRunAction);
 
-var _SCNActionRunBlock = __webpack_require__(160);
+var _SCNActionRunBlock = __webpack_require__(169);
 
 var _SCNActionRunBlock2 = _interopRequireDefault(_SCNActionRunBlock);
 
-var _SCNActionScale = __webpack_require__(161);
+var _SCNActionScale = __webpack_require__(170);
 
 var _SCNActionScale2 = _interopRequireDefault(_SCNActionScale);
 
-var _SCNActionSequence = __webpack_require__(162);
+var _SCNActionSequence = __webpack_require__(171);
 
 var _SCNActionSequence2 = _interopRequireDefault(_SCNActionSequence);
 
-var _SCNActionTimingFunction = __webpack_require__(163);
+var _SCNActionTimingFunction = __webpack_require__(172);
 
 var _SCNActionTimingFunction2 = _interopRequireDefault(_SCNActionTimingFunction);
 
@@ -43234,59 +43544,59 @@ var _SCNActionTimingMode = __webpack_require__(5);
 
 var _SCNActionTimingMode2 = _interopRequireDefault(_SCNActionTimingMode);
 
-var _SCNActionWait = __webpack_require__(164);
+var _SCNActionWait = __webpack_require__(173);
 
 var _SCNActionWait2 = _interopRequireDefault(_SCNActionWait);
 
-var _SCNAnimatable = __webpack_require__(165);
+var _SCNAnimatable = __webpack_require__(174);
 
 var _SCNAnimatable2 = _interopRequireDefault(_SCNAnimatable);
 
-var _SCNAnimation = __webpack_require__(85);
+var _SCNAnimation = __webpack_require__(94);
 
 var _SCNAnimation2 = _interopRequireDefault(_SCNAnimation);
 
-var _SCNAnimationEvent = __webpack_require__(166);
+var _SCNAnimationEvent = __webpack_require__(175);
 
 var _SCNAnimationEvent2 = _interopRequireDefault(_SCNAnimationEvent);
 
-var _SCNAnimationEventBlock = __webpack_require__(167);
+var _SCNAnimationEventBlock = __webpack_require__(176);
 
 var _SCNAnimationEventBlock2 = _interopRequireDefault(_SCNAnimationEventBlock);
 
-var _SCNAnimationPlayer = __webpack_require__(168);
+var _SCNAnimationPlayer = __webpack_require__(177);
 
 var _SCNAnimationPlayer2 = _interopRequireDefault(_SCNAnimationPlayer);
 
-var _SCNAntialiasingMode = __webpack_require__(86);
+var _SCNAntialiasingMode = __webpack_require__(95);
 
 var _SCNAntialiasingMode2 = _interopRequireDefault(_SCNAntialiasingMode);
 
-var _SCNAudioPlayer = __webpack_require__(169);
+var _SCNAudioPlayer = __webpack_require__(178);
 
 var _SCNAudioPlayer2 = _interopRequireDefault(_SCNAudioPlayer);
 
-var _SCNAudioSource = __webpack_require__(170);
+var _SCNAudioSource = __webpack_require__(179);
 
 var _SCNAudioSource2 = _interopRequireDefault(_SCNAudioSource);
 
-var _SCNBillboardAxis = __webpack_require__(171);
+var _SCNBillboardAxis = __webpack_require__(180);
 
 var _SCNBillboardAxis2 = _interopRequireDefault(_SCNBillboardAxis);
 
-var _SCNBillboardConstraint = __webpack_require__(172);
+var _SCNBillboardConstraint = __webpack_require__(181);
 
 var _SCNBillboardConstraint2 = _interopRequireDefault(_SCNBillboardConstraint);
 
-var _SCNBindingBlock = __webpack_require__(173);
+var _SCNBindingBlock = __webpack_require__(182);
 
 var _SCNBindingBlock2 = _interopRequireDefault(_SCNBindingBlock);
 
-var _SCNBlendMode = __webpack_require__(78);
+var _SCNBlendMode = __webpack_require__(87);
 
 var _SCNBlendMode2 = _interopRequireDefault(_SCNBlendMode);
 
-var _SCNBoundingVolume = __webpack_require__(174);
+var _SCNBoundingVolume = __webpack_require__(183);
 
 var _SCNBoundingVolume2 = _interopRequireDefault(_SCNBoundingVolume);
 
@@ -43294,23 +43604,23 @@ var _SCNBox = __webpack_require__(34);
 
 var _SCNBox2 = _interopRequireDefault(_SCNBox);
 
-var _SCNBufferBindingBlock = __webpack_require__(175);
+var _SCNBufferBindingBlock = __webpack_require__(184);
 
 var _SCNBufferBindingBlock2 = _interopRequireDefault(_SCNBufferBindingBlock);
 
-var _SCNBufferFrequency = __webpack_require__(176);
+var _SCNBufferFrequency = __webpack_require__(185);
 
 var _SCNBufferFrequency2 = _interopRequireDefault(_SCNBufferFrequency);
 
-var _SCNBufferStream = __webpack_require__(177);
+var _SCNBufferStream = __webpack_require__(186);
 
 var _SCNBufferStream2 = _interopRequireDefault(_SCNBufferStream);
 
-var _SCNCamera = __webpack_require__(87);
+var _SCNCamera = __webpack_require__(96);
 
 var _SCNCamera2 = _interopRequireDefault(_SCNCamera);
 
-var _SCNCameraProjectionDirection = __webpack_require__(88);
+var _SCNCameraProjectionDirection = __webpack_require__(97);
 
 var _SCNCameraProjectionDirection2 = _interopRequireDefault(_SCNCameraProjectionDirection);
 
@@ -43318,15 +43628,15 @@ var _SCNCapsule = __webpack_require__(48);
 
 var _SCNCapsule2 = _interopRequireDefault(_SCNCapsule);
 
-var _SCNChamferMode = __webpack_require__(178);
+var _SCNChamferMode = __webpack_require__(187);
 
 var _SCNChamferMode2 = _interopRequireDefault(_SCNChamferMode);
 
-var _SCNColorMask = __webpack_require__(79);
+var _SCNColorMask = __webpack_require__(88);
 
 var _SCNColorMask2 = _interopRequireDefault(_SCNColorMask);
 
-var _SCNCone = __webpack_require__(179);
+var _SCNCone = __webpack_require__(188);
 
 var _SCNCone2 = _interopRequireDefault(_SCNCone);
 
@@ -43338,31 +43648,31 @@ var _SCNCullMode = __webpack_require__(47);
 
 var _SCNCullMode2 = _interopRequireDefault(_SCNCullMode);
 
-var _SCNCylinder = __webpack_require__(180);
+var _SCNCylinder = __webpack_require__(189);
 
 var _SCNCylinder2 = _interopRequireDefault(_SCNCylinder);
 
-var _SCNDebugOptions = __webpack_require__(181);
+var _SCNDebugOptions = __webpack_require__(190);
 
 var _SCNDebugOptions2 = _interopRequireDefault(_SCNDebugOptions);
 
-var _SCNDistanceConstraint = __webpack_require__(182);
+var _SCNDistanceConstraint = __webpack_require__(191);
 
 var _SCNDistanceConstraint2 = _interopRequireDefault(_SCNDistanceConstraint);
 
-var _SCNFieldForceEvaluator = __webpack_require__(183);
+var _SCNFieldForceEvaluator = __webpack_require__(192);
 
 var _SCNFieldForceEvaluator2 = _interopRequireDefault(_SCNFieldForceEvaluator);
 
-var _SCNFillMode = __webpack_require__(80);
+var _SCNFillMode = __webpack_require__(89);
 
 var _SCNFillMode2 = _interopRequireDefault(_SCNFillMode);
 
-var _SCNFilterMode = __webpack_require__(81);
+var _SCNFilterMode = __webpack_require__(90);
 
 var _SCNFilterMode2 = _interopRequireDefault(_SCNFilterMode);
 
-var _SCNFloor = __webpack_require__(184);
+var _SCNFloor = __webpack_require__(193);
 
 var _SCNFloor2 = _interopRequireDefault(_SCNFloor);
 
@@ -43382,11 +43692,11 @@ var _SCNGeometrySource = __webpack_require__(6);
 
 var _SCNGeometrySource2 = _interopRequireDefault(_SCNGeometrySource);
 
-var _SCNGeometryTessellator = __webpack_require__(185);
+var _SCNGeometryTessellator = __webpack_require__(194);
 
 var _SCNGeometryTessellator2 = _interopRequireDefault(_SCNGeometryTessellator);
 
-var _SCNHitTestOption = __webpack_require__(90);
+var _SCNHitTestOption = __webpack_require__(99);
 
 var _SCNHitTestOption2 = _interopRequireDefault(_SCNHitTestOption);
 
@@ -43394,23 +43704,23 @@ var _SCNHitTestResult = __webpack_require__(49);
 
 var _SCNHitTestResult2 = _interopRequireDefault(_SCNHitTestResult);
 
-var _SCNIKConstraint = __webpack_require__(186);
+var _SCNIKConstraint = __webpack_require__(195);
 
 var _SCNIKConstraint2 = _interopRequireDefault(_SCNIKConstraint);
 
-var _SCNLayer = __webpack_require__(187);
+var _SCNLayer = __webpack_require__(196);
 
 var _SCNLayer2 = _interopRequireDefault(_SCNLayer);
 
-var _SCNLevelOfDetail = __webpack_require__(188);
+var _SCNLevelOfDetail = __webpack_require__(197);
 
 var _SCNLevelOfDetail2 = _interopRequireDefault(_SCNLevelOfDetail);
 
-var _SCNLight = __webpack_require__(91);
+var _SCNLight = __webpack_require__(100);
 
 var _SCNLight2 = _interopRequireDefault(_SCNLight);
 
-var _SCNLookAtConstraint = __webpack_require__(189);
+var _SCNLookAtConstraint = __webpack_require__(198);
 
 var _SCNLookAtConstraint2 = _interopRequireDefault(_SCNLookAtConstraint);
 
@@ -43426,31 +43736,31 @@ var _SCNMatrix = __webpack_require__(7);
 
 var _SCNMatrix2 = _interopRequireDefault(_SCNMatrix);
 
-var _SCNMatrix4EqualToMatrix = __webpack_require__(190);
+var _SCNMatrix4EqualToMatrix = __webpack_require__(199);
 
 var _SCNMatrix4EqualToMatrix2 = _interopRequireDefault(_SCNMatrix4EqualToMatrix);
 
-var _SCNMatrix4FromGLKMatrix = __webpack_require__(191);
+var _SCNMatrix4FromGLKMatrix = __webpack_require__(200);
 
 var _SCNMatrix4FromGLKMatrix2 = _interopRequireDefault(_SCNMatrix4FromGLKMatrix);
 
-var _SCNMatrix4FromMat = __webpack_require__(192);
+var _SCNMatrix4FromMat = __webpack_require__(201);
 
 var _SCNMatrix4FromMat2 = _interopRequireDefault(_SCNMatrix4FromMat);
 
-var _SCNMatrix4Invert = __webpack_require__(193);
+var _SCNMatrix4Invert = __webpack_require__(202);
 
 var _SCNMatrix4Invert2 = _interopRequireDefault(_SCNMatrix4Invert);
 
-var _SCNMatrix4IsIdentity = __webpack_require__(194);
+var _SCNMatrix4IsIdentity = __webpack_require__(203);
 
 var _SCNMatrix4IsIdentity2 = _interopRequireDefault(_SCNMatrix4IsIdentity);
 
-var _SCNMatrix4MakeRotation = __webpack_require__(195);
+var _SCNMatrix4MakeRotation = __webpack_require__(204);
 
 var _SCNMatrix4MakeRotation2 = _interopRequireDefault(_SCNMatrix4MakeRotation);
 
-var _SCNMatrix4MakeScale = __webpack_require__(92);
+var _SCNMatrix4MakeScale = __webpack_require__(101);
 
 var _SCNMatrix4MakeScale2 = _interopRequireDefault(_SCNMatrix4MakeScale);
 
@@ -43458,39 +43768,39 @@ var _SCNMatrix4MakeTranslation = __webpack_require__(18);
 
 var _SCNMatrix4MakeTranslation2 = _interopRequireDefault(_SCNMatrix4MakeTranslation);
 
-var _SCNMatrix4Mult = __webpack_require__(196);
+var _SCNMatrix4Mult = __webpack_require__(205);
 
 var _SCNMatrix4Mult2 = _interopRequireDefault(_SCNMatrix4Mult);
 
-var _SCNMatrix4Rotate = __webpack_require__(197);
+var _SCNMatrix4Rotate = __webpack_require__(206);
 
 var _SCNMatrix4Rotate2 = _interopRequireDefault(_SCNMatrix4Rotate);
 
-var _SCNMatrix4Scale = __webpack_require__(198);
+var _SCNMatrix4Scale = __webpack_require__(207);
 
 var _SCNMatrix4Scale2 = _interopRequireDefault(_SCNMatrix4Scale);
 
-var _SCNMatrix4ToGLKMatrix = __webpack_require__(199);
+var _SCNMatrix4ToGLKMatrix = __webpack_require__(208);
 
 var _SCNMatrix4ToGLKMatrix2 = _interopRequireDefault(_SCNMatrix4ToGLKMatrix);
 
-var _SCNMatrix4ToMat = __webpack_require__(200);
+var _SCNMatrix4ToMat = __webpack_require__(209);
 
 var _SCNMatrix4ToMat2 = _interopRequireDefault(_SCNMatrix4ToMat);
 
-var _SCNMatrix4Translate = __webpack_require__(201);
+var _SCNMatrix4Translate = __webpack_require__(210);
 
 var _SCNMatrix4Translate2 = _interopRequireDefault(_SCNMatrix4Translate);
 
-var _SCNMorpher = __webpack_require__(202);
+var _SCNMorpher = __webpack_require__(211);
 
 var _SCNMorpher2 = _interopRequireDefault(_SCNMorpher);
 
-var _SCNMorpherCalculationMode = __webpack_require__(93);
+var _SCNMorpherCalculationMode = __webpack_require__(102);
 
 var _SCNMorpherCalculationMode2 = _interopRequireDefault(_SCNMorpherCalculationMode);
 
-var _SCNMovabilityHint = __webpack_require__(77);
+var _SCNMovabilityHint = __webpack_require__(86);
 
 var _SCNMovabilityHint2 = _interopRequireDefault(_SCNMovabilityHint);
 
@@ -43498,7 +43808,7 @@ var _SCNNode = __webpack_require__(14);
 
 var _SCNNode2 = _interopRequireDefault(_SCNNode);
 
-var _SCNNodeRendererDelegate = __webpack_require__(203);
+var _SCNNodeRendererDelegate = __webpack_require__(212);
 
 var _SCNNodeRendererDelegate2 = _interopRequireDefault(_SCNNodeRendererDelegate);
 
@@ -43506,59 +43816,59 @@ var _SCNOrderedDictionary = __webpack_require__(21);
 
 var _SCNOrderedDictionary2 = _interopRequireDefault(_SCNOrderedDictionary);
 
-var _SCNParticleBirthDirection = __webpack_require__(94);
+var _SCNParticleBirthDirection = __webpack_require__(103);
 
 var _SCNParticleBirthDirection2 = _interopRequireDefault(_SCNParticleBirthDirection);
 
-var _SCNParticleBirthLocation = __webpack_require__(95);
+var _SCNParticleBirthLocation = __webpack_require__(104);
 
 var _SCNParticleBirthLocation2 = _interopRequireDefault(_SCNParticleBirthLocation);
 
-var _SCNParticleBlendMode = __webpack_require__(96);
+var _SCNParticleBlendMode = __webpack_require__(105);
 
 var _SCNParticleBlendMode2 = _interopRequireDefault(_SCNParticleBlendMode);
 
-var _SCNParticleEvent = __webpack_require__(204);
+var _SCNParticleEvent = __webpack_require__(213);
 
 var _SCNParticleEvent2 = _interopRequireDefault(_SCNParticleEvent);
 
-var _SCNParticleEventBlock = __webpack_require__(205);
+var _SCNParticleEventBlock = __webpack_require__(214);
 
 var _SCNParticleEventBlock2 = _interopRequireDefault(_SCNParticleEventBlock);
 
-var _SCNParticleImageSequenceAnimationMode = __webpack_require__(97);
+var _SCNParticleImageSequenceAnimationMode = __webpack_require__(106);
 
 var _SCNParticleImageSequenceAnimationMode2 = _interopRequireDefault(_SCNParticleImageSequenceAnimationMode);
 
-var _SCNParticleInputMode = __webpack_require__(206);
+var _SCNParticleInputMode = __webpack_require__(215);
 
 var _SCNParticleInputMode2 = _interopRequireDefault(_SCNParticleInputMode);
 
-var _SCNParticleModifierBlock = __webpack_require__(207);
+var _SCNParticleModifierBlock = __webpack_require__(216);
 
 var _SCNParticleModifierBlock2 = _interopRequireDefault(_SCNParticleModifierBlock);
 
-var _SCNParticleModifierStage = __webpack_require__(208);
+var _SCNParticleModifierStage = __webpack_require__(217);
 
 var _SCNParticleModifierStage2 = _interopRequireDefault(_SCNParticleModifierStage);
 
-var _SCNParticleOrientationMode = __webpack_require__(98);
+var _SCNParticleOrientationMode = __webpack_require__(107);
 
 var _SCNParticleOrientationMode2 = _interopRequireDefault(_SCNParticleOrientationMode);
 
-var _SCNParticlePropertyController = __webpack_require__(209);
+var _SCNParticlePropertyController = __webpack_require__(218);
 
 var _SCNParticlePropertyController2 = _interopRequireDefault(_SCNParticlePropertyController);
 
-var _SCNParticleSortingMode = __webpack_require__(99);
+var _SCNParticleSortingMode = __webpack_require__(108);
 
 var _SCNParticleSortingMode2 = _interopRequireDefault(_SCNParticleSortingMode);
 
-var _SCNParticleSystem = __webpack_require__(210);
+var _SCNParticleSystem = __webpack_require__(219);
 
 var _SCNParticleSystem2 = _interopRequireDefault(_SCNParticleSystem);
 
-var _SCNPhysicsBallSocketJoint = __webpack_require__(211);
+var _SCNPhysicsBallSocketJoint = __webpack_require__(220);
 
 var _SCNPhysicsBallSocketJoint2 = _interopRequireDefault(_SCNPhysicsBallSocketJoint);
 
@@ -43566,7 +43876,7 @@ var _SCNPhysicsBehavior = __webpack_require__(26);
 
 var _SCNPhysicsBehavior2 = _interopRequireDefault(_SCNPhysicsBehavior);
 
-var _SCNPhysicsBody = __webpack_require__(212);
+var _SCNPhysicsBody = __webpack_require__(221);
 
 var _SCNPhysicsBody2 = _interopRequireDefault(_SCNPhysicsBody);
 
@@ -43574,31 +43884,31 @@ var _SCNPhysicsBodyType = __webpack_require__(50);
 
 var _SCNPhysicsBodyType2 = _interopRequireDefault(_SCNPhysicsBodyType);
 
-var _SCNPhysicsCollisionCategory = __webpack_require__(213);
+var _SCNPhysicsCollisionCategory = __webpack_require__(222);
 
 var _SCNPhysicsCollisionCategory2 = _interopRequireDefault(_SCNPhysicsCollisionCategory);
 
-var _SCNPhysicsContact = __webpack_require__(84);
+var _SCNPhysicsContact = __webpack_require__(93);
 
 var _SCNPhysicsContact2 = _interopRequireDefault(_SCNPhysicsContact);
 
-var _SCNPhysicsContactDelegate = __webpack_require__(214);
+var _SCNPhysicsContactDelegate = __webpack_require__(223);
 
 var _SCNPhysicsContactDelegate2 = _interopRequireDefault(_SCNPhysicsContactDelegate);
 
-var _SCNPhysicsField = __webpack_require__(100);
+var _SCNPhysicsField = __webpack_require__(109);
 
 var _SCNPhysicsField2 = _interopRequireDefault(_SCNPhysicsField);
 
-var _SCNPhysicsFieldScope = __webpack_require__(215);
+var _SCNPhysicsFieldScope = __webpack_require__(224);
 
 var _SCNPhysicsFieldScope2 = _interopRequireDefault(_SCNPhysicsFieldScope);
 
-var _SCNPhysicsHingeJoint = __webpack_require__(216);
+var _SCNPhysicsHingeJoint = __webpack_require__(225);
 
 var _SCNPhysicsHingeJoint2 = _interopRequireDefault(_SCNPhysicsHingeJoint);
 
-var _SCNPhysicsNoiseField = __webpack_require__(101);
+var _SCNPhysicsNoiseField = __webpack_require__(110);
 
 var _SCNPhysicsNoiseField2 = _interopRequireDefault(_SCNPhysicsNoiseField);
 
@@ -43606,19 +43916,19 @@ var _SCNPhysicsShape = __webpack_require__(51);
 
 var _SCNPhysicsShape2 = _interopRequireDefault(_SCNPhysicsShape);
 
-var _SCNPhysicsSliderJoint = __webpack_require__(217);
+var _SCNPhysicsSliderJoint = __webpack_require__(226);
 
 var _SCNPhysicsSliderJoint2 = _interopRequireDefault(_SCNPhysicsSliderJoint);
 
-var _SCNPhysicsTurbulenceField = __webpack_require__(218);
+var _SCNPhysicsTurbulenceField = __webpack_require__(227);
 
 var _SCNPhysicsTurbulenceField2 = _interopRequireDefault(_SCNPhysicsTurbulenceField);
 
-var _SCNPhysicsVehicle = __webpack_require__(219);
+var _SCNPhysicsVehicle = __webpack_require__(228);
 
 var _SCNPhysicsVehicle2 = _interopRequireDefault(_SCNPhysicsVehicle);
 
-var _SCNPhysicsVehicleWheel = __webpack_require__(220);
+var _SCNPhysicsVehicleWheel = __webpack_require__(229);
 
 var _SCNPhysicsVehicleWheel2 = _interopRequireDefault(_SCNPhysicsVehicleWheel);
 
@@ -43626,95 +43936,95 @@ var _SCNPhysicsWorld = __webpack_require__(33);
 
 var _SCNPhysicsWorld2 = _interopRequireDefault(_SCNPhysicsWorld);
 
-var _SCNPlane = __webpack_require__(221);
+var _SCNPlane = __webpack_require__(230);
 
 var _SCNPlane2 = _interopRequireDefault(_SCNPlane);
 
-var _SCNProgram = __webpack_require__(102);
+var _SCNProgram = __webpack_require__(111);
 
 var _SCNProgram2 = _interopRequireDefault(_SCNProgram);
 
-var _SCNProgramDelegate = __webpack_require__(222);
+var _SCNProgramDelegate = __webpack_require__(231);
 
 var _SCNProgramDelegate2 = _interopRequireDefault(_SCNProgramDelegate);
 
-var _SCNPyramid = __webpack_require__(223);
+var _SCNPyramid = __webpack_require__(232);
 
 var _SCNPyramid2 = _interopRequireDefault(_SCNPyramid);
 
-var _SCNQuaternion = __webpack_require__(103);
+var _SCNQuaternion = __webpack_require__(112);
 
 var _SCNQuaternion2 = _interopRequireDefault(_SCNQuaternion);
 
-var _SCNReferenceLoadingPolicy = __webpack_require__(104);
+var _SCNReferenceLoadingPolicy = __webpack_require__(113);
 
 var _SCNReferenceLoadingPolicy2 = _interopRequireDefault(_SCNReferenceLoadingPolicy);
 
-var _SCNReferenceNode = __webpack_require__(224);
+var _SCNReferenceNode = __webpack_require__(233);
 
 var _SCNReferenceNode2 = _interopRequireDefault(_SCNReferenceNode);
 
-var _SCNRenderer = __webpack_require__(107);
+var _SCNRenderer = __webpack_require__(116);
 
 var _SCNRenderer2 = _interopRequireDefault(_SCNRenderer);
 
-var _SCNRenderingAPI = __webpack_require__(110);
+var _SCNRenderingAPI = __webpack_require__(119);
 
 var _SCNRenderingAPI2 = _interopRequireDefault(_SCNRenderingAPI);
 
-var _SCNScene = __webpack_require__(105);
+var _SCNScene = __webpack_require__(114);
 
 var _SCNScene2 = _interopRequireDefault(_SCNScene);
 
-var _SCNSceneExportDelegate = __webpack_require__(225);
+var _SCNSceneExportDelegate = __webpack_require__(234);
 
 var _SCNSceneExportDelegate2 = _interopRequireDefault(_SCNSceneExportDelegate);
 
-var _SCNSceneExportProgressHandler = __webpack_require__(226);
+var _SCNSceneExportProgressHandler = __webpack_require__(235);
 
 var _SCNSceneExportProgressHandler2 = _interopRequireDefault(_SCNSceneExportProgressHandler);
 
-var _SCNSceneRenderer = __webpack_require__(227);
+var _SCNSceneRenderer = __webpack_require__(236);
 
 var _SCNSceneRenderer2 = _interopRequireDefault(_SCNSceneRenderer);
 
-var _SCNSceneRendererDelegate = __webpack_require__(228);
+var _SCNSceneRendererDelegate = __webpack_require__(237);
 
 var _SCNSceneRendererDelegate2 = _interopRequireDefault(_SCNSceneRendererDelegate);
 
-var _SCNSceneSource = __webpack_require__(106);
+var _SCNSceneSource = __webpack_require__(115);
 
 var _SCNSceneSource2 = _interopRequireDefault(_SCNSceneSource);
 
-var _SCNSceneSourceStatus = __webpack_require__(229);
+var _SCNSceneSourceStatus = __webpack_require__(238);
 
 var _SCNSceneSourceStatus2 = _interopRequireDefault(_SCNSceneSourceStatus);
 
-var _SCNSceneSourceStatusHandler = __webpack_require__(230);
+var _SCNSceneSourceStatusHandler = __webpack_require__(239);
 
 var _SCNSceneSourceStatusHandler2 = _interopRequireDefault(_SCNSceneSourceStatusHandler);
 
-var _SCNShadable = __webpack_require__(231);
+var _SCNShadable = __webpack_require__(240);
 
 var _SCNShadable2 = _interopRequireDefault(_SCNShadable);
 
-var _SCNShadableHelper = __webpack_require__(232);
+var _SCNShadableHelper = __webpack_require__(241);
 
 var _SCNShadableHelper2 = _interopRequireDefault(_SCNShadableHelper);
 
-var _SCNShaderModifierEntryPoint = __webpack_require__(233);
+var _SCNShaderModifierEntryPoint = __webpack_require__(242);
 
 var _SCNShaderModifierEntryPoint2 = _interopRequireDefault(_SCNShaderModifierEntryPoint);
 
-var _SCNShadowMode = __webpack_require__(234);
+var _SCNShadowMode = __webpack_require__(243);
 
 var _SCNShadowMode2 = _interopRequireDefault(_SCNShadowMode);
 
-var _SCNShape = __webpack_require__(235);
+var _SCNShape = __webpack_require__(244);
 
 var _SCNShape2 = _interopRequireDefault(_SCNShape);
 
-var _SCNSkinner = __webpack_require__(236);
+var _SCNSkinner = __webpack_require__(245);
 
 var _SCNSkinner2 = _interopRequireDefault(_SCNSkinner);
 
@@ -43722,27 +44032,27 @@ var _SCNSphere = __webpack_require__(52);
 
 var _SCNSphere2 = _interopRequireDefault(_SCNSphere);
 
-var _SCNTechnique = __webpack_require__(237);
+var _SCNTechnique = __webpack_require__(246);
 
 var _SCNTechnique2 = _interopRequireDefault(_SCNTechnique);
 
-var _SCNTechniqueSupport = __webpack_require__(238);
+var _SCNTechniqueSupport = __webpack_require__(247);
 
 var _SCNTechniqueSupport2 = _interopRequireDefault(_SCNTechniqueSupport);
 
-var _SCNTessellationSmoothingMode = __webpack_require__(89);
+var _SCNTessellationSmoothingMode = __webpack_require__(98);
 
 var _SCNTessellationSmoothingMode2 = _interopRequireDefault(_SCNTessellationSmoothingMode);
 
-var _SCNText = __webpack_require__(239);
+var _SCNText = __webpack_require__(248);
 
 var _SCNText2 = _interopRequireDefault(_SCNText);
 
-var _SCNTimingFunction = __webpack_require__(240);
+var _SCNTimingFunction = __webpack_require__(249);
 
 var _SCNTimingFunction2 = _interopRequireDefault(_SCNTimingFunction);
 
-var _SCNTorus = __webpack_require__(241);
+var _SCNTorus = __webpack_require__(250);
 
 var _SCNTorus2 = _interopRequireDefault(_SCNTorus);
 
@@ -43750,15 +44060,15 @@ var _SCNTransaction = __webpack_require__(35);
 
 var _SCNTransaction2 = _interopRequireDefault(_SCNTransaction);
 
-var _SCNTransformConstraint = __webpack_require__(242);
+var _SCNTransformConstraint = __webpack_require__(251);
 
 var _SCNTransformConstraint2 = _interopRequireDefault(_SCNTransformConstraint);
 
-var _SCNTransparencyMode = __webpack_require__(83);
+var _SCNTransparencyMode = __webpack_require__(92);
 
 var _SCNTransparencyMode2 = _interopRequireDefault(_SCNTransparencyMode);
 
-var _SCNTube = __webpack_require__(243);
+var _SCNTube = __webpack_require__(252);
 
 var _SCNTube2 = _interopRequireDefault(_SCNTube);
 
@@ -43766,31 +44076,31 @@ var _SCNVector = __webpack_require__(1);
 
 var _SCNVector2 = _interopRequireDefault(_SCNVector);
 
-var _SCNVector3EqualToVector = __webpack_require__(244);
+var _SCNVector3EqualToVector = __webpack_require__(253);
 
 var _SCNVector3EqualToVector2 = _interopRequireDefault(_SCNVector3EqualToVector);
 
-var _SCNVector3FromFloat = __webpack_require__(245);
+var _SCNVector3FromFloat = __webpack_require__(254);
 
 var _SCNVector3FromFloat2 = _interopRequireDefault(_SCNVector3FromFloat);
 
-var _SCNVector3FromGLKVector = __webpack_require__(246);
+var _SCNVector3FromGLKVector = __webpack_require__(255);
 
 var _SCNVector3FromGLKVector2 = _interopRequireDefault(_SCNVector3FromGLKVector);
 
-var _SCNVector3Make = __webpack_require__(247);
+var _SCNVector3Make = __webpack_require__(256);
 
 var _SCNVector3Make2 = _interopRequireDefault(_SCNVector3Make);
 
-var _SCNVector3ToFloat = __webpack_require__(248);
+var _SCNVector3ToFloat = __webpack_require__(257);
 
 var _SCNVector3ToFloat2 = _interopRequireDefault(_SCNVector3ToFloat);
 
-var _SCNVector3ToGLKVector = __webpack_require__(249);
+var _SCNVector3ToGLKVector = __webpack_require__(258);
 
 var _SCNVector3ToGLKVector2 = _interopRequireDefault(_SCNVector3ToGLKVector);
 
-var _SCNVector3Zero = __webpack_require__(250);
+var _SCNVector3Zero = __webpack_require__(259);
 
 var _SCNVector3Zero2 = _interopRequireDefault(_SCNVector3Zero);
 
@@ -43798,35 +44108,35 @@ var _SCNVector3 = __webpack_require__(11);
 
 var _SCNVector4 = _interopRequireDefault(_SCNVector3);
 
-var _SCNVector4EqualToVector = __webpack_require__(251);
+var _SCNVector4EqualToVector = __webpack_require__(260);
 
 var _SCNVector4EqualToVector2 = _interopRequireDefault(_SCNVector4EqualToVector);
 
-var _SCNVector4FromFloat = __webpack_require__(252);
+var _SCNVector4FromFloat = __webpack_require__(261);
 
 var _SCNVector4FromFloat2 = _interopRequireDefault(_SCNVector4FromFloat);
 
-var _SCNVector4FromGLKVector = __webpack_require__(253);
+var _SCNVector4FromGLKVector = __webpack_require__(262);
 
 var _SCNVector4FromGLKVector2 = _interopRequireDefault(_SCNVector4FromGLKVector);
 
-var _SCNVector4Make = __webpack_require__(254);
+var _SCNVector4Make = __webpack_require__(263);
 
 var _SCNVector4Make2 = _interopRequireDefault(_SCNVector4Make);
 
-var _SCNVector4ToFloat = __webpack_require__(255);
+var _SCNVector4ToFloat = __webpack_require__(264);
 
 var _SCNVector4ToFloat2 = _interopRequireDefault(_SCNVector4ToFloat);
 
-var _SCNVector4ToGLKVector = __webpack_require__(256);
+var _SCNVector4ToGLKVector = __webpack_require__(265);
 
 var _SCNVector4ToGLKVector2 = _interopRequireDefault(_SCNVector4ToGLKVector);
 
-var _SCNView = __webpack_require__(257);
+var _SCNView = __webpack_require__(266);
 
 var _SCNView2 = _interopRequireDefault(_SCNView);
 
-var _SCNWrapMode = __webpack_require__(82);
+var _SCNWrapMode = __webpack_require__(91);
 
 var _SCNWrapMode2 = _interopRequireDefault(_SCNWrapMode);
 
@@ -43846,27 +44156,27 @@ var _SKColor = __webpack_require__(2);
 
 var _SKColor2 = _interopRequireDefault(_SKColor);
 
-var _SKEffectNode = __webpack_require__(111);
+var _SKEffectNode = __webpack_require__(120);
 
 var _SKEffectNode2 = _interopRequireDefault(_SKEffectNode);
 
-var _SKFade = __webpack_require__(258);
+var _SKFade = __webpack_require__(267);
 
 var _SKFade2 = _interopRequireDefault(_SKFade);
 
-var _SKGroup = __webpack_require__(259);
+var _SKGroup = __webpack_require__(268);
 
 var _SKGroup2 = _interopRequireDefault(_SKGroup);
 
-var _SKLabelHorizontalAlignmentMode = __webpack_require__(112);
+var _SKLabelHorizontalAlignmentMode = __webpack_require__(121);
 
 var _SKLabelHorizontalAlignmentMode2 = _interopRequireDefault(_SKLabelHorizontalAlignmentMode);
 
-var _SKLabelNode = __webpack_require__(260);
+var _SKLabelNode = __webpack_require__(269);
 
 var _SKLabelNode2 = _interopRequireDefault(_SKLabelNode);
 
-var _SKLabelVerticalAlignmentMode = __webpack_require__(113);
+var _SKLabelVerticalAlignmentMode = __webpack_require__(122);
 
 var _SKLabelVerticalAlignmentMode2 = _interopRequireDefault(_SKLabelVerticalAlignmentMode);
 
@@ -43874,31 +44184,31 @@ var _SKNode = __webpack_require__(19);
 
 var _SKNode2 = _interopRequireDefault(_SKNode);
 
-var _SKRepeat = __webpack_require__(261);
+var _SKRepeat = __webpack_require__(270);
 
 var _SKRepeat2 = _interopRequireDefault(_SKRepeat);
 
-var _SKScale = __webpack_require__(262);
+var _SKScale = __webpack_require__(271);
 
 var _SKScale2 = _interopRequireDefault(_SKScale);
 
-var _SKScene = __webpack_require__(263);
+var _SKScene = __webpack_require__(272);
 
 var _SKScene2 = _interopRequireDefault(_SKScene);
 
-var _SKSceneScaleMode = __webpack_require__(114);
+var _SKSceneScaleMode = __webpack_require__(123);
 
 var _SKSceneScaleMode2 = _interopRequireDefault(_SKSceneScaleMode);
 
-var _SKSequence = __webpack_require__(264);
+var _SKSequence = __webpack_require__(273);
 
 var _SKSequence2 = _interopRequireDefault(_SKSequence);
 
-var _SKShapeNode = __webpack_require__(265);
+var _SKShapeNode = __webpack_require__(274);
 
 var _SKShapeNode2 = _interopRequireDefault(_SKShapeNode);
 
-var _SKSpriteNode = __webpack_require__(108);
+var _SKSpriteNode = __webpack_require__(117);
 
 var _SKSpriteNode2 = _interopRequireDefault(_SKSpriteNode);
 
@@ -43906,11 +44216,11 @@ var _SKTexture = __webpack_require__(54);
 
 var _SKTexture2 = _interopRequireDefault(_SKTexture);
 
-var _SKTextureFilteringMode = __webpack_require__(109);
+var _SKTextureFilteringMode = __webpack_require__(118);
 
 var _SKTextureFilteringMode2 = _interopRequireDefault(_SKTextureFilteringMode);
 
-var _SKWait = __webpack_require__(266);
+var _SKWait = __webpack_require__(275);
 
 var _SKWait2 = _interopRequireDefault(_SKWait);
 
@@ -43926,7 +44236,7 @@ var _BinaryRequest2 = __webpack_require__(36);
 
 var _BinaryRequest3 = _interopRequireDefault(_BinaryRequest2);
 
-var _Buffer2 = __webpack_require__(267);
+var _Buffer2 = __webpack_require__(276);
 
 var _Buffer3 = _interopRequireDefault(_Buffer2);
 
@@ -43942,7 +44252,7 @@ var _FileReader2 = __webpack_require__(42);
 
 var _FileReader3 = _interopRequireDefault(_FileReader2);
 
-var _HTMLCanvasElement2 = __webpack_require__(269);
+var _HTMLCanvasElement2 = __webpack_require__(278);
 
 var _HTMLCanvasElement3 = _interopRequireDefault(_HTMLCanvasElement2);
 
@@ -44017,6 +44327,15 @@ _ClassList3.default.registerClass(_CAMediaTiming2.default, 'CAMediaTiming');
 _ClassList3.default.registerClass(_CAMediaTimingFunction2.default, 'CAMediaTimingFunction');
 _ClassList3.default.registerClass(_CAPropertyAnimation2.default, 'CAPropertyAnimation');
 _ClassList3.default.registerClass(_CATransform3D2.default, 'CATransform3D');
+_ClassList3.default.registerClass(_SCNDefaultFragmentShader3.default, '_SCNDefaultFragmentShader');
+_ClassList3.default.registerClass(_SCNDefaultHitTestFragmentShader3.default, '_SCNDefaultHitTestFragmentShader');
+_ClassList3.default.registerClass(_SCNDefaultHitTestVertexShader3.default, '_SCNDefaultHitTestVertexShader');
+_ClassList3.default.registerClass(_SCNDefaultParticleFragmentShader3.default, '_SCNDefaultParticleFragmentShader');
+_ClassList3.default.registerClass(_SCNDefaultParticleVertexShader3.default, '_SCNDefaultParticleVertexShader');
+_ClassList3.default.registerClass(_SCNDefaultPBRFragmentShader3.default, '_SCNDefaultPBRFragmentShader');
+_ClassList3.default.registerClass(_SCNDefaultShadowFragmentShader3.default, '_SCNDefaultShadowFragmentShader');
+_ClassList3.default.registerClass(_SCNDefaultShadowVertexShader3.default, '_SCNDefaultShadowVertexShader');
+_ClassList3.default.registerClass(_SCNDefaultVertexShader3.default, '_SCNDefaultVertexShader');
 _ClassList3.default.registerClass(_SCNAccelerationConstraint2.default, 'SCNAccelerationConstraint');
 _ClassList3.default.registerClass(_SCNAction2.default, 'SCNAction');
 _ClassList3.default.registerClass(_SCNActionable2.default, 'SCNActionable');
@@ -44275,6 +44594,15 @@ exports.CAMediaTiming = _CAMediaTiming2.default;
 exports.CAMediaTimingFunction = _CAMediaTimingFunction2.default;
 exports.CAPropertyAnimation = _CAPropertyAnimation2.default;
 exports.CATransform3D = _CATransform3D2.default;
+exports._SCNDefaultFragmentShader = _SCNDefaultFragmentShader3.default;
+exports._SCNDefaultHitTestFragmentShader = _SCNDefaultHitTestFragmentShader3.default;
+exports._SCNDefaultHitTestVertexShader = _SCNDefaultHitTestVertexShader3.default;
+exports._SCNDefaultParticleFragmentShader = _SCNDefaultParticleFragmentShader3.default;
+exports._SCNDefaultParticleVertexShader = _SCNDefaultParticleVertexShader3.default;
+exports._SCNDefaultPBRFragmentShader = _SCNDefaultPBRFragmentShader3.default;
+exports._SCNDefaultShadowFragmentShader = _SCNDefaultShadowFragmentShader3.default;
+exports._SCNDefaultShadowVertexShader = _SCNDefaultShadowVertexShader3.default;
+exports._SCNDefaultVertexShader = _SCNDefaultVertexShader3.default;
 exports.SCNAccelerationConstraint = _SCNAccelerationConstraint2.default;
 exports.SCNAction = _SCNAction2.default;
 exports.SCNActionable = _SCNActionable2.default;
@@ -44504,7 +44832,7 @@ exports.kCAAnimationRotateAuto = 'auto';
 exports.kCAAnimationRotateAutoReverse = 'autoReverse';
 
 /***/ }),
-/* 116 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44565,7 +44893,7 @@ var NSColor = function (_NSObject) {
 exports.default = NSColor;
 
 /***/ }),
-/* 117 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44602,7 +44930,7 @@ var NSColorSpaceModel = {
 exports.default = NSColorSpaceModel;
 
 /***/ }),
-/* 118 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44627,7 +44955,7 @@ var baseTime = Date.UTC(2001, 0, 1, 0, 0, 0, 0
 exports.default = CFAbsoluteTimeGetCurrent;
 
 /***/ }),
-/* 119 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44704,7 +45032,7 @@ var CGBlendMode = {
 exports.default = CGBlendMode;
 
 /***/ }),
-/* 120 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44970,7 +45298,7 @@ var CGMutablePath = function () {
 exports.default = CGMutablePath;
 
 /***/ }),
-/* 121 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45335,7 +45663,7 @@ var CGPath = function () {
 exports.default = CGPath;
 
 /***/ }),
-/* 122 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45356,7 +45684,7 @@ var CGPathApplierFunction = function CGPathApplierFunction() {};
 exports.default = CGPathApplierFunction;
 
 /***/ }),
-/* 123 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45381,7 +45709,7 @@ var CGPathFillRule = {
 exports.default = CGPathFillRule;
 
 /***/ }),
-/* 124 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45706,7 +46034,7 @@ exports.default = DispatchQueue;
 _main = new DispatchQueue('com.apple.main-thread', null);
 
 /***/ }),
-/* 125 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45798,7 +46126,7 @@ var DispatchTime = function () {
 exports.default = DispatchTime;
 
 /***/ }),
-/* 126 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45835,7 +46163,7 @@ var DispatchTimeInterval = {
 exports.default = DispatchTimeInterval;
 
 /***/ }),
-/* 127 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46074,7 +46402,7 @@ var NotificationCenter = function (_NSObject) {
 exports.default = NotificationCenter;
 
 /***/ }),
-/* 128 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46134,7 +46462,7 @@ var NSColorSpace = function (_NSObject) {
 exports.default = NSColorSpace;
 
 /***/ }),
-/* 129 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46375,13 +46703,13 @@ var NSKeyedArchiver = function (_NSCoder) {
 exports.default = NSKeyedArchiver;
 
 /***/ }),
-/* 130 */
+/* 139 */
 /***/ (function(module, exports) {
 
 module.exports = __webpack_require__(19);
 
 /***/ }),
-/* 131 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46423,7 +46751,7 @@ var NSMutableArray = function (_NSArray) {
 exports.default = NSMutableArray;
 
 /***/ }),
-/* 132 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46465,7 +46793,7 @@ var NSMutableData = function (_NSData) {
 exports.default = NSMutableData;
 
 /***/ }),
-/* 133 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46507,7 +46835,7 @@ var NSMutableDictionary = function (_NSDictionary) {
 exports.default = NSMutableDictionary;
 
 /***/ }),
-/* 134 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46572,7 +46900,7 @@ var NSURL = function (_NSObject) {
 exports.default = NSURL;
 
 /***/ }),
-/* 135 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47302,7 +47630,7 @@ var NSValue = function (_NSObject) {
 exports.default = NSValue;
 
 /***/ }),
-/* 136 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47411,7 +47739,7 @@ var GKAgent2D = function (_GKAgent) {
 exports.default = GKAgent2D;
 
 /***/ }),
-/* 137 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47657,7 +47985,7 @@ var GKPath = function (_NSObject) {
 exports.default = GKPath;
 
 /***/ }),
-/* 138 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47844,7 +48172,7 @@ var GKScene = function (_NSObject) {
 exports.default = GKScene;
 
 /***/ }),
-/* 139 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47920,7 +48248,7 @@ var GKSCNNodeComponent = function (_GKComponent) {
 exports.default = GKSCNNodeComponent;
 
 /***/ }),
-/* 140 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47977,7 +48305,7 @@ var CAAction = function () {
 exports.default = CAAction;
 
 /***/ }),
-/* 141 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48051,7 +48379,7 @@ var CAAnimationDelegate = function () {
 exports.default = CAAnimationDelegate;
 
 /***/ }),
-/* 142 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48074,7 +48402,7 @@ var CACurrentMediaTime = function CACurrentMediaTime() {
 exports.default = CACurrentMediaTime;
 
 /***/ }),
-/* 143 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48170,7 +48498,7 @@ function CAMediaTiming() {
 exports.default = CAMediaTiming;
 
 /***/ }),
-/* 144 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48228,7 +48556,7 @@ function CATransform3D(m) {
 exports.default = CATransform3D;
 
 /***/ }),
-/* 145 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48308,7 +48636,7 @@ var SCNAccelerationConstraint = function (_SCNConstraint) {
 exports.default = SCNAccelerationConstraint;
 
 /***/ }),
-/* 146 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48484,7 +48812,7 @@ var SCNActionable = function () {
 exports.default = SCNActionable;
 
 /***/ }),
-/* 147 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48558,7 +48886,7 @@ var SCNActionCustom = function (_SCNAction) {
 exports.default = SCNActionCustom;
 
 /***/ }),
-/* 148 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48787,7 +49115,7 @@ _SCNAction3.default.fadeOpacityByDuration = SCNActionFade.fadeOpacityByDuration;
 _SCNAction3.default.fadeOpacityToDuration = SCNActionFade.fadeOpacityToDuration;
 
 /***/ }),
-/* 149 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48950,7 +49278,7 @@ exports.default = SCNActionGroup;
 _SCNAction3.default.group = SCNActionGroup.group;
 
 /***/ }),
-/* 150 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49026,7 +49354,7 @@ var SCNActionHide = function (_SCNAction) {
 exports.default = SCNActionHide;
 
 /***/ }),
-/* 151 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49100,7 +49428,7 @@ var SCNActionJavaScript = function (_SCNAction) {
 exports.default = SCNActionJavaScript;
 
 /***/ }),
-/* 152 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49337,7 +49665,7 @@ _SCNAction3.default.moveBy = SCNActionMove.moveBy;
 _SCNAction3.default.moveTo = SCNActionMove.moveTo;
 
 /***/ }),
-/* 153 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49411,7 +49739,7 @@ var SCNActionPerformSelector = function (_SCNAction) {
 exports.default = SCNActionPerformSelector;
 
 /***/ }),
-/* 154 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49564,7 +49892,7 @@ exports.default = SCNActionPlaySound;
 _SCNAction3.default.playAudioWaitForCompletion = SCNActionPlaySound.playAudioWaitForCompletion;
 
 /***/ }),
-/* 155 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49638,7 +49966,7 @@ var SCNActionReference = function (_SCNAction) {
 exports.default = SCNActionReference;
 
 /***/ }),
-/* 156 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49775,7 +50103,7 @@ exports.default = SCNActionRemove;
 _SCNAction3.default.removeFromParentNode = SCNActionRemove.removeFromParentNode;
 
 /***/ }),
-/* 157 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49980,7 +50308,7 @@ _SCNAction3.default.repeat = SCNActionRepeat.repeat;
 _SCNAction3.default.repeatForever = SCNActionRepeat.repeatForever;
 
 /***/ }),
-/* 158 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50322,7 +50650,7 @@ _SCNAction3.default.rotateByAround = SCNActionRotate.rotateByAround;
 _SCNAction3.default.rotateToAxisAngle = SCNActionRotate.rotateToAxisAngle;
 
 /***/ }),
-/* 159 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50396,7 +50724,7 @@ var SCNActionRunAction = function (_SCNAction) {
 exports.default = SCNActionRunAction;
 
 /***/ }),
-/* 160 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50529,7 +50857,7 @@ exports.default = SCNActionRunBlock;
 _SCNAction3.default.run = SCNActionRunBlock.run;
 
 /***/ }),
-/* 161 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50603,7 +50931,7 @@ var SCNActionScale = function (_SCNAction) {
 exports.default = SCNActionScale;
 
 /***/ }),
-/* 162 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50802,7 +51130,7 @@ exports.default = SCNActionSequence;
 _SCNAction3.default.sequence = SCNActionSequence.sequence;
 
 /***/ }),
-/* 163 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50825,7 +51153,7 @@ var SCNActionTimingFunction = function SCNActionTimingFunction(time) {};
 exports.default = SCNActionTimingFunction;
 
 /***/ }),
-/* 164 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50943,7 +51271,7 @@ _SCNAction3.default.waitDuration = SCNActionWait.waitDuration;
 _SCNAction3.default.waitDurationWithRange = SCNActionWait.waitDurationWithRange;
 
 /***/ }),
-/* 165 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51133,7 +51461,7 @@ var SCNAnimatable = function () {
 exports.default = SCNAnimatable;
 
 /***/ }),
-/* 166 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51202,7 +51530,7 @@ var SCNAnimationEvent = function (_NSObject) {
 exports.default = SCNAnimationEvent;
 
 /***/ }),
-/* 167 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51228,7 +51556,7 @@ var SCNAnimationEventBlock = function SCNAnimationEventBlock(animation, animated
 exports.default = SCNAnimationEventBlock;
 
 /***/ }),
-/* 168 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51244,7 +51572,7 @@ var _NSObject2 = __webpack_require__(0);
 
 var _NSObject3 = _interopRequireDefault(_NSObject2);
 
-var _SCNAnimation = __webpack_require__(85);
+var _SCNAnimation = __webpack_require__(94);
 
 var _SCNAnimation2 = _interopRequireDefault(_SCNAnimation);
 
@@ -51388,7 +51716,7 @@ var SCNAnimationPlayer = function (_NSObject) {
 exports.default = SCNAnimationPlayer;
 
 /***/ }),
-/* 169 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51573,7 +51901,7 @@ var SCNAudioPlayer = function (_NSObject) {
 exports.default = SCNAudioPlayer;
 
 /***/ }),
-/* 170 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51860,7 +52188,7 @@ var SCNAudioSource = function (_NSObject) {
 exports.default = SCNAudioSource;
 
 /***/ }),
-/* 171 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51965,7 +52293,7 @@ var SCNBillboardAxis = function () {
 exports.default = SCNBillboardAxis;
 
 /***/ }),
-/* 172 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52026,7 +52354,7 @@ var SCNBillboardConstraint = function (_SCNConstraint) {
 exports.default = SCNBillboardConstraint;
 
 /***/ }),
-/* 173 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52055,7 +52383,7 @@ var SCNBindingBlock = function SCNBindingBlock(programID, location, renderedNode
 exports.default = SCNBindingBlock;
 
 /***/ }),
-/* 174 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52122,7 +52450,7 @@ var SCNBoundingVolume = function () {
 exports.default = SCNBoundingVolume;
 
 /***/ }),
-/* 175 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52152,7 +52480,7 @@ var SCNBufferBindingBlock = function SCNBufferBindingBlock(buffer, node, shadabl
 exports.default = SCNBufferBindingBlock;
 
 /***/ }),
-/* 176 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52179,7 +52507,7 @@ var SCNBufferFrequency = {
 exports.default = SCNBufferFrequency;
 
 /***/ }),
-/* 177 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52235,7 +52563,7 @@ var SCNBufferStream = function () {
 exports.default = SCNBufferStream;
 
 /***/ }),
-/* 178 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52262,7 +52590,7 @@ var SCNChamferMode = {
 exports.default = SCNChamferMode;
 
 /***/ }),
-/* 179 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52491,7 +52819,7 @@ var SCNCone = function (_SCNGeometry) {
 exports.default = SCNCone;
 
 /***/ }),
-/* 180 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52769,7 +53097,7 @@ var SCNCylinder = function (_SCNGeometry) {
 exports.default = SCNCylinder;
 
 /***/ }),
-/* 181 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52900,7 +53228,7 @@ var SCNDebugOptions = function () {
 exports.default = SCNDebugOptions;
 
 /***/ }),
-/* 182 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52999,7 +53327,7 @@ var SCNDistanceConstraint = function (_SCNConstraint) {
 exports.default = SCNDistanceConstraint;
 
 /***/ }),
-/* 183 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53028,7 +53356,7 @@ var SCNFieldForceEvaluator = function SCNFieldForceEvaluator(position, velocity,
 exports.default = SCNFieldForceEvaluator;
 
 /***/ }),
-/* 184 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53241,7 +53569,7 @@ var SCNFloor = function (_SCNGeometry) {
 exports.default = SCNFloor;
 
 /***/ }),
-/* 185 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53255,7 +53583,7 @@ var _NSObject2 = __webpack_require__(0);
 
 var _NSObject3 = _interopRequireDefault(_NSObject2);
 
-var _SCNTessellationSmoothingMode = __webpack_require__(89);
+var _SCNTessellationSmoothingMode = __webpack_require__(98);
 
 var _SCNTessellationSmoothingMode2 = _interopRequireDefault(_SCNTessellationSmoothingMode);
 
@@ -53357,7 +53685,7 @@ var SCNGeometryTessellator = function (_NSObject) {
 exports.default = SCNGeometryTessellator;
 
 /***/ }),
-/* 186 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53495,7 +53823,7 @@ var SCNIKConstraint = function (_SCNConstraint) {
 exports.default = SCNIKConstraint;
 
 /***/ }),
-/* 187 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53538,7 +53866,7 @@ function SCNLayer() {
 exports.default = SCNLayer;
 
 /***/ }),
-/* 188 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53683,7 +54011,7 @@ var SCNLevelOfDetail = function (_NSObject) {
 exports.default = SCNLevelOfDetail;
 
 /***/ }),
-/* 189 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53803,7 +54131,7 @@ var SCNLookAtConstraint = function (_SCNConstraint) {
 exports.default = SCNLookAtConstraint;
 
 /***/ }),
-/* 190 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53842,7 +54170,7 @@ var SCNMatrix4EqualToMatrix4 = function SCNMatrix4EqualToMatrix4(a, b) {
 exports.default = SCNMatrix4EqualToMatrix4;
 
 /***/ }),
-/* 191 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53869,7 +54197,7 @@ var SCNMatrix4FromGLKMatrix4 = function SCNMatrix4FromGLKMatrix4(mat) {
 exports.default = SCNMatrix4FromGLKMatrix4;
 
 /***/ }),
-/* 192 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53899,7 +54227,7 @@ var SCNMatrix4FromMat4 = function SCNMatrix4FromMat4(m) {
 exports.default = SCNMatrix4FromMat4;
 
 /***/ }),
-/* 193 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53925,7 +54253,7 @@ var SCNMatrix4Invert = function SCNMatrix4Invert(m) {
 exports.default = SCNMatrix4Invert;
 
 /***/ }),
-/* 194 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53959,7 +54287,7 @@ var SCNMatrix4IsIdentity = function SCNMatrix4IsIdentity(m) {
 exports.default = SCNMatrix4IsIdentity;
 
 /***/ }),
-/* 195 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54022,7 +54350,7 @@ var SCNMatrix4MakeRotation = function SCNMatrix4MakeRotation(angle, x, y, z) {
 exports.default = SCNMatrix4MakeRotation;
 
 /***/ }),
-/* 196 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54050,7 +54378,7 @@ var SCNMatrix4Mult = function SCNMatrix4Mult(a, b) {
 exports.default = SCNMatrix4Mult;
 
 /***/ }),
-/* 197 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54081,7 +54409,7 @@ var SCNMatrix4Rotate = function SCNMatrix4Rotate(m, angle, x, y, z) {
 exports.default = SCNMatrix4Rotate;
 
 /***/ }),
-/* 198 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54093,7 +54421,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _SCNMatrix4MakeScale = __webpack_require__(92);
+var _SCNMatrix4MakeScale = __webpack_require__(101);
 
 var _SCNMatrix4MakeScale2 = _interopRequireDefault(_SCNMatrix4MakeScale);
 
@@ -54115,7 +54443,7 @@ var SCNMatrix4Scale = function SCNMatrix4Scale(m, sx, sy, sz) {
 };exports.default = SCNMatrix4Scale;
 
 /***/ }),
-/* 199 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54142,7 +54470,7 @@ var SCNMatrix4ToGLKMatrix4 = function SCNMatrix4ToGLKMatrix4(mat) {
 exports.default = SCNMatrix4ToGLKMatrix4;
 
 /***/ }),
-/* 200 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54168,7 +54496,7 @@ var SCNMatrix4ToMat4 = function SCNMatrix4ToMat4(m) {
 exports.default = SCNMatrix4ToMat4;
 
 /***/ }),
-/* 201 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54202,7 +54530,7 @@ var SCNMatrix4Translate = function SCNMatrix4Translate(m, tx, ty, tz) {
 };exports.default = SCNMatrix4Translate;
 
 /***/ }),
-/* 202 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54220,7 +54548,7 @@ var _NSObject2 = __webpack_require__(0);
 
 var _NSObject3 = _interopRequireDefault(_NSObject2);
 
-var _SCNMorpherCalculationMode = __webpack_require__(93);
+var _SCNMorpherCalculationMode = __webpack_require__(102);
 
 var _SCNMorpherCalculationMode2 = _interopRequireDefault(_SCNMorpherCalculationMode);
 
@@ -54521,7 +54849,7 @@ var SCNMorpher = function (_NSObject) {
 exports.default = SCNMorpher;
 
 /***/ }),
-/* 203 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54582,7 +54910,7 @@ var SCNNodeRendererDelegate = function () {
 exports.default = SCNNodeRendererDelegate;
 
 /***/ }),
-/* 204 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54609,7 +54937,7 @@ var SCNParticleEvent = {
 exports.default = SCNParticleEvent;
 
 /***/ }),
-/* 205 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54658,7 +54986,7 @@ var SCNParticleEventBlock = function SCNParticleEventBlock(data, dataStride, ind
 exports.default = SCNParticleEventBlock;
 
 /***/ }),
-/* 206 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54685,7 +55013,7 @@ var SCNParticleInputMode = {
 exports.default = SCNParticleInputMode;
 
 /***/ }),
-/* 207 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54730,7 +55058,7 @@ var SCNParticleModifierBlock = function SCNParticleModifierBlock(data, dataStrid
 exports.default = SCNParticleModifierBlock;
 
 /***/ }),
-/* 208 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54759,7 +55087,7 @@ var SCNParticleModifierStage = {
 exports.default = SCNParticleModifierStage;
 
 /***/ }),
-/* 209 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54899,7 +55227,7 @@ var SCNParticlePropertyController = function (_NSObject) {
 exports.default = SCNParticlePropertyController;
 
 /***/ }),
-/* 210 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54933,11 +55261,11 @@ var _SCNMatrix = __webpack_require__(7);
 
 var _SCNMatrix2 = _interopRequireDefault(_SCNMatrix);
 
-var _SCNParticleBirthLocation = __webpack_require__(95);
+var _SCNParticleBirthLocation = __webpack_require__(104);
 
 var _SCNParticleBirthLocation2 = _interopRequireDefault(_SCNParticleBirthLocation);
 
-var _SCNParticleBirthDirection = __webpack_require__(94);
+var _SCNParticleBirthDirection = __webpack_require__(103);
 
 var _SCNParticleBirthDirection2 = _interopRequireDefault(_SCNParticleBirthDirection);
 
@@ -54953,19 +55281,19 @@ var _SCNOrderedDictionary = __webpack_require__(21);
 
 var _SCNOrderedDictionary2 = _interopRequireDefault(_SCNOrderedDictionary);
 
-var _SCNParticleImageSequenceAnimationMode = __webpack_require__(97);
+var _SCNParticleImageSequenceAnimationMode = __webpack_require__(106);
 
 var _SCNParticleImageSequenceAnimationMode2 = _interopRequireDefault(_SCNParticleImageSequenceAnimationMode);
 
-var _SCNParticleBlendMode = __webpack_require__(96);
+var _SCNParticleBlendMode = __webpack_require__(105);
 
 var _SCNParticleBlendMode2 = _interopRequireDefault(_SCNParticleBlendMode);
 
-var _SCNParticleOrientationMode = __webpack_require__(98);
+var _SCNParticleOrientationMode = __webpack_require__(107);
 
 var _SCNParticleOrientationMode2 = _interopRequireDefault(_SCNParticleOrientationMode);
 
-var _SCNParticleSortingMode = __webpack_require__(99);
+var _SCNParticleSortingMode = __webpack_require__(108);
 
 var _SCNParticleSortingMode2 = _interopRequireDefault(_SCNParticleSortingMode);
 
@@ -56977,7 +57305,7 @@ var SCNParticleSystem = function (_NSObject2) {
 exports.default = SCNParticleSystem;
 
 /***/ }),
-/* 211 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57088,7 +57416,7 @@ var SCNPhysicsBallSocketJoint = function (_SCNPhysicsBehavior) {
 exports.default = SCNPhysicsBallSocketJoint;
 
 /***/ }),
-/* 212 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57615,7 +57943,7 @@ var SCNPhysicsBody = function (_NSObject) {
 exports.default = SCNPhysicsBody;
 
 /***/ }),
-/* 213 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57707,7 +58035,7 @@ var SCNPhysicsCollisionCategory = function () {
 exports.default = SCNPhysicsCollisionCategory;
 
 /***/ }),
-/* 214 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57793,7 +58121,7 @@ var SCNPhysicsContactDelegate = function () {
 exports.default = SCNPhysicsContactDelegate;
 
 /***/ }),
-/* 215 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57818,7 +58146,7 @@ var SCNPhysicsFieldScope = {
 exports.default = SCNPhysicsFieldScope;
 
 /***/ }),
-/* 216 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57945,7 +58273,7 @@ var SCNPhysicsHingeJoint = function (_SCNPhysicsBehavior) {
 exports.default = SCNPhysicsHingeJoint;
 
 /***/ }),
-/* 217 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58133,7 +58461,7 @@ var SCNPhysicsSliderJoint = function (_SCNPhysicsBehavior) {
 exports.default = SCNPhysicsSliderJoint;
 
 /***/ }),
-/* 218 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58145,7 +58473,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _SCNPhysicsNoiseField2 = __webpack_require__(101);
+var _SCNPhysicsNoiseField2 = __webpack_require__(110);
 
 var _SCNPhysicsNoiseField3 = _interopRequireDefault(_SCNPhysicsNoiseField2);
 
@@ -58209,7 +58537,7 @@ var SCNPhysicsTurbulenceField = function (_SCNPhysicsNoiseField) {
 exports.default = SCNPhysicsTurbulenceField;
 
 /***/ }),
-/* 219 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58368,7 +58696,7 @@ var SCNPhysicsVehicle = function (_SCNPhysicsBehavior) {
 exports.default = SCNPhysicsVehicle;
 
 /***/ }),
-/* 220 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58533,7 +58861,7 @@ var SCNPhysicsVehicleWheel = function (_NSObject) {
 exports.default = SCNPhysicsVehicleWheel;
 
 /***/ }),
-/* 221 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58760,7 +59088,7 @@ var SCNPlane = function (_SCNGeometry) {
 exports.default = SCNPlane;
 
 /***/ }),
-/* 222 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -58877,7 +59205,7 @@ var SCNProgramDelegate = function () {
 exports.default = SCNProgramDelegate;
 
 /***/ }),
-/* 223 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59161,7 +59489,7 @@ var SCNPyramid = function (_SCNGeometry) {
 exports.default = SCNPyramid;
 
 /***/ }),
-/* 224 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59179,11 +59507,11 @@ var _SCNNode2 = __webpack_require__(14);
 
 var _SCNNode3 = _interopRequireDefault(_SCNNode2);
 
-var _SCNReferenceLoadingPolicy = __webpack_require__(104);
+var _SCNReferenceLoadingPolicy = __webpack_require__(113);
 
 var _SCNReferenceLoadingPolicy2 = _interopRequireDefault(_SCNReferenceLoadingPolicy);
 
-var _SCNScene = __webpack_require__(105);
+var _SCNScene = __webpack_require__(114);
 
 var _SCNScene2 = _interopRequireDefault(_SCNScene);
 
@@ -59453,7 +59781,7 @@ var SCNReferenceNode = function (_SCNNode) {
 exports.default = SCNReferenceNode;
 
 /***/ }),
-/* 225 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59513,7 +59841,7 @@ var SCNSceneExportDelegate = function () {
 exports.default = SCNSceneExportDelegate;
 
 /***/ }),
-/* 226 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59538,7 +59866,7 @@ var SCNSceneExportProgressHandler = function SCNSceneExportProgressHandler(total
 exports.default = SCNSceneExportProgressHandler;
 
 /***/ }),
-/* 227 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59981,7 +60309,7 @@ var SCNSceneRenderer = function () {
 exports.default = SCNSceneRenderer;
 
 /***/ }),
-/* 228 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60102,7 +60430,7 @@ var SCNSceneRendererDelegate = function () {
 exports.default = SCNSceneRendererDelegate;
 
 /***/ }),
-/* 229 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60133,7 +60461,7 @@ var SCNSceneSourceStatus = {
 exports.default = SCNSceneSourceStatus;
 
 /***/ }),
-/* 230 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60160,7 +60488,7 @@ var SCNSceneSourceStatusHandler = function SCNSceneSourceStatusHandler(totalProg
 exports.default = SCNSceneSourceStatusHandler;
 
 /***/ }),
-/* 231 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60270,7 +60598,7 @@ var SCNShadable = function () {
 exports.default = SCNShadable;
 
 /***/ }),
-/* 232 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60323,7 +60651,7 @@ var SCNShadableHelper = function (_NSObject) {
 exports.default = SCNShadableHelper;
 
 /***/ }),
-/* 233 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60352,7 +60680,7 @@ var SCNShaderModifierEntryPoint = {
 exports.default = SCNShaderModifierEntryPoint;
 
 /***/ }),
-/* 234 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60379,7 +60707,7 @@ var SCNShadowMode = {
 exports.default = SCNShadowMode;
 
 /***/ }),
-/* 235 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60475,7 +60803,7 @@ var SCNShape = function (_SCNGeometry) {
 exports.default = SCNShape;
 
 /***/ }),
-/* 236 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60879,7 +61207,7 @@ var SCNSkinner = function (_NSObject) {
 exports.default = SCNSkinner;
 
 /***/ }),
-/* 237 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60933,7 +61261,7 @@ var SCNTechnique = function (_NSObject) {
 
     var _this = _possibleConstructorReturn(this, (SCNTechnique.__proto__ || Object.getPrototypeOf(SCNTechnique)).call(this));
 
-    _this._dictionaryRepresentation = null;
+    _this._dictionaryRepresentation = dictionary;
     return _this;
   }
 
@@ -61011,7 +61339,7 @@ var SCNTechnique = function (_NSObject) {
 exports.default = SCNTechnique;
 
 /***/ }),
-/* 238 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61054,7 +61382,7 @@ function SCNTechniqueSupport() {
 exports.default = SCNTechniqueSupport;
 
 /***/ }),
-/* 239 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61209,7 +61537,7 @@ var SCNText = function (_SCNGeometry) {
 exports.default = SCNText;
 
 /***/ }),
-/* 240 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61282,7 +61610,7 @@ var SCNTimingFunction = function (_NSObject) {
 exports.default = SCNTimingFunction;
 
 /***/ }),
-/* 241 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61485,7 +61813,7 @@ var SCNTorus = function (_SCNGeometry) {
 exports.default = SCNTorus;
 
 /***/ }),
-/* 242 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61509,7 +61837,7 @@ var _SCNMatrix = __webpack_require__(7);
 
 var _SCNMatrix2 = _interopRequireDefault(_SCNMatrix);
 
-var _SCNQuaternion = __webpack_require__(103);
+var _SCNQuaternion = __webpack_require__(112);
 
 var _SCNQuaternion2 = _interopRequireDefault(_SCNQuaternion);
 
@@ -61613,7 +61941,7 @@ var SCNTransformConstraint = function (_SCNConstraint) {
 exports.default = SCNTransformConstraint;
 
 /***/ }),
-/* 243 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61869,7 +62197,7 @@ var SCNTube = function (_SCNGeometry) {
 exports.default = SCNTube;
 
 /***/ }),
-/* 244 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61898,7 +62226,7 @@ var SCNVector3EqualToVector3 = function SCNVector3EqualToVector3(a, b) {
 exports.default = SCNVector3EqualToVector3;
 
 /***/ }),
-/* 245 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61928,7 +62256,7 @@ var SCNVector3FromFloat3 = function SCNVector3FromFloat3(v) {
 exports.default = SCNVector3FromFloat3;
 
 /***/ }),
-/* 246 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61955,7 +62283,7 @@ var SCNVector3FromGLKVector3 = function SCNVector3FromGLKVector3(vector) {
 exports.default = SCNVector3FromGLKVector3;
 
 /***/ }),
-/* 247 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61987,7 +62315,7 @@ var SCNVector3Make = function SCNVector3Make(x, y, z) {
 exports.default = SCNVector3Make;
 
 /***/ }),
-/* 248 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62013,7 +62341,7 @@ var SCNVector3ToFloat3 = function SCNVector3ToFloat3(v) {
 exports.default = SCNVector3ToFloat3;
 
 /***/ }),
-/* 249 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62043,7 +62371,7 @@ var SCNVector3ToGLKVector3 = function SCNVector3ToGLKVector3(vector) {
 };exports.default = SCNVector3ToGLKVector3;
 
 /***/ }),
-/* 250 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62064,7 +62392,7 @@ var SCNVector3Zero = new _SCNVector2.default(0, 0, 0);
 exports.default = SCNVector3Zero;
 
 /***/ }),
-/* 251 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62093,7 +62421,7 @@ var SCNVector4EqualToVector4 = function SCNVector4EqualToVector4(a, b) {
 exports.default = SCNVector4EqualToVector4;
 
 /***/ }),
-/* 252 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62123,7 +62451,7 @@ var SCNVector4FromFloat4 = function SCNVector4FromFloat4(v) {
 exports.default = SCNVector4FromFloat4;
 
 /***/ }),
-/* 253 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62150,7 +62478,7 @@ var SCNVector4FromGLKVector4 = function SCNVector4FromGLKVector4(vector) {
 exports.default = SCNVector4FromGLKVector4;
 
 /***/ }),
-/* 254 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62179,7 +62507,7 @@ var SCNVector4Make = function SCNVector4Make(x, y, z, w) {
 exports.default = SCNVector4Make;
 
 /***/ }),
-/* 255 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62205,7 +62533,7 @@ var SCNVector4ToFloat4 = function SCNVector4ToFloat4(v) {
 exports.default = SCNVector4ToFloat4;
 
 /***/ }),
-/* 256 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62232,7 +62560,7 @@ var SCNVector4ToGLKVector4 = function SCNVector4ToGLKVector4(vector) {
 exports.default = SCNVector4ToGLKVector4;
 
 /***/ }),
-/* 257 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62270,15 +62598,15 @@ var _GCController = __webpack_require__(28);
 
 var _GCController2 = _interopRequireDefault(_GCController);
 
-var _SCNRenderer = __webpack_require__(107);
+var _SCNRenderer = __webpack_require__(116);
 
 var _SCNRenderer2 = _interopRequireDefault(_SCNRenderer);
 
-var _SCNRenderingAPI = __webpack_require__(110);
+var _SCNRenderingAPI = __webpack_require__(119);
 
 var _SCNRenderingAPI2 = _interopRequireDefault(_SCNRenderingAPI);
 
-var _SCNAntialiasingMode = __webpack_require__(86);
+var _SCNAntialiasingMode = __webpack_require__(95);
 
 var _SCNAntialiasingMode2 = _interopRequireDefault(_SCNAntialiasingMode);
 
@@ -64258,7 +64586,7 @@ var SCNView = function () {
 exports.default = SCNView;
 
 /***/ }),
-/* 258 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64463,7 +64791,7 @@ _SKAction3.default.fadeAlphaByDuration = SKFade.fadeAlphaByDuration;
 _SKAction3.default.fadeAlphaToDuration = SKFade.fadeAlphaToDuration;
 
 /***/ }),
-/* 259 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64602,7 +64930,7 @@ exports.default = SKGroup;
 _SKAction3.default.group = SKGroup.group;
 
 /***/ }),
-/* 260 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64624,11 +64952,11 @@ var _SKNode2 = __webpack_require__(19);
 
 var _SKNode3 = _interopRequireDefault(_SKNode2);
 
-var _SKLabelVerticalAlignmentMode = __webpack_require__(113);
+var _SKLabelVerticalAlignmentMode = __webpack_require__(122);
 
 var _SKLabelVerticalAlignmentMode2 = _interopRequireDefault(_SKLabelVerticalAlignmentMode);
 
-var _SKLabelHorizontalAlignmentMode = __webpack_require__(112);
+var _SKLabelHorizontalAlignmentMode = __webpack_require__(121);
 
 var _SKLabelHorizontalAlignmentMode2 = _interopRequireDefault(_SKLabelHorizontalAlignmentMode);
 
@@ -65106,7 +65434,7 @@ var SKLabelNode = function (_SKNode) {
 exports.default = SKLabelNode;
 
 /***/ }),
-/* 261 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65282,7 +65610,7 @@ _SKAction3.default.repeat = SKRepeat.repeat;
 _SKAction3.default.repeatForever = SKRepeat.repeatForever;
 
 /***/ }),
-/* 262 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65577,7 +65905,7 @@ _SKAction3.default.scaleXToDuration = SKScale.scaleXToDuration;
 _SKAction3.default.scaleYToDuration = SKScale.scaleYToDuration;
 
 /***/ }),
-/* 263 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -65601,11 +65929,11 @@ var _SKColor = __webpack_require__(2);
 
 var _SKColor2 = _interopRequireDefault(_SKColor);
 
-var _SKEffectNode2 = __webpack_require__(111);
+var _SKEffectNode2 = __webpack_require__(120);
 
 var _SKEffectNode3 = _interopRequireDefault(_SKEffectNode2);
 
-var _SKSceneScaleMode = __webpack_require__(114);
+var _SKSceneScaleMode = __webpack_require__(123);
 
 var _SKSceneScaleMode2 = _interopRequireDefault(_SKSceneScaleMode);
 
@@ -65932,7 +66260,7 @@ var SKScene = function (_SKEffectNode) {
 exports.default = SKScene;
 
 /***/ }),
-/* 264 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66092,7 +66420,7 @@ exports.default = SKSequence;
 _SKAction3.default.sequence = SKSequence.sequence;
 
 /***/ }),
-/* 265 */
+/* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66453,7 +66781,7 @@ var SKShapeNode = function (_SKNode) {
 exports.default = SKShapeNode;
 
 /***/ }),
-/* 266 */
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66554,7 +66882,7 @@ _SKAction3.default.waitForDuration = SKWait.waitForDuration;
 _SKAction3.default.waitForDurationWithRange = SKWait.waitForDurationWithRange;
 
 /***/ }),
-/* 267 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66566,7 +66894,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _BinaryParser = __webpack_require__(268);
+var _BinaryParser = __webpack_require__(277);
 
 var _BinaryParser2 = _interopRequireDefault(_BinaryParser);
 
@@ -66850,7 +67178,7 @@ if (typeof Buffer !== 'undefined') {
 exports.default = _Buffer;
 
 /***/ }),
-/* 268 */
+/* 277 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67019,7 +67347,7 @@ p.fromDouble = function (number) {
 };
 
 /***/ }),
-/* 269 */
+/* 278 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68127,10 +68455,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var _toonImages = _ToonImages3.default;
+var _toonMaterials = [];
+var _c = document.createElement('canvas');
+_c.width = 1;
+_c.height = 1;
+var _ctx = _c.getContext('2d');
+
 /**
  *
  * @access public
  */
+
 var MMDReader = function () {
   /**
    *
@@ -68260,9 +68596,26 @@ var MMDReader = function () {
       return this._reader._pos;
     }
   }], [{
+    key: 'getToonMaterial',
+    value: function getToonMaterial(image) {
+      _ctx.drawImage(image, 0, image.height - 1, 1, 1, 0, 0, 1, 1);
+      var data = _ctx.getImageData(0, 0, 1, 1).data;
+      var r = data[0] / 255.0;
+      var g = data[1] / 255.0;
+      var b = data[2] / 255.0;
+      var a = data[3] / 255.0;
+      console.warn(r + ', ' + g + ', ' + b + ', ' + a);
+      return new _jscenekit.SKColor(r, g, b, a);
+    }
+  }, {
     key: 'toonTextures',
     get: function get() {
-      return _ToonImages3.default;
+      return _toonImages;
+    }
+  }, {
+    key: 'toonMaterials',
+    get: function get() {
+      return _toonMaterials;
     }
   }]);
 
@@ -68270,6 +68623,31 @@ var MMDReader = function () {
 }();
 
 exports.default = MMDReader;
+var _iteratorNormalCompletion = true;
+var _didIteratorError = false;
+var _iteratorError = undefined;
+
+try {
+
+  for (var _iterator = _toonImages[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+    var image = _step.value;
+
+    _toonMaterials.push(MMDReader.getToonMaterial(image));
+  }
+} catch (err) {
+  _didIteratorError = true;
+  _iteratorError = err;
+} finally {
+  try {
+    if (!_iteratorNormalCompletion && _iterator.return) {
+      _iterator.return();
+    }
+  } finally {
+    if (_didIteratorError) {
+      throw _iteratorError;
+    }
+  }
+}
 
 /***/ }),
 /* 3 */
@@ -68841,7 +69219,7 @@ exports.default = MMDProgram;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var _MMDFragmentShader = '\n  uniform float useTexture;\n  uniform float useToon;\n  uniform float useSphereMap;\n  uniform float useSubtexture;\n\n  uniform float spadd;\n\n  uniform sampler2D sphereTexture;\n\n  #pragma transparent\n  #pragma body\n\n  // linear to sRGB\n  //vec4 materialDiffuse = pow(_surface.diffuse, vec4(1.0/2.2));\n  //vec4 materialSpecular = pow(_surface.specular, vec4(1.0/2.2));\n  //vec4 materialEmission = pow(_surface.emission, vec4(1.0/2.2));\n  //vec3 lightAmbient = pow(_lightingContribution.ambient, vec3(1.0/2.2));\n  //vec3 lightSpecular = pow(_lightingContribution.specular, vec3(1.0/2.2));\n  vec4 materialDiffuse = _surface.diffuse;\n  vec4 materialSpecular = _surface.specular;\n  vec4 materialEmission = _surface.emission;\n  vec3 lightAmbient = _lightingContribution.ambient;\n  vec3 lightSpecular = _lightingContribution.specular;\n\n  vec3 lightDirection = -scn_lights.direction0.xyz;\n\n  // light direction in view space\n  vec3 lightDir = normalize((u_viewTransform * vec4(lightDirection, 0.0)).xyz);\n\n  //vec4 diffuseColor = materialDiffuse * vec4(lightDiffuse, 1.0);\n  vec4 diffuseColor = vec4(0, 0, 0, 1);\n  // This is not typo; use materialDiffuse for ambientColor.\n  vec3 ambientColor = materialDiffuse.rgb * lightAmbient.rgb + materialEmission.rgb;\n  vec3 specularColor = materialSpecular.rgb * lightSpecular.rgb;\n\n  vec3 n = normalize(_surface.normal);\n\n  #define SKII1 1500\n  #define SKII2 8000\n  #define Toon 3\n\n  _output.color.rgb = ambientColor.rgb;\n  if(useToon <= 0.0){\n    _output.color.rgb += diffuseColor.rgb;\n  }\n  _output.color.a = diffuseColor.a;\n  _output.color = clamp(_output.color, vec4(0), vec4(1));\n\n  vec2 spTex;\n  if(useSphereMap > 0.0){\n    if(useSubtexture > 0.0){\n      spTex = _surface.specularTexcoord;\n    }else{\n      spTex.x = n.x * 0.5 + 0.5;\n      spTex.y = -n.y * 0.5 + 0.5;\n    }\n  }\n\n  //vec3 halfVector = normalize(normalize(_surface.view) - normalize(lightDir));\n  //vec3 specular = pow(max(0.0, dot(halfVector, n)), _surface.shininess) * specularColor;\n\n\n\n  if(useTexture > 0.0){\n    _output.color *= texture(u_multiplyTexture, _surface.multiplyTexcoord);\n  }\nvec4 debugColor = _output.color;\n\n  if(useSphereMap > 0.0){\n    vec4 texColor = texture(sphereTexture, spTex);\n    if(spadd > 0.0){\n      _output.color.rgb += texColor.rgb;\n    }else{\n      _output.color.rgb *= texColor.rgb;\n    }\n    _output.color.a *= texColor.a;\n  }\n\n  if(useToon > 0.0){\n    float lightNormal = dot(n, -lightDir);\n    _output.color *= texture(u_transparentTexture, vec2(0, 0.5 + lightNormal * 0.5));\n  }\n  _output.color.rgb += specularColor.rgb;\n\n  _output.color.rgb *= _output.color.a;\n\n  // sRGB to linear\n  //_output.color = pow(_output.color, vec4(2.2));\n\n\n\n\n\n  // DEBUG\n\n  //if(useTexture > 0.0){\n  //  _output.color = texture(u_multiplyTexture, _surface.multiplyTexcoord);\n  //}\n\n  //_output.color.rgb = ambientColor;\n  //_output.color.a = 1.0;\n\n  //_output.color.rgb = _lightingContribution.specular;\n  //_output.color.a = 1.0;\n\n  //if(useToon > 0.0){\n  //  float lightNormal = dot(n, -lightDir);\n  //  _output.color = texture(u_transparentTexture, vec2(0, 0.5 + lightNormal * 0.5));\n  //}\n\n  //_output.color = debugColor;\n';
+var _MMDFragmentShader = '\n  uniform float useTexture;\n  uniform float useToon;\n  uniform float useSphereMap;\n  uniform float useSubtexture;\n\n  uniform float spadd;\n\n  uniform sampler2D sphereTexture;\n\n  uniform vec4 textureAddValue;\n  uniform vec4 textureMulValue;\n  uniform vec4 sphereAddValue;\n  uniform vec4 sphereMulValue;\n  uniform vec4 materialToon;\n  uniform float parthf;\n  uniform float transp;\n\n  #pragma transparent\n  #pragma body\n\n  vec4 debugColor;\n\n  // linear to sRGB\n  //vec4 materialDiffuse = pow(_surface.diffuse, vec4(1.0/2.2));\n  //vec4 materialSpecular = pow(_surface.specular, vec4(1.0/2.2));\n  //vec4 materialEmission = pow(_surface.emission, vec4(1.0/2.2));\n  //vec3 lightAmbient = pow(_lightingContribution.ambient, vec3(1.0/2.2));\n  //vec3 lightSpecular = pow(_lightingContribution.specular, vec3(1.0/2.2));\n  vec4 materialDiffuse = _surface.diffuse;\n  vec4 materialSpecular = _surface.specular;\n  vec4 materialEmission = _surface.emission;\n  vec3 lightAmbient = _lightingContribution.ambient;\n  vec3 lightSpecular = _lightingContribution.specular;\n\n  vec3 lightDirection = -scn_lights.direction0.xyz;\n\n  // light direction in view space\n  vec3 lightDir = normalize((u_viewTransform * vec4(lightDirection, 0.0)).xyz);\n\n  //vec4 diffuseColor = materialDiffuse * vec4(lightDiffuse, 1.0);\n  vec4 diffuseColor = vec4(0, 0, 0, 1);\n  // This is not typo; use materialDiffuse for ambientColor.\n  vec3 ambientColor = materialDiffuse.rgb * lightAmbient.rgb + materialEmission.rgb;\n  vec3 specularColor = materialSpecular.rgb * lightSpecular.rgb;\n\n  vec3 n = normalize(_surface.normal);\n\n  #define SKII1 1500.0\n  #define SKII2 8000.0\n  #define Toon 3.0\n\n  _output.color.rgb = ambientColor.rgb;\n  if(useToon <= 0.0){\n    _output.color.rgb += diffuseColor.rgb;\n  }\n  _output.color.a = diffuseColor.a;\n  _output.color = clamp(_output.color, vec4(0), vec4(1));\n\n  vec2 spTex;\n  if(useSphereMap > 0.0){\n    if(useSubtexture > 0.0){\n      spTex = _surface.specularTexcoord;\n    }else{\n      spTex.x = n.x * 0.5 + 0.5;\n      spTex.y = -n.y * 0.5 + 0.5;\n    }\n  }\n\n\n\n\n\n  //vec3 halfVector = normalize(normalize(_surface.view) - normalize(lightDir));\n  //vec3 specular = pow(max(0.0, dot(halfVector, n)), _surface.shininess) * specularColor;\n  vec4 shadowColor = vec4(ambientColor, _output.color.a);\n\n\n\n\n\n\n\n  if(useTexture > 0.0){\n    //_output.color *= texture(u_multiplyTexture, _surface.multiplyTexcoord);\n    vec4 texColor = texture(u_multiplyTexture, _surface.multiplyTexcoord);\n    texColor.rgb = mix(vec3(1), texColor.rgb * textureMulValue.rgb + textureAddValue.rgb, textureMulValue.a + textureAddValue.a);\n    _output.color *= texColor;\n    shadowColor *= texColor;\n  }\n  //debugColor = shadowColor;\n\n  if(useSphereMap > 0.0){\n    vec4 texColor = texture(sphereTexture, spTex);\n    if(spadd > 0.0){\n      texColor.rgb = mix(vec3(0), texColor.rgb * sphereMulValue.rgb + sphereAddValue.rgb, sphereMulValue.a + sphereAddValue.a);\n      _output.color.rgb += texColor.rgb;\n      shadowColor.rgb += texColor.rgb;\n    }else{\n      texColor.rgb = mix(vec3(1), texColor.rgb * sphereMulValue.rgb + sphereAddValue.rgb, sphereMulValue.a + sphereAddValue.a);\n      _output.color.rgb *= texColor.rgb;\n      shadowColor.rgb *= texColor.rgb;\n    }\n    _output.color.a *= texColor.a;\n    shadowColor.a *= texColor.a;\n  }\n  _output.color.rgb += specularColor;\n\n  vec4 zCalcTex = scn_lights.shadowMatrix0 * u_inverseViewTransform * vec4(_surface.position, 1.0);\n  zCalcTex /= zCalcTex.w;\n  vec2 transTexCoord;\n  transTexCoord.x = (1.0 + zCalcTex.x) * 0.5;\n  transTexCoord.y = (1.0 - zCalcTex.y) * 0.5;\n\n  debugColor = vec4(1.0, 0.0, 0.0, 1.0);\n  if(0.0 <= transTexCoord.x && transTexCoord.x <= 1.0\n    && 0.0 <= transTexCoord.y && transTexCoord.y <= 1.0){\n    float comp;\n    float depth = convDepth(texture(u_shadowTexture0, transTexCoord));\n    if(parthf > 0.0){\n      //debugColor = vec4(1.0, 0.0, 0.0, 1.0);\n      //comp = 1.0 - clamp(max(zCalcTex.z - texture(u_shadowTexture0, transTexCoord).r, 0.0) * SKII2 * transTexCoord.y - 0.3, 0.0, 1.0);\n      comp = 1.0 - clamp(max(zCalcTex.z - depth, 0.0) * SKII2 * transTexCoord.y - 0.3, 0.0, 1.0);\n    }else{\n      //debugColor = vec4(0.0, 1.0, 0.0, 1.0);\n      //comp = 1.0 - clamp(max(zCalcTex.z - texture(u_shadowTexture0, transTexCoord).r, 0.0) * SKII1 - 0.3, 0.0, 1.0);\n      comp = 1.0 - clamp(max(zCalcTex.z - depth, 0.0) * SKII1 - 0.3, 0.0, 1.0);\n    }\n    if(useToon > 0.0){\n      //debugColor = vec4(0.0, 0.0, 1.0, 1.0);\n      float lightNormal = dot(n, -lightDir) * Toon;\n      comp = min(clamp(lightNormal, 0.0, 1.0), comp);\n      //_output.color *= texture(u_transparentTexture, vec2(0, 0.5 + lightNormal * 0.5));\n      shadowColor.rgb *= materialToon.rgb;\n    }\n    debugColor = shadowColor;\n    //_output.color.rgb += specularColor.rgb;\n\n    _output.color = mix(shadowColor, _output.color, comp);\n    if(transp > 0.0){\n      _output.color.a = 0.5;\n    }\n  }\n\n  \n\n\n  //_output.color.rgb *= _output.color.a;\n\n  // sRGB to linear\n  //_output.color = pow(_output.color, vec4(2.2));\n\n\n\n\n\n  // DEBUG\n\n  //if(useTexture > 0.0){\n  //  _output.color = texture(u_multiplyTexture, _surface.multiplyTexcoord);\n  //}\n\n  //_output.color.rgb = ambientColor;\n  //_output.color.a = 1.0;\n\n  //_output.color.rgb = _lightingContribution.specular;\n  //_output.color.a = 1.0;\n\n  //if(useToon > 0.0){\n  //  float lightNormal = dot(n, -lightDir);\n  //  _output.color = texture(u_transparentTexture, vec2(0, 0.5 + lightNormal * 0.5));\n  //}\n\n  //_output.color = debugColor;\n  //_output.color = materialToon;\n  //_output.color = vec4(ambientColor, 1.0);\n  //_output.color = shadowColor;\n';
 
 exports.default = _MMDFragmentShader;
 
@@ -68975,6 +69353,67 @@ var MMDCameraNode = function (_MMDNode) {
     _this.rotXNode.addChildNode(_this.rotZNode);
 
     _this.rotZNode.addChildNode(_this.cameraNode);
+
+    var technique = new _jscenekit.SCNTechnique({
+      sequence: ['pass_scene', 'pass_edge'],
+      passes: {
+        pass_scene: {
+          colorStates: {
+            clear: true,
+            clearColor: 'sceneBackground'
+          },
+          draw: 'DRAW_SCENE',
+          blendStates: {
+            enable: true
+          },
+          inputs: {
+            depth: 'DEPTH',
+            color: 'COLOR'
+          },
+          outputs: {
+            color: 'COLOR',
+            depth: 'DEPTH'
+          }
+        },
+        pass_edge: {
+          colorStates: {
+            clear: false
+          },
+          blendStates: {
+            enable: true
+          },
+          depthStates: {
+            clear: false,
+            enableWrite: true,
+            func: 'less'
+          },
+          cullMode: 'front',
+          draw: 'DRAW_SCENE',
+          program: 'doesntexist',
+          metalVertexShader: 'pass_edge_vertex',
+          metalFragmentShader: 'pass_edge_fragment',
+          inputs: {},
+          outputs: {
+            color: 'COLOR',
+            depth: 'DEPTH'
+          }
+        }
+      },
+      targets: {
+        symbols: {
+          screenSize: {
+            type: 'float'
+          },
+          vertexSymbol: {
+            semantic: 'vertex'
+          },
+          normalSymbol: {
+            semantic: 'normal'
+          }
+        }
+      }
+    });
+    camera.technique = technique;
     return _this;
   }
 
@@ -72658,6 +73097,7 @@ var MMDPMXReader = function (_MMDReader) {
     _this._textureCount = 0;
     _this._texturePromiseArray = [];
     _this._textureArray = [];
+    _this._toonMaterials = [];
 
     // material data
     _this._materialCount = 0;
@@ -73023,6 +73463,7 @@ var MMDPMXReader = function (_MMDReader) {
         var index = _this2._texturePromiseArray.length;
         _this2._texturePromiseArray.push(_this2.loadTexture(textureFile).then(function (texture) {
           _this2._textureArray[index] = texture;
+          _this2._toonMaterials[index] = _MMDReader3.default.getToonMaterial(texture);
         }));
       };
 
@@ -73125,15 +73566,18 @@ var MMDPMXReader = function (_MMDReader) {
           if (toonTextureNo < _this3._texturePromiseArray.length) {
             material.transparent._loadedPromise = _this3._texturePromiseArray[toonTextureNo].then(function () {
               material.transparent.contents = _this3._textureArray[toonTextureNo];
+              material.setValueForKey(_this3._toonMaterials[toonTextureNo], 'materialToon');
             });
             material.setValueForKey(1.0, 'useToon');
           } else {
+            material.setValueForKey(_jscenekit.SKColor.black, 'materialToon');
             material.setValueForKey(0.0, 'useToon');
           }
         } else if (toonFlag === 1) {
           toonTextureNo = _this3.readUnsignedByte();
           material.transparent.contents = _MMDReader3.default.toonTextures[toonTextureNo];
           material.setValueForKey(1.0, 'useToon');
+          material.setValueForKey(_MMDReader3.default.toonMaterials[toonTextureNo], 'materialToon');
         } else {
           throw new Error('unknown toon flag: ' + toonFlag);
         }
@@ -73143,6 +73587,13 @@ var MMDPMXReader = function (_MMDReader) {
         } else {
           material.isDoubleSided = false;
         }
+
+        material.setValueForKey(new _jscenekit.SCNVector4(0, 0, 0, 0), 'textureAddValue');
+        material.setValueForKey(new _jscenekit.SCNVector4(1, 1, 1, 1), 'textureMulValue');
+        material.setValueForKey(new _jscenekit.SCNVector4(0, 0, 0, 0), 'sphereAddValue');
+        material.setValueForKey(new _jscenekit.SCNVector4(1, 1, 1, 1), 'sphereMulValue');
+        material.setValueForKey(0.0, 'parthf');
+        material.setValueForKey(0.0, 'transp');
 
         // FIXME: use floorShadow, shadowMap property
         // FIXME: use drawEdge property

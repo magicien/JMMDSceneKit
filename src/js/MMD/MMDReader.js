@@ -1,11 +1,19 @@
 'use strict'
 
 import {
-  _BinaryReader
+  _BinaryReader,
+  SKColor
 } from 'jscenekit'
 import TGAImage from 'TGAImage'
 import _TextReader from '../util/_TextReader'
 import _ToonImages from './_ToonImages'
+
+const _toonImages = _ToonImages
+const _toonMaterials = []
+const _c = document.createElement('canvas')
+_c.width = 1
+_c.height = 1
+const _ctx = _c.getContext('2d')
 
 /**
  *
@@ -52,8 +60,24 @@ export default class MMDReader {
   }
 
   static get toonTextures() {
-    return _ToonImages
+    return _toonImages
   }
+
+  static get toonMaterials() {
+    return _toonMaterials
+  }
+
+  static getToonMaterial(image) {
+    _ctx.drawImage(image, 0, image.height-1, 1, 1, 0, 0, 1, 1)
+    const data = _ctx.getImageData(0, 0, 1, 1).data
+    const r = data[0] / 255.0
+    const g = data[1] / 255.0
+    const b = data[2] / 255.0
+    const a = data[3] / 255.0
+    console.warn(r + ', ' + g + ', ' + b + ', ' + a)
+    return new SKColor(r, g, b, a)
+  }
+
 
   skip(length, noAssert = false) {
     this._reader.skip(length, noAssert)
@@ -121,3 +145,8 @@ export default class MMDReader {
     return promise
   }
 } 
+
+for(const image of _toonImages){
+  _toonMaterials.push(MMDReader.getToonMaterial(image)) 
+}
+

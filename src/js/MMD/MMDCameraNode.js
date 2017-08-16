@@ -2,6 +2,7 @@
 
 import {
   SCNCamera,
+  SCNTechnique,
   SCNVector4
 } from 'jscenekit'
 import MMDNode from './MMDNode'
@@ -59,6 +60,68 @@ export default class MMDCameraNode extends MMDNode {
     this.rotXNode.addChildNode(this.rotZNode)
 
     this.rotZNode.addChildNode(this.cameraNode)
+
+    const technique = new SCNTechnique({
+      sequence: ['pass_scene', 'pass_edge'],
+      passes: {
+        pass_scene: {
+          colorStates: {
+            clear: true,
+            clearColor: 'sceneBackground'
+          },
+          draw: 'DRAW_SCENE',
+          blendStates: {
+            enable: true
+          },
+          inputs: {
+            depth: 'DEPTH',
+            color: 'COLOR'
+          },
+          outputs: {
+            color: 'COLOR',
+            depth: 'DEPTH'
+          }
+        },
+        pass_edge: {
+          colorStates: {
+            clear: false
+          },
+          blendStates: {
+            enable: true
+          },
+          depthStates: {
+            clear: false,
+            enableWrite: true,
+            func: 'less'
+          },
+          cullMode: 'front',
+          draw: 'DRAW_SCENE',
+          program: 'doesntexist',
+          metalVertexShader: 'pass_edge_vertex',
+          metalFragmentShader: 'pass_edge_fragment',
+          inputs: {
+          },
+          outputs: {
+            color: 'COLOR',
+            depth: 'DEPTH'
+          }
+        }
+      },
+      targets: {
+        symbols: {
+          screenSize: {
+            type: 'float'
+          },
+          vertexSymbol: {
+            semantic: 'vertex'
+          },
+          normalSymbol: {
+            semantic: 'normal'
+          }
+        }
+      }
+    })
+    camera.technique = technique
   }
 
   get rotX() {
