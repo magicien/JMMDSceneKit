@@ -8,6 +8,7 @@ JavaScript framework for JSceneKit and MikuMikuDance
 ### Install
 
 ```
+npm install jscenekit --save
 npm install jmmdscenekit --save
 ```
 
