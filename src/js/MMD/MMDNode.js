@@ -516,7 +516,8 @@ export default class MMDNode extends SCNNode {
               if(faceIndex >= 0){
                 newAnim.keyPath = `/Geometry.morpher.weights[${faceIndex}]`
               }else{
-                newAnim.keyPath = '//'
+                // newAnim.keyPath = '//'
+                return
               }
             }
           }else if(bone !== null){

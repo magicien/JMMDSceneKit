@@ -531,21 +531,6 @@ export default class MMDXReader extends MMDReader {
     if(name === 'TextureFilename'){
       const textureFilePath = this._TextureFilename()
       if(textureFilePath !== null){
-        /*
-        const texture = this._loadTexture(textureFilePath)
-        if(texture !== null){
-          // FIXME: use mmd shader
-          material.emission.contents = texture
-          material.emission.wrapS = SCNWrapMode.repeat
-          material.emission.wrapT = SCNWrapMode.repeat
-          material.diffuse.contents = texture
-          material.diffuse.wrapS = SCNWrapMode.repeat
-          material.diffuse.wrapT = SCNWrapMode.repeat
-
-          // DEBUG
-          //material.diffuse.contents = new SKColor(0, 0.5, 0, 1.0)
-        }
-        */
         this.loadTexture(textureFilePath)
           .then((texture) => {
             material.emission.contents = texture
@@ -687,20 +672,5 @@ export default class MMDXReader extends MMDReader {
 
     return filePath
   }
-
-/*
-  _loadTexture(path) {
-    const promise = new Promise((resolve, reject) => {
-      console.error('TODO: implement _loadTexture')
-      const fileName = this.directoryPath + path
-      const image = new Image()
-      image.onload = () => {
-        resolve(image)
-      }
-      image.src = fileName
-    })
-    return promise
-  }
-*/
 }
 

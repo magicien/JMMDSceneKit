@@ -61,7 +61,7 @@ module.exports =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 18);
+/******/ 	return __webpack_require__(__webpack_require__.s = 16);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -4505,9 +4505,8 @@ var NSObject = function () {
           if (typeof this._propTypes[key] === 'undefined') {
             //console.warn(`unknown key ${key}`)
             if (this._propTypes.$unknownKey && this._propTypes.$unknownKey(key) !== null) {
-              propTypes[key] = this._propTypes.$unknownKey(key
+              propTypes[key] = this._propTypes.$unknownKey(key);
               //console.warn(`unknown key: ${key} => ${propTypes[key]}`)
-              );
             } else {
               console.error(this.className + ': property ' + key + ' not registered');
               throw new Error(this.className + ': property ' + key + ' not registered');
@@ -6143,9 +6142,8 @@ var SCNAction = function (_NSObject) {
     value: function _applyAction(obj, time) {
       var needTimeConversion = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
-      var t = this._getTime(time, needTimeConversion
+      var t = this._getTime(time, needTimeConversion);
       //this._handleEvents(obj, t)
-      );
     }
   }, {
     key: '_getTime',
@@ -7041,9 +7039,9 @@ var SCNGeometrySource = function (_NSObject) {
     value: function _createBuffer(context) {
       var gl = context;
       this._buffer = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, this._buffer
+      gl.bindBuffer(gl.ARRAY_BUFFER, this._buffer);
       // FIXME: dynamic data
-      );gl.bufferData(gl.ARRAY_BUFFER, this._glData, gl.STATIC_DRAW);
+      gl.bufferData(gl.ARRAY_BUFFER, this._glData, gl.STATIC_DRAW);
       return this._buffer;
     }
 
@@ -7187,11 +7185,11 @@ var SCNGeometrySource = function (_NSObject) {
       var len = this._vectorCount;
       var arr = [];
       for (var i = 0; i < len; i++) {
-        var p = new _SCNVector2.default(this._data[ind + 0], this._data[ind + 1], this._data[ind + 2]).transform(t
+        var p = new _SCNVector2.default(this._data[ind + 0], this._data[ind + 1], this._data[ind + 2]).transform(t);
         //const x = this._data[ind + 0]
         //const y = this._data[ind + 1]
         //const z = this._data[ind + 2]
-        );if (p.x < min.x) {
+        if (p.x < min.x) {
           min.x = p.x;
         }
         if (p.x > max.x) {
@@ -8348,7 +8346,7 @@ var SCNMatrix4 = function () {
   }, {
     key: 'getOrientation',
     value: function getOrientation() {
-      return this.getRotation().rotationToQuat
+      return this.getRotation().rotationToQuat();
       /*
       const e = []
       const scale = this.getScale().mul(this.m44)
@@ -8408,7 +8406,6 @@ var SCNMatrix4 = function () {
       v.z *= len
        return v
       */
-      ();
     }
 
     /**
@@ -9427,9 +9424,9 @@ var SCNGeometry = function (_NSObject) {
       if (typeof key === 'undefined' || key === null) {
         key = Symbol();
       }
-      var anim = animation.copy
+      var anim = animation.copy();
       // FIXME: use current frame time
-      ();anim._animationStartTime = Date.now() * 0.001;
+      anim._animationStartTime = Date.now() * 0.001;
       anim._prevTime = anim._animationStartTime - 0.0000001;
 
       this._animations.set(key, anim);
@@ -9474,9 +9471,8 @@ var SCNGeometry = function (_NSObject) {
   }, {
     key: 'removeAnimationForKey',
     value: function removeAnimationForKey(key) {
-      this._animations.delete(key
+      this._animations.delete(key);
       // TODO: reset values
-      );
     }
 
     /**
@@ -9745,10 +9741,10 @@ var SCNGeometry = function (_NSObject) {
 
       var vertexData = new Float32Array(arr);
       //console.log(`vertexData length: ${arr.length}`)
-      gl.bufferData(gl.ARRAY_BUFFER, vertexData, gl.DYNAMIC_DRAW
+      gl.bufferData(gl.ARRAY_BUFFER, vertexData, gl.DYNAMIC_DRAW);
 
       // set new data
-      );pVertexSource._data = arr;
+      pVertexSource._data = arr;
       if (pNormalSource) {
         pNormalSource._data = arr;
       }
@@ -9863,43 +9859,43 @@ var SCNGeometry = function (_NSObject) {
       } else {
         textureFlags.push(0);
       }
-      gl.uniform1i(gl.getUniformLocation(program, 'selfIllumination'), selfIllumination
+      gl.uniform1i(gl.getUniformLocation(program, 'selfIllumination'), selfIllumination);
 
       // ambient
-      );this._setTextureToName(gl, material._ambient, 'TEXTURE1', textureFlags
+      this._setTextureToName(gl, material._ambient, 'TEXTURE1', textureFlags);
 
       // diffuse
-      );this._setTextureToName(gl, material._diffuse, 'TEXTURE2', textureFlags
+      this._setTextureToName(gl, material._diffuse, 'TEXTURE2', textureFlags);
 
       // specular
-      );this._setTextureToName(gl, material._specular, 'TEXTURE3', textureFlags
+      this._setTextureToName(gl, material._specular, 'TEXTURE3', textureFlags);
 
       // reflective
-      );this._setCubeTextureToName(gl, material._reflective, 'TEXTURE4', textureFlags
+      this._setCubeTextureToName(gl, material._reflective, 'TEXTURE4', textureFlags);
 
       // transparent
-      );this._setTextureToName(gl, material._transparent, 'TEXTURE5', textureFlags
+      this._setTextureToName(gl, material._transparent, 'TEXTURE5', textureFlags);
 
       // multiply
-      );this._setTextureToName(gl, material._multiply, 'TEXTURE6', textureFlags
+      this._setTextureToName(gl, material._multiply, 'TEXTURE6', textureFlags);
 
       // normal
-      );this._setTextureToName(gl, material._normal, 'TEXTURE7', textureFlags
+      this._setTextureToName(gl, material._normal, 'TEXTURE7', textureFlags);
 
       // ambientOcclusion
-      );this._setTextureToName(gl, material._ambientOcclusion, 'TEXTURE8', textureFlags
+      this._setTextureToName(gl, material._ambientOcclusion, 'TEXTURE8', textureFlags);
 
       // selfIllumination
-      );this._setTextureToName(gl, material._selfIllumination, 'TEXTURE9', textureFlags
+      this._setTextureToName(gl, material._selfIllumination, 'TEXTURE9', textureFlags);
 
       // metalness
-      );this._setTextureToName(gl, material._metalness, 'TEXTURE10', textureFlags
+      this._setTextureToName(gl, material._metalness, 'TEXTURE10', textureFlags);
 
       // roughness
-      );this._setTextureToName(gl, material._roughness, 'TEXTURE11', textureFlags
+      this._setTextureToName(gl, material._roughness, 'TEXTURE11', textureFlags);
 
       // TODO: cache uniform location
-      );gl.uniform1iv(gl.getUniformLocation(program, 'textureFlags'), new Int32Array(textureFlags));
+      gl.uniform1iv(gl.getUniformLocation(program, 'textureFlags'), new Int32Array(textureFlags));
 
       if (material.isDoubleSided) {
         gl.disable(gl.CULL_FACE);
@@ -9967,24 +9963,24 @@ var SCNGeometry = function (_NSObject) {
       // emission
       textureFlags.push(0);
 
-      gl.uniform1i(gl.getUniformLocation(program, 'selfIllumination'), 0
+      gl.uniform1i(gl.getUniformLocation(program, 'selfIllumination'), 0);
 
       // ambient
-      );this._setTextureToName(gl, material._ambient, 'TEXTURE1', textureFlags);
+      this._setTextureToName(gl, material._ambient, 'TEXTURE1', textureFlags);
 
-      textureFlags.push(0 // diffuse
-      );textureFlags.push(0 // specular
-      );textureFlags.push(0 // reflective
-      );textureFlags.push(0 // transparent
-      );textureFlags.push(0 // multiply
-      );textureFlags.push(0 // normal
-      );textureFlags.push(0 // ambientOcclusion
-      );textureFlags.push(0 // selfIllumination
-      );textureFlags.push(0 // metalness
-      );textureFlags.push(0 // roughness
+      textureFlags.push(0); // diffuse
+      textureFlags.push(0); // specular
+      textureFlags.push(0); // reflective
+      textureFlags.push(0); // transparent
+      textureFlags.push(0); // multiply
+      textureFlags.push(0); // normal
+      textureFlags.push(0); // ambientOcclusion
+      textureFlags.push(0); // selfIllumination
+      textureFlags.push(0); // metalness
+      textureFlags.push(0); // roughness
 
       // TODO: cache uniform location
-      );gl.uniform1iv(gl.getUniformLocation(program, 'textureFlags'), new Int32Array(textureFlags));
+      gl.uniform1iv(gl.getUniformLocation(program, 'textureFlags'), new Int32Array(textureFlags));
 
       if (material.isDoubleSided) {
         gl.disable(gl.CULL_FACE);
@@ -10178,10 +10174,10 @@ var SCNGeometry = function (_NSObject) {
     value: function _createCubeTexture(gl, image) {
       var texture = gl.createTexture();
 
-      gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture
+      gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture);
       // texImage2D(target, level, internalformat, width, height, border, format, type, source)
       // Safari complains that 'source' is not ArrayBufferView type, but WebGL2 should accept HTMLCanvasElement.
-      );var targets = [gl.TEXTURE_CUBE_MAP_POSITIVE_Z, gl.TEXTURE_CUBE_MAP_POSITIVE_X, gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, gl.TEXTURE_CUBE_MAP_NEGATIVE_X, gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, gl.TEXTURE_CUBE_MAP_POSITIVE_Y];
+      var targets = [gl.TEXTURE_CUBE_MAP_POSITIVE_Z, gl.TEXTURE_CUBE_MAP_POSITIVE_X, gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, gl.TEXTURE_CUBE_MAP_NEGATIVE_X, gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, gl.TEXTURE_CUBE_MAP_POSITIVE_Y];
       //const tx = [0, 1.0/6.0, 2.0/6.0, 3.0/6.0, 4.0/6.0, 5.0/6.0, 1]
       //const itx = [4, 1, 5, 0, 2, 3]
       var margin = 0.001;
@@ -10221,13 +10217,13 @@ var SCNGeometry = function (_NSObject) {
       //console.warn(`image size: ${image.naturalWidth} ${image.naturalHeight}`)
       canvas.getContext('2d').drawImage(image, 0, 0);
 
-      gl.bindTexture(gl.TEXTURE_2D, texture
+      gl.bindTexture(gl.TEXTURE_2D, texture);
       // texImage2D(target, level, internalformat, width, height, border, format, type, source)
       // Safari complains that 'source' is not ArrayBufferView type, but WebGL2 should accept HTMLCanvasElement.
-      );gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, image.width, image.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
-      gl.generateMipmap(gl.TEXTURE_2D
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, image.width, image.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
+      gl.generateMipmap(gl.TEXTURE_2D);
       //gl.bindTexture(gl.TEXTURE_2D, null)
-      );return texture;
+      return texture;
     }
 
     /**
@@ -11357,8 +11353,8 @@ var SCNVector4 = function () {
         //const m11 = 1 - (z * z + y * y) * cosWR
         var m11 = cosW + x * x * cosWR;
         euler.x = Math.atan2(m23, m33);
-        euler.y = Math.asin(s // How can I get euler.y > pi/2 ?
-        );euler.z = Math.atan2(m12, m11);
+        euler.y = Math.asin(s); // How can I get euler.y > pi/2 ?
+        euler.z = Math.atan2(m12, m11);
       }
 
       return euler;
@@ -11812,13 +11808,13 @@ var SCNMaterial = function (_NSObject) {
      */
     _this._entityID = null;
 
-    _this._createPresentationProperties
+    _this._createPresentationProperties();
 
     /**
      * @access private
      * @type {?SCNShadableHelper}
      */
-    ();_this._shadableHelper = null;
+    _this._shadableHelper = null;
 
     /**
      * @access private
@@ -12040,9 +12036,9 @@ var SCNMaterial = function (_NSObject) {
       if (typeof key === 'undefined' || key === null) {
         key = Symbol();
       }
-      var anim = animation.copy
+      var anim = animation.copy();
       // FIXME: use current frame time
-      ();anim._animationStartTime = Date.now() * 0.001;
+      anim._animationStartTime = Date.now() * 0.001;
       anim._prevTime = anim._animationStartTime - 0.0000001;
 
       this._animations.set(key, anim);
@@ -12087,9 +12083,8 @@ var SCNMaterial = function (_NSObject) {
   }, {
     key: 'removeAnimationForKey',
     value: function removeAnimationForKey(key) {
-      this._animations.delete(key
+      this._animations.delete(key);
       // TODO: reset values
-      );
     }
 
     /**
@@ -13023,13 +13018,13 @@ var SCNNode = function (_NSObject) {
      */
     _this._nodeID = null;
 
-    _this._updateBoundingBox
+    _this._updateBoundingBox();
 
     /**
      * @access private
      * @type {Promise}
      */
-    ();_this._loadedPromise = null;
+    _this._loadedPromise = null;
     return _this;
   }
 
@@ -13701,9 +13696,9 @@ var SCNNode = function (_NSObject) {
             results.push.apply(results, _toConsumableArray(hits));
           }
         }
-      }
+      });
       // TODO: sort by the distance
-      );if (results.length > 0) {
+      if (results.length > 0) {
         console.error('hitTestWithSegmentFromTo: ' + results.length);
       }
       return results;
@@ -13986,13 +13981,12 @@ var SCNNode = function (_NSObject) {
       if (typeof key === 'undefined' || key === null) {
         key = Symbol();
       }
-      var act = action.copy
+      var act = action.copy();
       // FIXME: use current frame time
-      ();act._actionStartTime = Date.now() * 0.001;
+      act._actionStartTime = Date.now() * 0.001;
       act._completionHandler = block;
-      this._actions.set(key, act
+      this._actions.set(key, act);
       //this._copyTransformToPresentationRecursive()
-      );
     }
 
     // Inspecting a Node’s Running Actions
@@ -14654,9 +14648,9 @@ var SCNNode = function (_NSObject) {
 
       var paths = keyPath.split('.');
       var key = paths.shift();
-      var restPath = paths.join('.'
+      var restPath = paths.join('.');
       //console.log(`SCNNode setValueForKeyPath ${this.name} ${key} ${restPath}`)
-      );if (key === 'transform') {
+      if (key === 'transform') {
         switch (restPath) {
           case 'rotation.x':
             target._rotation.x = value;
@@ -15496,8 +15490,8 @@ var SCNNode = function (_NSObject) {
         return null;
       }
       var vp = this.lightViewProjectionTransform;
-      var scale = (0, _SCNMatrix4MakeTranslation2.default)(1.0, 1.0, 0.0).scale(0.5, 0.5, 1.0 // [-1, 1] => [0, 1]
-      );return vp.mult(scale);
+      var scale = (0, _SCNMatrix4MakeTranslation2.default)(1.0, 1.0, 0.0).scale(0.5, 0.5, 1.0); // [-1, 1] => [0, 1]
+      return vp.mult(scale);
     }
   }, {
     key: 'didLoad',
@@ -15562,10 +15556,10 @@ var SCNNode = function (_NSObject) {
       //console.log('_loadAnimationGroup start')
       var group = new _CAAnimationGroup2.default();
       var data = animation.animation;
-      group.isRemovedOnCompletion = Boolean(animation.removeOnCompletion
+      group.isRemovedOnCompletion = Boolean(animation.removeOnCompletion);
       // group.timingFunction
       // group.delegate
-      );group.usesSceneTimeBase = Boolean(animation.usesSceneTimeBase);
+      group.usesSceneTimeBase = Boolean(animation.usesSceneTimeBase);
       group.fadeInDuration = data.fadeInDuration;
       group.fadeOutDuration = data.fadeOutDuration;
       group.beginTime = data.beginTime;
@@ -15581,14 +15575,14 @@ var SCNNode = function (_NSObject) {
       // data.additive
       // data.attributes
       data.channels.forEach(function (channel) {
-        var keyPath = channel.targetPath.join('.'
+        var keyPath = channel.targetPath.join('.');
         //console.error(`SCNNode animation group keyPath: ${keyPath}`)
-        );var chAnim = _this6._loadAnimationData(channel.animation, keyPath);
+        var chAnim = _this6._loadAnimationData(channel.animation, keyPath);
         group.animations.push(chAnim);
-      }
+      });
       //console.log('_loadAnimationGroup done')
 
-      );return group;
+      return group;
     }
   }, {
     key: '_loadKeyframeAnimation',
@@ -15596,10 +15590,10 @@ var SCNNode = function (_NSObject) {
       //console.log(`_loadKeyframeAnimation ${keyPath} start`)
       var anim = new _CAKeyframeAnimation2.default(keyPath);
 
-      anim.isRemovedOnCompletion = Boolean(data.removeOnCompletion
+      anim.isRemovedOnCompletion = Boolean(data.removeOnCompletion);
       // anim.timingFunction
       // anim.delegate
-      );anim.usesSceneTimeBase = Boolean(data.sceneTimeBased);
+      anim.usesSceneTimeBase = Boolean(data.sceneTimeBased);
       anim.fadeInDuration = data.fadeInDuration;
       anim.fadeOutDuration = data.fadeOutDuration;
       anim.beginTime = data.beginTime;
@@ -15612,13 +15606,13 @@ var SCNNode = function (_NSObject) {
       var fillMode = [Constants.kCAFillModeRemoved, Constants.kCAFillModeForwards, Constants.kCAFillModeBackwards, Constants.kCAFillModeBoth];
       anim.fillMode = fillMode[data.fillModeMask];
       anim.isCumulative = Boolean(data.cumulative);
-      anim.isAdditive = Boolean(data.additive
+      anim.isAdditive = Boolean(data.additive);
       // data.attributes
 
-      );var keyframe = data.keyframeController;
-      anim.values = this._loadData(keyframe, 'values'
+      var keyframe = data.keyframeController;
+      anim.values = this._loadData(keyframe, 'values');
       //anim.path
-      );anim.keyTimes = this._loadData(keyframe, 'keytimes');
+      anim.keyTimes = this._loadData(keyframe, 'keytimes');
       switch (keyframe.interpolationMode) {
         case 0:
         default:
@@ -15662,13 +15656,13 @@ var SCNNode = function (_NSObject) {
       var fillMode = [Constants.kCAFillModeRemoved, Constants.kCAFillModeForwards, Constants.kCAFillModeBackwards, Constants.kCAFillModeBoth];
       anim.fillMode = fillMode[data.fillModeMask];
       anim.isCumulative = Boolean(data.cumulative);
-      anim.isAdditive = Boolean(data.additive
+      anim.isAdditive = Boolean(data.additive);
       // data.attributes
       // data.baseType
 
       //console.log(`_loadBasicAnimation ${keyPath} done`)
 
-      );return anim;
+      return anim;
     }
   }, {
     key: '_loadActionArray',
@@ -17646,9 +17640,9 @@ var SKNode = function (_NSObject) {
       if (typeof key === 'undefined' || key === null) {
         _key = Symbol();
       }
-      var act = action.copy
+      var act = action.copy();
       // FIXME: use current frame time
-      ();act._actionStartTime = Date.now() * 0.001;
+      act._actionStartTime = Date.now() * 0.001;
       act._completionHandler = block;
       this._actions.set(_key, act);
     }
@@ -18269,9 +18263,8 @@ var SKAction = function (_NSObject) {
     value: function _applyAction(obj, time) {
       var needTimeConversion = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
-      var t = this._getTime(time, needTimeConversion
+      var t = this._getTime(time, needTimeConversion);
       //this._handleEvents(obj, t)
-      );
     }
   }, {
     key: '_getTime',
@@ -20655,14 +20648,14 @@ var SCNMaterialProperty = function (_NSObject) {
      * @type {SCNMatrix4}
      * @see https://developer.apple.com/documentation/scenekit/scnmaterialproperty/1395388-contentstransform
      */
-    _this.contentsTransform = (0, _SCNMatrix4MakeTranslation2.default)(0, 0, 0
+    _this.contentsTransform = (0, _SCNMatrix4MakeTranslation2.default)(0, 0, 0);
 
     /**
      * The wrapping behavior for the S texture coordinate.
      * @type {SCNWrapMode}
      * @see https://developer.apple.com/documentation/scenekit/scnmaterialproperty/1395384-wraps
      */
-    );_this.wrapS = _SCNWrapMode2.default.clamp;
+    _this.wrapS = _SCNWrapMode2.default.clamp;
 
     /**
      * The wrapping behavior for the T texture coordinate.
@@ -20836,9 +20829,9 @@ var SCNMaterialProperty = function (_NSObject) {
       if (typeof key === 'undefined' || key === null) {
         key = Symbol();
       }
-      var anim = animation.copy
+      var anim = animation.copy();
       // FIXME: use current frame time
-      ();anim._animationStartTime = Date.now() * 0.001;
+      anim._animationStartTime = Date.now() * 0.001;
       anim._prevTime = anim._animationStartTime - 0.0000001;
 
       this._animations.set(key, anim);
@@ -20883,9 +20876,8 @@ var SCNMaterialProperty = function (_NSObject) {
   }, {
     key: 'removeAnimationForKey',
     value: function removeAnimationForKey(key) {
-      this._animations.delete(key
+      this._animations.delete(key);
       // TODO: reset values
-      );
     }
 
     /**
@@ -21089,6 +21081,9 @@ var SCNMaterialProperty = function (_NSObject) {
       var _this2 = this;
 
       var image = new Image();
+      // TODO: check option if it allows cross-domain.
+      image.crossOrigin = 'anonymous';
+
       var __path = path;
       if (__path.indexOf('file:///') === 0) {
         __path = __path.slice(8);
@@ -21135,9 +21130,8 @@ var SCNMaterialProperty = function (_NSObject) {
     value: function float32Array() {
       var target = this.__presentation ? this.__presentation : this;
       if ((0, _InstanceOf3.default)(target._contents, _SKColor2.default)) {
-        return target._contents.float32Array
+        return target._contents.float32Array();
         //return target._contents.srgbToLinear().float32Array()
-        ();
       }
       return new Float32Array([1, 1, 1, 1]);
     }
@@ -22706,8 +22700,8 @@ var SCNPhysicsWorld = function (_NSObject) {
         for (var _iterator4 = objects[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
           var _obj = _step4.value;
 
-          var _body = _obj.physicsBody;
-          _body._prevPosition = _body._position;
+          var body = _obj.physicsBody;
+          body._prevPosition = body._position;
         }
       } catch (err) {
         _didIteratorError4 = true;
@@ -22888,9 +22882,9 @@ var SCNPhysicsWorld = function (_NSObject) {
       var contact = new _SCNPhysicsContact2.default();
       contact._nodeA = boxA._node;
       contact._nodeB = boxB._node;
-      contact._contactPoint = boxA._position.add(d.mul(0.5) // TODO: implement
-      );contact._contactNormal = d.normalize // TODO: implement
-      ();contact._penetrationDistance = 0; // TODO: implement
+      contact._contactPoint = boxA._position.add(d.mul(0.5)); // TODO: implement
+      contact._contactNormal = d.normalize(); // TODO: implement
+      contact._penetrationDistance = 0; // TODO: implement
 
       return [contact];
     }
@@ -23572,9 +23566,9 @@ var SCNPhysicsWorld = function (_NSObject) {
       }
 
       var pA = n.convertPositionFrom(pointA, null);
-      var pB = n.convertPositionFrom(pointB, null
+      var pB = n.convertPositionFrom(pointB, null);
       //if(this._segmentBoundingBoxIntersects(pA, pB, geo.boundingBox) !== null){
-      );var r = this._segmentBoundingBoxIntersects(pA, pB, geo.boundingBox);
+      var r = this._segmentBoundingBoxIntersects(pA, pB, geo.boundingBox);
       if (r !== null) {
         console.error('segmentBoundingBoxIntersects: ' + r.near + ', ' + r.far);
         return this._hitTestWithSegmentGeometry(pA, pB, geo);
@@ -23973,11 +23967,11 @@ var SCNBox = function (_SCNGeometry) {
       var back = -this.length * 0.5;
 
       // front
-      sourceData.push(left, bottom, front // position
-      );sourceData.push(0, 0, 1 // normal
-      );sourceData.push(0, 1 // texcoord
+      sourceData.push(left, bottom, front); // position
+      sourceData.push(0, 0, 1); // normal
+      sourceData.push(0, 1); // texcoord
 
-      );sourceData.push(left, top, front);
+      sourceData.push(left, top, front);
       sourceData.push(0, 0, 1);
       sourceData.push(0, 0);
 
@@ -23990,10 +23984,10 @@ var SCNBox = function (_SCNGeometry) {
       sourceData.push(1, 0);
 
       indexData.push(0, 3, 1);
-      indexData.push(0, 2, 3
+      indexData.push(0, 2, 3);
 
       // right
-      );sourceData.push(right, bottom, front);
+      sourceData.push(right, bottom, front);
       sourceData.push(1, 0, 0);
       sourceData.push(0, 1);
 
@@ -24010,10 +24004,10 @@ var SCNBox = function (_SCNGeometry) {
       sourceData.push(1, 0);
 
       indexData.push(4, 7, 5);
-      indexData.push(4, 6, 7
+      indexData.push(4, 6, 7);
 
       // back
-      );sourceData.push(right, bottom, back);
+      sourceData.push(right, bottom, back);
       sourceData.push(0, 0, -1);
       sourceData.push(0, 1);
 
@@ -24030,10 +24024,10 @@ var SCNBox = function (_SCNGeometry) {
       sourceData.push(1, 0);
 
       indexData.push(8, 11, 9);
-      indexData.push(8, 10, 11
+      indexData.push(8, 10, 11);
 
       // left
-      );sourceData.push(left, bottom, back);
+      sourceData.push(left, bottom, back);
       sourceData.push(-1, 0, 0);
       sourceData.push(0, 1);
 
@@ -24050,10 +24044,10 @@ var SCNBox = function (_SCNGeometry) {
       sourceData.push(1, 0);
 
       indexData.push(12, 15, 13);
-      indexData.push(12, 14, 15
+      indexData.push(12, 14, 15);
 
       // top
-      );sourceData.push(left, top, front);
+      sourceData.push(left, top, front);
       sourceData.push(0, 1, 0);
       sourceData.push(0, 1);
 
@@ -24070,10 +24064,10 @@ var SCNBox = function (_SCNGeometry) {
       sourceData.push(1, 0);
 
       indexData.push(16, 19, 17);
-      indexData.push(16, 18, 19
+      indexData.push(16, 18, 19);
 
       // bottom
-      );sourceData.push(left, bottom, back);
+      sourceData.push(left, bottom, back);
       sourceData.push(0, -1, 0);
       sourceData.push(0, 1);
 
@@ -24745,8 +24739,8 @@ _ClassList.registerClass = function (classObj, className) {
       for (var _iterator2 = _instanceProperties[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
         var _name = _step2.value;
 
-        var _org = Object.getOwnPropertyDescriptor(_NSObject2.default.prototype, _name);
-        Object.defineProperty(classObj.prototype, _name, _org);
+        var org = Object.getOwnPropertyDescriptor(_NSObject2.default.prototype, _name);
+        Object.defineProperty(classObj.prototype, _name, org);
       }
     } catch (err) {
       _didIteratorError2 = true;
@@ -26173,7 +26167,7 @@ var NSKeyedUnarchiver = function (_NSCoder) {
       this._offsetSize = reader.readUnsignedByte();
       this._objCount = reader.readUnsignedLongLong();
       var topIndex = reader.readUnsignedLongLong();
-      var tablePos = reader.readUnsignedLongLong
+      var tablePos = reader.readUnsignedLongLong();
 
       //console.log(`dataLen: ${dataLen}`)
       //console.log(`intSize: ${intSize}`)
@@ -26182,7 +26176,7 @@ var NSKeyedUnarchiver = function (_NSCoder) {
       //console.log(`topIndex: ${topIndex}`)
       //console.log(`tablePos: ${tablePos}`)
 
-      ();this._offsetArray = [];
+      this._offsetArray = [];
       var pos = tablePos;
       reader.seek(pos);
       var objCount = this._objCount;
@@ -26228,9 +26222,9 @@ var NSKeyedUnarchiver = function (_NSCoder) {
         }
       } else if (type1 === 0x10) {
         // Int
-        var len = Math.pow(2, type2
+        var len = Math.pow(2, type2);
         //console.log('   type: integer ' + len)
-        );return reader.readInteger(len, signed);
+        return reader.readInteger(len, signed);
       } else if (type1 === 0x20) {
         // Float
         var _len = Math.pow(2, type2);
@@ -26247,38 +26241,37 @@ var NSKeyedUnarchiver = function (_NSCoder) {
         //console.log('   type: Date')
       } else if (type1 === 0x40) {
         // Data
-        var count = this._getDataSize(type2
+        var count = this._getDataSize(type2);
         //console.log(`   type: Data: length: ${count}`)
-        );return reader.readData(count);
+        return reader.readData(count);
       } else if (type1 === 0x50) {
         // ASCII
-        var _count = this._getDataSize(type2
+        var _count = this._getDataSize(type2);
         //console.log('   type: ascii ' + count)
-        );return reader.readString(_count, 'ascii');
+        return reader.readString(_count, 'ascii');
       } else if (type1 === 0x60) {
         // UTF-16
-        var _count2 = this._getDataSize(type2
+        var _count2 = this._getDataSize(type2);
         //console.log('   type: UTF-16 ' + count)
-        );return reader.readString(_count2, 'utf16be' // Big Endian might not be supported...
-        );
+        return reader.readString(_count2, 'utf16be'); // Big Endian might not be supported...
       } else if (type1 === 0x80) {
         // UID
-        var uid = reader.readInteger(type2 + 1, false
+        var uid = reader.readInteger(type2 + 1, false);
         //console.log('   type: UID: ' + uid)
-        );return new _UID(this, uid);
+        return new _UID(this, uid);
       } else if (type1 === 0xA0) {
         // Array
-        var _count3 = this._getDataSize(type2
+        var _count3 = this._getDataSize(type2);
         //console.log('   type: array: ' + count)
-        );var arrIndex = [];
+        var arrIndex = [];
         for (var i = 0; i < _count3; i++) {
           arrIndex.push(reader.readInteger(this._offsetSize, false));
         }
         var arr = arrIndex.map(function (index) {
           return _this2._parseObjAtIndex(index);
-        }
+        });
         //console.log(`***arr.length: ${arr.length}`)
-        );return arr;
+        return arr;
       } else if (type1 === 0xC0) {
         // Set
         var _count4 = this._getDataSize(type2);
@@ -26304,11 +26297,11 @@ var NSKeyedUnarchiver = function (_NSCoder) {
         }
         var result = {};
         for (var _i4 = 0; _i4 < _count5; _i4++) {
-          var key = this._parseObjAtIndex(keyIndex[_i4]
+          var key = this._parseObjAtIndex(keyIndex[_i4]);
           //console.log('key: ' + key)
-          );var val = this._parseObjAtIndex(valueIndex[_i4]
+          var val = this._parseObjAtIndex(valueIndex[_i4]);
           //console.log('val: ' + val)
-          );result[key] = val;
+          result[key] = val;
         }
         return result;
       }
@@ -26582,9 +26575,9 @@ var NSKeyedUnarchiver = function (_NSCoder) {
       if (this._decodingFinished) {
         throw new Error('can\'t decode \'' + key + '\' after finishDecoding() is called');
       }
-      var parsedObj = this.decodeObjectForKey(key
+      var parsedObj = this.decodeObjectForKey(key);
       //console.log(`${key}: ${parsedObj.constructor.name}`)
-      );if (!(parsedObj instanceof Buffer)) {
+      if (!(parsedObj instanceof Buffer)) {
         throw new Error('propertylist of key ' + key + ' is not Buffer data');
       }
       //console.log(`***header: ${parsedObj.toString('ascii', 0, 8)}`)
@@ -27293,13 +27286,13 @@ var CABasicAnimation = function (_CAPropertyAnimation) {
         // TODO: retain prevValue
         //value = this._lerp(prevValue, currentValue, t)
       }
-      var value = this._lerp(fromValue, toValue, t
+      var value = this._lerp(fromValue, toValue, t);
 
       //if(this.keyPath === 'rotation.w'){
       //  console.log(`from: ${fromValue}, to: ${toValue}, t: ${t}, value: ${value}`)
       //}
 
-      );if (this.isAdditive) {
+      if (this.isAdditive) {
         if (isObject) {
           //value = value.add(obj.valueForKeyPath(this.keyPath))
           value = value.add(this._baseValue);
@@ -27500,9 +27493,9 @@ var CAPropertyAnimation = function (_CAAnimation) {
       if (this.valueFunction !== null) {
         value = this.valueFunction._getValueAtTime(t);
       }
-      value = this._calculateWithBaseValue(obj, value
+      value = this._calculateWithBaseValue(obj, value);
       //console.log(`CAPropertyAnimation: obj: ${obj.name}, time: ${time}, keyPath: ${this.keyPath}, value: ${value}`)
-      );this._applyValue(obj, value);
+      this._applyValue(obj, value);
       this._handleEvents(obj, t);
     }
   }, {
@@ -27912,13 +27905,13 @@ var SCNCapsule = function (_SCNGeometry) {
           var zNom = z * ySin[_lat];
 
           // vertex
-          sourceData.push(xNom * this.capRadius, y + yNom[_lat] * this.capRadius, zNom * this.capRadius
+          sourceData.push(xNom * this.capRadius, y + yNom[_lat] * this.capRadius, zNom * this.capRadius);
 
           // normal
-          );sourceData.push(xNom, yNom[_lat], zNom
+          sourceData.push(xNom, yNom[_lat], zNom);
 
           // texcoord
-          );sourceData.push(tx, 1.0 - 0.25 * _lat / hemiLen);
+          sourceData.push(tx, 1.0 - 0.25 * _lat / hemiLen);
 
           if (_lat === hemiLen) {
             // put the same data again
@@ -27934,13 +27927,13 @@ var SCNCapsule = function (_SCNGeometry) {
           var _zNom = z * ySin[_lat2];
 
           // vertex
-          sourceData.push(_xNom * this.capRadius, y + yNom[_lat2] * this.capRadius, _zNom * this.capRadius
+          sourceData.push(_xNom * this.capRadius, y + yNom[_lat2] * this.capRadius, _zNom * this.capRadius);
 
           // normal
-          );sourceData.push(_xNom, yNom[_lat2], _zNom
+          sourceData.push(_xNom, yNom[_lat2], _zNom);
 
           // texcoord
-          );sourceData.push(tx, 0.50 - 0.25 * _lat2 / hemiLen);
+          sourceData.push(tx, 0.50 - 0.25 * _lat2 / hemiLen);
 
           if (_lat2 === hemiLen) {
             // put the same data again
@@ -28502,9 +28495,8 @@ var SCNPhysicsShape = function (_NSObject) {
       } else if ((0, _InstanceOf3.default)(this._sourceGeometry, _SCNBox2.default)) {
         this._createShapeAsBox();
       } else if ((0, _InstanceOf3.default)(this._sourceGeometry, _SCNSphere2.default)) {
-        this._createShapeAsSphere
+        this._createShapeAsSphere();
         //}else if(this._options && this._options.get(_Option.type) === _ShapeType.convecHull){
-        ();
       } else if (this._options && this._options[_Option.type] === _ShapeType.concavePolyhedron) {
         // give up making a simple shape
         this._shape = this._sourceGeometry;
@@ -28817,13 +28809,13 @@ var SCNSphere = function (_SCNGeometry) {
           var zNom = z * ySin[_lat];
 
           // vertex
-          sourceData.push(xNom * this.radius, yNom[_lat] * this.radius, zNom * this.radius
+          sourceData.push(xNom * this.radius, yNom[_lat] * this.radius, zNom * this.radius);
 
           // normal
-          );sourceData.push(xNom, yNom[_lat], zNom
+          sourceData.push(xNom, yNom[_lat], zNom);
 
           // texcoord
-          );sourceData.push(lng / this.segmentCount, 1.0 - _lat / this.segmentCount);
+          sourceData.push(lng / this.segmentCount, 1.0 - _lat / this.segmentCount);
         }
       }
 
@@ -29409,6 +29401,9 @@ var SKTexture = function (_NSObject) {
       var _this2 = this;
 
       var image = new Image();
+      // TODO: check option if it allows cross-domain.
+      image.crossOrigin = 'anonymous';
+
       this._loadingImagePromise = new Promise(function (resolve, reject) {
         if (path.indexOf('file:///') === 0) {
           var paths = path.slice(8).split('/');
@@ -29458,10 +29453,10 @@ var SKTexture = function (_NSObject) {
       canvas.height = this._image.naturalHeight;
       canvas.getContext('2d').drawImage(this._image, 0, 0);
 
-      gl.bindTexture(gl.TEXTURE_2D, texture
+      gl.bindTexture(gl.TEXTURE_2D, texture);
       // texImage2D(target, level, internalformat, width, height, border, format, type, source)
       // Safari complains that 'source' is not ArrayBufferView type, but WebGL2 should accept HTMLCanvasElement.
-      );gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, this._image.width, this._image.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, this._image.width, this._image.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
       gl.generateMipmap(gl.TEXTURE_2D);
       gl.bindTexture(gl.TEXTURE_2D, null);
 
@@ -37147,10 +37142,10 @@ var SCNProgram = function (_NSObject) {
 
       this._dummyTexture = gl.createTexture();
 
-      gl.bindTexture(gl.TEXTURE_2D, this._dummyTexture
+      gl.bindTexture(gl.TEXTURE_2D, this._dummyTexture);
       // texImage2D(target, level, internalformat, width, height, border, format, type, source)
       // Safari complains that 'source' is not ArrayBufferView type, but WebGL2 should accept HTMLCanvasElement.
-      );gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
       gl.bindTexture(gl.TEXTURE_2D, null);
 
       this._dummyCubeMapTexture = gl.createTexture();
@@ -37441,13 +37436,13 @@ var SCNScene = function (_NSObject) {
       _this._dataLoadedPromise = promise;
     }
 
-    _this._createSkyBox
+    _this._createSkyBox();
 
     /**
      * @access private
      * @type {Promise}
      */
-    ();_this._loadedPromise = null;
+    _this._loadedPromise = null;
     return _this;
   }
 
@@ -38635,13 +38630,13 @@ var SCNRenderer = function (_NSObject) {
     light.type = _SCNLight2.default.LightType.omni;
     light.position = new _SCNVector2.default(0, 10, 10);
     _this._defaultLightNode.light = light;
-    _this._defaultLightNode._presentation = _this._defaultLightNode.copy
+    _this._defaultLightNode._presentation = _this._defaultLightNode.copy();
 
     /**
      * @access private
      * @type {CGRect}
      */
-    ();_this._viewRect = new _CGRect2.default(new _CGPoint2.default(0, 0), new _CGSize2.default(0, 0));
+    _this._viewRect = new _CGRect2.default(new _CGPoint2.default(0, 0), new _CGSize2.default(0, 0));
 
     /**
      * The background color of the view.
@@ -38800,28 +38795,28 @@ var SCNRenderer = function (_NSObject) {
         return;
       }
 
-      this._lightNodes = this._createLightNodeArray // createLightNodeArray must be called before getting program
+      this._lightNodes = this._createLightNodeArray(); // createLightNodeArray must be called before getting program
 
-      ();var p = this._defaultProgram;
+      var p = this._defaultProgram;
       var glProgram = p._getGLProgramForContext(gl);
 
       gl.clearColor(this._backgroundColor.red, this._backgroundColor.green, this._backgroundColor.blue, this._backgroundColor.alpha);
       gl.clearDepth(1.0);
       gl.clearStencil(0);
-      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
 
       //gl.useProgram(glProgram)
-      );this._useProgram(p);
+      this._useProgram(p);
 
       gl.depthFunc(gl.LEQUAL);
       gl.depthMask(true);
       gl.enable(gl.BLEND);
-      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
       //////////////////////////
       // Camera
       //////////////////////////
-      );if (this._cameraBuffer === null) {
+      if (this._cameraBuffer === null) {
         this._initializeCameraBuffer(glProgram);
       }
       var cameraData = [];
@@ -38837,7 +38832,7 @@ var SCNRenderer = function (_NSObject) {
       cameraData.push.apply(cameraData, _toConsumableArray(cameraPNode.viewProjectionTransform.floatArray()));
       gl.bindBuffer(gl.UNIFORM_BUFFER, this._cameraBuffer);
       gl.bufferData(gl.UNIFORM_BUFFER, new Float32Array(cameraData), gl.DYNAMIC_DRAW);
-      gl.bindBuffer(gl.UNIFORM_BUFFER, null
+      gl.bindBuffer(gl.UNIFORM_BUFFER, null);
 
       //console.log('cameraNode.worldPosition: ' + cameraPNode.worldTransform.getTranslation().float32Array())
       //console.log('viewTransform: ' + cameraPNode.viewTransform.float32Array())
@@ -38847,7 +38842,7 @@ var SCNRenderer = function (_NSObject) {
       //////////////////////////
       // Fog
       //////////////////////////
-      );if (this._fogBuffer === null) {
+      if (this._fogBuffer === null) {
         this._initializeFogBuffer(glProgram);
       }
       var fogData = [];
@@ -38858,12 +38853,12 @@ var SCNRenderer = function (_NSObject) {
       }
       gl.bindBuffer(gl.UNIFORM_BUFFER, this._fogBuffer);
       gl.bufferData(gl.UNIFORM_BUFFER, new Float32Array(fogData), gl.DYNAMIC_DRAW);
-      gl.bindBuffer(gl.UNIFORM_BUFFER, null
+      gl.bindBuffer(gl.UNIFORM_BUFFER, null);
 
       //////////////////////////
       // Lights
       //////////////////////////
-      );if (this._lightBuffer === null) {
+      if (this._lightBuffer === null) {
         this._initializeLightBuffer(glProgram);
       }
       var lights = this._lightNodes;
@@ -38892,10 +38887,10 @@ var SCNRenderer = function (_NSObject) {
 
       gl.bindBuffer(gl.UNIFORM_BUFFER, this._lightBuffer);
       gl.bufferData(gl.UNIFORM_BUFFER, new Float32Array(lightData), gl.DYNAMIC_DRAW);
-      gl.bindBuffer(gl.UNIFORM_BUFFER, null
+      gl.bindBuffer(gl.UNIFORM_BUFFER, null);
 
       // FIXME: set params for each light
-      );var scnLightsData = [];
+      var scnLightsData = [];
       if (lights.directionalShadow.length > 0) {
         var l = lights.directionalShadow[0].presentation;
         var direction = new _SCNVector2.default(0, 0, -1).rotateWithQuaternion(l._worldOrientation);
@@ -38903,26 +38898,26 @@ var SCNRenderer = function (_NSObject) {
         scnLightsData.push.apply(scnLightsData, _toConsumableArray(l.shadowProjectionTransform.float32Array()));
       } else {
         // direction
-        scnLightsData.push(0, 0, 0, 0
+        scnLightsData.push(0, 0, 0, 0);
         // identity matrix
-        );scnLightsData.push(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+        scnLightsData.push(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
       }
       gl.bindBuffer(gl.UNIFORM_BUFFER, this._scnLightsBuffer);
       gl.bufferData(gl.UNIFORM_BUFFER, new Float32Array(scnLightsData), gl.DYNAMIC_DRAW);
-      gl.bindBuffer(gl.UNIFORM_BUFFER, null
+      gl.bindBuffer(gl.UNIFORM_BUFFER, null);
 
       //////////////////////////
       // Background (SkyBox)
       //////////////////////////
-      );if (this.scene.background._contents !== null) {
+      if (this.scene.background._contents !== null) {
         var skyBox = this.scene._skyBox;
         skyBox.position = cameraPNode._worldTranslation;
         var scale = camera.zFar * 1.154;
         skyBox.scale = new _SCNVector2.default(scale, scale, scale);
-        skyBox._updateWorldTransform
+        skyBox._updateWorldTransform();
 
         // disable fog
-        ();var disabledFogData = fogData.slice(0);
+        var disabledFogData = fogData.slice(0);
         disabledFogData[4] = camera.zFar * 2.0; // startDistance
         disabledFogData[5] = camera.zFar * 2.1; // endDistance
         disabledFogData[6] = 1.0; // densityExponent
@@ -38930,10 +38925,10 @@ var SCNRenderer = function (_NSObject) {
         gl.bufferData(gl.UNIFORM_BUFFER, new Float32Array(disabledFogData), gl.DYNAMIC_DRAW);
         gl.bindBuffer(gl.UNIFORM_BUFFER, null);
 
-        this._renderNode(skyBox
+        this._renderNode(skyBox);
 
         // enable fog
-        );gl.bindBuffer(gl.UNIFORM_BUFFER, this._fogBuffer);
+        gl.bindBuffer(gl.UNIFORM_BUFFER, this._fogBuffer);
         gl.bufferData(gl.UNIFORM_BUFFER, new Float32Array(fogData), gl.DYNAMIC_DRAW);
         gl.bindBuffer(gl.UNIFORM_BUFFER, null);
       }
@@ -38998,20 +38993,20 @@ var SCNRenderer = function (_NSObject) {
         }
       }
 
-      this._setViewPort // reset viewport size
-      ();this._useProgram(p);
+      this._setViewPort(); // reset viewport size
+      this._useProgram(p);
       for (var i = 0; i < lights.directionalShadow.length; i++) {
         var node = lights.directionalShadow[i];
         var symbol = 'TEXTURE' + (i + _shadowTextureBaseIndex);
         gl.activeTexture(gl[symbol]);
         gl.bindTexture(gl.TEXTURE_2D, node.presentation.light._shadowDepthTexture);
       }
-      gl.enable(gl.BLEND
+      gl.enable(gl.BLEND);
 
       //////////////////////////
       // Nodes
       //////////////////////////
-      );var renderingArray = this._createRenderingNodeArray();
+      var renderingArray = this._createRenderingNodeArray();
       renderingArray.forEach(function (node) {
         _this2._renderNode(node);
       });
@@ -39023,12 +39018,12 @@ var SCNRenderer = function (_NSObject) {
       gl.enable(gl.BLEND);
       gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
       gl.uniformMatrix4fv(gl.getUniformLocation(particleProgram, 'viewTransform'), false, cameraPNode.viewTransform.float32Array());
-      gl.uniformMatrix4fv(gl.getUniformLocation(particleProgram, 'projectionTransform'), false, cameraPNode.projectionTransform.float32Array()
+      gl.uniformMatrix4fv(gl.getUniformLocation(particleProgram, 'projectionTransform'), false, cameraPNode.projectionTransform.float32Array());
 
       //////////////////////////
       // Particles
       //////////////////////////
-      );if (this.scene._particleSystems !== null) {
+      if (this.scene._particleSystems !== null) {
         var _iteratorNormalCompletion2 = true;
         var _didIteratorError2 = false;
         var _iteratorError2 = undefined;
@@ -39057,17 +39052,17 @@ var SCNRenderer = function (_NSObject) {
       var particleArray = this._createParticleNodeArray();
       particleArray.forEach(function (node) {
         _this2._renderParticle(node);
-      }
+      });
 
       //////////////////////////
       // 2D Overlay
       //////////////////////////
-      );this._renderOverlaySKScene
+      this._renderOverlaySKScene();
 
       // DEBUG: show shadow map
       //this._showShadowMapOfLight(lights.directionalShadow[0])
 
-      ();gl.flush();
+      gl.flush();
     }
   }, {
     key: '_renderOverlaySKScene',
@@ -39342,10 +39337,10 @@ var SCNRenderer = function (_NSObject) {
             var vao = geometry._shadowVAO[i];
             var element = geometry.geometryElements[i];
 
-            gl.bindVertexArray(vao
+            gl.bindVertexArray(vao);
             // FIXME: use bufferData instead of bindBufferBase
 
-            );var shape = null;
+            var shape = null;
             switch (element.primitiveType) {
               case _SCNGeometryPrimitiveType2.default.triangles:
                 shape = gl.TRIANGLES;
@@ -39429,8 +39424,7 @@ var SCNRenderer = function (_NSObject) {
 
       if (geometry._vertexArrayObjects === null) {
         this._initializeVAO(node, glProgram);
-        this._initializeUBO(node, glProgram // FIXME: program should have UBO, not node.
-        );
+        this._initializeUBO(node, glProgram); // FIXME: program should have UBO, not node.
       }
 
       if (node.morpher !== null || node.skinner && !node.skinner._useGPU) {
@@ -39458,10 +39452,10 @@ var SCNRenderer = function (_NSObject) {
         var p = glProgram;
         if (material && (material.program || material.lightingModel === _SCNMaterial2.default.LightingModel.physicallyBased)) {
           var _scnProgram = material.program ? material.program : this._defaultPBRProgram;
-          this._switchProgram(_scnProgram
+          this._switchProgram(_scnProgram);
 
           // TODO: refactoring
-          );p = _scnProgram._getGLProgramForContext(gl);
+          p = _scnProgram._getGLProgramForContext(gl);
           if (node.presentation.skinner !== null) {
             if (node.presentation.skinner._useGPU) {
               gl.uniform1i(gl.getUniformLocation(p, 'numSkinningJoints'), node.presentation.skinner.numSkinningJoints);
@@ -39487,9 +39481,9 @@ var SCNRenderer = function (_NSObject) {
         var vao = geometry._vertexArrayObjects[i];
         var element = geometry.geometryElements[i];
 
-        gl.bindVertexArray(vao
+        gl.bindVertexArray(vao);
         // FIXME: use bufferData instead of bindBufferBase
-        );gl.bindBufferBase(gl.UNIFORM_BUFFER, _materialLoc, geometry._materialBuffer);
+        gl.bindBufferBase(gl.UNIFORM_BUFFER, _materialLoc, geometry._materialBuffer);
 
         geometry._bufferMaterialData(gl, p, i, node.presentation._worldOpacity);
 
@@ -39580,9 +39574,9 @@ var SCNRenderer = function (_NSObject) {
         p = system._program;
       }
       var glProgram = p._getGLProgramForContext(gl);
-      this._useProgram(p
+      this._useProgram(p);
       //this._switchProgram(p)
-      );gl.disable(gl.CULL_FACE);
+      gl.disable(gl.CULL_FACE);
 
       if (system._vertexBuffer === null) {
         system._initializeVAO(gl, glProgram);
@@ -39990,28 +39984,28 @@ var SCNRenderer = function (_NSObject) {
       gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, width, height);
 
       this._hitObjectIDTexture = gl.createTexture();
-      gl.bindTexture(gl.TEXTURE_2D, this._hitObjectIDTexture
+      gl.bindTexture(gl.TEXTURE_2D, this._hitObjectIDTexture);
       // texImage2D(target, level, internalformat, width, height, border, format, type, source)
-      );gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
 
       this._hitFaceIDTexture = gl.createTexture();
       gl.bindTexture(gl.TEXTURE_2D, this._hitFaceIDTexture);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
 
       this._hitPositionTexture = gl.createTexture();
-      gl.bindTexture(gl.TEXTURE_2D, this._hitPositionTexture
+      gl.bindTexture(gl.TEXTURE_2D, this._hitPositionTexture);
       //gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, width, height, 0, gl.RGB, gl.UNSIGNED_BYTE, null)
-      );gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
 
       this._hitNormalTexture = gl.createTexture();
-      gl.bindTexture(gl.TEXTURE_2D, this._hitNormalTexture
+      gl.bindTexture(gl.TEXTURE_2D, this._hitNormalTexture);
       //gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, width, height, 0, gl.RGB, gl.UNSIGNED_BYTE, null)
-      );gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
 
       //gl.framebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer)
-      );gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, this._hitDepthBuffer
+      gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, this._hitDepthBuffer);
       //gl.framebufferTexture2D(target, attachment, textarget, texture, level)
-      );gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this._hitObjectIDTexture, 0);
+      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this._hitObjectIDTexture, 0);
       gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT1, gl.TEXTURE_2D, this._hitFaceIDTexture, 0);
       gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT2, gl.TEXTURE_2D, this._hitPositionTexture, 0);
       gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT3, gl.TEXTURE_2D, this._hitNormalTexture, 0);
@@ -40037,15 +40031,15 @@ var SCNRenderer = function (_NSObject) {
 
       var invVp = viewProjectionMatrix.invert();
       var rayFrom = from.transform(invVp);
-      var rayTo = to.transform(invVp
+      var rayTo = to.transform(invVp);
       //console.log(`rayFrom: ${rayFrom.float32Array()}`)
       //console.log(`rayTo  : ${rayTo.float32Array()}`)
 
       //const rayVec = rayTo.sub(rayFrom)
-      );var renderingArray = this._createRenderingNodeArray
+      var renderingArray = this._createRenderingNodeArray();
       //console.log(`renderingArray.length: ${renderingArray.length}`)
 
-      ();var categoryBitMask = options.get(_SCNHitTestOption2.default.categoryBitMask);
+      var categoryBitMask = options.get(_SCNHitTestOption2.default.categoryBitMask);
       if (typeof categoryBitMask === 'undefined') {
         categoryBitMask = -1;
       }
@@ -40132,10 +40126,10 @@ var SCNRenderer = function (_NSObject) {
       }
       var prg = this._defaultHitTestProgram;
       var hitTestProgram = prg._glProgram;
-      this._useProgram(prg
+      this._useProgram(prg);
       //gl.useProgram(hitTestProgram)
 
-      );gl.bindFramebuffer(gl.FRAMEBUFFER, this._hitFrameBuffer);
+      gl.bindFramebuffer(gl.FRAMEBUFFER, this._hitFrameBuffer);
 
       gl.depthMask(true);
       gl.depthFunc(gl.LEQUAL);
@@ -40208,10 +40202,10 @@ var SCNRenderer = function (_NSObject) {
 
       var positionBuf = new Uint8Array(4);
       gl.readBuffer(gl.COLOR_ATTACHMENT2);
-      gl.readPixels(x, y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, positionBuf, 0
+      gl.readPixels(x, y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, positionBuf, 0);
       //const screenPos = new SCNVector3(positionBuf[0] / 127.5 - 1.0, positionBuf[1] / 127.5 - 1.0, positionBuf[2] / 127.5 - 1.0)
       //const position = screenPos.transform(viewProjectionTransform.invert())
-      );var p = ((positionBuf[3] / 255.0 + positionBuf[2]) / 255.0 + positionBuf[1] / 255.0 + positionBuf[0]) / 255.0;
+      var p = ((positionBuf[3] / 255.0 + positionBuf[2]) / 255.0 + positionBuf[1] / 255.0 + positionBuf[0]) / 255.0;
       var position = from.lerp(to, p);
 
       var normalBuf = new Uint8Array(4);
@@ -40283,10 +40277,10 @@ var SCNRenderer = function (_NSObject) {
       gl.disable(gl.BLEND);
       gl.clearColor(0, 0, 0, 0);
       gl.clearDepth(1.0);
-      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
       // screen position
-      );var x = (_from.x + 1.0) * 0.5 * this._viewRect.size.width;
+      var x = (_from.x + 1.0) * 0.5 * this._viewRect.size.width;
       var y = (_from.y + 1.0) * 0.5 * this._viewRect.size.height;
       // left top of the scissor area
       var areaSize = 3;
@@ -40357,10 +40351,10 @@ var SCNRenderer = function (_NSObject) {
 
       var positionBuf = new Uint8Array(4);
       gl.readBuffer(gl.COLOR_ATTACHMENT2);
-      gl.readPixels(x, y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, positionBuf, 0
+      gl.readPixels(x, y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, positionBuf, 0);
       //const screenPos = new SCNVector3(positionBuf[0] / 127.5 - 1.0, positionBuf[1] / 127.5 - 1.0, positionBuf[2] / 127.5 - 1.0)
       //const position = screenPos.transform(viewProjectionTransform.invert())
-      );var p = ((positionBuf[3] / 255.0 + positionBuf[2]) / 255.0 + positionBuf[1] / 255.0 + positionBuf[0]) / 255.0;
+      var p = ((positionBuf[3] / 255.0 + positionBuf[2]) / 255.0 + positionBuf[1] / 255.0 + positionBuf[0]) / 255.0;
       var screenPos = _from.lerp(_to, p);
       var position = screenPos.transform(viewProjectionTransform.invert());
 
@@ -40614,10 +40608,10 @@ var SCNRenderer = function (_NSObject) {
       var glProgram = p._getGLProgramForContext(gl);
 
       var vsText = this._vertexShaderForObject(obj);
-      var fsText = this._fragmentShaderForObject(obj
+      var fsText = this._fragmentShaderForObject(obj);
 
       // initialize vertex shader
-      );var vertexShader = gl.createShader(gl.VERTEX_SHADER);
+      var vertexShader = gl.createShader(gl.VERTEX_SHADER);
       gl.shaderSource(vertexShader, vsText);
       gl.compileShader(vertexShader);
       if (!gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS)) {
@@ -40637,10 +40631,10 @@ var SCNRenderer = function (_NSObject) {
       p._glFragmentShader = fragmentShader;
 
       gl.attachShader(glProgram, vertexShader);
-      gl.attachShader(glProgram, fragmentShader
+      gl.attachShader(glProgram, fragmentShader);
 
       // link program object
-      );gl.linkProgram(glProgram);
+      gl.linkProgram(glProgram);
       if (!gl.getProgramParameter(glProgram, gl.LINK_STATUS)) {
         var _info2 = gl.getProgramInfoLog(glProgram);
         throw new Error('program link error: ' + _info2);
@@ -40685,13 +40679,13 @@ var SCNRenderer = function (_NSObject) {
 
       var gl = this.context;
       var glProgram = program._getGLProgramForContext(gl);
-      gl.useProgram(glProgram
+      gl.useProgram(glProgram);
 
       // set dummy textures
-      );program._setDummyTextureForContext(gl
+      program._setDummyTextureForContext(gl);
 
       // set shadow textures
-      );var lights = this._lightNodes;
+      var lights = this._lightNodes;
       for (var i = 0; i < lights.directionalShadow.length; i++) {
         var node = lights.directionalShadow[i];
         var symbol = 'TEXTURE' + (i + 8);
@@ -40711,10 +40705,10 @@ var SCNRenderer = function (_NSObject) {
       gl.bindBufferBase(gl.UNIFORM_BUFFER, _lightLoc, this._lightBuffer);
       var scnLightsIndex = gl.getUniformBlockIndex(glProgram, 'SCNLightsUniform');
       gl.uniformBlockBinding(glProgram, scnLightsIndex, _scnLightsLoc);
-      gl.bindBufferBase(gl.UNIFORM_BUFFER, _scnLightsLoc, this._scnLightsBuffer
+      gl.bindBufferBase(gl.UNIFORM_BUFFER, _scnLightsLoc, this._scnLightsBuffer);
 
       // set uniform variables
-      );var uniformTime = gl.getUniformLocation(glProgram, 'u_time');
+      var uniformTime = gl.getUniformLocation(glProgram, 'u_time');
       if (uniformTime) {
         // this._time might be too large.
         var time = this._time % 100000.0;
@@ -40752,18 +40746,18 @@ var SCNRenderer = function (_NSObject) {
                   canvas.width = image.naturalWidth;
                   canvas.height = image.naturalHeight;
                   canvas.getContext('2d').drawImage(image, 0, 0);
-                  gl.bindTexture(gl.TEXTURE_2D, texture
+                  gl.bindTexture(gl.TEXTURE_2D, texture);
                   // texImage2D(target, level, internalformat, width, height, border, format, type, source)
                   // Safari complains that 'source' is not ArrayBufferView type, but WebGL2 should accept HTMLCanvasElement.
-                  );gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, image.width, image.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
+                  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, image.width, image.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
                   gl.generateMipmap(gl.TEXTURE_2D);
                   val._contents = texture;
                 }
                 if (val._contents instanceof WebGLTexture) {
                   gl.uniform1i(loc, textureNo);
-                  gl.activeTexture(gl['TEXTURE' + textureNo]
+                  gl.activeTexture(gl['TEXTURE' + textureNo]);
                   // TODO: check texture type
-                  );gl.bindTexture(gl.TEXTURE_2D, val._contents);
+                  gl.bindTexture(gl.TEXTURE_2D, val._contents);
                   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, val._magnificationFilterFor(gl));
                   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, val._minificationFilterFor(gl));
                   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, val._wrapSFor(gl));
@@ -41029,23 +41023,23 @@ var SCNRenderer = function (_NSObject) {
       _text = _text.replace(/float2/g, 'vec2');
       _text = _text.replace(/float3/g, 'vec3');
       _text = _text.replace(/float4/g, 'vec4');
-      _text = _text.replace(/scn_frame\.time/g, 'u_time'
+      _text = _text.replace(/scn_frame\.time/g, 'u_time');
       //_text = _text.replace(/#pragma alpha/g, '')
-      );_text = _text.replace(/half /g, 'float ' // FIXME: check semicolon before half
+      _text = _text.replace(/half /g, 'float '); // FIXME: check semicolon before half
 
-      );_text = _text.replace(/u_modelTransform/g, 'modelTransform' // TODO: use u_modelTransform
-      );_text = _text.replace(/u_viewTransform/g, 'camera.viewTransform' // TODO: use u_viewTransform
-      );_text = _text.replace(/u_inverseViewTransform/g, 'camera.inverseViewTransform' // TODO: use u_inverseViewTransform
-      );_text = _text.replace(/u_viewProjectionTransform/g, 'caemra.viewProjectionTransform' // TODO: use u_viewTransform
-      );_text = _text.replace(/\s*uniform[^;]*;/g, ''
+      _text = _text.replace(/u_modelTransform/g, 'modelTransform'); // TODO: use u_modelTransform
+      _text = _text.replace(/u_viewTransform/g, 'camera.viewTransform'); // TODO: use u_viewTransform
+      _text = _text.replace(/u_inverseViewTransform/g, 'camera.inverseViewTransform'); // TODO: use u_inverseViewTransform
+      _text = _text.replace(/u_viewProjectionTransform/g, 'caemra.viewProjectionTransform'); // TODO: use u_viewTransform
+      _text = _text.replace(/\s*uniform[^;]*;/g, '');
 
       // workaround for Badger...
-      );_text = _text.replace('uvs.x *= 2', 'uvs.x *= 2.0');
+      _text = _text.replace('uvs.x *= 2', 'uvs.x *= 2.0');
       _text = _text.replace('tn * 2 - 1', 'tn * 2.0 - vec3(1)');
-      _text = _text.replace('tn2 * 2 - 1', 'tn2 * 2.0 - vec3(1)'
+      _text = _text.replace('tn2 * 2 - 1', 'tn2 * 2.0 - vec3(1)');
 
       // workaround for Fox2...
-      );_text = _text.replace('pow(_surface.ambientOcclusion,3)', 'pow(_surface.ambientOcclusion,3.0)');
+      _text = _text.replace('pow(_surface.ambientOcclusion,3)', 'pow(_surface.ambientOcclusion,3.0)');
       _text = _text.replace('pow(AO,5)', 'pow(AO,5.0)');
       _text = _text.replace('pow(1.-fresnelBasis , 6)', 'pow(1.-fresnelBasis , 6.0)');
       _text = _text.replace('pow(1.-fresnelBasis , 4)', 'pow(1.-fresnelBasis , 4.0)');
@@ -41071,9 +41065,9 @@ var SCNRenderer = function (_NSObject) {
       var baseGeometry = node.geometry;
 
       // prepare vertex array data
-      var vertexBuffer = geometry._createVertexBuffer(gl, node
+      var vertexBuffer = geometry._createVertexBuffer(gl, node);
       // TODO: retain attribute locations
-      );var positionLoc = gl.getAttribLocation(glProgram, 'position');
+      var positionLoc = gl.getAttribLocation(glProgram, 'position');
       var normalLoc = gl.getAttribLocation(glProgram, 'normal');
       var tangentLoc = gl.getAttribLocation(glProgram, 'tangent');
       var colorLoc = gl.getAttribLocation(glProgram, 'color');
@@ -41088,10 +41082,10 @@ var SCNRenderer = function (_NSObject) {
         var element = node.presentation.geometry.geometryElements[i];
         var material = node.presentation.geometry.materials[i];
         var vao = gl.createVertexArray();
-        gl.bindVertexArray(vao
+        gl.bindVertexArray(vao);
 
         // initialize vertex buffer
-        );gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+        gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
 
         gl.bindAttribLocation(glProgram, positionLoc, 'position');
         gl.bindAttribLocation(glProgram, normalLoc, 'normal');
@@ -41100,12 +41094,12 @@ var SCNRenderer = function (_NSObject) {
         gl.bindAttribLocation(glProgram, texcoord0Loc, 'texcoord0');
         gl.bindAttribLocation(glProgram, texcoord1Loc, 'texcoord1');
         gl.bindAttribLocation(glProgram, boneIndicesLoc, 'boneIndices');
-        gl.bindAttribLocation(glProgram, boneWeightsLoc, 'boneWeights'
+        gl.bindAttribLocation(glProgram, boneWeightsLoc, 'boneWeights');
 
         // vertexAttribPointer(ulong idx, long size, ulong type, bool norm, long stride, ulong offset)
 
         // position
-        );var posSrc = geometry.getGeometrySourcesForSemantic(_SCNGeometrySource2.default.Semantic.vertex)[0];
+        var posSrc = geometry.getGeometrySourcesForSemantic(_SCNGeometrySource2.default.Semantic.vertex)[0];
         if (posSrc) {
           gl.enableVertexAttribArray(positionLoc);
           gl.vertexAttribPointer(positionLoc, posSrc.componentsPerVector, gl.FLOAT, false, posSrc.dataStride, posSrc.dataOffset);
@@ -41180,11 +41174,11 @@ var SCNRenderer = function (_NSObject) {
         }
 
         // FIXME: use setting
-        gl.disable(gl.CULL_FACE
+        gl.disable(gl.CULL_FACE);
 
         // initialize index buffer
         // FIXME: check geometrySource semantic
-        );var indexBuffer = element._createBuffer(gl);
+        var indexBuffer = element._createBuffer(gl);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
 
         geometry._vertexArrayObjects.push(vao);
@@ -41198,9 +41192,9 @@ var SCNRenderer = function (_NSObject) {
       var baseGeometry = node.geometry;
 
       // prepare vertex array data
-      var vertexBuffer = geometry._createVertexBuffer(gl, node
+      var vertexBuffer = geometry._createVertexBuffer(gl, node);
       // TODO: retain attribute locations
-      );var positionLoc = gl.getAttribLocation(glProgram, 'position');
+      var positionLoc = gl.getAttribLocation(glProgram, 'position');
       var boneIndicesLoc = gl.getAttribLocation(glProgram, 'boneIndices');
       var boneWeightsLoc = gl.getAttribLocation(glProgram, 'boneWeights');
 
@@ -41210,19 +41204,19 @@ var SCNRenderer = function (_NSObject) {
         var element = node.presentation.geometry.geometryElements[i];
         var material = node.presentation.geometry.materials[i];
         var shadowVAO = gl.createVertexArray();
-        gl.bindVertexArray(shadowVAO
+        gl.bindVertexArray(shadowVAO);
 
         // initialize vertex buffer
-        );gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+        gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
 
         gl.bindAttribLocation(glProgram, positionLoc, 'position');
         gl.bindAttribLocation(glProgram, boneIndicesLoc, 'boneIndices');
-        gl.bindAttribLocation(glProgram, boneWeightsLoc, 'boneWeights'
+        gl.bindAttribLocation(glProgram, boneWeightsLoc, 'boneWeights');
 
         // vertexAttribPointer(ulong idx, long size, ulong type, bool norm, long stride, ulong offset)
 
         // position
-        );var posSrc = geometry.getGeometrySourcesForSemantic(_SCNGeometrySource2.default.Semantic.vertex)[0];
+        var posSrc = geometry.getGeometrySourcesForSemantic(_SCNGeometrySource2.default.Semantic.vertex)[0];
         if (posSrc) {
           gl.enableVertexAttribArray(positionLoc);
           gl.vertexAttribPointer(positionLoc, posSrc.componentsPerVector, gl.FLOAT, false, posSrc.dataStride, posSrc.dataOffset);
@@ -41249,11 +41243,11 @@ var SCNRenderer = function (_NSObject) {
         }
 
         // FIXME: use setting
-        gl.disable(gl.CULL_FACE
+        gl.disable(gl.CULL_FACE);
 
         // initialize index buffer
         // FIXME: check geometrySource semantic
-        );var indexBuffer = element._createBuffer(gl);
+        var indexBuffer = element._createBuffer(gl);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
 
         geometry._shadowVAO.push(shadowVAO);
@@ -41286,12 +41280,12 @@ var SCNRenderer = function (_NSObject) {
         gl.bindAttribLocation(glProgram, positionLoc, 'position');
         gl.bindAttribLocation(glProgram, normalLoc, 'normal');
         gl.bindAttribLocation(glProgram, boneIndicesLoc, 'boneIndices');
-        gl.bindAttribLocation(glProgram, boneWeightsLoc, 'boneWeights'
+        gl.bindAttribLocation(glProgram, boneWeightsLoc, 'boneWeights');
 
         // vertexAttribPointer(ulong idx, long size, ulong type, bool norm, long stride, ulong offset)
 
         // position
-        );var posSrc = geometry.getGeometrySourcesForSemantic(_SCNGeometrySource2.default.Semantic.vertex)[0];
+        var posSrc = geometry.getGeometrySourcesForSemantic(_SCNGeometrySource2.default.Semantic.vertex)[0];
         if (posSrc) {
           gl.enableVertexAttribArray(positionLoc);
           gl.vertexAttribPointer(positionLoc, posSrc.componentsPerVector, gl.FLOAT, false, posSrc.dataStride, posSrc.dataOffset);
@@ -41416,10 +41410,10 @@ var SCNRenderer = function (_NSObject) {
 
       this.__dummyTexture = gl.createTexture();
 
-      gl.bindTexture(gl.TEXTURE_2D, this.__dummyTexture
+      gl.bindTexture(gl.TEXTURE_2D, this.__dummyTexture);
       // texImage2D(target, level, internalformat, width, height, border, format, type, source)
       // Safari complains that 'source' is not ArrayBufferView type, but WebGL2 should accept HTMLCanvasElement.
-      );gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
       gl.bindTexture(gl.TEXTURE_2D, null);
     }
 
@@ -41610,7 +41604,7 @@ var SCNRenderer = function (_NSObject) {
         // nothing to draw...
         return result;
       }
-      var invRay = rayVec.mul(-1
+      var invRay = rayVec.mul(-1);
 
       //console.log(`rayPoint: ${rayPoint.float32Array()}`)
       //console.log(`rayVec: ${rayVec.float32Array()}`)
@@ -41621,7 +41615,7 @@ var SCNRenderer = function (_NSObject) {
 
       // TODO: test the bounding box/sphere first for performance
 
-      );var source = geometry.getGeometrySourcesForSemantic(_SCNGeometrySource2.default.Semantic.vertex)[0];
+      var source = geometry.getGeometrySourcesForSemantic(_SCNGeometrySource2.default.Semantic.vertex)[0];
       var sourceLen = source.vectorCount;
       var sourceData = [];
       var modelTransform = node.presentation._worldTransform;
@@ -41994,10 +41988,10 @@ var SCNRenderer = function (_NSObject) {
       this.__defaultProgram._glFragmentShader = fragmentShader;
 
       gl.attachShader(glProgram, vertexShader);
-      gl.attachShader(glProgram, fragmentShader
+      gl.attachShader(glProgram, fragmentShader);
 
       // link program object
-      );gl.linkProgram(glProgram);
+      gl.linkProgram(glProgram);
       if (!gl.getProgramParameter(glProgram, gl.LINK_STATUS)) {
         var _info4 = gl.getProgramInfoLog(glProgram);
         throw new Error('program link error: ' + _info4);
@@ -42010,12 +42004,12 @@ var SCNRenderer = function (_NSObject) {
       gl.enable(gl.BLEND);
       gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
       gl.enable(gl.CULL_FACE);
-      gl.cullFace(gl.BACK
+      gl.cullFace(gl.BACK);
 
       // set default textures to prevent warnings
       //this._setDummyTextureAsDefault(p)
 
-      );return this.__defaultProgram;
+      return this.__defaultProgram;
     }
 
     /**
@@ -42061,10 +42055,10 @@ var SCNRenderer = function (_NSObject) {
       this.__defaultPBRProgram._glFragmentShader = fragmentShader;
 
       gl.attachShader(glProgram, vertexShader);
-      gl.attachShader(glProgram, fragmentShader
+      gl.attachShader(glProgram, fragmentShader);
 
       // link program object
-      );gl.linkProgram(glProgram);
+      gl.linkProgram(glProgram);
       if (!gl.getProgramParameter(glProgram, gl.LINK_STATUS)) {
         var _info6 = gl.getProgramInfoLog(glProgram);
         throw new Error('program link error: ' + _info6);
@@ -42077,12 +42071,12 @@ var SCNRenderer = function (_NSObject) {
       gl.enable(gl.BLEND);
       gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
       gl.enable(gl.CULL_FACE);
-      gl.cullFace(gl.BACK
+      gl.cullFace(gl.BACK);
 
       // set default textures to prevent warnings
       //this._setDummyTextureAsDefault(p)
 
-      );return this.__defaultPBRProgram;
+      return this.__defaultPBRProgram;
     }
   }, {
     key: '_defaultVertexShader',
@@ -42144,30 +42138,30 @@ var SCNRenderer = function (_NSObject) {
       }
 
       gl.attachShader(glProgram, vertexShader);
-      gl.attachShader(glProgram, fragmentShader
+      gl.attachShader(glProgram, fragmentShader);
 
       // link program object
-      );gl.linkProgram(glProgram);
+      gl.linkProgram(glProgram);
       if (!gl.getProgramParameter(glProgram, gl.LINK_STATUS)) {
         var _info8 = gl.getProgramInfoLog(glProgram);
         throw new Error('program link error: ' + _info8);
       }
 
       //gl.useProgram(glProgram)
-      this._useProgram(p
+      this._useProgram(p);
       //gl.clearColor(1, 1, 1, 1)
       //gl.clearDepth(1.0)
       //gl.clearStencil(0)
 
-      );gl.enable(gl.DEPTH_TEST);
+      gl.enable(gl.DEPTH_TEST);
       gl.depthFunc(gl.LEQUAL);
       gl.enable(gl.BLEND);
       gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
       gl.enable(gl.CULL_FACE);
-      gl.cullFace(gl.BACK
+      gl.cullFace(gl.BACK);
 
       // set default textures to prevent warnings
-      );this._setDummyParticleTextureAsDefault();
+      this._setDummyParticleTextureAsDefault();
 
       return this.__defaultParticleProgram;
     }
@@ -42211,27 +42205,27 @@ var SCNRenderer = function (_NSObject) {
       }
 
       gl.attachShader(glProgram, vertexShader);
-      gl.attachShader(glProgram, fragmentShader
+      gl.attachShader(glProgram, fragmentShader);
 
       // link program object
-      );gl.linkProgram(glProgram);
+      gl.linkProgram(glProgram);
       if (!gl.getProgramParameter(glProgram, gl.LINK_STATUS)) {
         var _info10 = gl.getProgramInfoLog(glProgram);
         throw new Error('program link error: ' + _info10);
       }
 
       //gl.useProgram(glProgram)
-      this._useProgram(p
+      this._useProgram(p);
       //gl.clearColor(1, 1, 1, 1)
       //gl.clearDepth(1.0)
       //gl.clearStencil(0)
 
-      );gl.enable(gl.DEPTH_TEST);
-      gl.depthFunc(gl.LEQUAL
+      gl.enable(gl.DEPTH_TEST);
+      gl.depthFunc(gl.LEQUAL);
       //gl.enable(gl.BLEND)
-      );gl.disable(gl.BLEND
+      gl.disable(gl.BLEND);
       //gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
-      );gl.enable(gl.CULL_FACE);
+      gl.enable(gl.CULL_FACE);
       gl.cullFace(gl.BACK);
 
       return this.__defaultShadowProgram;
@@ -42270,31 +42264,31 @@ var SCNRenderer = function (_NSObject) {
       }
 
       gl.attachShader(glProgram, vertexShader);
-      gl.attachShader(glProgram, fragmentShader
+      gl.attachShader(glProgram, fragmentShader);
 
       // link program object
-      );gl.linkProgram(glProgram);
+      gl.linkProgram(glProgram);
       if (!gl.getProgramParameter(glProgram, gl.LINK_STATUS)) {
         var _info12 = gl.getProgramInfoLog(glProgram);
         throw new Error('program link error: ' + _info12);
       }
 
       //gl.useProgram(glProgram)
-      this._useProgram(p
+      this._useProgram(p);
       //gl.clearColor(1, 1, 1, 1)
       //gl.clearDepth(1.0)
       //gl.clearStencil(0)
 
-      );gl.enable(gl.DEPTH_TEST);
+      gl.enable(gl.DEPTH_TEST);
       gl.depthFunc(gl.LEQUAL);
       gl.enable(gl.BLEND);
       gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
       gl.enable(gl.CULL_FACE);
-      gl.cullFace(gl.BACK
+      gl.cullFace(gl.BACK);
 
       //this._setDummyHitTestTextureAsDefault()
 
-      );return this.__defaultHitTestProgram;
+      return this.__defaultHitTestProgram;
     }
   }]);
 
@@ -42522,11 +42516,10 @@ var SKSpriteNode = function (_SKNode) {
     _this._loadingImagePromise = null;
 
     if (name !== null) {
-      _this.texture = _SKTexture2.default.textureWithImageNamed(name
+      _this.texture = _SKTexture2.default.textureWithImageNamed(name);
       //if(generateNormalMap){
       //  this.normalTexture = this.texture.generatingNormalMap()
       //}
-      );
     }
     return _this;
   }
@@ -42695,10 +42688,10 @@ var SKSpriteNode = function (_SKNode) {
       }
 
       gl.attachShader(program, vertexShader);
-      gl.attachShader(program, fragmentShader
+      gl.attachShader(program, fragmentShader);
 
       // link program object
-      );gl.linkProgram(program);
+      gl.linkProgram(program);
       if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
         var _info2 = gl.getProgramInfoLog(program);
         throw new Error('program link error: ' + _info2);
@@ -42727,15 +42720,15 @@ var SKSpriteNode = function (_SKNode) {
 
       var positionLoc = gl.getAttribLocation(program, 'position');
       gl.bindAttribLocation(program, positionLoc, 'position');
-      gl.enableVertexAttribArray(positionLoc
+      gl.enableVertexAttribArray(positionLoc);
       // idx, size, type, norm, stride, offset
-      );gl.vertexAttribPointer(positionLoc, 3, gl.FLOAT, false, 20, 0);
+      gl.vertexAttribPointer(positionLoc, 3, gl.FLOAT, false, 20, 0);
 
       var texcoordLoc = gl.getAttribLocation(program, 'texcoord');
       gl.bindAttribLocation(program, texcoordLoc, 'texcoord');
-      gl.enableVertexAttribArray(texcoordLoc
+      gl.enableVertexAttribArray(texcoordLoc);
       // idx, size, type, norm, stride, offset
-      );gl.vertexAttribPointer(texcoordLoc, 2, gl.FLOAT, false, 20, 12);
+      gl.vertexAttribPointer(texcoordLoc, 2, gl.FLOAT, false, 20, 12);
 
       this._indexBuffer = gl.createBuffer();
       var indexData = new Uint8Array([0, 3, 2, 0, 1, 3]);
@@ -44526,10 +44519,10 @@ _ClassList3.default.registerClass(_SKShapeNode2.default, 'SKShapeNode');
 _ClassList3.default.registerClass(_SKSpriteNode2.default, 'SKSpriteNode');
 _ClassList3.default.registerClass(_SKTexture2.default, 'SKTexture');
 _ClassList3.default.registerClass(_SKTextureFilteringMode2.default, 'SKTextureFilteringMode');
-_ClassList3.default.registerClass(_SKWait2.default, 'SKWait'
+_ClassList3.default.registerClass(_SKWait2.default, 'SKWait');
 
 /*global exports*/
-);exports.NSColor = _NSColor2.default;
+exports.NSColor = _NSColor2.default;
 exports.NSColorSpaceModel = _NSColorSpaceModel2.default;
 exports.AVAudioMixerNode = _AVAudioMixerNode2.default;
 exports.AVAudioNode = _AVAudioNode2.default;
@@ -44939,7 +44932,7 @@ exports.default = NSColorSpaceModel;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var baseTime = Date.UTC(2001, 0, 1, 0, 0, 0, 0
+var baseTime = Date.UTC(2001, 0, 1, 0, 0, 0, 0);
 
 /**
  * Returns the current system absolute time.
@@ -44948,7 +44941,7 @@ var baseTime = Date.UTC(2001, 0, 1, 0, 0, 0, 0
  * @desc Absolute time is measured in seconds relative to the absolute reference date of Jan 1 2001 00:00:00 GMT. A positive value represents a date after the reference date, a negative value represents a date before it. For example, the absolute time -32940326 is equivalent to December 16th, 1999 at 17:54:34. Repeated calls to this function do not guarantee monotonically increasing results. The system time may decrease due to synchronization with external time references or due to an explicit user change of the clock.
  * @see https://developer.apple.com/documentation/corefoundation/1543542-cfabsolutetimegetcurrent
  */
-);function CFAbsoluteTimeGetCurrent() {
+function CFAbsoluteTimeGetCurrent() {
   return (Date.now() - baseTime) * 0.001;
 }
 
@@ -46706,7 +46699,7 @@ exports.default = NSKeyedArchiver;
 /* 139 */
 /***/ (function(module, exports) {
 
-module.exports = __webpack_require__(19);
+module.exports = __webpack_require__(17);
 
 /***/ }),
 /* 140 */
@@ -49027,9 +49020,9 @@ var SCNActionFade = function (_SCNAction) {
         throw new Error('both toValue and byValue are null');
       }
 
-      var value = this._lerp(baseValue, toValue, t
+      var value = this._lerp(baseValue, toValue, t);
       //console.warn(`opacity time: ${time}, t: ${t}, base: ${baseValue}, to: ${toValue}, val: ${value}`)
-      );obj.presentation._opacity = value;
+      obj.presentation._opacity = value;
 
       if (this._finished) {
         obj._opacity = toValue;
@@ -50478,10 +50471,10 @@ var SCNActionRotate = function (_SCNAction) {
       if (!(0, _InstanceOf3.default)(obj, _SCNNode2.default)) {
         throw new Error('unsupported class for SCNActionRotate: ' + obj.constructor.name);
       }
-      var t = this._getTime(time, needTimeConversion
+      var t = this._getTime(time, needTimeConversion);
       //console.warn(`SCNActionRotate._applyAction t: ${t}`)
 
-      );if (this._isAxisAngle) {
+      if (this._isAxisAngle) {
         // rotation
         var baseValue = obj.rotation;
         var toValue = this._axisRot;
@@ -52732,30 +52725,30 @@ var SCNCone = function (_SCNGeometry) {
 
         // vertex
         sideData.push(bvx, bottom, bvz);
-        bottomData.push(-bvx, bottom, bvz
+        bottomData.push(-bvx, bottom, bvz);
 
         // normal
-        );sideData.push(x, 0, z);
-        bottomData.push(0, -1, 0
+        sideData.push(x, 0, z);
+        bottomData.push(0, -1, 0);
 
         // texcoord
-        );var tx = tStep * i;
+        var tx = tStep * i;
         sideData.push(tx, 1.0);
 
         var ttx = (1 + Math.cos(i * rStep)) * 0.5;
         var tty = (1 + Math.sin(i * rStep)) * 0.5;
-        bottomData.push(ttx, tty
+        bottomData.push(ttx, tty);
 
         // vertex
-        );sideData.push(tvx, top, tvz);
-        bottomData.push(0, bottom, 0
+        sideData.push(tvx, top, tvz);
+        bottomData.push(0, bottom, 0);
 
         // normal
-        );sideData.push(x, 0, z);
-        bottomData.push(0, -1, 0
+        sideData.push(x, 0, z);
+        bottomData.push(0, -1, 0);
 
         // texcoord
-        );sideData.push(tx, 0.0);
+        sideData.push(tx, 0.0);
         bottomData.push(0.5, 0.5);
       }
       sourceData.push.apply(sourceData, sideData.concat(bottomData));
@@ -52987,34 +52980,34 @@ var SCNCylinder = function (_SCNGeometry) {
         // vertex
         sideData.push(vx, bottom, vz);
         topData.push(vx, top, vz);
-        bottomData.push(-vx, bottom, vz
+        bottomData.push(-vx, bottom, vz);
 
         // normal
-        );sideData.push(x, 0, z);
+        sideData.push(x, 0, z);
         topData.push(0, 1, 0);
-        bottomData.push(0, -1, 0
+        bottomData.push(0, -1, 0);
 
         // texcoord
-        );var tx = tStep * i;
+        var tx = tStep * i;
         sideData.push(tx, 1.0);
 
         var ttx = (1 + Math.cos(i * rStep)) * 0.5;
         var tty = (1 + Math.sin(i * rStep)) * 0.5;
         topData.push(ttx, tty);
-        bottomData.push(ttx, tty
+        bottomData.push(ttx, tty);
 
         // vertex
-        );sideData.push(vx, top, vz);
+        sideData.push(vx, top, vz);
         topData.push(0, top, 0);
-        bottomData.push(0, bottom, 0
+        bottomData.push(0, bottom, 0);
 
         // normal
-        );sideData.push(x, 0, z);
+        sideData.push(x, 0, z);
         topData.push(0, 1, 0);
-        bottomData.push(0, -1, 0
+        bottomData.push(0, -1, 0);
 
         // texcoord
-        );sideData.push(tx, 0.0);
+        sideData.push(tx, 0.0);
         topData.push(0.5, 0.5);
         bottomData.push(0.5, 0.5);
       }
@@ -53495,13 +53488,13 @@ var SCNFloor = function (_SCNGeometry) {
         var tx = 0.0;
         for (var w = 0; w <= segmentCount; w++) {
           // vector
-          sourceData.push(x, y, 0
+          sourceData.push(x, y, 0);
 
           // normal
-          );sourceData.push(0, 0, 1
+          sourceData.push(0, 0, 1);
 
           // texcoord
-          );sourceData.push(tx, ty);
+          sourceData.push(tx, ty);
 
           x += xStep;
           tx += txStep;
@@ -54710,16 +54703,16 @@ var SCNMorpher = function (_NSObject) {
       node.geometry.geometrySources.forEach(function (source) {
         // FIXME: copy more than 1 source.
         var pSource = pg.getGeometrySourcesForSemantic(source.semantic)[0];
-        pSource.fill(0
+        pSource.fill(0);
         //newData.set(source.semantic, Array(source._data.length).fill(0))
-        );totalWeightForSemantic.set(source.semantic, 0.0);
-      }
+        totalWeightForSemantic.set(source.semantic, 0.0);
+      });
 
       // should I morph elements?
       //node.geometry.geometryElements().forEach((element) => {
       //})
 
-      );var targetCount = pm.targets.length;
+      var targetCount = pm.targets.length;
       //console.log(`targetCount: ${targetCount}`)
 
       var _loop = function _loop(i) {
@@ -54734,10 +54727,10 @@ var SCNMorpher = function (_NSObject) {
           if (typeof pSource === 'undefined') {
             return;
           }
-          totalWeightForSemantic.set(source.semantic, totalWeightForSemantic.get(source.semantic) + weight
+          totalWeightForSemantic.set(source.semantic, totalWeightForSemantic.get(source.semantic) + weight);
 
           // FIXME: don't access private properties
-          );var srcIndex = source._dataOffset / source._bytesPerComponent;
+          var srcIndex = source._dataOffset / source._bytesPerComponent;
           var srcStride = source._dataStride / source._bytesPerComponent;
           var dstIndex = pSource._dataOffset / pSource._bytesPerComponent;
           var dstStride = pSource._dataStride / pSource._bytesPerComponent;
@@ -54798,9 +54791,9 @@ var SCNMorpher = function (_NSObject) {
         var vectorCount = source._vectorCount;
 
         if (p.calculationMode === _SCNMorpherCalculationMode2.default.normalized) {
-          var _weight = 1.0 - totalWeightForSemantic.get(source.semantic
+          var _weight = 1.0 - totalWeightForSemantic.get(source.semantic);
           // FIXME: don't access private properties
-          );for (var i = 0; i < vectorCount; i++) {
+          for (var i = 0; i < vectorCount; i++) {
             for (var j = 0; j < componentCount; j++) {
               pSource._data[dstIndex + j] += source._data[srcIndex + j] * _weight;
             }
@@ -54819,12 +54812,11 @@ var SCNMorpher = function (_NSObject) {
             dstIndex += dstStride;
           }
         }
-      }
+      });
 
       // TODO: needs to update normal vector?
 
       //console.log(`_morph done`)
-      );
     }
 
     /**
@@ -56238,6 +56230,9 @@ var SCNParticleSystem = function (_NSObject2) {
       var _this3 = this;
 
       var image = new Image();
+      // TODO: check option if it allows cross-domain.
+      image.crossOrigin = 'anonymous';
+
       var __path = path;
       if (__path.indexOf('file:///') === 0) {
         __path = __path.slice(8);
@@ -56282,21 +56277,21 @@ var SCNParticleSystem = function (_NSObject2) {
       gl.bindVertexArray(this._vertexArray);
 
       this._vertexBuffer = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, this._vertexBuffer
+      gl.bindBuffer(gl.ARRAY_BUFFER, this._vertexBuffer);
 
       // prepare vertex array data
       // TODO: retain attribute locations
-      );var positionLoc = gl.getAttribLocation(program, 'position');
+      var positionLoc = gl.getAttribLocation(program, 'position');
       var velocityLoc = gl.getAttribLocation(program, 'velocity');
       var rotationLoc = gl.getAttribLocation(program, 'rotation');
       var colorLoc = gl.getAttribLocation(program, 'color');
-      var sizeLoc = gl.getAttribLocation(program, 'size'
+      var sizeLoc = gl.getAttribLocation(program, 'size');
       //const lifeLoc = gl.getAttribLocation(program, 'life')
-      );var cornerLoc = gl.getAttribLocation(program, 'corner');
-      var texcoordLoc = gl.getAttribLocation(program, 'texcoord'
+      var cornerLoc = gl.getAttribLocation(program, 'corner');
+      var texcoordLoc = gl.getAttribLocation(program, 'texcoord');
 
       // vertexAttribPointer(ulong idx, long size, ulong type, bool norm, long stride, ulong offset)
-      );var stride = 76;
+      var stride = 76;
       gl.enableVertexAttribArray(positionLoc);
       gl.vertexAttribPointer(positionLoc, 3, gl.FLOAT, false, stride, 0);
       gl.enableVertexAttribArray(velocityLoc);
@@ -56310,7 +56305,7 @@ var SCNParticleSystem = function (_NSObject2) {
       gl.enableVertexAttribArray(cornerLoc);
       gl.vertexAttribPointer(cornerLoc, 2, gl.FLOAT, false, stride, 60);
       gl.enableVertexAttribArray(texcoordLoc);
-      gl.vertexAttribPointer(texcoordLoc, 2, gl.FLOAT, false, stride, 68
+      gl.vertexAttribPointer(texcoordLoc, 2, gl.FLOAT, false, stride, 68);
 
       /*
       const arr = []
@@ -56321,11 +56316,11 @@ var SCNParticleSystem = function (_NSObject2) {
       gl.bufferData(gl.ARRAY_BUFFER, particleData, gl.DYNAMIC_DRAW)
       */
 
-      );var len = this._maxParticles + 5;
-      this._updateIndexBuffer(gl, len
+      var len = this._maxParticles + 5;
+      this._updateIndexBuffer(gl, len);
 
       // initialize parameters
-      );this._numImages = this.imageSequenceRowCount * this.imageSequenceColumnCount;
+      this._numImages = this.imageSequenceRowCount * this.imageSequenceColumnCount;
       this._imageWidth = 1.0 / this.imageSequenceColumnCount;
       this._imageHeight = 1.0 / this.imageSequenceRowCount;
     }
@@ -56384,10 +56379,10 @@ var SCNParticleSystem = function (_NSObject2) {
       var spreadingAngle = this.spreadingAngle / 180.0 * Math.PI * Math.random();
       var spreadingAngleRot = 2.0 * Math.PI * Math.random();
       var angleMat = _SCNMatrix2.default.matrixWithRotation(this._normal.x, this._normal.y, this._normal.z, spreadingAngle);
-      var rotMat = _SCNMatrix2.default.matrixWithRotation(this._direction.x, this._direction.y, this._direction.z, spreadingAngleRot
+      var rotMat = _SCNMatrix2.default.matrixWithRotation(this._direction.x, this._direction.y, this._direction.z, spreadingAngleRot);
 
       // emitterShape, birthLocation, emittingDirection, spreadingAngle, particleAngle/Variation, particleVelocity
-      );if (this.emitterShape === null) {
+      if (this.emitterShape === null) {
         p.position = position;
         p.velocity = new _SCNVector2.default(0, 0, velocity); // TODO: use spreadingAngle
       } else if (this.birthLocation === _SCNParticleBirthLocation2.default.surface) {
@@ -56661,8 +56656,7 @@ var SCNParticleSystem = function (_NSObject2) {
         p.position.z += p.velocity.z * _dt;
         if (_this4.propertyControllers !== null) {
           Object.keys(_this4.propertyControllers).forEach(function (key) {
-            _this4.propertyControllers[key].animation._applyAnimation(p, t, false // should I use p.life instead of t?
-            );
+            _this4.propertyControllers[key].animation._applyAnimation(p, t, false); // should I use p.life instead of t?
           });
         }
 
@@ -56750,10 +56744,10 @@ var SCNParticleSystem = function (_NSObject2) {
       }
 
       gl.uniform1i(gl.getUniformLocation(program, 'orientationMode'), this.orientationMode);
-      gl.uniform1f(gl.getUniformLocation(program, 'stretchFactor'), this.stretchFactor
+      gl.uniform1f(gl.getUniformLocation(program, 'stretchFactor'), this.stretchFactor);
 
       // buffer particle data
-      );gl.bindBuffer(gl.ARRAY_BUFFER, this._vertexBuffer);
+      gl.bindBuffer(gl.ARRAY_BUFFER, this._vertexBuffer);
       gl.bufferData(gl.ARRAY_BUFFER, this._particleData, gl.DYNAMIC_DRAW);
 
       if (this._particles.length > this._maxParticleIndex) {
@@ -56787,10 +56781,10 @@ var SCNParticleSystem = function (_NSObject2) {
       //console.warn(`image size: ${image.naturalWidth} ${image.naturalHeight}`)
       canvas.getContext('2d').drawImage(image, 0, 0);
 
-      gl.bindTexture(gl.TEXTURE_2D, texture
+      gl.bindTexture(gl.TEXTURE_2D, texture);
       // texImage2D(target, level, internalformat, width, height, border, format, type, source)
       // Safari complains that 'source' is not ArrayBufferView type, but WebGL2 should accept HTMLCanvasElement.
-      );gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, image.width, image.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, image.width, image.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
       gl.generateMipmap(gl.TEXTURE_2D);
       gl.bindTexture(gl.TEXTURE_2D, null);
 
@@ -56805,23 +56799,23 @@ var SCNParticleSystem = function (_NSObject2) {
   }, {
     key: '_createColor',
     value: function _createColor() {
-      var hsb = this._rgb2hsb(this.particleColor
+      var hsb = this._rgb2hsb(this.particleColor);
 
       // Hue
       //hsb.x = (hsb.x + this.particleColorVariation.x * (Math.random() - 0.5)) % 360.0
-      );hsb.x = (hsb.x + this.particleColorVariation.x * (Math.random() * 2.0 - 1.0)) % 360.0;
+      hsb.x = (hsb.x + this.particleColorVariation.x * (Math.random() * 2.0 - 1.0)) % 360.0;
       if (hsb.x < 0) {
         hsb.x += 360.0;
       }
 
       // Saturation
-      hsb.y = Math.max(0, Math.min(1.0, hsb.y + this.particleColorVariation.y * (Math.random() - 0.5))
+      hsb.y = Math.max(0, Math.min(1.0, hsb.y + this.particleColorVariation.y * (Math.random() - 0.5)));
 
       // Brightness
-      );hsb.z = Math.max(0, Math.min(1.0, hsb.z + this.particleColorVariation.z * (Math.random() - 0.5))
+      hsb.z = Math.max(0, Math.min(1.0, hsb.z + this.particleColorVariation.z * (Math.random() - 0.5)));
 
       // Alpha
-      );hsb.w = Math.max(0, Math.min(1.0, hsb.w + this.particleColorVariation.w * (Math.random() - 0.5)));
+      hsb.w = Math.max(0, Math.min(1.0, hsb.w + this.particleColorVariation.w * (Math.random() - 0.5)));
 
       return this._hsb2rgb(hsb);
     }
@@ -56883,7 +56877,7 @@ var SCNParticleSystem = function (_NSObject2) {
         return new _SKColor2.default(hsb.z, hsb.z, hsb.z, hsb.w);
       }
 
-      var region = Math.floor(hsb.x / 60.0
+      var region = Math.floor(hsb.x / 60.0);
       /*
       const c = hsb.z * hsb.y
       const x = c * (region % 2)
@@ -56923,7 +56917,7 @@ var SCNParticleSystem = function (_NSObject2) {
       
       return rgb
       */
-      );var v = hsb.z;
+      var v = hsb.z;
       var f = hsb.x / 60.0 - region;
       var m = v * (1.0 - hsb.y);
       var n = v * (1.0 - hsb.y * f);
@@ -57019,9 +57013,9 @@ var SCNParticleSystem = function (_NSObject2) {
       if (typeof key === 'undefined' || key === null) {
         key = Symbol();
       }
-      var anim = animation.copy
+      var anim = animation.copy();
       // FIXME: use current frame time
-      ();anim._animationStartTime = Date.now() * 0.001;
+      anim._animationStartTime = Date.now() * 0.001;
 
       this._animations.set(key, anim);
     }
@@ -59025,10 +59019,9 @@ var SCNPlane = function (_SCNGeometry) {
           var tx = j / this.widthSegmentCount;
           var x = (-0.5 + tx) * this.width;
 
-          sourceData.push(x, y, 0.0 // position
-          );sourceData.push(0.0, 0.0, 1.0 // normal
-          );sourceData.push(tx, 1.0 - ty // texcoord
-          );
+          sourceData.push(x, y, 0.0); // position
+          sourceData.push(0.0, 0.0, 1.0); // normal
+          sourceData.push(tx, 1.0 - ty); // texcoord
         }
       }
 
@@ -59457,25 +59450,25 @@ var SCNPyramid = function (_SCNGeometry) {
       } else {
         throw new Error('position inconsistent');
       }
-      normal = normal.normalize
+      normal = normal.normalize();
 
       // left bottom
-      ();data.push(x0, 0, z0);
+      data.push(x0, 0, z0);
       data.push(normal.x, normal.y, normal.z);
-      data.push(0.0, 1.0
+      data.push(0.0, 1.0);
 
       // top
-      );data.push(0, this.height, 0);
+      data.push(0, this.height, 0);
       data.push(normal.x, normal.y, normal.z);
-      data.push(0.0, 0.0
+      data.push(0.0, 0.0);
 
       // right bottom
-      );data.push(x1, 0, z1);
+      data.push(x1, 0, z1);
       data.push(normal.x, normal.y, normal.z);
-      data.push(1.0, 1.0
+      data.push(1.0, 1.0);
 
       // top again
-      );data.push(0, this.height, 0);
+      data.push(0, this.height, 0);
       data.push(normal.x, normal.y, normal.z);
       data.push(1.0, 0.0);
 
@@ -60946,7 +60939,7 @@ var SCNSkinner = function (_NSObject) {
      * @type {SCNMatrix4}
      * @see https://developer.apple.com/documentation/scenekit/scnskinner/1523160-basegeometrybindtransform
      */
-    _this.baseGeometryBindTransform = (0, _SCNMatrix4MakeTranslation2.default)(0, 0, 0
+    _this.baseGeometryBindTransform = (0, _SCNMatrix4MakeTranslation2.default)(0, 0, 0);
 
     // Working with an Animation Skeleton
 
@@ -60955,7 +60948,7 @@ var SCNSkinner = function (_NSObject) {
      * @type {?SCNNode}
      * @see https://developer.apple.com/documentation/scenekit/scnskinner/1523048-skeleton
      */
-    );_this.skeleton = null;
+    _this.skeleton = null;
 
     /**
      * @access private
@@ -61026,7 +61019,7 @@ var SCNSkinner = function (_NSObject) {
         //       it doesn't consider the rotation of initial pose so far.
         //const mat = this._boneInverseBindTransforms[i].mult(bone._presentation._worldTransform)
         //const mat = this.baseGeometryBindTransform.mult(this._boneInverseBindTransforms[i]).mult(bone._presentation._worldTransform)
-        var mat = this.baseGeometryBindTransform.mult(this._boneInverseBindTransforms[i]).mult(bone.presentation._worldTransform
+        var mat = this.baseGeometryBindTransform.mult(this._boneInverseBindTransforms[i]).mult(bone.presentation._worldTransform);
         //const mat = bone._presentation._worldTransform.mult(this._boneInverseBindTransforms[i])
         //mat = bone.presentation.transform.mult(mat)
         //if(bone._parent !== null){
@@ -61035,7 +61028,7 @@ var SCNSkinner = function (_NSObject) {
         //}
         //mat = bone.presentation.transform.mult(mat)
         //mat = mat.mult(bone.presentation.transform)
-        );arr.push.apply(arr, _toConsumableArray(mat.floatArray3x4f()));
+        arr.push.apply(arr, _toConsumableArray(mat.floatArray3x4f()));
 
         /*
         if(!mat.isIdentity()){
@@ -61743,13 +61736,13 @@ var SCNTorus = function (_SCNGeometry) {
           var z = cz + this.pipeRadius * cosr * cosp;
 
           // vertex
-          sourceData.push(x, y, z
+          sourceData.push(x, y, z);
 
           // normal
-          );sourceData.push(sinr * cosp, -sinp, cosr * cosp
+          sourceData.push(sinr * cosp, -sinp, cosr * cosp);
 
           // texcoord
-          );var tz = 1.0 - pi / this.pipeSegmentCount;
+          var tz = 1.0 - pi / this.pipeSegmentCount;
           sourceData.push(tx, tz);
         }
       }
@@ -62088,38 +62081,38 @@ var SCNTube = function (_SCNGeometry) {
         outerData.push(ovx, bottom, ovz);
         innerData.push(ivx, top, ivz);
         topData.push(ovx, top, ovz);
-        bottomData.push(-ovx, bottom, ovz
+        bottomData.push(-ovx, bottom, ovz);
 
         // normal
-        );outerData.push(x, 0, z);
+        outerData.push(x, 0, z);
         innerData.push(-x, 0, -z);
         topData.push(0, 1, 0);
-        bottomData.push(0, -1, 0
+        bottomData.push(0, -1, 0);
 
         // texcoord
-        );var tx = tStep * i;
+        var tx = tStep * i;
         outerData.push(tx, 1.0);
         innerData.push(1.0 - tx, 0.0);
 
         var ttx = 0.5 + Math.cos(rStep * i) * 0.5;
         var tty = 0.5 + Math.sin(rStep * i) * 0.5;
         topData.push(ttx, tty);
-        bottomData.push(ttx, tty
+        bottomData.push(ttx, tty);
 
         // vertex
-        );outerData.push(ovx, top, ovz);
+        outerData.push(ovx, top, ovz);
         innerData.push(ivx, bottom, ivz);
         topData.push(ivx, top, ivz);
-        bottomData.push(-ivx, bottom, ivz
+        bottomData.push(-ivx, bottom, ivz);
 
         // normal
-        );outerData.push(x, 0, z);
+        outerData.push(x, 0, z);
         innerData.push(-x, 0, -z);
         topData.push(0, 1, 0);
-        bottomData.push(0, -1, 0
+        bottomData.push(0, -1, 0);
 
         // texcoord
-        );outerData.push(tx, 0.0);
+        outerData.push(tx, 0.0);
         innerData.push(1.0 - tx, 1.0);
 
         var ttx2 = 0.5 + Math.cos(rStep * i) * 0.25;
@@ -63047,9 +63040,9 @@ var SCNView = function () {
       var ev = _this._createEvent(e);
       _this.scrollWheelWith(ev);
       _this._preventDefault(ev);
-    }
+    });
     // For Firefox
-    );this._canvas.addEventListener('DOMMouseScroll', function (e) {
+    this._canvas.addEventListener('DOMMouseScroll', function (e) {
       var ev = _this._createEvent(e);
       _this.scrollWheelWith(ev);
       _this._preventDefault(ev);
@@ -63114,10 +63107,10 @@ var SCNView = function () {
     value: function appendTo(element) {
       var _this2 = this;
 
-      element.appendChild(this._canvas
+      element.appendChild(this._canvas);
 
       // update canvas size
-      );if (typeof this._frame === 'undefined') {
+      if (typeof this._frame === 'undefined') {
         this._canvas.style.width = '100%';
         this._canvas.style.height = '100%';
         if (this._canvas.clientHeight <= 0) {
@@ -63425,12 +63418,12 @@ var SCNView = function () {
         this._delegate.rendererDidApplyAnimationsAtTime(this._renderer, time);
       }
 
-      this._updateTransform
+      this._updateTransform();
 
       ///////////////////////
       // simulates physics //
       ///////////////////////
-      ();if (this._scene && this._scene._physicsWorld !== null) {
+      if (this._scene && this._scene._physicsWorld !== null) {
         this._scene._physicsWorld._simulate(time);
       }
 
@@ -63720,11 +63713,11 @@ var SCNView = function () {
       node.childNodes.forEach(function (child) {
         return _this10._runAnimationForNode(child);
       });
-      this._runAnimationForObject(node
+      this._runAnimationForObject(node);
       // TODO: implement animations for all animatable objects:
       //         SCNCamera, SCNConstraint, SCNGeometry, SCNLight, SCNMaterial, 
       //         SCNMaterialProperty, SCNMorpher, SCNParticleSystem, SCNTechnique
-      );if (node.geometry) {
+      if (node.geometry) {
         this._runAnimationForObject(node.geometry);
         node.geometry.materials.forEach(function (material) {
           _this10._runAnimationForObject(material);
@@ -65182,9 +65175,9 @@ var SKLabelNode = function (_SKNode) {
         this._textureUpToDate = false;
       }
       if (!this._textureUpToDate) {
-        gl.bindTexture(gl.TEXTURE_2D, this._texture
+        gl.bindTexture(gl.TEXTURE_2D, this._texture);
         // texImage2D(target, level, internalformat, width, height, border, format, type, source)
-        );gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, this._canvas.width, this._canvas.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, this._canvas);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, this._canvas.width, this._canvas.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, this._canvas);
         gl.generateMipmap(gl.TEXTURE_2D);
         gl.bindTexture(gl.TEXTURE_2D, null);
 
@@ -65245,10 +65238,10 @@ var SKLabelNode = function (_SKNode) {
       }
 
       gl.attachShader(program, vertexShader);
-      gl.attachShader(program, fragmentShader
+      gl.attachShader(program, fragmentShader);
 
       // link program object
-      );gl.linkProgram(program);
+      gl.linkProgram(program);
       if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
         var _info2 = gl.getProgramInfoLog(program);
         throw new Error('program link error: ' + _info2);
@@ -65277,15 +65270,15 @@ var SKLabelNode = function (_SKNode) {
 
       var positionLoc = gl.getAttribLocation(program, 'position');
       gl.bindAttribLocation(program, positionLoc, 'position');
-      gl.enableVertexAttribArray(positionLoc
+      gl.enableVertexAttribArray(positionLoc);
       // idx, size, type, norm, stride, offset
-      );gl.vertexAttribPointer(positionLoc, 3, gl.FLOAT, false, 20, 0);
+      gl.vertexAttribPointer(positionLoc, 3, gl.FLOAT, false, 20, 0);
 
       var texcoordLoc = gl.getAttribLocation(program, 'texcoord');
       gl.bindAttribLocation(program, texcoordLoc, 'texcoord');
-      gl.enableVertexAttribArray(texcoordLoc
+      gl.enableVertexAttribArray(texcoordLoc);
       // idx, size, type, norm, stride, offset
-      );gl.vertexAttribPointer(texcoordLoc, 2, gl.FLOAT, false, 20, 12);
+      gl.vertexAttribPointer(texcoordLoc, 2, gl.FLOAT, false, 20, 12);
 
       this._indexBuffer = gl.createBuffer();
       var indexData = new Uint8Array([0, 3, 2, 0, 1, 3]);
@@ -67967,7 +67960,8 @@ var MMDNode = function (_SCNNode) {
                 if (faceIndex >= 0) {
                   newAnim.keyPath = '/Geometry.morpher.weights[' + faceIndex + ']';
                 } else {
-                  newAnim.keyPath = '//';
+                  // newAnim.keyPath = '//'
+                  return;
                 }
               }
             } else if (bone !== null) {
@@ -68439,13 +68433,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _jscenekit = __webpack_require__(0);
 
-var _TGAImage = __webpack_require__(21);
+var _TGAImage = __webpack_require__(19);
 
 var _TGAImage2 = _interopRequireDefault(_TGAImage);
-
-var _TextReader2 = __webpack_require__(10);
-
-var _TextReader3 = _interopRequireDefault(_TextReader2);
 
 var _ToonImages2 = __webpack_require__(7);
 
@@ -68477,11 +68467,13 @@ var MMDReader = function () {
    * @param {boolean} [isBinary = true] -
    * @param {boolean} [isBigEndian = false] -
    * @param {string} [encoding = ''] -
+   * @param {boolean} [crossDomain = false] - 
    */
   function MMDReader(data, directoryPath) {
     var isBinary = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
     var isBigEndian = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
     var encoding = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : '';
+    var crossDomain = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : false;
 
     _classCallCheck(this, MMDReader);
 
@@ -68504,12 +68496,18 @@ var MMDReader = function () {
     //this.length = data.byteLength
     this.length = data.length;
 
+    /**
+     *
+     * @type {boolean}
+     */
+    this.crossDomain = crossDomain;
+
     this._reader = null;
 
     if (isBinary) {
       this._reader = new _jscenekit._BinaryReader(data, isBigEndian, encoding);
     } else {
-      this._reader = new _TextReader3.default(data, encoding);
+      this._reader = new _jscenekit._TextReader(data, encoding);
     }
   }
 
@@ -68579,6 +68577,10 @@ var MMDReader = function () {
           });
         } else {
           var image = new Image();
+          // TODO: check option if it allows cross-domain.
+          // if(this.crossDomain){
+          image.crossOrigin = "anonymous";
+          // }
           image.onload = function () {
             resolve(image);
           };
@@ -68674,27 +68676,27 @@ var _MMDPMDReader = __webpack_require__(9);
 
 var _MMDPMDReader2 = _interopRequireDefault(_MMDPMDReader);
 
-var _MMDPMMReader = __webpack_require__(12);
+var _MMDPMMReader = __webpack_require__(10);
 
 var _MMDPMMReader2 = _interopRequireDefault(_MMDPMMReader);
 
-var _MMDPMXReader = __webpack_require__(13);
+var _MMDPMXReader = __webpack_require__(11);
 
 var _MMDPMXReader2 = _interopRequireDefault(_MMDPMXReader);
 
-var _MMDVACReader = __webpack_require__(14);
+var _MMDVACReader = __webpack_require__(12);
 
 var _MMDVACReader2 = _interopRequireDefault(_MMDVACReader);
 
-var _MMDVMDReader = __webpack_require__(15);
+var _MMDVMDReader = __webpack_require__(13);
 
 var _MMDVMDReader2 = _interopRequireDefault(_MMDVMDReader);
 
-var _MMDVPDReader = __webpack_require__(16);
+var _MMDVPDReader = __webpack_require__(14);
 
 var _MMDVPDReader2 = _interopRequireDefault(_MMDVPDReader);
 
-var _MMDXReader = __webpack_require__(17);
+var _MMDXReader = __webpack_require__(15);
 
 var _MMDXReader2 = _interopRequireDefault(_MMDXReader);
 
@@ -70309,679 +70311,6 @@ exports.default = MMDPMDReader;
 "use strict";
 
 
-// import {_Buffer} from 'jscenekit'
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _ecl = __webpack_require__(11);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/*global Buffer*/
-
-var _integerPattern = new RegExp(/^(-|\+)?\d+;?/);
-var _floatPattern = new RegExp(/^(-|\+)?(\d)*\.(\d)*;?/);
-var _wordPattern = new RegExp(/^\w+/);
-
-/**
- * TextReader class
- * @access public
- */
-
-var TextReader = function () {
-  /**
-   * constructor
-   * @access public
-   * @constructor
-   * @param {Buffer|ArrayBuffer} data -
-   * @param {string} encoding -
-   */
-  function TextReader(data) {
-    var encoding = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'utf-8';
-
-    _classCallCheck(this, TextReader);
-
-    /**
-     * @access private
-     * @type {number}
-     */
-    this._pos = 0;
-
-    this._partialText = '';
-    this._partialOffset = 0;
-    this._partialStep = 200;
-    this._partialMinLength = 100;
-
-    /**
-     * @access private
-     * @type {boolean}
-     */
-    this._eof = true;
-
-    /**
-     *
-     * @access public
-     * @type {Buffer}
-     */
-    this.buffer = null;
-
-    if (data instanceof Buffer) {
-      this.buffer = data;
-    } else {
-      this.buffer = Buffer.from(data);
-    }
-
-    /**
-     *
-     * @access public
-     * @type {boolean}
-     */
-    //this.bigEndian = bigEndian
-
-    /**
-     *
-     * @access public
-     * @type {string}
-     */
-    this.encoding = encoding;
-
-    // prepare buffered text
-    this._addPartialText();
-  }
-
-  /**
-   * @access public
-   * @param {number} length - length of data to skip
-   * @param {boolean} noAssert -
-   * @returns {void}
-   */
-
-
-  _createClass(TextReader, [{
-    key: 'skip',
-    value: function skip(length) {
-      var noAssert = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-      this._moveIndex(length);
-      if (!noAssert) {
-        this._check();
-      }
-    }
-
-    /**
-     *
-     * @access public
-     * @param {number} length - length of data to read
-     * @param {?string} [encoding = null] -
-     * @returns {string} -
-     */
-
-  }, {
-    key: 'readString',
-    value: function readString(length) {
-      var encoding = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-
-      var str = this._partialText.substring(0, length);
-
-      this._moveIndex(str.length);
-    }
-
-    /**
-     *
-     * @access public
-     * @param {number} length - 
-     * @param {boolean} signed -
-     * @returns {number} -
-     */
-
-  }, {
-    key: 'readInteger',
-    value: function readInteger(length, signed) {
-      var str = this._getString(_integerPattern);
-      var val = parseInt(str[0], 10);
-      return val;
-    }
-
-    /**
-     *
-     * @access public
-     * @returns {number} -
-     */
-
-  }, {
-    key: 'readUnsignedByte',
-    value: function readUnsignedByte() {
-      return this.readInteger(1, false);
-    }
-
-    /**
-     *
-     * @access public
-     * @returns {number} -
-     */
-
-  }, {
-    key: 'readUnsignedShort',
-    value: function readUnsignedShort() {
-      return this.readInteger(2, false);
-    }
-
-    /**
-     *
-     * @access public
-     * @returns {number} -
-     */
-
-  }, {
-    key: 'readUnsignedInt',
-    value: function readUnsignedInt() {
-      return this.readInteger(4, false);
-    }
-
-    /**
-     *
-     * @access public
-     * @returns {number} -
-     */
-
-  }, {
-    key: 'readInt',
-    value: function readInt() {
-      return this.readInteger(4, true);
-    }
-
-    /**
-     *
-     * @access public
-     * @returns {number} -
-     */
-
-  }, {
-    key: 'readFloat',
-    value: function readFloat() {
-      var str = this._getString(_floatPattern);
-      var val = parseFloat(str[0]);
-      return val;
-    }
-
-    /**
-     *
-     * @access public
-     * @returns {number} -
-     */
-
-  }, {
-    key: 'readDouble',
-    value: function readDouble() {
-      return this.readFloat();
-    }
-
-    /**
-     *
-     * @access public
-     * @param {number} length -
-     * @returns {Buffer} -
-     */
-
-  }, {
-    key: 'readData',
-    value: function readData(length) {
-      var start = this._pos;
-      this._pos += length;
-      return this.buffer.slice(start, this._pos);
-    }
-  }, {
-    key: 'readWord',
-    value: function readWord() {
-      var str = this._getString(_wordPattern);
-      return str !== null ? str[0] : null;
-    }
-  }, {
-    key: 'readPattern',
-    value: function readPattern(pattern) {
-      return this._getString(pattern);
-    }
-
-    /**
-     *
-     * @access private
-     * @returns {void}
-     */
-
-  }, {
-    key: '_check',
-    value: function _check() {}
-
-    /**
-     *
-     * @access private
-     * @param {number[]} data - length of data to convert
-     * @param {?string} [encoding = null] -
-     * @returns {string} -
-     */
-
-  }, {
-    key: '_convert',
-    value: function _convert(data, encoding) {
-      var length = data.length;
-      var escapeString = '';
-      for (var i = 0; i < length; i++) {
-        var charCode = data.charCodeAt(i);
-        if (charCode === 0) {
-          break;
-        } else if (charCode < 16) {
-          escapeString += '%0' + charCode.toString(16);
-        } else {
-          escapeString += '%' + charCode.toString(16);
-        }
-      }
-
-      if (encoding === 'sjis') {
-        return (0, _ecl.UnescapeSJIS)(escapeString);
-      } else if (encoding === 'euc-jp') {
-        return (0, _ecl.UnescapeEUCJP)(escapeString);
-      } else if (encoding === 'jis-7') {
-        return (0, _ecl.UnescapeJIS7)(escapeString);
-      } else if (encoding === 'jis-8') {
-        return (0, _ecl.UnescapeJIS8)(escapeString);
-      } else if (encoding === 'unicode') {
-        return (0, _ecl.UnescapeUnicode)(escapeString);
-      } else if (encoding === 'utf7') {
-        return (0, _ecl.UnescapeUTF7)(escapeString);
-      } else if (encoding === 'utf-8') {
-        return (0, _ecl.UnescapeUTF8)(escapeString);
-      } else if (encoding === 'utf-16') {
-        return (0, _ecl.UnescapeUTF16LE)(escapeString);
-      }
-
-      throw new Error('unsupported encoding: ' + encoding);
-    }
-  }, {
-    key: 'getAvailableDataLength',
-    value: function getAvailableDataLength() {
-      return this.buffer.length - this._pos;
-    }
-
-    /**
-     *
-     * @access private
-     * @param {number} len -
-     * @returns {void}
-     */
-
-  }, {
-    key: '_moveIndex',
-    value: function _moveIndex(len) {
-      this._partialText = this._partialText.substring(len);
-      if (this._partialText.length < this._partialMinLength) {
-        this._addPartialText();
-      }
-    }
-  }, {
-    key: '_skipSpace',
-    value: function _skipSpace() {
-      var i = 0;
-      var code = this._partialText.charCodeAt(i);
-
-      //  9: Horizontal Tab
-      // 10: Line Feed
-      // 11: Vertical Tab
-      // 12: New Page
-      // 13: Carriage Return
-      // 32: Space
-      while (code === 32 || 9 <= code && code <= 13) {
-        i++;
-        code = this._partialText.charCodeAt(i);
-
-        if (i >= this._partialText.length) {
-          this._addPartialText();
-        }
-      }
-      if (i > 0) {
-        this._moveIndex(i);
-      }
-    }
-  }, {
-    key: '_addPartialText',
-    value: function _addPartialText() {
-      if (this._partialOffset >= this.buffer.length) {
-        return;
-      }
-
-      var newOffset = this._partialOffset + this._partialStep;
-      if (newOffset > this.buffer.length) {
-        newOffset = this.buffer.length;
-      }
-
-      if (Buffer.isEncoding(this.encoding)) {
-        this._partialText += this.buffer.toString(this.encoding, this._partialOffset, newOffset);
-      } else {
-        var data = this.buffer.toString('binary', this._partialOffset, newOffset);
-        this._partialText += this._convert(data, this.encoding);
-      }
-      this._partialOffset = newOffset;
-    }
-  }, {
-    key: '_getString',
-    value: function _getString(pattern) {
-      this._skipSpace();
-
-      var str = this._partialText.match(pattern);
-      if (str === null) {
-        return null;
-      }
-
-      this._moveIndex(str[0].length);
-
-      return str;
-    }
-  }]);
-
-  return TextReader;
-}();
-
-exports.default = TextReader;
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-//
-// Escape Codec Library: ecl.js (Ver.041208)
-//
-// Copyright (C) http://nurucom-archives.hp.infoseek.co.jp/digital/
-//
-
-var EscapeSJIS = function EscapeSJIS(str) {
-	return str.replace(/[^*+.-9A-Z_a-z-]/g, function (s) {
-		var c = s.charCodeAt(0),
-		    m;
-		return c < 128 ? (c < 16 ? "%0" : "%") + c.toString(16).toUpperCase() : 65376 < c && c < 65440 ? "%" + (c - 65216).toString(16).toUpperCase() : (c = JCT11280.indexOf(s)) < 0 ? "%81E" : "%" + ((m = ((c < 8272 ? c : c = JCT11280.lastIndexOf(s)) - (c %= 188)) / 188) < 31 ? m + 129 : m + 193).toString(16).toUpperCase() + (64 < (c += c < 63 ? 64 : 65) && c < 91 || 95 == c || 96 < c && c < 123 ? String.fromCharCode(c) : "%" + c.toString(16).toUpperCase());
-	});
-};
-
-var UnescapeSJIS = function UnescapeSJIS(str) {
-	return str.replace(/%(8[1-9A-F]|[9E][0-9A-F]|F[0-9A-C])(%[4-689A-F][0-9A-F]|%7[0-9A-E]|[@-~])|%([0-7][0-9A-F]|A[1-9A-F]|[B-D][0-9A-F])/ig, function (s) {
-		var c = parseInt(s.substring(1, 3), 16),
-		    l = s.length;
-		return 3 == l ? String.fromCharCode(c < 160 ? c : c + 65216) : JCT11280.charAt((c < 160 ? c - 129 : c - 193) * 188 + (4 == l ? s.charCodeAt(3) - 64 : (c = parseInt(s.substring(4), 16)) < 127 ? c - 64 : c - 65));
-	});
-};
-
-var EscapeEUCJP = function EscapeEUCJP(str) {
-	return str.replace(/[^*+.-9A-Z_a-z-]/g, function (s) {
-		var c = s.charCodeAt(0);
-		return (c < 128 ? (c < 16 ? "%0" : "%") + c.toString(16) : 65376 < c && c < 65440 ? "%8E%" + (c - 65216).toString(16) : (c = JCT8836.indexOf(s)) < 0 ? "%A1%A6" : "%" + ((c - (c %= 94)) / 94 + 161).toString(16) + "%" + (c + 161).toString(16)).toUpperCase();
-	});
-};
-
-var UnescapeEUCJP = function UnescapeEUCJP(str) {
-	return str.replace(/(%A[1-9A-F]|%[B-E][0-9A-F]|%F[0-9A-E]){2}|%8E%(A[1-9A-F]|[B-D][0-9A-F])|%[0-7][0-9A-F]/ig, function (s) {
-		var c = parseInt(s.substring(1), 16);
-		return c < 161 ? String.fromCharCode(c < 128 ? c : parseInt(s.substring(4), 16) + 65216) : JCT8836.charAt((c - 161) * 94 + parseInt(s.substring(4), 16) - 161);
-	});
-};
-
-var EscapeJIS7 = function EscapeJIS7(str) {
-	var u = String.fromCharCode,
-	    ri = u(92, 120, 48, 48, 45, 92, 120, 55, 70),
-	    rj = u(65377, 45, 65439, 93, 43),
-	    H = function H(c) {
-		return 41 < c && c < 58 && 44 != c || 64 < c && c < 91 || 95 == c || 96 < c && c < 123 ? u(c) : "%" + c.toString(16).toUpperCase();
-	},
-	    I = function I(s) {
-		var c = s.charCodeAt(0);
-		return (c < 16 ? "%0" : "%") + c.toString(16).toUpperCase();
-	},
-	    rI = new RegExp();rI.compile("[^*+.-9A-Z_a-z-]", "g");
-	return ("g" + str + "g").replace(RegExp("[" + ri + "]+", "g"), function (s) {
-		return "%1B%28B" + s.replace(rI, I);
-	}).replace(RegExp("[" + rj, "g"), function (s) {
-		var c,
-		    i = 0,
-		    t = "%1B%28I";while (c = s.charCodeAt(i++)) {
-			t += H(c - 65344);
-		}return t;
-	}).replace(RegExp("[^" + ri + rj, "g"), function (s) {
-		var a,
-		    c,
-		    i = 0,
-		    t = "%1B%24B";while (a = s.charAt(i++)) {
-			t += (c = JCT8836.indexOf(a)) < 0 ? "%21%26" : H((c - (c %= 94)) / 94 + 33) + H(c + 33);
-		}return t;
-	}).slice(8, -1);
-};
-
-var UnescapeJIS7 = function UnescapeJIS7(str) {
-	var i = 0,
-	    p,
-	    q,
-	    s = "",
-	    u = String.fromCharCode,
-	    P = ("%28B" + str.replace(/%49/g, "I").replace(/%1B%24%4[02]|%1B%24@/ig, "%1B%24B")).split(/%1B/i),
-	    I = function I(s) {
-		return u(parseInt(s.substring(1), 16));
-	},
-	    J = function J(s) {
-		return u((3 == s.length ? parseInt(s.substring(1), 16) : s.charCodeAt(0)) + 65344);
-	},
-	    K = function K(s) {
-		var l = s.length;
-		return JCT8836.charAt(4 < l ? (parseInt(s.substring(1), 16) - 33) * 94 + parseInt(s.substring(4), 16) - 33 : 2 < l ? (37 == (l = s.charCodeAt(0)) ? (parseInt(s.substring(1, 3), 16) - 33) * 94 + s.charCodeAt(3) : (l - 33) * 94 + parseInt(s.substring(2), 16)) - 33 : (s.charCodeAt(0) - 33) * 94 + s.charCodeAt(1) - 33);
-	},
-	    rI = new RegExp(),
-	    rJ = new RegExp(),
-	    rK = new RegExp();
-	rI.compile("%[0-7][0-9A-F]", "ig");rJ.compile("(%2[1-9A-F]|%[3-5][0-9A-F])|[!-_]", "ig");
-	rK.compile("(%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E]){2}|(%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E])[!-~]|[!-~](%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E])|[!-~]{2}", "ig");
-	while (p = P[i++]) {
-		s += "%24B" == (q = p.substring(0, 4)) ? p.substring(4).replace(rK, K) : "%28I" == q ? p.substring(4).replace(rJ, J) : p.replace(rI, I).substring(2);
-	}return s;
-};
-
-var EscapeJIS8 = function EscapeJIS8(str) {
-	var u = String.fromCharCode,
-	    r = u(92, 120, 48, 48, 45, 92, 120, 55, 70, 65377, 45, 65439, 93, 43),
-	    H = function H(c) {
-		return 41 < c && c < 58 && 44 != c || 64 < c && c < 91 || 95 == c || 96 < c && c < 123 ? u(c) : "%" + c.toString(16).toUpperCase();
-	},
-	    I = function I(s) {
-		var c = s.charCodeAt(0);
-		return (c < 16 ? "%0" : "%") + (c < 128 ? c : c - 65216).toString(16).toUpperCase();
-	},
-	    rI = new RegExp();rI.compile("[^*+.-9A-Z_a-z-]", "g");
-	return ("g" + str + "g").replace(RegExp("[" + r, "g"), function (s) {
-		return "%1B%28B" + s.replace(rI, I);
-	}).replace(RegExp("[^" + r, "g"), function (s) {
-		var a,
-		    c,
-		    i = 0,
-		    t = "%1B%24B";while (a = s.charAt(i++)) {
-			t += (c = JCT8836.indexOf(a)) < 0 ? "%21%26" : H((c - (c %= 94)) / 94 + 33) + H(c + 33);
-		}return t;
-	}).slice(8, -1);
-};
-
-var UnescapeJIS8 = function UnescapeJIS8(str) {
-	var i = 0,
-	    p,
-	    s = "",
-	    P = ("%28B" + str.replace(/%1B%24%4[02]|%1B%24@/ig, "%1B%24B")).split(/%1B/i),
-	    I = function I(s) {
-		var c = parseInt(s.substring(1), 16);
-		return String.fromCharCode(c < 128 ? c : c + 65216);
-	},
-	    K = function K(s) {
-		var l = s.length;
-		return JCT8836.charAt(4 < l ? (parseInt(s.substring(1), 16) - 33) * 94 + parseInt(s.substring(4), 16) - 33 : 2 < l ? (37 == (l = s.charCodeAt(0)) ? (parseInt(s.substring(1, 3), 16) - 33) * 94 + s.charCodeAt(3) : (l - 33) * 94 + parseInt(s.substring(2), 16)) - 33 : (s.charCodeAt(0) - 33) * 94 + s.charCodeAt(1) - 33);
-	},
-	    rI = new RegExp(),
-	    rK = new RegExp();
-	rI.compile("%([0-7][0-9A-F]|A[1-9A-F]|[B-D][0-9A-F])", "ig");
-	rK.compile("(%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E]){2}|(%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E])[!-~]|[!-~](%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E])|[!-~]{2}", "ig");
-	while (p = P[i++]) {
-		s += "%24B" == p.substring(0, 4) ? p.substring(4).replace(rK, K) : p.replace(rI, I).substring(2);
-	}return s;
-};
-
-var EscapeUnicode = function EscapeUnicode(str) {
-	return str.replace(/[^*+.-9A-Z_a-z-]/g, function (s) {
-		var c = s.charCodeAt(0);
-		return (c < 16 ? "%0" : c < 256 ? "%" : c < 4096 ? "%u0" : "%u") + c.toString(16).toUpperCase();
-	});
-};
-
-var UnescapeUnicode = function UnescapeUnicode(str) {
-	return str.replace(/%u[0-9A-F]{4}|%[0-9A-F]{2}/ig, function (s) {
-		return String.fromCharCode("0x" + s.substring(s.length / 3));
-	});
-};
-
-var EscapeUTF7 = function EscapeUTF7(str) {
-	var B = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".split(""),
-	    E = function E(s) {
-		var c = s.charCodeAt(0);
-		return B[c >> 10] + B[c >> 4 & 63] + B[(c & 15) << 2 | (c = s.charCodeAt(1)) >> 14] + (0 <= c ? B[c >> 8 & 63] + B[c >> 2 & 63] + B[(c & 3) << 4 | (c = s.charCodeAt(2)) >> 12] + (0 <= c ? B[c >> 6 & 63] + B[c & 63] : "") : "");
-	},
-	    re = new RegExp();re.compile("[^+]{1,3}", "g");
-	return (str + "g").replace(/[^*+.-9A-Z_a-z-]+[*+.-9A-Z_a-z-]|[+]/g, function (s) {
-		if ("+" == s) return "+-";
-		var l = s.length - 1,
-		    w = s.charAt(l);
-		return "+" + s.substring(0, l).replace(re, E) + ("+" == w ? "-+-" : "*" == w || "." == w || "_" == w ? w : "-" + w);
-	}).slice(0, -1);
-};
-
-var UnescapeUTF7 = function UnescapeUTF7(str) {
-	var i = 0,
-	    B = {};
-	while (i < 64) {
-		B["ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".charAt(i)] = i++;
-	}return str.replace(RegExp("[+][+/-9A-Za-z]*-?", "g"), function (s) {
-		if ("+-" == s) return "+";
-		var b = B[s.charAt(1)],
-		    c,
-		    i = 1,
-		    t = "";
-		while (0 <= b) {
-			if ((c = i & 7) < 6) c = c < 3 ? b << 10 | B[s.charAt(++i)] << 4 | (b = B[s.charAt(++i)]) >> 2 : (b & 3) << 14 | B[s.charAt(++i)] << 8 | B[s.charAt(++i)] << 2 | (b = B[s.charAt(++i)]) >> 4;else {
-				c = (b & 15) << 12 | B[s.charAt(++i)] << 6 | B[s.charAt(++i)];b = B[s.charAt(++i)];
-			}
-			if (c) t += String.fromCharCode(c);
-		}
-		return t;
-	});
-};
-
-var EscapeUTF8 = function EscapeUTF8(str) {
-	return str.replace(/[^*+.-9A-Z_a-z-]/g, function (s) {
-		var c = s.charCodeAt(0);
-		return (c < 16 ? "%0" + c.toString(16) : c < 128 ? "%" + c.toString(16) : c < 2048 ? "%" + (c >> 6 | 192).toString(16) + "%" + (c & 63 | 128).toString(16) : "%" + (c >> 12 | 224).toString(16) + "%" + (c >> 6 & 63 | 128).toString(16) + "%" + (c & 63 | 128).toString(16)).toUpperCase();
-	});
-};
-
-var UnescapeUTF8 = function UnescapeUTF8(str) {
-	return str.replace(/%(E(0%[AB]|[1-CEF]%[89AB]|D%[89])[0-9A-F]|C[2-9A-F]|D[0-9A-F])%[89AB][0-9A-F]|%[0-7][0-9A-F]/ig, function (s) {
-		var c = parseInt(s.substring(1), 16);
-		return String.fromCharCode(c < 128 ? c : c < 224 ? (c & 31) << 6 | parseInt(s.substring(4), 16) & 63 : ((c & 15) << 6 | parseInt(s.substring(4), 16) & 63) << 6 | parseInt(s.substring(7), 16) & 63);
-	});
-};
-
-var EscapeUTF16LE = function EscapeUTF16LE(str) {
-	var H = function H(c) {
-		return 41 < c && c < 58 && 44 != c || 64 < c && c < 91 || 95 == c || 96 < c && c < 123 ? String.fromCharCode(c) : (c < 16 ? "%0" : "%") + c.toString(16).toUpperCase();
-	};
-	return str.replace(/[^ ]| /g, function (s) {
-		var c = s.charCodeAt(0);return H(c & 255) + H(c >> 8);
-	});
-};
-
-var UnescapeUTF16LE = function UnescapeUTF16LE(str) {
-	var u = String.fromCharCode,
-	    b = u(92, 120, 48, 48, 45, 92, 120, 70, 70);
-	return str.replace(/^%FF%FE/i, "").replace(RegExp("%[0-9A-F]{2}%[0-9A-F]{2}|%[0-9A-F]{2}[" + b + "]|[" + b + "]%[0-9A-F]{2}|[" + b + "]{2}", "ig"), function (s) {
-		var l = s.length;
-		return u(4 < l ? "0x" + s.substring(4, 6) + s.substring(1, 3) : 2 < l ? 37 == (l = s.charCodeAt(0)) ? parseInt(s.substring(1, 3), 16) | s.charCodeAt(3) << 8 : l | parseInt(s.substring(2), 16) << 8 : s.charCodeAt(0) | s.charCodeAt(1) << 8);
-	});
-};
-
-var GetEscapeCodeType = function GetEscapeCodeType(str) {
-	if (/%u[0-9A-F]{4}/i.test(str)) return "Unicode";
-	if (/%([0-9A-DF][0-9A-F]%[8A]0%|E0%80|[0-7][0-9A-F]|C[01])%[8A]0|%00|%[7F]F/i.test(str)) return "UTF16LE";
-	if (/%E[0-9A-F]%[8A]0%[8A]0|%[CD][0-9A-F]%[8A]0/i.test(str)) return "UTF8";
-	if (/%F[DE]/i.test(str)) return (/%8[0-9A-D]|%9[0-9A-F]|%A0/i.test(str) ? "UTF16LE" : "EUCJP"
-	);
-	if (/%1B/i.test(str)) return (/%[A-D][0-9A-F]/i.test(str) ? "JIS8" : "JIS7"
-	);
-	var S = str.substring(0, 6143).replace(/%[0-9A-F]{2}|[^ ]| /ig, function (s) {
-		return s.length < 3 ? "40" : s.substring(1);
-	}),
-	    c,
-	    C,
-	    i = 0,
-	    T;
-	while (0 <= (c = parseInt(S.substring(i, i += 2), 16)) && i < 4092) {
-		if (128 <= c) {
-			if ((C = parseInt(S.substring(i, i + 2), 16)) < 128) i += 2;else if (194 <= c && c < 240 && C < 192) {
-				if (c < 224) {
-					T = "UTF8";i += 2;continue;
-				}
-				if (2 == parseInt(S.charAt(i + 2), 16) >> 2) {
-					T = "UTF8";i += 4;continue;
-				}
-			}
-			if (142 == c && 161 <= C && C < 224) {
-				if (!T) T = "EUCJP";if ("EUCJP" == T) continue;
-			}
-			if (c < 161) return "SJIS";
-			if (c < 224 && !T) {
-				if ((164 == c && C < 244 || 165 == c && C < 247) && 161 <= C) i += 2;else T = 224 <= C ? "EUCJP" : "SJIS";
-			} else T = "EUCJP";
-		}
-	}return T ? T : "EUCJP";
-};
-
-var JCT11280 = Function('var a="zKV33~jZ4zN=~ji36XazM93y!{~k2y!o~k0ZlW6zN?3Wz3W?{EKzK[33[`y|;-~j^YOTz$!~kNy|L1$353~jV3zKk3~k-4P4zK_2+~jY4y!xYHR~jlz$_~jk4z$e3X5He<0y!wy|X3[:~l|VU[F3VZ056Hy!nz/m1XD61+1XY1E1=1y|bzKiz!H034zKj~mEz#c5ZA3-3X$1~mBz$$3~lyz#,4YN5~mEz#{ZKZ3V%7Y}!J3X-YEX_J(3~mAz =V;kE0/y|F3y!}~m>z/U~mI~j_2+~mA~jp2;~m@~k32;~m>V}2u~mEX#2x~mBy+x2242(~mBy,;2242(~may->2&XkG2;~mIy-_2&NXd2;~mGz,{4<6:.:B*B:XC4>6:.>B*BBXSA+A:X]E&E<~r#z+625z s2+zN=`HXI@YMXIAXZYUM8X4K/:Q!Z&33 3YWX[~mB`{zKt4z (zV/z 3zRw2%Wd39]S11z$PAXH5Xb;ZQWU1ZgWP%3~o@{Dgl#gd}T){Uo{y5_d{e@}C(} WU9|cB{w}bzvV|)[} H|zT}d||0~{]Q|(l{|x{iv{dw}(5}[Z|kuZ }cq{{y|ij}.I{idbof%cu^d}Rj^y|-M{ESYGYfYsZslS`?ZdYO__gLYRZ&fvb4oKfhSf^d<Yeasc1f&a=hnYG{QY{D`Bsa|u,}Dl|_Q{C%xK|Aq}C>|c#ryW=}eY{L+`)][YF_Ub^h4}[X|?r|u_ex}TL@YR]j{SrXgo*|Gv|rK}B#mu{R1}hs|dP{C7|^Qt3|@P{YVV |8&}#D}ef{e/{Rl|>Hni}R1{Z#{D[}CQlQ||E}[s{SG_+i8eplY[=[|ec[$YXn#`hcm}YR|{Ci(_[ql|?8p3]-}^t{wy}4la&pc|3e{Rp{LqiJ],] `kc(]@chYnrM`O^,ZLYhZB]ywyfGY~aex!_Qww{a!|)*lHrM{N+n&YYj~Z b c#e_[hZSon|rOt`}hBXa^i{lh|<0||r{KJ{kni)|x,|0auY{D!^Sce{w;|@S|cA}Xn{C1h${E]Z-XgZ*XPbp]^_qbH^e[`YM|a||+=]!Lc}]vdBc=j-YSZD]YmyYLYKZ9Z>Xcczc2{Yh}9Fc#Z.l{}(D{G{{mRhC|L3b#|xK[Bepj#ut`H[,{E9Yr}1b{[e]{ZFk7[ZYbZ0XL]}Ye[(`d}c!|*y`Dg=b;gR]Hm=hJho}R-[n}9;{N![7k_{UbmN]rf#pTe[x8}!Qcs_rs[m`|>N}^V})7{^r|/E}),}HH{OYe2{Skx)e<_.cj.cjoMhc^d}0uYZd!^J_@g,[[[?{i@][|3S}Yl3|!1|eZ|5IYw|1D}e7|Cv{OHbnx-`wvb[6[4} =g+k:{C:}ed{S]|2M]-}WZ|/q{LF|dYu^}Gs^c{Z=}h>|/i|{W]:|ip{N:|zt|S<{DH[p_tvD{N<[8Axo{X4a.^o^X>Yfa59`#ZBYgY~_t^9`jZHZn`>G[oajZ;X,i)Z.^~YJe ZiZF^{][[#Zt^|]Fjx]&_5dddW]P0C[-]}]d|y {C_jUql] |OpaA[Z{lp|rz}:Mu#]_Yf6{Ep?f5`$[6^D][^u[$[6^.Z8]]ePc2U/=]K^_+^M{q*|9tYuZ,s(dS{i=|bNbB{uG}0jZOa:[-]dYtu3]:]<{DJ_SZIqr_`l=Yt`gkTnXb3d@kiq0a`Z{|!B|}e}Ww{Sp,^Z|0>_Z}36|]A|-t}lt{R6pi|v8hPu#{C>YOZHYmg/Z4nicK[}hF_Bg|YRZ7c|crkzYZY}_iXcZ.|)U|L5{R~qi^Uga@Y[xb}&qdbd6h5|Btw[}c<{Ds53[Y7]?Z<|e0{L[ZK]mXKZ#Z2^tavf0`PE[OSOaP`4gi`qjdYMgys/?[nc,}EEb,eL]g[n{E_b/vcvgb.{kcwi`~v%|0:|iK{Jh_vf5lb}KL|(oi=LrzhhY_^@`zgf[~g)[J_0fk_V{T)}I_{D&_/d9W/|MU[)f$xW}?$xr4<{Lb{y4}&u{XJ|cm{Iu{jQ}CMkD{CX|7A}G~{kt)nB|d5|<-}WJ}@||d@|Iy}Ts|iL|/^|no|0;}L6{Pm]7}$zf:|r2}?C_k{R(}-w|`G{Gy[g]bVje=_0|PT{^Y^yjtT[[[l!Ye_`ZN]@[n_)j3nEgMa]YtYpZy].d-Y_cjb~Y~[nc~sCi3|zg}B0}do{O^{|$`_|D{}U&|0+{J3|8*]iayx{a{xJ_9|,c{Ee]QXlYb]$[%YMc*]w[aafe]aVYi[fZEii[xq2YQZHg]Y~h#|Y:thre^@^|_F^CbTbG_1^qf7{L-`VFx Zr|@EZ;gkZ@slgko`[e}T:{Cu^pddZ_`yav^Ea+[#ZBbSbO`elQfLui}.F|txYcbQ`XehcGe~fc^RlV{D_0ZAej[l&jShxG[ipB_=u:eU}3e8[=j|{D(}dO{Do[BYUZ0/]AYE]ALYhZcYlYP/^-^{Yt_1_-;YT`P4BZG=IOZ&]H[e]YYd[9^F[1YdZxZ?Z{Z<]Ba2[5Yb[0Z4l?]d_;_)a?YGEYiYv`_XmZs4ZjY^Zb]6gqGaX^9Y}dXZr[g|]Y}K aFZp^k^F]M`^{O1Ys]ZCgCv4|E>}8eb7}l`{L5[Z_faQ|c2}Fj}hw^#|Ng|B||w2|Sh{v+[G}aB|MY}A{|8o}X~{E8paZ:]i^Njq]new)`-Z>haounWhN}c#{DfZ|fK]KqGZ=:u|fqoqcv}2ssm}.r{]{nIfV{JW)[K|,Z{Uxc|]l_KdCb%]cfobya3`p}G^|LZiSC]U|(X|kBlVg[kNo({O:g:|-N|qT}9?{MBiL}Sq{`P|3a|u.{Uaq:{_o|^S}jX{Fob0`;|#y_@[V[K|cw[<_ }KU|0F}d3|et{Q7{LuZttsmf^kYZ`Af`}$x}U`|Ww}d]| >}K,r&|XI|*e{C/a-bmr1fId4[;b>tQ_:]hk{b-pMge]gfpo.|(w[jgV{EC1Z,YhaY^q,_G[c_g[J0YX]`[h^hYK^_Yib,` {i6vf@YM^hdOKZZn(jgZ>bzSDc^Z%[[o9[2=/YHZ(_/Gu_`*|8z{DUZxYt^vuvZjhi^lc&gUd4|<UiA`z]$b/Z?l}YI^jaHxe|;F}l${sQ}5g}hA|e4}?o{ih}Uz{C)jPe4]H^J[Eg[|AMZMlc}:,{iz}#*|gc{Iq|/:|zK{l&}#u|myd{{M&v~nV};L|(g|I]ogddb0xsd7^V})$uQ{HzazsgxtsO^l}F>ZB]r|{7{j@cU^{{CbiYoHlng]f+nQ[bkTn/}<-d9q {KXadZYo+n|l[|lc}V2{[a{S4Zam~Za^`{HH{xx_SvF|ak=c^[v^7_rYT`ld@]:_ub%[$[m](Shu}G2{E.ZU_L_R{tz`vj(f?^}hswz}GdZ}{S:h`aD|?W|`dgG|if{a8|J1{N,}-Ao3{H#{mfsP|[ bzn+}_Q{MT{u4kHcj_q`eZj[8o0jy{p7}C|[}l){MuYY{|Ff!Ykn3{rT|m,^R|,R}$~Ykgx{P!]>iXh6[l[/}Jgcg{JYZ.^qYfYIZl[gZ#Xj[Pc7YyZD^+Yt;4;`e8YyZVbQ7YzZxXja.7SYl[s]2^/Ha$[6ZGYrb%XiYdf2]H]kZkZ*ZQ[ZYS^HZXcCc%Z|[(bVZ]]:OJQ_DZCg<[,]%Zaa [g{C00HY[c%[ChyZ,Z_`PbXa+eh`^&jPi0a[ggvhlekL]w{Yp^v}[e{~;k%a&k^|nR_z_Qng}[E}*Wq:{k^{FJZpXRhmh3^p>de^=_7`|ZbaAZtdhZ?n4ZL]u`9ZNc3g%[6b=e.ZVfC[ZZ^^^hD{E(9c(kyZ=bb|Sq{k`|vmr>izlH[u|e`}49}Y%}FT{[z{Rk}Bz{TCc/lMiAqkf(m$hDc;qooi[}^o:c^|Qm}a_{mrZ(pA`,}<2sY| adf_%|}`}Y5U;}/4|D>|$X{jw{C<|F.hK|*A{MRZ8Zsm?imZm_?brYWZrYx`yVZc3a@f?aK^ojEd {bN}/3ZH]/$YZhm^&j 9|(S|b]mF}UI{q&aM]LcrZ5^.|[j`T_V_Gak}9J[ ZCZD|^h{N9{~&[6Zd{}B}2O|cv]K}3s}Uy|l,fihW{EG`j_QOp~Z$F^zexS`dcISfhZBXP|.vn|_HYQ|)9|cr]<`&Z6]m_(ZhPcSg>`Z]5`~1`0Xcb4k1{O!bz|CN_T{LR|a/gFcD|j<{Z._[f)mPc:1`WtIaT1cgYkZOaVZOYFrEe[}T$}Ch}mk{K-^@]fH{Hdi`c*Z&|Kt{if[C{Q;{xYB`dYIX:ZB[}]*[{{p9|4GYRh2ao{DS|V+[zd$`F[ZXKadb*A] Ys]Maif~a/Z2bmclb8{Jro_rz|x9cHojbZ{GzZx_)]:{wAayeDlx}<=`g{H1{l#}9i|)=|lP{Qq}.({La|!Y{i2EZfp=c*}Cc{EDvVB|;g}2t{W4av^Bn=]ri,|y?|3+}T*ckZ*{Ffr5e%|sB{lx^0]eZb]9[SgAjS_D|uHZx]dive[c.YPkcq/}db{EQh&hQ|eg}G!ljil|BO]X{Qr_GkGl~YiYWu=c3eb}29v3|D|}4i||.{Mv})V{SP1{FX}CZW6{cm|vO{pS|e#}A~|1i}81|Mw}es|5[}3w{C`h9aL]o{}p[G`>i%a1Z@`Ln2bD[$_h`}ZOjhdTrH{[j_:k~kv[Sdu]CtL}41{I |[[{]Zp$]XjxjHt_eThoa#h>sSt8|gK|TVi[Y{t=}Bs|b7Zpr%{gt|Yo{CS[/{iteva|cf^hgn}($_c^wmb^Wm+|55jrbF|{9^ q6{C&c+ZKdJkq_xOYqZYSYXYl`8]-cxZAq/b%b*_Vsa[/Ybjac/OaGZ4fza|a)gY{P?| I|Y |,pi1n7}9bm9ad|=d{aV|2@[(}B`d&|Uz}B}{`q|/H|!JkM{FU|CB|.{}Az}#P|lk}K{|2rk7{^8^?`/|k>|Ka{Sq}Gz}io{DxZh[yK_#}9<{TRdgc]`~Z>JYmYJ]|`!ZKZ]gUcx|^E[rZCd`f9oQ[NcD_$ZlZ;Zr}mX|=!|$6ZPZYtIo%fj}CpcN|B,{VDw~gb}@hZg`Q{LcmA[(bo`<|@$|o1|Ss}9Z_}tC|G`{F/|9nd}i=}V-{L8aaeST]daRbujh^xlpq8|}zs4bj[S`J|]?G{P#{rD{]I`OlH{Hm]VYuSYUbRc*6[j`8]pZ[bt_/^Jc*[<Z?YE|Xb|?_Z^Vcas]h{t9|Uwd)_(=0^6Zb{Nc} E[qZAeX[a]P^|_J>e8`W^j_Y}R{{Jp__]Ee#e:iWb9q_wKbujrbR}CY`,{mJ}gz{Q^{t~N|? gSga`V_||:#mi}3t|/I`X{N*|ct|2g{km}gi|{={jC}F;|E}{ZZjYf*frmu}8Tdroi{T[|+~}HG{cJ}DM{Lp{Ctd&}$hi3|FZ| m}Kr|38}^c|m_|Tr{Qv|36}?Up>|;S{DV{k_as}BK{P}}9p|t`jR{sAm4{D=b4pWa[}Xi{EjwEkI}3S|E?u=X0{jf} S|NM|JC{qo^3cm]-|JUx/{Cj{s>{Crt[UXuv|D~|j|d{YXZR}Aq}0r}(_{pJfi_z}0b|-vi)Z mFe,{f4|q`b{}^Z{HM{rbeHZ|^x_o|XM|L%|uFXm}@C_{{Hhp%a7|0p[Xp+^K}9U{bP}: tT}B|}+$|b2|[^|~h{FAby[`{}xgygrt~h1[li`c4vz|,7p~b(|mviN}^pg[{N/|g3|^0c,gE|f%|7N{q[|tc|TKA{LU}I@|AZp(}G-sz{F |qZ{}F|f-}RGn6{Z]_5})B}UJ{FFb2]4ZI@v=k,]t_Dg5Bj]Z-]L]vrpdvdGlk|gF}G]|IW}Y0[G| /bo|Te^,_B}#n^^{QHYI[?hxg{[`]D^IYRYTb&kJ[cri[g_9]Ud~^_]<p@_e_XdNm-^/|5)|h_{J;{kacVopf!q;asqd}n)|.m|bf{QW|U)}b+{tL|w``N|to{t ZO|T]jF}CB|0Q{e5Zw|k |We}5:{HO{tPwf_uajjBfX}-V_C_{{r~gg|Ude;s+}KNXH}! `K}eW{Upwbk%ogaW}9EYN}YY|&v|SL{C3[5s.]Y]I]u{M6{pYZ`^,`ZbCYR[1mNg>rsk0Ym[jrE]RYiZTr*YJ{Ge|%-lf|y(`=[t}E6{k!|3)}Zk} ][G{E~cF{u3U.rJ|a9p#o#ZE|?|{sYc#vv{E=|LC}cu{N8`/`3`9rt[4|He{cq|iSYxY`}V |(Q|t4{C?]k_Vlvk)BZ^r<{CL}#h}R+[<|i=}X|{KAo]|W<`K{NW|Zx}#;|fe{IMr<|K~tJ_x}AyLZ?{GvbLnRgN}X&{H7|x~}Jm{]-| GpNu0}.ok>|c4{PYisrDZ|fwh9|hfo@{H~XSbO]Odv]%`N]b1Y]]|eIZ}_-ZA]aj,>eFn+j[aQ_+]h[J_m_g]%_wf.`%k1e#Z?{CvYu_B^|gk`Xfh^M3`afGZ-Z|[m{L}|k3cp[it ^>YUi~d>{T*}YJ{Q5{Jxa$hg|%4`}|LAgvb }G}{P=|<;Ux{_skR{cV|-*|s-{Mp|XP|$G|_J}c6cM{_=_D|*9^$ec{V;|4S{qO|w_|.7}d0|/D}e}|0G{Dq]Kdp{}dfDi>}B%{Gd|nl}lf{C-{y}|ANZr}#={T~|-(}c&{pI|ft{lsVP}){|@u}!W|bcmB{d?|iW|:dxj{PSkO|Hl]Li:}VYk@|2={fnWt{M3`cZ6|)}|Xj}BYa?vo{e4|L7|B7{L7|1W|lvYO}W8nJ|$Vih|{T{d*_1|:-n2dblk``fT{Ky|-%}m!|Xy|-a{Pz}[l{kFjz|iH}9N{WE{x,|jz}R {P|{D)c=nX|Kq|si}Ge{sh|[X{RF{t`|jsr*fYf,rK|/9}$}}Nf{y!1|<Std}4Wez{W${Fd_/^O[ooqaw_z[L`Nbv[;l7V[ii3_PeM}.h^viqYjZ*j1}+3{bt{DR[;UG}3Og,rS{JO{qw{d<_zbAh<R[1_r`iZTbv^^a}c{iEgQZ<exZFg.^Rb+`Uj{a+{z<[~r!]`[[|rZYR|?F|qppp]L|-d|}K}YZUM|=Y|ktm*}F]{D;g{uI|7kg^}%?Z%ca{N[_<q4xC]i|PqZC]n}.bDrnh0Wq{tr|OMn6tM|!6|T`{O`|>!]ji+]_bTeU}Tq|ds}n|{Gm{z,f)}&s{DPYJ`%{CGd5v4tvb*hUh~bf]z`jajiFqAii]bfy^U{Or|m+{I)cS|.9k:e3`^|xN}@Dnlis`B|Qo{`W|>||kA}Y}{ERYuYx`%[exd`]|OyiHtb}HofUYbFo![5|+]gD{NIZR|Go}.T{rh^4]S|C9_}xO^i`vfQ}C)bK{TL}cQ|79iu}9a];sj{P.o!f[Y]pM``Jda^Wc9ZarteBZClxtM{LW}l9|a.mU}KX}4@{I+f1}37|8u}9c|v${xGlz}jP{Dd1}e:}31}%3X$|22i<v+r@~mf{sN{C67G97855F4YL5}8f{DT|xy{sO{DXB334@55J1)4.G9A#JDYtXTYM4, YQD9;XbXm9SX]IB^4UN=Xn<5(;(F3YW@XkH-X_VM[DYM:5XP!T&Y`6|,^{IS-*D.H>:LXjYQ0I3XhAF:9:(==.F*3F1189K/7163D,:@|e2{LS36D4hq{Lw/84443@4.933:0307::6D7}&l{Mx657;89;,K5678H&93D(H<&<>0B90X^I;}Ag1{P%3A+>><975}[S{PZE453?4|T2{Q+5187;>447:81{C=hL6{Me^:=7ii{R=.=F<81;48?|h8}Uh{SE|,VxL{ST,7?9Y_5Xk3A#:$%YSYdXeKXOD8+TXh7(@>(YdXYHXl9J6X_5IXaL0N?3YK7Xh!1?XgYz9YEXhXaYPXhC3X`-YLY_XfVf[EGXZ5L8BXL9YHX]SYTXjLXdJ: YcXbQXg1PX]Yx4|Jr{Ys4.8YU+XIY`0N,<H%-H;:0@,74/:8546I=9177154870UC]d<C3HXl7ALYzXFXWP<<?E!88E5@03YYXJ?YJ@6YxX-YdXhYG|9o{`iXjY_>YVXe>AYFX[/(I@0841?):-B=14337:8=|14{c&93788|di{cW-0>0<097/A;N{FqYpugAFT%X/Yo3Yn,#=XlCYHYNX[Xk3YN:YRT4?)-YH%A5XlYF3C1=NWyY}>:74-C673<69545v {iT85YED=64=.F4..9878/D4378?48B3:7:7/1VX[f4{D,{l<5E75{dAbRB-8-@+;DBF/$ZfW8S<4YhXA.(5@*11YV8./S95C/0R-A4AXQYI7?68167B95HA1*<M3?1/@;/=54XbYP36}lc{qzSS38:19?,/39193574/66878Yw1X-87E6=;964X`T734:>86>1/=0;(I-1::7ALYGXhF+Xk[@W%TYbX7)KXdYEXi,H-XhYMRXfYK?XgXj.9HX_SX]YL1XmYJ>Y}WwIXiI-3-GXcYyXUYJ$X`Vs[7;XnYEZ;XF! 3;%8;PXX(N3Y[)Xi1YE&/ :;74YQ6X`33C;-(>Xm0(TYF/!YGXg8 9L5P01YPXO-5%C|qd{{/K/E6,=0144:361:955;6443@?B7*7:F89&F35YaX-CYf,XiFYRXE_e{}sF 0*7XRYPYfXa5YXXY8Xf8Y~XmA[9VjYj*#YMXIYOXk,HHX40YxYMXU8OXe;YFXLYuPXP?EB[QV0CXfY{:9XV[FWE0D6X^YVP*$4%OXiYQ(|xp|%c3{}V`1>Y`XH00:8/M6XhQ1:;3414|TE|&o@1*=81G8<3}6<|(f6>>>5-5:8;093B^3U*+*^*UT30XgYU&7*O1953)5@E78--F7YF*B&0:%P68W9Zn5974J9::3}Vk|-,C)=)1AJ4+<3YGXfY[XQXmT1M-XcYTYZXCYZXEYXXMYN,17>XIG*SaS|/eYJXbI?XdNZ+WRYP<F:R PXf;0Xg`$|1GX9YdXjLYxWX!ZIXGYaXNYm6X9YMX?9EXmZ&XZ#XQ>YeXRXfAY[4 ;0X!Zz0XdN$XhYL XIY^XGNXUYS/1YFXhYk.TXn4DXjB{jg|4DEX]:XcZMW=A.+QYL<LKXc[vV$+&PX*Z3XMYIXUQ:ZvW< YSXFZ,XBYeXMM)?Xa XiZ4/EXcP3%}&-|6~:1(-+YT$@XIYRBC<}&,|7aJ6}bp|8)K1|Xg|8C}[T|8Q.89;-964I38361<=/;883651467<7:>?1:.}le|:Z=39;1Y^)?:J=?XfLXbXi=Q0YVYOXaXiLXmJXO5?.SFXiCYW}-;|=u&D-X`N0X^,YzYRXO(QX_YW9`I|>hZ:N&X)DQXP@YH#XmNXi$YWX^=!G6YbYdX>XjY|XlX^XdYkX>YnXUXPYF)FXT[EVTMYmYJXmYSXmNXi#GXmT3X8HOX[ZiXN]IU2>8YdX1YbX<YfWuZ8XSXcZU%0;1XnXkZ_WTG,XZYX5YSX Yp 05G?XcYW(IXg6K/XlYP4XnI @XnO1W4Zp-9C@%QDYX+OYeX9>--YSXkD.YR%Q/Yo YUX].Xi<HYEZ2WdCE6YMXa7F)=,D>-@9/8@5=?7164;35387?N<618=6>7D+C50<6B03J0{Hj|N9$D,9I-,.KB3}m |NzE0::/81YqXjMXl7YG; [.W=Z0X4XQY]:MXiR,XgM?9$9>:?E;YE77VS[Y564760391?14941:0=:8B:;/1DXjFA-564=0B3XlH1+D85:0Q!B#:-6&N/:9<-R3/7Xn<*3J4.H:+334B.=>30H.;3833/76464665755:/83H6633:=;.>5645}&E|Y)?1/YG-,93&N3AE@5 <L1-G/8A0D858/30>8<549=@B8] V0[uVQYlXeD(P#ID&7T&7;Xi0;7T-$YE)E=1:E1GR):--0YI7=E<}n9|aT6783A>D7&4YG7=391W;Zx<5+>F#J39}o/|cc;6=A050EQXg8A1-}D-|d^5548083563695D?-.YOXd37I$@LYLWeYlX<Yd+YR A$;3-4YQ-9XmA0!9/XLY_YT(=5XdDI>YJ5XP1ZAW{9>X_6R(XhYO65&J%DA)C-!B:97#A9;@?F;&;(9=11/=657/H,<8}bz|j^5446>.L+&Y^8Xb6?(CYOXb*YF(8X`FYR(XPYVXmPQ%&DD(XmZXW??YOXZXfCYJ79,O)XnYF7K0!QXmXi4IYFRXS,6<%-:YO(+:-3Q!1E1:W,Zo}Am|n~;3580534*?3Zc4=9334361693:30C<6/717:<1/;>59&:4}6!|rS36=1?75<8}[B|s809983579I.A.>84758=108564741H*9E{L{|u%YQ<%6XfH.YUXe4YL@,>N}Tv|ve*G0X)Z;/)3@A74(4P&A1X:YVH97;,754*A66:1 D739E3553545558E4?-?K17/770843XAYf838A7K%N!YW4.$T19Z`WJ*0XdYJXTYOXNZ 1XaN1A+I&Xi.Xk3Z3GB&5%WhZ1+5#Y[X<4YMXhQYoQXVXbYQ8XSYUX4YXBXWDMG0WxZA[8V+Z8X;D],Va$%YeX?FXfX[XeYf<X:Z[WsYz8X_Y]%XmQ(!7BXIZFX]&YE3F$(1XgYgYE& +[+W!<YMYFXc;+PXCYI9YrWxGXY9DY[!GXiI7::)OC;*$.>N*HA@{C|}&k=:<TB83X`3YL+G4XiK]i}(fYK<=5$.FYE%4*5*H*6XkCYL=*6Xi6!Yi1KXR4YHXbC8Xj,B9ZbWx/XbYON#5B}Ue}+QKXnF1&YV5XmYQ0!*3IXBYb71?1B75XmF;0B976;H/RXU:YZX;BG-NXj;XjI>A#D3B636N;,*%<D:0;YRXY973H5)-4FXOYf0:0;/7759774;7;:/855:543L43<?6=E,.A4:C=L)%4YV!1(YE/4YF+ F3%;S;&JC:%/?YEXJ4GXf/YS-EXEYW,9;E}X$}547EXiK=51-?71C%?57;5>463553Zg90;6447?<>4:9.7538XgN{|!}9K/E&3-:D+YE1)YE/3;37/:05}n<}:UX8Yj4Yt864@JYK..G=.(A Q3%6K>3(P3#AYE$-6H/456*C=.XHY[#S.<780191;057C)=6HXj?955B:K1 E>-B/9,;5.!L?:0>/.@//:;7833YZ56<4:YE=/:7Z_WGC%3I6>XkC*&NA16X=Yz2$X:Y^&J48<99k8}CyB-61<18K946YO4{|N}E)YIB9K0L>4=46<1K0+R;6-=1883:478;4,S+3YJX`GJXh.Yp+Xm6MXcYpX(>7Yo,/:X=Z;Xi0YTYHXjYmXiXj;*;I-8S6N#XgY}.3XfYGO3C/$XjL$*NYX,1 6;YH&<XkK9C#I74.>}Hd`A748X[T450[n75<4439:18A107>|ET}Rf<1;14876/Yb983E<5.YNXd4149>,S=/4E/<306443G/06}0&}UkYSXFYF=44=-5095=88;63844,9E6644{PL}WA8:>)7+>763>>0/B3A545CCnT}Xm|dv}Xq1L/YNXk/H8;;.R63351YY747@15YE4J8;46;.38.>4A369.=-83,;Ye3?:3@YE.4-+N353;/;@(X[YYD>@/05-I*@.:551741Yf5>6A443<3535;.58/86=D4753442$635D1>0359NQ @73:3:>><Xn?;43C14 ?Y|X611YG1&<+,4<*,YLXl<1/AIXjF*N89A4Z576K1XbJ5YF.ZOWN.YGXO/YQ01:4G38Xl1;KI0YFXB=R<7;D/,/4>;$I,YGXm94@O35Yz66695385.>:6A#5}W7n^4336:4157597434433<3|XA}m`>=D>:4A.337370?-6Q96{`E|4A}C`|Qs{Mk|J+~r>|o,wHv>Vw}!c{H!|Gb|*Ca5}J||,U{t+{CN[!M65YXOY_*B,Y[Z9XaX[QYJYLXPYuZ%XcZ8LY[SYPYKZM<LMYG9OYqSQYM~[e{UJXmQYyZM_)>YjN1~[f3{aXFY|Yk:48YdH^NZ0|T){jVFYTZNFY^YTYN~[h{nPYMYn3I]`EYUYsYIZEYJ7Yw)YnXPQYH+Z.ZAZY]^Z1Y`YSZFZyGYHXLYG 8Yd#4~[i|+)YH9D?Y^F~Y7|-eYxZ^WHYdYfZQ~[j|3>~[k|3oYmYqY^XYYO=Z*4[]Z/OYLXhZ1YLZIXgYIHYEYK,<Y`YEXIGZI[3YOYcB4SZ!YHZ*&Y{Xi3~[l|JSY`Zz?Z,~[m|O=Yi>??XnYWXmYS617YVYIHZ(Z4[~L4/=~[n|Yu{P)|];YOHHZ}~[o33|a>~[r|aE]DH~[s|e$Zz~[t|kZFY~XhYXZB[`Y}~[u|{SZ&OYkYQYuZ2Zf8D~[v}% ~[w3},Q[X]+YGYeYPIS~[y}4aZ!YN^!6PZ*~[z}?E~[{3}CnZ=~[}}EdDZz/9A3(3S<,YR8.D=*XgYPYcXN3Z5 4)~[~}JW=$Yu.XX~] }KDX`PXdZ4XfYpTJLY[F5]X~[2Yp}U+DZJ::<446[m@~]#3}]1~]%}^LZwZQ5Z`/OT<Yh^ -~]&}jx[ ~m<z!%2+~ly4VY-~o>}p62yz!%2+Xf2+~ly4VY-zQ`z (=] 2z~o2",C={" ":0,"!":1},c=34,i=2,p,s="",u=String.fromCharCode,t=u(12539);while(++c<127)C[u(c)]=c^39&&c^92?i++:0;i=0;while(0<=(c=C[a.charAt(i++)]))if(16==c)if((c=C[a.charAt(i++)])<87){if(86==c)c=1879;while(c--)s+=u(++p)}else s+=s.substr(8272,360);else if(c<86)s+=u(p+=c<51?c-16:(c-55)*92+C[a.charAt(i++)]);else if((c=((c-86)*92+C[a.charAt(i++)])*92+C[a.charAt(i++)])<49152)s+=u(p=c<40960?c:c|57344);else{c&=511;while(c--)s+=t;p=12539}return s')();
-
-var JCT8836 = JCT11280.substring(0, 8836);
-
-exports.EscapeSJIS = EscapeSJIS;
-exports.UnescapeSJIS = UnescapeSJIS;
-exports.EscapeEUCJP = EscapeEUCJP;
-exports.UnescapeEUCJP = UnescapeEUCJP;
-exports.EscapeJIS7 = EscapeJIS7;
-exports.UnescapeJIS7 = UnescapeJIS7;
-exports.EscapeJIS8 = EscapeJIS8;
-exports.UnescapeJIS8 = UnescapeJIS8;
-exports.EscapeUnicode = EscapeUnicode;
-exports.UnescapeUnicode = UnescapeUnicode;
-exports.EscapeUTF7 = EscapeUTF7;
-exports.UnescapeUTF7 = UnescapeUTF7;
-exports.EscapeUTF8 = EscapeUTF8;
-exports.UnescapeUTF8 = UnescapeUTF8;
-exports.EscapeUTF16LE = EscapeUTF16LE;
-exports.UnescapeUTF16LE = UnescapeUTF16LE;
-exports.GetEscapeCodeType = GetEscapeCodeType;
-exports.JCT11280 = JCT11280;
-exports.JCT8836 = JCT8836;
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -72071,20 +71400,20 @@ var MMDPMMReader = function (_MMDReader) {
         for (var _iterator6 = Object.keys(this._faceAnimationHash)[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
           var _name = _step6.value;
 
-          var _motion2 = this._faceAnimationHash[_name];
-          var _motionLength = _motion2.keyTimes[_motion2.keyTimes.length - 1];
+          var motion = this._faceAnimationHash[_name];
+          var motionLength = motion.keyTimes[motion.keyTimes.length - 1];
 
-          for (var _num = 0; _num < _motion2.keyTimes.length; _num++) {
-            var _keyTime = _motion2.keyTimes[_num] / _motionLength;
-            _motion2.keyTimes[_num] = _keyTime;
+          for (var _num = 0; _num < motion.keyTimes.length; _num++) {
+            var _keyTime = motion.keyTimes[_num] / motionLength;
+            motion.keyTimes[_num] = _keyTime;
           }
 
-          _motion2.duration = _motionLength / this.fps;
-          _motion2.usesSceneTimeBase = false;
-          _motion2.isRemovedOnCompletion = false;
-          _motion2.fillMode = _jscenekit.kCAFillModeForwards;
+          motion.duration = motionLength / this.fps;
+          motion.usesSceneTimeBase = false;
+          motion.isRemovedOnCompletion = false;
+          motion.fillMode = _jscenekit.kCAFillModeForwards;
 
-          this._workingAnimationGroup.animations.push(_motion2);
+          this._workingAnimationGroup.animations.push(motion);
         }
       } catch (err) {
         _didIteratorError6 = true;
@@ -72945,9 +72274,9 @@ var MMDPMMReader = function (_MMDReader) {
       // accessory
       for (var _index2 = 0; _index2 < this._accessories.length; _index2++) {
         var accessory = this._accessories[_index2];
-        var _motion3 = this._accessoryMotions[_index2];
+        var _motion2 = this._accessoryMotions[_index2];
 
-        accessory.prepareAnimationForKey(_motion3, 'motion');
+        accessory.prepareAnimationForKey(_motion2, 'motion');
         accessory.playPreparedAnimationForKey('motion');
 
         this._workingScene.rootNode.addChildNode(accessory);
@@ -72988,7 +72317,7 @@ var MMDPMMReader = function (_MMDReader) {
 exports.default = MMDPMMReader;
 
 /***/ }),
-/* 13 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74628,7 +73957,7 @@ var MMDPMXReader = function (_MMDReader) {
 exports.default = MMDPMXReader;
 
 /***/ }),
-/* 14 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74788,7 +74117,7 @@ var MMDVACReader = function (_MMDReader) {
 exports.default = MMDVACReader;
 
 /***/ }),
-/* 15 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -74808,7 +74137,7 @@ var _MMDReader2 = __webpack_require__(2);
 
 var _MMDReader3 = _interopRequireDefault(_MMDReader2);
 
-var _constants = __webpack_require__(22);
+var _constants = __webpack_require__(20);
 
 var _jscenekit = __webpack_require__(0);
 
@@ -75565,7 +74894,7 @@ var MMDVMDReader = function (_MMDReader) {
 exports.default = MMDVMDReader;
 
 /***/ }),
-/* 16 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -75731,7 +75060,7 @@ var MMDVPDReader = function (_MMDReader) {
 exports.default = MMDVPDReader;
 
 /***/ }),
-/* 17 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -76301,20 +75630,6 @@ var MMDXReader = function (_MMDReader) {
       if (name === 'TextureFilename') {
         var textureFilePath = this._TextureFilename();
         if (textureFilePath !== null) {
-          /*
-          const texture = this._loadTexture(textureFilePath)
-          if(texture !== null){
-            // FIXME: use mmd shader
-            material.emission.contents = texture
-            material.emission.wrapS = SCNWrapMode.repeat
-            material.emission.wrapT = SCNWrapMode.repeat
-            material.diffuse.contents = texture
-            material.diffuse.wrapS = SCNWrapMode.repeat
-            material.diffuse.wrapT = SCNWrapMode.repeat
-             // DEBUG
-            //material.diffuse.contents = new SKColor(0, 0.5, 0, 1.0)
-          }
-          */
           this.loadTexture(textureFilePath).then(function (texture) {
             material.emission.contents = texture;
             material.emission.wrapS = _jscenekit.SCNWrapMode.repeat;
@@ -76461,22 +75776,6 @@ var MMDXReader = function (_MMDReader) {
 
       return filePath;
     }
-
-    /*
-      _loadTexture(path) {
-        const promise = new Promise((resolve, reject) => {
-          console.error('TODO: implement _loadTexture')
-          const fileName = this.directoryPath + path
-          const image = new Image()
-          image.onload = () => {
-            resolve(image)
-          }
-          image.src = fileName
-        })
-        return promise
-      }
-    */
-
   }], [{
     key: 'getNode',
     value: function getNode(data, directoryPath) {
@@ -76491,7 +75790,7 @@ var MMDXReader = function (_MMDReader) {
 exports.default = MMDXReader;
 
 /***/ }),
-/* 18 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -76513,7 +75812,7 @@ var _MMDIKConstraint = __webpack_require__(4);
 
 var _MMDIKConstraint2 = _interopRequireDefault(_MMDIKConstraint);
 
-var _MMDIKController = __webpack_require__(20);
+var _MMDIKController = __webpack_require__(18);
 
 var _MMDIKController2 = _interopRequireDefault(_MMDIKController);
 
@@ -76525,11 +75824,11 @@ var _MMDPMDReader = __webpack_require__(9);
 
 var _MMDPMDReader2 = _interopRequireDefault(_MMDPMDReader);
 
-var _MMDPMMReader = __webpack_require__(12);
+var _MMDPMMReader = __webpack_require__(10);
 
 var _MMDPMMReader2 = _interopRequireDefault(_MMDPMMReader);
 
-var _MMDPMXReader = __webpack_require__(13);
+var _MMDPMXReader = __webpack_require__(11);
 
 var _MMDPMXReader2 = _interopRequireDefault(_MMDPMXReader);
 
@@ -76541,7 +75840,7 @@ var _MMDReader = __webpack_require__(2);
 
 var _MMDReader2 = _interopRequireDefault(_MMDReader);
 
-var _MMDScene = __webpack_require__(23);
+var _MMDScene = __webpack_require__(21);
 
 var _MMDScene2 = _interopRequireDefault(_MMDScene);
 
@@ -76549,37 +75848,29 @@ var _MMDSceneSource = __webpack_require__(3);
 
 var _MMDSceneSource2 = _interopRequireDefault(_MMDSceneSource);
 
-var _MMDVACReader = __webpack_require__(14);
+var _MMDVACReader = __webpack_require__(12);
 
 var _MMDVACReader2 = _interopRequireDefault(_MMDVACReader);
 
-var _MMDVMDReader = __webpack_require__(15);
+var _MMDVMDReader = __webpack_require__(13);
 
 var _MMDVMDReader2 = _interopRequireDefault(_MMDVMDReader);
 
-var _MMDVPDReader = __webpack_require__(16);
+var _MMDVPDReader = __webpack_require__(14);
 
 var _MMDVPDReader2 = _interopRequireDefault(_MMDVPDReader);
 
-var _MMDXReader = __webpack_require__(17);
+var _MMDXReader = __webpack_require__(15);
 
 var _MMDXReader2 = _interopRequireDefault(_MMDXReader);
 
-var _BinaryParser = __webpack_require__(24);
+var _BinaryParser = __webpack_require__(22);
 
 var _BinaryParser2 = _interopRequireDefault(_BinaryParser);
 
-var _ecl = __webpack_require__(11);
+var _ecl = __webpack_require__(23);
 
 var _ecl2 = _interopRequireDefault(_ecl);
-
-var _TextReader2 = __webpack_require__(10);
-
-var _TextReader3 = _interopRequireDefault(_TextReader2);
-
-var _TextRequest2 = __webpack_require__(25);
-
-var _TextRequest3 = _interopRequireDefault(_TextRequest2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -76603,17 +75894,15 @@ exports.MMDVPDReader = _MMDVPDReader2.default;
 exports.MMDXReader = _MMDXReader2.default;
 exports.BinaryParser = _BinaryParser2.default;
 exports.ecl = _ecl2.default;
-exports._TextReader = _TextReader3.default;
-exports._TextRequest = _TextRequest3.default;
 
 /***/ }),
-/* 19 */
+/* 17 */
 /***/ (function(module, exports) {
 
 module.exports = require("fs");
 
 /***/ }),
-/* 20 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -76720,7 +76009,7 @@ var MMDIKController = function () {
 exports.default = MMDIKController;
 
 /***/ }),
-/* 21 */
+/* 19 */
 /***/ (function(module, exports) {
 
 module.exports =
@@ -77359,7 +76648,7 @@ module.exports = TGAImage;
 /******/ ]);
 
 /***/ }),
-/* 22 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77372,7 +76661,7 @@ exports.MMD_CAMERA_ROTY_NODE_NAME = 'MMD_CAMERA_ROTY_NODE';
 exports.MMD_CAMERA_ROTZ_NODE_NAME = 'MMD_CAMERA_ROTZ_NODE';
 
 /***/ }),
-/* 23 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77468,7 +76757,7 @@ var MMDScene = function (_SCNScene) {
 exports.default = MMDScene;
 
 /***/ }),
-/* 24 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77637,70 +76926,293 @@ p.fromDouble = function (number) {
 };
 
 /***/ }),
-/* 25 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+	value: true
 });
-exports.TextRequest = undefined;
+//
+// Escape Codec Library: ecl.js (Ver.041208)
+//
+// Copyright (C) http://nurucom-archives.hp.infoseek.co.jp/digital/
+//
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var EscapeSJIS = function EscapeSJIS(str) {
+	return str.replace(/[^*+.-9A-Z_a-z-]/g, function (s) {
+		var c = s.charCodeAt(0),
+		    m;
+		return c < 128 ? (c < 16 ? "%0" : "%") + c.toString(16).toUpperCase() : 65376 < c && c < 65440 ? "%" + (c - 65216).toString(16).toUpperCase() : (c = JCT11280.indexOf(s)) < 0 ? "%81E" : "%" + ((m = ((c < 8272 ? c : c = JCT11280.lastIndexOf(s)) - (c %= 188)) / 188) < 31 ? m + 129 : m + 193).toString(16).toUpperCase() + (64 < (c += c < 63 ? 64 : 65) && c < 91 || 95 == c || 96 < c && c < 123 ? String.fromCharCode(c) : "%" + c.toString(16).toUpperCase());
+	});
+};
 
-var _jscenekit = __webpack_require__(0);
+var UnescapeSJIS = function UnescapeSJIS(str) {
+	return str.replace(/%(8[1-9A-F]|[9E][0-9A-F]|F[0-9A-C])(%[4-689A-F][0-9A-F]|%7[0-9A-E]|[@-~])|%([0-7][0-9A-F]|A[1-9A-F]|[B-D][0-9A-F])/ig, function (s) {
+		var c = parseInt(s.substring(1, 3), 16),
+		    l = s.length;
+		return 3 == l ? String.fromCharCode(c < 160 ? c : c + 65216) : JCT11280.charAt((c < 160 ? c - 129 : c - 193) * 188 + (4 == l ? s.charCodeAt(3) - 64 : (c = parseInt(s.substring(4), 16)) < 127 ? c - 64 : c - 65));
+	});
+};
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var EscapeEUCJP = function EscapeEUCJP(str) {
+	return str.replace(/[^*+.-9A-Z_a-z-]/g, function (s) {
+		var c = s.charCodeAt(0);
+		return (c < 128 ? (c < 16 ? "%0" : "%") + c.toString(16) : 65376 < c && c < 65440 ? "%8E%" + (c - 65216).toString(16) : (c = JCT8836.indexOf(s)) < 0 ? "%A1%A6" : "%" + ((c - (c %= 94)) / 94 + 161).toString(16) + "%" + (c + 161).toString(16)).toUpperCase();
+	});
+};
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+var UnescapeEUCJP = function UnescapeEUCJP(str) {
+	return str.replace(/(%A[1-9A-F]|%[B-E][0-9A-F]|%F[0-9A-E]){2}|%8E%(A[1-9A-F]|[B-D][0-9A-F])|%[0-7][0-9A-F]/ig, function (s) {
+		var c = parseInt(s.substring(1), 16);
+		return c < 161 ? String.fromCharCode(c < 128 ? c : parseInt(s.substring(4), 16) + 65216) : JCT8836.charAt((c - 161) * 94 + parseInt(s.substring(4), 16) - 161);
+	});
+};
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+var EscapeJIS7 = function EscapeJIS7(str) {
+	var u = String.fromCharCode,
+	    ri = u(92, 120, 48, 48, 45, 92, 120, 55, 70),
+	    rj = u(65377, 45, 65439, 93, 43),
+	    H = function H(c) {
+		return 41 < c && c < 58 && 44 != c || 64 < c && c < 91 || 95 == c || 96 < c && c < 123 ? u(c) : "%" + c.toString(16).toUpperCase();
+	},
+	    I = function I(s) {
+		var c = s.charCodeAt(0);
+		return (c < 16 ? "%0" : "%") + c.toString(16).toUpperCase();
+	},
+	    rI = new RegExp();rI.compile("[^*+.-9A-Z_a-z-]", "g");
+	return ("g" + str + "g").replace(RegExp("[" + ri + "]+", "g"), function (s) {
+		return "%1B%28B" + s.replace(rI, I);
+	}).replace(RegExp("[" + rj, "g"), function (s) {
+		var c,
+		    i = 0,
+		    t = "%1B%28I";while (c = s.charCodeAt(i++)) {
+			t += H(c - 65344);
+		}return t;
+	}).replace(RegExp("[^" + ri + rj, "g"), function (s) {
+		var a,
+		    c,
+		    i = 0,
+		    t = "%1B%24B";while (a = s.charAt(i++)) {
+			t += (c = JCT8836.indexOf(a)) < 0 ? "%21%26" : H((c - (c %= 94)) / 94 + 33) + H(c + 33);
+		}return t;
+	}).slice(8, -1);
+};
 
-/**
- * TextRequest class
- * @access public
- */
-var TextRequest = exports.TextRequest = function (_AjaxRequest$construc) {
-  _inherits(TextRequest, _AjaxRequest$construc);
+var UnescapeJIS7 = function UnescapeJIS7(str) {
+	var i = 0,
+	    p,
+	    q,
+	    s = "",
+	    u = String.fromCharCode,
+	    P = ("%28B" + str.replace(/%49/g, "I").replace(/%1B%24%4[02]|%1B%24@/ig, "%1B%24B")).split(/%1B/i),
+	    I = function I(s) {
+		return u(parseInt(s.substring(1), 16));
+	},
+	    J = function J(s) {
+		return u((3 == s.length ? parseInt(s.substring(1), 16) : s.charCodeAt(0)) + 65344);
+	},
+	    K = function K(s) {
+		var l = s.length;
+		return JCT8836.charAt(4 < l ? (parseInt(s.substring(1), 16) - 33) * 94 + parseInt(s.substring(4), 16) - 33 : 2 < l ? (37 == (l = s.charCodeAt(0)) ? (parseInt(s.substring(1, 3), 16) - 33) * 94 + s.charCodeAt(3) : (l - 33) * 94 + parseInt(s.substring(2), 16)) - 33 : (s.charCodeAt(0) - 33) * 94 + s.charCodeAt(1) - 33);
+	},
+	    rI = new RegExp(),
+	    rJ = new RegExp(),
+	    rK = new RegExp();
+	rI.compile("%[0-7][0-9A-F]", "ig");rJ.compile("(%2[1-9A-F]|%[3-5][0-9A-F])|[!-_]", "ig");
+	rK.compile("(%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E]){2}|(%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E])[!-~]|[!-~](%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E])|[!-~]{2}", "ig");
+	while (p = P[i++]) {
+		s += "%24B" == (q = p.substring(0, 4)) ? p.substring(4).replace(rK, K) : "%28I" == q ? p.substring(4).replace(rJ, J) : p.replace(rI, I).substring(2);
+	}return s;
+};
 
-  /**
-   * constructor
-   * @access public
-   * @constructor
-   */
-  function TextRequest() {
-    _classCallCheck(this, TextRequest);
+var EscapeJIS8 = function EscapeJIS8(str) {
+	var u = String.fromCharCode,
+	    r = u(92, 120, 48, 48, 45, 92, 120, 55, 70, 65377, 45, 65439, 93, 43),
+	    H = function H(c) {
+		return 41 < c && c < 58 && 44 != c || 64 < c && c < 91 || 95 == c || 96 < c && c < 123 ? u(c) : "%" + c.toString(16).toUpperCase();
+	},
+	    I = function I(s) {
+		var c = s.charCodeAt(0);
+		return (c < 16 ? "%0" : "%") + (c < 128 ? c : c - 65216).toString(16).toUpperCase();
+	},
+	    rI = new RegExp();rI.compile("[^*+.-9A-Z_a-z-]", "g");
+	return ("g" + str + "g").replace(RegExp("[" + r, "g"), function (s) {
+		return "%1B%28B" + s.replace(rI, I);
+	}).replace(RegExp("[^" + r, "g"), function (s) {
+		var a,
+		    c,
+		    i = 0,
+		    t = "%1B%24B";while (a = s.charAt(i++)) {
+			t += (c = JCT8836.indexOf(a)) < 0 ? "%21%26" : H((c - (c %= 94)) / 94 + 33) + H(c + 33);
+		}return t;
+	}).slice(8, -1);
+};
 
-    var _this = _possibleConstructorReturn(this, (TextRequest.__proto__ || Object.getPrototypeOf(TextRequest)).call(this));
+var UnescapeJIS8 = function UnescapeJIS8(str) {
+	var i = 0,
+	    p,
+	    s = "",
+	    P = ("%28B" + str.replace(/%1B%24%4[02]|%1B%24@/ig, "%1B%24B")).split(/%1B/i),
+	    I = function I(s) {
+		var c = parseInt(s.substring(1), 16);
+		return String.fromCharCode(c < 128 ? c : c + 65216);
+	},
+	    K = function K(s) {
+		var l = s.length;
+		return JCT8836.charAt(4 < l ? (parseInt(s.substring(1), 16) - 33) * 94 + parseInt(s.substring(4), 16) - 33 : 2 < l ? (37 == (l = s.charCodeAt(0)) ? (parseInt(s.substring(1, 3), 16) - 33) * 94 + s.charCodeAt(3) : (l - 33) * 94 + parseInt(s.substring(2), 16)) - 33 : (s.charCodeAt(0) - 33) * 94 + s.charCodeAt(1) - 33);
+	},
+	    rI = new RegExp(),
+	    rK = new RegExp();
+	rI.compile("%([0-7][0-9A-F]|A[1-9A-F]|[B-D][0-9A-F])", "ig");
+	rK.compile("(%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E]){2}|(%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E])[!-~]|[!-~](%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E])|[!-~]{2}", "ig");
+	while (p = P[i++]) {
+		s += "%24B" == p.substring(0, 4) ? p.substring(4).replace(rK, K) : p.replace(rI, I).substring(2);
+	}return s;
+};
 
-    _this.defaultOptions.mimeType = 'text/plain; charset=utf-8';
-    return _this;
-  }
+var EscapeUnicode = function EscapeUnicode(str) {
+	return str.replace(/[^*+.-9A-Z_a-z-]/g, function (s) {
+		var c = s.charCodeAt(0);
+		return (c < 16 ? "%0" : c < 256 ? "%" : c < 4096 ? "%u0" : "%u") + c.toString(16).toUpperCase();
+	});
+};
 
-  _createClass(TextRequest, [{
-    key: 'getWithCharset',
-    value: function getWithCharset(url, charset) {
-      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+var UnescapeUnicode = function UnescapeUnicode(str) {
+	return str.replace(/%u[0-9A-F]{4}|%[0-9A-F]{2}/ig, function (s) {
+		return String.fromCharCode("0x" + s.substring(s.length / 3));
+	});
+};
 
-      options.mimeType = 'text/plain; charset=' + charset;
-      return this.get(url, options);
-    }
-  }, {
-    key: 'postWithCharset',
-    value: function postWithCharset(url, charset) {
-      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+var EscapeUTF7 = function EscapeUTF7(str) {
+	var B = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".split(""),
+	    E = function E(s) {
+		var c = s.charCodeAt(0);
+		return B[c >> 10] + B[c >> 4 & 63] + B[(c & 15) << 2 | (c = s.charCodeAt(1)) >> 14] + (0 <= c ? B[c >> 8 & 63] + B[c >> 2 & 63] + B[(c & 3) << 4 | (c = s.charCodeAt(2)) >> 12] + (0 <= c ? B[c >> 6 & 63] + B[c & 63] : "") : "");
+	},
+	    re = new RegExp();re.compile("[^+]{1,3}", "g");
+	return (str + "g").replace(/[^*+.-9A-Z_a-z-]+[*+.-9A-Z_a-z-]|[+]/g, function (s) {
+		if ("+" == s) return "+-";
+		var l = s.length - 1,
+		    w = s.charAt(l);
+		return "+" + s.substring(0, l).replace(re, E) + ("+" == w ? "-+-" : "*" == w || "." == w || "_" == w ? w : "-" + w);
+	}).slice(0, -1);
+};
 
-      options.mimeType = 'text/plain; charset=' + charset;
-      return this.post(url, options);
-    }
-  }]);
+var UnescapeUTF7 = function UnescapeUTF7(str) {
+	var i = 0,
+	    B = {};
+	while (i < 64) {
+		B["ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".charAt(i)] = i++;
+	}return str.replace(RegExp("[+][+/-9A-Za-z]*-?", "g"), function (s) {
+		if ("+-" == s) return "+";
+		var b = B[s.charAt(1)],
+		    c,
+		    i = 1,
+		    t = "";
+		while (0 <= b) {
+			if ((c = i & 7) < 6) c = c < 3 ? b << 10 | B[s.charAt(++i)] << 4 | (b = B[s.charAt(++i)]) >> 2 : (b & 3) << 14 | B[s.charAt(++i)] << 8 | B[s.charAt(++i)] << 2 | (b = B[s.charAt(++i)]) >> 4;else {
+				c = (b & 15) << 12 | B[s.charAt(++i)] << 6 | B[s.charAt(++i)];b = B[s.charAt(++i)];
+			}
+			if (c) t += String.fromCharCode(c);
+		}
+		return t;
+	});
+};
 
-  return TextRequest;
-}(_jscenekit._AjaxRequest.constructor);
+var EscapeUTF8 = function EscapeUTF8(str) {
+	return str.replace(/[^*+.-9A-Z_a-z-]/g, function (s) {
+		var c = s.charCodeAt(0);
+		return (c < 16 ? "%0" + c.toString(16) : c < 128 ? "%" + c.toString(16) : c < 2048 ? "%" + (c >> 6 | 192).toString(16) + "%" + (c & 63 | 128).toString(16) : "%" + (c >> 12 | 224).toString(16) + "%" + (c >> 6 & 63 | 128).toString(16) + "%" + (c & 63 | 128).toString(16)).toUpperCase();
+	});
+};
 
-exports.default = new TextRequest();
+var UnescapeUTF8 = function UnescapeUTF8(str) {
+	return str.replace(/%(E(0%[AB]|[1-CEF]%[89AB]|D%[89])[0-9A-F]|C[2-9A-F]|D[0-9A-F])%[89AB][0-9A-F]|%[0-7][0-9A-F]/ig, function (s) {
+		var c = parseInt(s.substring(1), 16);
+		return String.fromCharCode(c < 128 ? c : c < 224 ? (c & 31) << 6 | parseInt(s.substring(4), 16) & 63 : ((c & 15) << 6 | parseInt(s.substring(4), 16) & 63) << 6 | parseInt(s.substring(7), 16) & 63);
+	});
+};
+
+var EscapeUTF16LE = function EscapeUTF16LE(str) {
+	var H = function H(c) {
+		return 41 < c && c < 58 && 44 != c || 64 < c && c < 91 || 95 == c || 96 < c && c < 123 ? String.fromCharCode(c) : (c < 16 ? "%0" : "%") + c.toString(16).toUpperCase();
+	};
+	return str.replace(/[^ ]| /g, function (s) {
+		var c = s.charCodeAt(0);return H(c & 255) + H(c >> 8);
+	});
+};
+
+var UnescapeUTF16LE = function UnescapeUTF16LE(str) {
+	var u = String.fromCharCode,
+	    b = u(92, 120, 48, 48, 45, 92, 120, 70, 70);
+	return str.replace(/^%FF%FE/i, "").replace(RegExp("%[0-9A-F]{2}%[0-9A-F]{2}|%[0-9A-F]{2}[" + b + "]|[" + b + "]%[0-9A-F]{2}|[" + b + "]{2}", "ig"), function (s) {
+		var l = s.length;
+		return u(4 < l ? "0x" + s.substring(4, 6) + s.substring(1, 3) : 2 < l ? 37 == (l = s.charCodeAt(0)) ? parseInt(s.substring(1, 3), 16) | s.charCodeAt(3) << 8 : l | parseInt(s.substring(2), 16) << 8 : s.charCodeAt(0) | s.charCodeAt(1) << 8);
+	});
+};
+
+var GetEscapeCodeType = function GetEscapeCodeType(str) {
+	if (/%u[0-9A-F]{4}/i.test(str)) return "Unicode";
+	if (/%([0-9A-DF][0-9A-F]%[8A]0%|E0%80|[0-7][0-9A-F]|C[01])%[8A]0|%00|%[7F]F/i.test(str)) return "UTF16LE";
+	if (/%E[0-9A-F]%[8A]0%[8A]0|%[CD][0-9A-F]%[8A]0/i.test(str)) return "UTF8";
+	if (/%F[DE]/i.test(str)) return (/%8[0-9A-D]|%9[0-9A-F]|%A0/i.test(str) ? "UTF16LE" : "EUCJP"
+	);
+	if (/%1B/i.test(str)) return (/%[A-D][0-9A-F]/i.test(str) ? "JIS8" : "JIS7"
+	);
+	var S = str.substring(0, 6143).replace(/%[0-9A-F]{2}|[^ ]| /ig, function (s) {
+		return s.length < 3 ? "40" : s.substring(1);
+	}),
+	    c,
+	    C,
+	    i = 0,
+	    T;
+	while (0 <= (c = parseInt(S.substring(i, i += 2), 16)) && i < 4092) {
+		if (128 <= c) {
+			if ((C = parseInt(S.substring(i, i + 2), 16)) < 128) i += 2;else if (194 <= c && c < 240 && C < 192) {
+				if (c < 224) {
+					T = "UTF8";i += 2;continue;
+				}
+				if (2 == parseInt(S.charAt(i + 2), 16) >> 2) {
+					T = "UTF8";i += 4;continue;
+				}
+			}
+			if (142 == c && 161 <= C && C < 224) {
+				if (!T) T = "EUCJP";if ("EUCJP" == T) continue;
+			}
+			if (c < 161) return "SJIS";
+			if (c < 224 && !T) {
+				if ((164 == c && C < 244 || 165 == c && C < 247) && 161 <= C) i += 2;else T = 224 <= C ? "EUCJP" : "SJIS";
+			} else T = "EUCJP";
+		}
+	}return T ? T : "EUCJP";
+};
+
+var JCT11280 = Function('var a="zKV33~jZ4zN=~ji36XazM93y!{~k2y!o~k0ZlW6zN?3Wz3W?{EKzK[33[`y|;-~j^YOTz$!~kNy|L1$353~jV3zKk3~k-4P4zK_2+~jY4y!xYHR~jlz$_~jk4z$e3X5He<0y!wy|X3[:~l|VU[F3VZ056Hy!nz/m1XD61+1XY1E1=1y|bzKiz!H034zKj~mEz#c5ZA3-3X$1~mBz$$3~lyz#,4YN5~mEz#{ZKZ3V%7Y}!J3X-YEX_J(3~mAz =V;kE0/y|F3y!}~m>z/U~mI~j_2+~mA~jp2;~m@~k32;~m>V}2u~mEX#2x~mBy+x2242(~mBy,;2242(~may->2&XkG2;~mIy-_2&NXd2;~mGz,{4<6:.:B*B:XC4>6:.>B*BBXSA+A:X]E&E<~r#z+625z s2+zN=`HXI@YMXIAXZYUM8X4K/:Q!Z&33 3YWX[~mB`{zKt4z (zV/z 3zRw2%Wd39]S11z$PAXH5Xb;ZQWU1ZgWP%3~o@{Dgl#gd}T){Uo{y5_d{e@}C(} WU9|cB{w}bzvV|)[} H|zT}d||0~{]Q|(l{|x{iv{dw}(5}[Z|kuZ }cq{{y|ij}.I{idbof%cu^d}Rj^y|-M{ESYGYfYsZslS`?ZdYO__gLYRZ&fvb4oKfhSf^d<Yeasc1f&a=hnYG{QY{D`Bsa|u,}Dl|_Q{C%xK|Aq}C>|c#ryW=}eY{L+`)][YF_Ub^h4}[X|?r|u_ex}TL@YR]j{SrXgo*|Gv|rK}B#mu{R1}hs|dP{C7|^Qt3|@P{YVV |8&}#D}ef{e/{Rl|>Hni}R1{Z#{D[}CQlQ||E}[s{SG_+i8eplY[=[|ec[$YXn#`hcm}YR|{Ci(_[ql|?8p3]-}^t{wy}4la&pc|3e{Rp{LqiJ],] `kc(]@chYnrM`O^,ZLYhZB]ywyfGY~aex!_Qww{a!|)*lHrM{N+n&YYj~Z b c#e_[hZSon|rOt`}hBXa^i{lh|<0||r{KJ{kni)|x,|0auY{D!^Sce{w;|@S|cA}Xn{C1h${E]Z-XgZ*XPbp]^_qbH^e[`YM|a||+=]!Lc}]vdBc=j-YSZD]YmyYLYKZ9Z>Xcczc2{Yh}9Fc#Z.l{}(D{G{{mRhC|L3b#|xK[Bepj#ut`H[,{E9Yr}1b{[e]{ZFk7[ZYbZ0XL]}Ye[(`d}c!|*y`Dg=b;gR]Hm=hJho}R-[n}9;{N![7k_{UbmN]rf#pTe[x8}!Qcs_rs[m`|>N}^V})7{^r|/E}),}HH{OYe2{Skx)e<_.cj.cjoMhc^d}0uYZd!^J_@g,[[[?{i@][|3S}Yl3|!1|eZ|5IYw|1D}e7|Cv{OHbnx-`wvb[6[4} =g+k:{C:}ed{S]|2M]-}WZ|/q{LF|dYu^}Gs^c{Z=}h>|/i|{W]:|ip{N:|zt|S<{DH[p_tvD{N<[8Axo{X4a.^o^X>Yfa59`#ZBYgY~_t^9`jZHZn`>G[oajZ;X,i)Z.^~YJe ZiZF^{][[#Zt^|]Fjx]&_5dddW]P0C[-]}]d|y {C_jUql] |OpaA[Z{lp|rz}:Mu#]_Yf6{Ep?f5`$[6^D][^u[$[6^.Z8]]ePc2U/=]K^_+^M{q*|9tYuZ,s(dS{i=|bNbB{uG}0jZOa:[-]dYtu3]:]<{DJ_SZIqr_`l=Yt`gkTnXb3d@kiq0a`Z{|!B|}e}Ww{Sp,^Z|0>_Z}36|]A|-t}lt{R6pi|v8hPu#{C>YOZHYmg/Z4nicK[}hF_Bg|YRZ7c|crkzYZY}_iXcZ.|)U|L5{R~qi^Uga@Y[xb}&qdbd6h5|Btw[}c<{Ds53[Y7]?Z<|e0{L[ZK]mXKZ#Z2^tavf0`PE[OSOaP`4gi`qjdYMgys/?[nc,}EEb,eL]g[n{E_b/vcvgb.{kcwi`~v%|0:|iK{Jh_vf5lb}KL|(oi=LrzhhY_^@`zgf[~g)[J_0fk_V{T)}I_{D&_/d9W/|MU[)f$xW}?$xr4<{Lb{y4}&u{XJ|cm{Iu{jQ}CMkD{CX|7A}G~{kt)nB|d5|<-}WJ}@||d@|Iy}Ts|iL|/^|no|0;}L6{Pm]7}$zf:|r2}?C_k{R(}-w|`G{Gy[g]bVje=_0|PT{^Y^yjtT[[[l!Ye_`ZN]@[n_)j3nEgMa]YtYpZy].d-Y_cjb~Y~[nc~sCi3|zg}B0}do{O^{|$`_|D{}U&|0+{J3|8*]iayx{a{xJ_9|,c{Ee]QXlYb]$[%YMc*]w[aafe]aVYi[fZEii[xq2YQZHg]Y~h#|Y:thre^@^|_F^CbTbG_1^qf7{L-`VFx Zr|@EZ;gkZ@slgko`[e}T:{Cu^pddZ_`yav^Ea+[#ZBbSbO`elQfLui}.F|txYcbQ`XehcGe~fc^RlV{D_0ZAej[l&jShxG[ipB_=u:eU}3e8[=j|{D(}dO{Do[BYUZ0/]AYE]ALYhZcYlYP/^-^{Yt_1_-;YT`P4BZG=IOZ&]H[e]YYd[9^F[1YdZxZ?Z{Z<]Ba2[5Yb[0Z4l?]d_;_)a?YGEYiYv`_XmZs4ZjY^Zb]6gqGaX^9Y}dXZr[g|]Y}K aFZp^k^F]M`^{O1Ys]ZCgCv4|E>}8eb7}l`{L5[Z_faQ|c2}Fj}hw^#|Ng|B||w2|Sh{v+[G}aB|MY}A{|8o}X~{E8paZ:]i^Njq]new)`-Z>haounWhN}c#{DfZ|fK]KqGZ=:u|fqoqcv}2ssm}.r{]{nIfV{JW)[K|,Z{Uxc|]l_KdCb%]cfobya3`p}G^|LZiSC]U|(X|kBlVg[kNo({O:g:|-N|qT}9?{MBiL}Sq{`P|3a|u.{Uaq:{_o|^S}jX{Fob0`;|#y_@[V[K|cw[<_ }KU|0F}d3|et{Q7{LuZttsmf^kYZ`Af`}$x}U`|Ww}d]| >}K,r&|XI|*e{C/a-bmr1fId4[;b>tQ_:]hk{b-pMge]gfpo.|(w[jgV{EC1Z,YhaY^q,_G[c_g[J0YX]`[h^hYK^_Yib,` {i6vf@YM^hdOKZZn(jgZ>bzSDc^Z%[[o9[2=/YHZ(_/Gu_`*|8z{DUZxYt^vuvZjhi^lc&gUd4|<UiA`z]$b/Z?l}YI^jaHxe|;F}l${sQ}5g}hA|e4}?o{ih}Uz{C)jPe4]H^J[Eg[|AMZMlc}:,{iz}#*|gc{Iq|/:|zK{l&}#u|myd{{M&v~nV};L|(g|I]ogddb0xsd7^V})$uQ{HzazsgxtsO^l}F>ZB]r|{7{j@cU^{{CbiYoHlng]f+nQ[bkTn/}<-d9q {KXadZYo+n|l[|lc}V2{[a{S4Zam~Za^`{HH{xx_SvF|ak=c^[v^7_rYT`ld@]:_ub%[$[m](Shu}G2{E.ZU_L_R{tz`vj(f?^}hswz}GdZ}{S:h`aD|?W|`dgG|if{a8|J1{N,}-Ao3{H#{mfsP|[ bzn+}_Q{MT{u4kHcj_q`eZj[8o0jy{p7}C|[}l){MuYY{|Ff!Ykn3{rT|m,^R|,R}$~Ykgx{P!]>iXh6[l[/}Jgcg{JYZ.^qYfYIZl[gZ#Xj[Pc7YyZD^+Yt;4;`e8YyZVbQ7YzZxXja.7SYl[s]2^/Ha$[6ZGYrb%XiYdf2]H]kZkZ*ZQ[ZYS^HZXcCc%Z|[(bVZ]]:OJQ_DZCg<[,]%Zaa [g{C00HY[c%[ChyZ,Z_`PbXa+eh`^&jPi0a[ggvhlekL]w{Yp^v}[e{~;k%a&k^|nR_z_Qng}[E}*Wq:{k^{FJZpXRhmh3^p>de^=_7`|ZbaAZtdhZ?n4ZL]u`9ZNc3g%[6b=e.ZVfC[ZZ^^^hD{E(9c(kyZ=bb|Sq{k`|vmr>izlH[u|e`}49}Y%}FT{[z{Rk}Bz{TCc/lMiAqkf(m$hDc;qooi[}^o:c^|Qm}a_{mrZ(pA`,}<2sY| adf_%|}`}Y5U;}/4|D>|$X{jw{C<|F.hK|*A{MRZ8Zsm?imZm_?brYWZrYx`yVZc3a@f?aK^ojEd {bN}/3ZH]/$YZhm^&j 9|(S|b]mF}UI{q&aM]LcrZ5^.|[j`T_V_Gak}9J[ ZCZD|^h{N9{~&[6Zd{}B}2O|cv]K}3s}Uy|l,fihW{EG`j_QOp~Z$F^zexS`dcISfhZBXP|.vn|_HYQ|)9|cr]<`&Z6]m_(ZhPcSg>`Z]5`~1`0Xcb4k1{O!bz|CN_T{LR|a/gFcD|j<{Z._[f)mPc:1`WtIaT1cgYkZOaVZOYFrEe[}T$}Ch}mk{K-^@]fH{Hdi`c*Z&|Kt{if[C{Q;{xYB`dYIX:ZB[}]*[{{p9|4GYRh2ao{DS|V+[zd$`F[ZXKadb*A] Ys]Maif~a/Z2bmclb8{Jro_rz|x9cHojbZ{GzZx_)]:{wAayeDlx}<=`g{H1{l#}9i|)=|lP{Qq}.({La|!Y{i2EZfp=c*}Cc{EDvVB|;g}2t{W4av^Bn=]ri,|y?|3+}T*ckZ*{Ffr5e%|sB{lx^0]eZb]9[SgAjS_D|uHZx]dive[c.YPkcq/}db{EQh&hQ|eg}G!ljil|BO]X{Qr_GkGl~YiYWu=c3eb}29v3|D|}4i||.{Mv})V{SP1{FX}CZW6{cm|vO{pS|e#}A~|1i}81|Mw}es|5[}3w{C`h9aL]o{}p[G`>i%a1Z@`Ln2bD[$_h`}ZOjhdTrH{[j_:k~kv[Sdu]CtL}41{I |[[{]Zp$]XjxjHt_eThoa#h>sSt8|gK|TVi[Y{t=}Bs|b7Zpr%{gt|Yo{CS[/{iteva|cf^hgn}($_c^wmb^Wm+|55jrbF|{9^ q6{C&c+ZKdJkq_xOYqZYSYXYl`8]-cxZAq/b%b*_Vsa[/Ybjac/OaGZ4fza|a)gY{P?| I|Y |,pi1n7}9bm9ad|=d{aV|2@[(}B`d&|Uz}B}{`q|/H|!JkM{FU|CB|.{}Az}#P|lk}K{|2rk7{^8^?`/|k>|Ka{Sq}Gz}io{DxZh[yK_#}9<{TRdgc]`~Z>JYmYJ]|`!ZKZ]gUcx|^E[rZCd`f9oQ[NcD_$ZlZ;Zr}mX|=!|$6ZPZYtIo%fj}CpcN|B,{VDw~gb}@hZg`Q{LcmA[(bo`<|@$|o1|Ss}9Z_}tC|G`{F/|9nd}i=}V-{L8aaeST]daRbujh^xlpq8|}zs4bj[S`J|]?G{P#{rD{]I`OlH{Hm]VYuSYUbRc*6[j`8]pZ[bt_/^Jc*[<Z?YE|Xb|?_Z^Vcas]h{t9|Uwd)_(=0^6Zb{Nc} E[qZAeX[a]P^|_J>e8`W^j_Y}R{{Jp__]Ee#e:iWb9q_wKbujrbR}CY`,{mJ}gz{Q^{t~N|? gSga`V_||:#mi}3t|/I`X{N*|ct|2g{km}gi|{={jC}F;|E}{ZZjYf*frmu}8Tdroi{T[|+~}HG{cJ}DM{Lp{Ctd&}$hi3|FZ| m}Kr|38}^c|m_|Tr{Qv|36}?Up>|;S{DV{k_as}BK{P}}9p|t`jR{sAm4{D=b4pWa[}Xi{EjwEkI}3S|E?u=X0{jf} S|NM|JC{qo^3cm]-|JUx/{Cj{s>{Crt[UXuv|D~|j|d{YXZR}Aq}0r}(_{pJfi_z}0b|-vi)Z mFe,{f4|q`b{}^Z{HM{rbeHZ|^x_o|XM|L%|uFXm}@C_{{Hhp%a7|0p[Xp+^K}9U{bP}: tT}B|}+$|b2|[^|~h{FAby[`{}xgygrt~h1[li`c4vz|,7p~b(|mviN}^pg[{N/|g3|^0c,gE|f%|7N{q[|tc|TKA{LU}I@|AZp(}G-sz{F |qZ{}F|f-}RGn6{Z]_5})B}UJ{FFb2]4ZI@v=k,]t_Dg5Bj]Z-]L]vrpdvdGlk|gF}G]|IW}Y0[G| /bo|Te^,_B}#n^^{QHYI[?hxg{[`]D^IYRYTb&kJ[cri[g_9]Ud~^_]<p@_e_XdNm-^/|5)|h_{J;{kacVopf!q;asqd}n)|.m|bf{QW|U)}b+{tL|w``N|to{t ZO|T]jF}CB|0Q{e5Zw|k |We}5:{HO{tPwf_uajjBfX}-V_C_{{r~gg|Ude;s+}KNXH}! `K}eW{Upwbk%ogaW}9EYN}YY|&v|SL{C3[5s.]Y]I]u{M6{pYZ`^,`ZbCYR[1mNg>rsk0Ym[jrE]RYiZTr*YJ{Ge|%-lf|y(`=[t}E6{k!|3)}Zk} ][G{E~cF{u3U.rJ|a9p#o#ZE|?|{sYc#vv{E=|LC}cu{N8`/`3`9rt[4|He{cq|iSYxY`}V |(Q|t4{C?]k_Vlvk)BZ^r<{CL}#h}R+[<|i=}X|{KAo]|W<`K{NW|Zx}#;|fe{IMr<|K~tJ_x}AyLZ?{GvbLnRgN}X&{H7|x~}Jm{]-| GpNu0}.ok>|c4{PYisrDZ|fwh9|hfo@{H~XSbO]Odv]%`N]b1Y]]|eIZ}_-ZA]aj,>eFn+j[aQ_+]h[J_m_g]%_wf.`%k1e#Z?{CvYu_B^|gk`Xfh^M3`afGZ-Z|[m{L}|k3cp[it ^>YUi~d>{T*}YJ{Q5{Jxa$hg|%4`}|LAgvb }G}{P=|<;Ux{_skR{cV|-*|s-{Mp|XP|$G|_J}c6cM{_=_D|*9^$ec{V;|4S{qO|w_|.7}d0|/D}e}|0G{Dq]Kdp{}dfDi>}B%{Gd|nl}lf{C-{y}|ANZr}#={T~|-(}c&{pI|ft{lsVP}){|@u}!W|bcmB{d?|iW|:dxj{PSkO|Hl]Li:}VYk@|2={fnWt{M3`cZ6|)}|Xj}BYa?vo{e4|L7|B7{L7|1W|lvYO}W8nJ|$Vih|{T{d*_1|:-n2dblk``fT{Ky|-%}m!|Xy|-a{Pz}[l{kFjz|iH}9N{WE{x,|jz}R {P|{D)c=nX|Kq|si}Ge{sh|[X{RF{t`|jsr*fYf,rK|/9}$}}Nf{y!1|<Std}4Wez{W${Fd_/^O[ooqaw_z[L`Nbv[;l7V[ii3_PeM}.h^viqYjZ*j1}+3{bt{DR[;UG}3Og,rS{JO{qw{d<_zbAh<R[1_r`iZTbv^^a}c{iEgQZ<exZFg.^Rb+`Uj{a+{z<[~r!]`[[|rZYR|?F|qppp]L|-d|}K}YZUM|=Y|ktm*}F]{D;g{uI|7kg^}%?Z%ca{N[_<q4xC]i|PqZC]n}.bDrnh0Wq{tr|OMn6tM|!6|T`{O`|>!]ji+]_bTeU}Tq|ds}n|{Gm{z,f)}&s{DPYJ`%{CGd5v4tvb*hUh~bf]z`jajiFqAii]bfy^U{Or|m+{I)cS|.9k:e3`^|xN}@Dnlis`B|Qo{`W|>||kA}Y}{ERYuYx`%[exd`]|OyiHtb}HofUYbFo![5|+]gD{NIZR|Go}.T{rh^4]S|C9_}xO^i`vfQ}C)bK{TL}cQ|79iu}9a];sj{P.o!f[Y]pM``Jda^Wc9ZarteBZClxtM{LW}l9|a.mU}KX}4@{I+f1}37|8u}9c|v${xGlz}jP{Dd1}e:}31}%3X$|22i<v+r@~mf{sN{C67G97855F4YL5}8f{DT|xy{sO{DXB334@55J1)4.G9A#JDYtXTYM4, YQD9;XbXm9SX]IB^4UN=Xn<5(;(F3YW@XkH-X_VM[DYM:5XP!T&Y`6|,^{IS-*D.H>:LXjYQ0I3XhAF:9:(==.F*3F1189K/7163D,:@|e2{LS36D4hq{Lw/84443@4.933:0307::6D7}&l{Mx657;89;,K5678H&93D(H<&<>0B90X^I;}Ag1{P%3A+>><975}[S{PZE453?4|T2{Q+5187;>447:81{C=hL6{Me^:=7ii{R=.=F<81;48?|h8}Uh{SE|,VxL{ST,7?9Y_5Xk3A#:$%YSYdXeKXOD8+TXh7(@>(YdXYHXl9J6X_5IXaL0N?3YK7Xh!1?XgYz9YEXhXaYPXhC3X`-YLY_XfVf[EGXZ5L8BXL9YHX]SYTXjLXdJ: YcXbQXg1PX]Yx4|Jr{Ys4.8YU+XIY`0N,<H%-H;:0@,74/:8546I=9177154870UC]d<C3HXl7ALYzXFXWP<<?E!88E5@03YYXJ?YJ@6YxX-YdXhYG|9o{`iXjY_>YVXe>AYFX[/(I@0841?):-B=14337:8=|14{c&93788|di{cW-0>0<097/A;N{FqYpugAFT%X/Yo3Yn,#=XlCYHYNX[Xk3YN:YRT4?)-YH%A5XlYF3C1=NWyY}>:74-C673<69545v {iT85YED=64=.F4..9878/D4378?48B3:7:7/1VX[f4{D,{l<5E75{dAbRB-8-@+;DBF/$ZfW8S<4YhXA.(5@*11YV8./S95C/0R-A4AXQYI7?68167B95HA1*<M3?1/@;/=54XbYP36}lc{qzSS38:19?,/39193574/66878Yw1X-87E6=;964X`T734:>86>1/=0;(I-1::7ALYGXhF+Xk[@W%TYbX7)KXdYEXi,H-XhYMRXfYK?XgXj.9HX_SX]YL1XmYJ>Y}WwIXiI-3-GXcYyXUYJ$X`Vs[7;XnYEZ;XF! 3;%8;PXX(N3Y[)Xi1YE&/ :;74YQ6X`33C;-(>Xm0(TYF/!YGXg8 9L5P01YPXO-5%C|qd{{/K/E6,=0144:361:955;6443@?B7*7:F89&F35YaX-CYf,XiFYRXE_e{}sF 0*7XRYPYfXa5YXXY8Xf8Y~XmA[9VjYj*#YMXIYOXk,HHX40YxYMXU8OXe;YFXLYuPXP?EB[QV0CXfY{:9XV[FWE0D6X^YVP*$4%OXiYQ(|xp|%c3{}V`1>Y`XH00:8/M6XhQ1:;3414|TE|&o@1*=81G8<3}6<|(f6>>>5-5:8;093B^3U*+*^*UT30XgYU&7*O1953)5@E78--F7YF*B&0:%P68W9Zn5974J9::3}Vk|-,C)=)1AJ4+<3YGXfY[XQXmT1M-XcYTYZXCYZXEYXXMYN,17>XIG*SaS|/eYJXbI?XdNZ+WRYP<F:R PXf;0Xg`$|1GX9YdXjLYxWX!ZIXGYaXNYm6X9YMX?9EXmZ&XZ#XQ>YeXRXfAY[4 ;0X!Zz0XdN$XhYL XIY^XGNXUYS/1YFXhYk.TXn4DXjB{jg|4DEX]:XcZMW=A.+QYL<LKXc[vV$+&PX*Z3XMYIXUQ:ZvW< YSXFZ,XBYeXMM)?Xa XiZ4/EXcP3%}&-|6~:1(-+YT$@XIYRBC<}&,|7aJ6}bp|8)K1|Xg|8C}[T|8Q.89;-964I38361<=/;883651467<7:>?1:.}le|:Z=39;1Y^)?:J=?XfLXbXi=Q0YVYOXaXiLXmJXO5?.SFXiCYW}-;|=u&D-X`N0X^,YzYRXO(QX_YW9`I|>hZ:N&X)DQXP@YH#XmNXi$YWX^=!G6YbYdX>XjY|XlX^XdYkX>YnXUXPYF)FXT[EVTMYmYJXmYSXmNXi#GXmT3X8HOX[ZiXN]IU2>8YdX1YbX<YfWuZ8XSXcZU%0;1XnXkZ_WTG,XZYX5YSX Yp 05G?XcYW(IXg6K/XlYP4XnI @XnO1W4Zp-9C@%QDYX+OYeX9>--YSXkD.YR%Q/Yo YUX].Xi<HYEZ2WdCE6YMXa7F)=,D>-@9/8@5=?7164;35387?N<618=6>7D+C50<6B03J0{Hj|N9$D,9I-,.KB3}m |NzE0::/81YqXjMXl7YG; [.W=Z0X4XQY]:MXiR,XgM?9$9>:?E;YE77VS[Y564760391?14941:0=:8B:;/1DXjFA-564=0B3XlH1+D85:0Q!B#:-6&N/:9<-R3/7Xn<*3J4.H:+334B.=>30H.;3833/76464665755:/83H6633:=;.>5645}&E|Y)?1/YG-,93&N3AE@5 <L1-G/8A0D858/30>8<549=@B8] V0[uVQYlXeD(P#ID&7T&7;Xi0;7T-$YE)E=1:E1GR):--0YI7=E<}n9|aT6783A>D7&4YG7=391W;Zx<5+>F#J39}o/|cc;6=A050EQXg8A1-}D-|d^5548083563695D?-.YOXd37I$@LYLWeYlX<Yd+YR A$;3-4YQ-9XmA0!9/XLY_YT(=5XdDI>YJ5XP1ZAW{9>X_6R(XhYO65&J%DA)C-!B:97#A9;@?F;&;(9=11/=657/H,<8}bz|j^5446>.L+&Y^8Xb6?(CYOXb*YF(8X`FYR(XPYVXmPQ%&DD(XmZXW??YOXZXfCYJ79,O)XnYF7K0!QXmXi4IYFRXS,6<%-:YO(+:-3Q!1E1:W,Zo}Am|n~;3580534*?3Zc4=9334361693:30C<6/717:<1/;>59&:4}6!|rS36=1?75<8}[B|s809983579I.A.>84758=108564741H*9E{L{|u%YQ<%6XfH.YUXe4YL@,>N}Tv|ve*G0X)Z;/)3@A74(4P&A1X:YVH97;,754*A66:1 D739E3553545558E4?-?K17/770843XAYf838A7K%N!YW4.$T19Z`WJ*0XdYJXTYOXNZ 1XaN1A+I&Xi.Xk3Z3GB&5%WhZ1+5#Y[X<4YMXhQYoQXVXbYQ8XSYUX4YXBXWDMG0WxZA[8V+Z8X;D],Va$%YeX?FXfX[XeYf<X:Z[WsYz8X_Y]%XmQ(!7BXIZFX]&YE3F$(1XgYgYE& +[+W!<YMYFXc;+PXCYI9YrWxGXY9DY[!GXiI7::)OC;*$.>N*HA@{C|}&k=:<TB83X`3YL+G4XiK]i}(fYK<=5$.FYE%4*5*H*6XkCYL=*6Xi6!Yi1KXR4YHXbC8Xj,B9ZbWx/XbYON#5B}Ue}+QKXnF1&YV5XmYQ0!*3IXBYb71?1B75XmF;0B976;H/RXU:YZX;BG-NXj;XjI>A#D3B636N;,*%<D:0;YRXY973H5)-4FXOYf0:0;/7759774;7;:/855:543L43<?6=E,.A4:C=L)%4YV!1(YE/4YF+ F3%;S;&JC:%/?YEXJ4GXf/YS-EXEYW,9;E}X$}547EXiK=51-?71C%?57;5>463553Zg90;6447?<>4:9.7538XgN{|!}9K/E&3-:D+YE1)YE/3;37/:05}n<}:UX8Yj4Yt864@JYK..G=.(A Q3%6K>3(P3#AYE$-6H/456*C=.XHY[#S.<780191;057C)=6HXj?955B:K1 E>-B/9,;5.!L?:0>/.@//:;7833YZ56<4:YE=/:7Z_WGC%3I6>XkC*&NA16X=Yz2$X:Y^&J48<99k8}CyB-61<18K946YO4{|N}E)YIB9K0L>4=46<1K0+R;6-=1883:478;4,S+3YJX`GJXh.Yp+Xm6MXcYpX(>7Yo,/:X=Z;Xi0YTYHXjYmXiXj;*;I-8S6N#XgY}.3XfYGO3C/$XjL$*NYX,1 6;YH&<XkK9C#I74.>}Hd`A748X[T450[n75<4439:18A107>|ET}Rf<1;14876/Yb983E<5.YNXd4149>,S=/4E/<306443G/06}0&}UkYSXFYF=44=-5095=88;63844,9E6644{PL}WA8:>)7+>763>>0/B3A545CCnT}Xm|dv}Xq1L/YNXk/H8;;.R63351YY747@15YE4J8;46;.38.>4A369.=-83,;Ye3?:3@YE.4-+N353;/;@(X[YYD>@/05-I*@.:551741Yf5>6A443<3535;.58/86=D4753442$635D1>0359NQ @73:3:>><Xn?;43C14 ?Y|X611YG1&<+,4<*,YLXl<1/AIXjF*N89A4Z576K1XbJ5YF.ZOWN.YGXO/YQ01:4G38Xl1;KI0YFXB=R<7;D/,/4>;$I,YGXm94@O35Yz66695385.>:6A#5}W7n^4336:4157597434433<3|XA}m`>=D>:4A.337370?-6Q96{`E|4A}C`|Qs{Mk|J+~r>|o,wHv>Vw}!c{H!|Gb|*Ca5}J||,U{t+{CN[!M65YXOY_*B,Y[Z9XaX[QYJYLXPYuZ%XcZ8LY[SYPYKZM<LMYG9OYqSQYM~[e{UJXmQYyZM_)>YjN1~[f3{aXFY|Yk:48YdH^NZ0|T){jVFYTZNFY^YTYN~[h{nPYMYn3I]`EYUYsYIZEYJ7Yw)YnXPQYH+Z.ZAZY]^Z1Y`YSZFZyGYHXLYG 8Yd#4~[i|+)YH9D?Y^F~Y7|-eYxZ^WHYdYfZQ~[j|3>~[k|3oYmYqY^XYYO=Z*4[]Z/OYLXhZ1YLZIXgYIHYEYK,<Y`YEXIGZI[3YOYcB4SZ!YHZ*&Y{Xi3~[l|JSY`Zz?Z,~[m|O=Yi>??XnYWXmYS617YVYIHZ(Z4[~L4/=~[n|Yu{P)|];YOHHZ}~[o33|a>~[r|aE]DH~[s|e$Zz~[t|kZFY~XhYXZB[`Y}~[u|{SZ&OYkYQYuZ2Zf8D~[v}% ~[w3},Q[X]+YGYeYPIS~[y}4aZ!YN^!6PZ*~[z}?E~[{3}CnZ=~[}}EdDZz/9A3(3S<,YR8.D=*XgYPYcXN3Z5 4)~[~}JW=$Yu.XX~] }KDX`PXdZ4XfYpTJLY[F5]X~[2Yp}U+DZJ::<446[m@~]#3}]1~]%}^LZwZQ5Z`/OT<Yh^ -~]&}jx[ ~m<z!%2+~ly4VY-~o>}p62yz!%2+Xf2+~ly4VY-zQ`z (=] 2z~o2",C={" ":0,"!":1},c=34,i=2,p,s="",u=String.fromCharCode,t=u(12539);while(++c<127)C[u(c)]=c^39&&c^92?i++:0;i=0;while(0<=(c=C[a.charAt(i++)]))if(16==c)if((c=C[a.charAt(i++)])<87){if(86==c)c=1879;while(c--)s+=u(++p)}else s+=s.substr(8272,360);else if(c<86)s+=u(p+=c<51?c-16:(c-55)*92+C[a.charAt(i++)]);else if((c=((c-86)*92+C[a.charAt(i++)])*92+C[a.charAt(i++)])<49152)s+=u(p=c<40960?c:c|57344);else{c&=511;while(c--)s+=t;p=12539}return s')();
+
+var JCT8836 = JCT11280.substring(0, 8836);
+
+exports.EscapeSJIS = EscapeSJIS;
+exports.UnescapeSJIS = UnescapeSJIS;
+exports.EscapeEUCJP = EscapeEUCJP;
+exports.UnescapeEUCJP = UnescapeEUCJP;
+exports.EscapeJIS7 = EscapeJIS7;
+exports.UnescapeJIS7 = UnescapeJIS7;
+exports.EscapeJIS8 = EscapeJIS8;
+exports.UnescapeJIS8 = UnescapeJIS8;
+exports.EscapeUnicode = EscapeUnicode;
+exports.UnescapeUnicode = UnescapeUnicode;
+exports.EscapeUTF7 = EscapeUTF7;
+exports.UnescapeUTF7 = UnescapeUTF7;
+exports.EscapeUTF8 = EscapeUTF8;
+exports.UnescapeUTF8 = UnescapeUTF8;
+exports.EscapeUTF16LE = EscapeUTF16LE;
+exports.UnescapeUTF16LE = UnescapeUTF16LE;
+exports.GetEscapeCodeType = GetEscapeCodeType;
+exports.JCT11280 = JCT11280;
+exports.JCT8836 = JCT8836;
 
 /***/ })
 /******/ ]);

@@ -17,8 +17,6 @@ import MMDVPDReader from './MMD/MMDVPDReader'
 import MMDXReader from './MMD/MMDXReader'
 import BinaryParser from './third_party/BinaryParser'
 import ecl from './third_party/ecl'
-import _TextReader from './util/_TextReader'
-import _TextRequest from './util/_TextRequest'
 
 /*global exports*/
 exports._MMDFragmentShader = _MMDFragmentShader
@@ -40,5 +38,3 @@ exports.MMDVPDReader = MMDVPDReader
 exports.MMDXReader = MMDXReader
 exports.BinaryParser = BinaryParser
 exports.ecl = ecl
-exports._TextReader = _TextReader
-exports._TextRequest = _TextRequest

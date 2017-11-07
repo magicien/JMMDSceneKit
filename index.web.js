@@ -61,7 +61,7 @@ module.exports =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 18);
+/******/ 	return __webpack_require__(__webpack_require__.s = 16);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -131,7 +131,7 @@ module.exports =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 125);
+/******/ 	return __webpack_require__(__webpack_require__.s = 127);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -4505,9 +4505,8 @@ var NSObject = function () {
           if (typeof this._propTypes[key] === 'undefined') {
             //console.warn(`unknown key ${key}`)
             if (this._propTypes.$unknownKey && this._propTypes.$unknownKey(key) !== null) {
-              propTypes[key] = this._propTypes.$unknownKey(key
+              propTypes[key] = this._propTypes.$unknownKey(key);
               //console.warn(`unknown key: ${key} => ${propTypes[key]}`)
-              );
             } else {
               console.error(this.className + ': property ' + key + ' not registered');
               throw new Error(this.className + ': property ' + key + ' not registered');
@@ -4775,7 +4774,7 @@ var NSObject = function () {
 }();
 
 exports.default = NSObject;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17).Buffer))
 
 /***/ }),
 /* 1 */
@@ -5938,11 +5937,11 @@ var _NSObject2 = __webpack_require__(0);
 
 var _NSObject3 = _interopRequireDefault(_NSObject2);
 
-var _CAMediaTimingFunction = __webpack_require__(47);
+var _CAMediaTimingFunction = __webpack_require__(48);
 
 var _CAMediaTimingFunction2 = _interopRequireDefault(_CAMediaTimingFunction);
 
-var _CGPoint = __webpack_require__(10);
+var _CGPoint = __webpack_require__(8);
 
 var _CGPoint2 = _interopRequireDefault(_CGPoint);
 
@@ -5950,7 +5949,7 @@ var _CGRect = __webpack_require__(16);
 
 var _CGRect2 = _interopRequireDefault(_CGRect);
 
-var _CGSize = __webpack_require__(8);
+var _CGSize = __webpack_require__(9);
 
 var _CGSize2 = _interopRequireDefault(_CGSize);
 
@@ -6144,9 +6143,8 @@ var SCNAction = function (_NSObject) {
     value: function _applyAction(obj, time) {
       var needTimeConversion = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
 
-      var t = this._getTime(time, needTimeConversion
+      var t = this._getTime(time, needTimeConversion);
       //this._handleEvents(obj, t)
-      );
     }
   }, {
     key: '_getTime',
@@ -6875,7 +6873,7 @@ var _SCNMatrix4MakeTranslation = __webpack_require__(18);
 
 var _SCNMatrix4MakeTranslation2 = _interopRequireDefault(_SCNMatrix4MakeTranslation);
 
-var _CGPoint = __webpack_require__(10);
+var _CGPoint = __webpack_require__(8);
 
 var _CGPoint2 = _interopRequireDefault(_CGPoint);
 
@@ -7042,9 +7040,9 @@ var SCNGeometrySource = function (_NSObject) {
     value: function _createBuffer(context) {
       var gl = context;
       this._buffer = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, this._buffer
+      gl.bindBuffer(gl.ARRAY_BUFFER, this._buffer);
       // FIXME: dynamic data
-      );gl.bufferData(gl.ARRAY_BUFFER, this._glData, gl.STATIC_DRAW);
+      gl.bufferData(gl.ARRAY_BUFFER, this._glData, gl.STATIC_DRAW);
       return this._buffer;
     }
 
@@ -7188,11 +7186,11 @@ var SCNGeometrySource = function (_NSObject) {
       var len = this._vectorCount;
       var arr = [];
       for (var i = 0; i < len; i++) {
-        var p = new _SCNVector2.default(this._data[ind + 0], this._data[ind + 1], this._data[ind + 2]).transform(t
+        var p = new _SCNVector2.default(this._data[ind + 0], this._data[ind + 1], this._data[ind + 2]).transform(t);
         //const x = this._data[ind + 0]
         //const y = this._data[ind + 1]
         //const z = this._data[ind + 2]
-        );if (p.x < min.x) {
+        if (p.x < min.x) {
           min.x = p.x;
         }
         if (p.x > max.x) {
@@ -7537,7 +7535,7 @@ var SCNGeometrySource = function (_NSObject) {
 }(_NSObject3.default);
 
 exports.default = SCNGeometrySource;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17).Buffer))
 
 /***/ }),
 /* 7 */
@@ -8350,7 +8348,7 @@ var SCNMatrix4 = function () {
   }, {
     key: 'getOrientation',
     value: function getOrientation() {
-      return this.getRotation().rotationToQuat
+      return this.getRotation().rotationToQuat();
       /*
       const e = []
       const scale = this.getScale().mul(this.m44)
@@ -8410,7 +8408,6 @@ var SCNMatrix4 = function () {
       v.z *= len
        return v
       */
-      ();
     }
 
     /**
@@ -8598,6 +8595,318 @@ exports.default = SCNMatrix4;
 
 /***/ }),
 /* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * A structure that contains a point in a two-dimensional coordinate system.
+ * @access public
+ * @see https://developer.apple.com/documentation/coregraphics/cgpoint
+ */
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var CGPoint = function () {
+  // Creating Point Values
+
+  /**
+   * Creates a point with coordinates specified as integer values.   
+   * @access public
+   * @constructor
+   * @param {number} x - 
+   * @param {number} y - 
+   * @see https://developer.apple.com/documentation/coregraphics/cgpoint/1455965-init
+   */
+  function CGPoint() {
+    var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+    var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+
+    _classCallCheck(this, CGPoint);
+
+    // Geometric Properties
+    this.x = x;
+    this.y = y;
+  }
+
+  // Special Values
+
+  /**
+   * The point with location (0,0).
+   * @type {CGPoint}
+   * @desc 
+   * @see https://developer.apple.com/documentation/coregraphics/cgpoint/1454433-zero
+   */
+
+
+  _createClass(CGPoint, [{
+    key: 'applying',
+
+
+    // Geometric Properties
+
+    // Transforming Points
+
+    /**
+     * Returns the point resulting from an affine transformation of an existing point.
+     * @access public
+     * @param {CGAffineTransform} t - The affine transform to apply. 
+     * @returns {CGPoint} - 
+     * @see https://developer.apple.com/documentation/coregraphics/cgpoint/1454251-applying
+     */
+    value: function applying(t) {
+      return null;
+    }
+
+    // Alternate Representations
+
+    /**
+     * Creates a point from a canonical dictionary representation.
+     * @access public
+     * @param {Map} dict - A dictionary containing x and y values for the point to create, in the format used by the dictionaryRepresentation property.
+     * @returns {void}
+     * @see https://developer.apple.com/documentation/coregraphics/cgpoint/2427118-init
+     */
+
+  }, {
+    key: 'equalTo',
+
+
+    // Comparing Points
+
+    /**
+     * Returns whether two points are equal. 
+     * @access public
+     * @param {CGPoint} point2 - 
+     * @returns {boolean} - 
+     * @see https://developer.apple.com/documentation/coregraphics/cgpoint/1456179-equalto
+     */
+    value: function equalTo(point2) {
+      var epsilon = 0.00001;
+      return Math.abs(this.x - point2.x) < epsilon && Math.abs(this.y - point2.y) < epsilon;
+    }
+
+    /**
+     * @access public
+     * @returns {CGPoint} -
+     */
+
+  }, {
+    key: 'copy',
+    value: function copy() {
+      return new CGPoint(this.x, this.y);
+    }
+  }, {
+    key: 'zero',
+    value: function zero() {
+      return new CGPoint(0, 0);
+    }
+
+    /**
+     * @access public
+     * @param {CGPoint} p -
+     * @returns {CGPoint} -
+     */
+
+  }, {
+    key: 'add',
+    value: function add(p) {
+      var r = new CGPoint();
+      r.x = this.x + p.x;
+      r.y = this.y + p.y;
+      return r;
+    }
+
+    /**
+     * @access public
+     * @param {CGPoint} p -
+     * @returns {CGPoint} -
+     */
+
+  }, {
+    key: 'sub',
+    value: function sub(p) {
+      var r = new CGPoint();
+      r.x = this.x - p.x;
+      r.y = this.y - p.y;
+      return r;
+    }
+
+    /**
+     * @access public
+     * @param {number} n -
+     * @returns {CGPoint} -
+     */
+
+  }, {
+    key: 'mul',
+    value: function mul(n) {
+      var r = new CGPoint();
+      r.x = this.x * n;
+      r.y = this.y * n;
+      return r;
+    }
+
+    /**
+     * @access public
+     * @param {CGPoint} p -
+     * @returns {number} -
+     */
+
+  }, {
+    key: 'dot',
+    value: function dot(p) {
+      return this.x * p.x + this.y * p.y;
+    }
+
+    /**
+     * @access public
+     * @param {CGPoint} p -
+     * @param {number} rate -
+     * @returns {CGPoint} -
+     */
+
+  }, {
+    key: 'lerp',
+    value: function lerp(p, rate) {
+      var r = new CGPoint();
+      r.x = this.x + rate * (p.x - this.x);
+      r.y = this.y + rate * (p.y - this.y);
+      return r;
+    }
+
+    /**
+     * @access public
+     * @returns {CGPoint} -
+     */
+
+  }, {
+    key: 'normalize',
+    value: function normalize() {
+      var len = this.length();
+      var r = new CGPoint();
+      if (len === 0) {
+        return r;
+      }
+      var sqr = 1.0 / len;
+      r.x = this.x * sqr;
+      r.y = this.y * sqr;
+      return r;
+    }
+
+    /**
+     * @access public
+     * @returns {number} -
+     */
+
+  }, {
+    key: 'length',
+    value: function length() {
+      return Math.sqrt(this.x * this.x + this.y * this.y);
+    }
+
+    /**
+     * @access public
+     * @returns {number[]} -
+     */
+
+  }, {
+    key: 'floatArray',
+    value: function floatArray() {
+      return [this.x, this.y];
+    }
+
+    /**
+     * @access public
+     * @returns {Float32Array} -
+     */
+
+  }, {
+    key: 'float32Array',
+    value: function float32Array() {
+      return new Float32Array([this.x, this.y]);
+    }
+  }, {
+    key: 'dictionaryRepresentation',
+
+
+    /**
+     * Returns a dictionary representation of the specified point.
+     * @type {Map}
+     * @desc 
+     * @see https://developer.apple.com/documentation/coregraphics/cgpoint/1455382-dictionaryrepresentation
+     */
+    get: function get() {
+      var map = new Map();
+      map.set('x', this.x);
+      map.set('y', this.y);
+      return map;
+    }
+
+    /**
+     * A textual representation of the point's coordinate values. 
+     * @type {string}
+     * @desc 
+     * @see https://developer.apple.com/documentation/coregraphics/cgpoint/1645825-debugdescription
+     */
+
+  }, {
+    key: 'debugDescription',
+    get: function get() {
+      return '{x: ' + this.x + ', y: ' + this.y + '}';
+    }
+
+    /**
+     * A representation of the point's structure and display style for use in debugging.
+     * @type {Mirror}
+     * @desc Mirrors are used by playgrounds and the debugger.
+     * @see https://developer.apple.com/documentation/coregraphics/cgpoint/1645834-custommirror
+     */
+
+  }, {
+    key: 'customMirror',
+    get: function get() {
+      return null;
+    }
+
+    /**
+     * A representation of the point for use in Playgrounds.
+     * @type {PlaygroundQuickLook}
+     * @desc 
+     * @see https://developer.apple.com/documentation/coregraphics/cgpoint/1645835-customplaygroundquicklook
+     */
+
+  }, {
+    key: 'customPlaygroundQuickLook',
+    get: function get() {
+      return null;
+    }
+  }], [{
+    key: 'pointWithDictionaryRepresentation',
+    value: function pointWithDictionaryRepresentation(dict) {
+      return new CGPoint(dict.get('x'), dict.get('y'));
+    }
+  }, {
+    key: 'zero',
+    get: function get() {
+      return new CGPoint(0, 0);
+    }
+  }]);
+
+  return CGPoint;
+}();
+
+exports.default = CGPoint;
+
+/***/ }),
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8818,7 +9127,7 @@ var CGSize = function () {
 exports.default = CGSize;
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -8836,7 +9145,7 @@ var _NSObject2 = __webpack_require__(0);
 
 var _NSObject3 = _interopRequireDefault(_NSObject2);
 
-var _SCNCullMode = __webpack_require__(48);
+var _SCNCullMode = __webpack_require__(49);
 
 var _SCNCullMode2 = _interopRequireDefault(_SCNCullMode);
 
@@ -8844,7 +9153,7 @@ var _SCNGeometrySource = __webpack_require__(6);
 
 var _SCNGeometrySource2 = _interopRequireDefault(_SCNGeometrySource);
 
-var _SCNMaterial = __webpack_require__(12);
+var _SCNMaterial = __webpack_require__(13);
 
 var _SCNMaterial2 = _interopRequireDefault(_SCNMaterial);
 
@@ -9429,9 +9738,9 @@ var SCNGeometry = function (_NSObject) {
       if (typeof key === 'undefined' || key === null) {
         key = Symbol();
       }
-      var anim = animation.copy
+      var anim = animation.copy();
       // FIXME: use current frame time
-      ();anim._animationStartTime = Date.now() * 0.001;
+      anim._animationStartTime = Date.now() * 0.001;
       anim._prevTime = anim._animationStartTime - 0.0000001;
 
       this._animations.set(key, anim);
@@ -9476,9 +9785,8 @@ var SCNGeometry = function (_NSObject) {
   }, {
     key: 'removeAnimationForKey',
     value: function removeAnimationForKey(key) {
-      this._animations.delete(key
+      this._animations.delete(key);
       // TODO: reset values
-      );
     }
 
     /**
@@ -9747,10 +10055,10 @@ var SCNGeometry = function (_NSObject) {
 
       var vertexData = new Float32Array(arr);
       //console.log(`vertexData length: ${arr.length}`)
-      gl.bufferData(gl.ARRAY_BUFFER, vertexData, gl.DYNAMIC_DRAW
+      gl.bufferData(gl.ARRAY_BUFFER, vertexData, gl.DYNAMIC_DRAW);
 
       // set new data
-      );pVertexSource._data = arr;
+      pVertexSource._data = arr;
       if (pNormalSource) {
         pNormalSource._data = arr;
       }
@@ -9865,43 +10173,43 @@ var SCNGeometry = function (_NSObject) {
       } else {
         textureFlags.push(0);
       }
-      gl.uniform1i(gl.getUniformLocation(program, 'selfIllumination'), selfIllumination
+      gl.uniform1i(gl.getUniformLocation(program, 'selfIllumination'), selfIllumination);
 
       // ambient
-      );this._setTextureToName(gl, material._ambient, 'TEXTURE1', textureFlags
+      this._setTextureToName(gl, material._ambient, 'TEXTURE1', textureFlags);
 
       // diffuse
-      );this._setTextureToName(gl, material._diffuse, 'TEXTURE2', textureFlags
+      this._setTextureToName(gl, material._diffuse, 'TEXTURE2', textureFlags);
 
       // specular
-      );this._setTextureToName(gl, material._specular, 'TEXTURE3', textureFlags
+      this._setTextureToName(gl, material._specular, 'TEXTURE3', textureFlags);
 
       // reflective
-      );this._setCubeTextureToName(gl, material._reflective, 'TEXTURE4', textureFlags
+      this._setCubeTextureToName(gl, material._reflective, 'TEXTURE4', textureFlags);
 
       // transparent
-      );this._setTextureToName(gl, material._transparent, 'TEXTURE5', textureFlags
+      this._setTextureToName(gl, material._transparent, 'TEXTURE5', textureFlags);
 
       // multiply
-      );this._setTextureToName(gl, material._multiply, 'TEXTURE6', textureFlags
+      this._setTextureToName(gl, material._multiply, 'TEXTURE6', textureFlags);
 
       // normal
-      );this._setTextureToName(gl, material._normal, 'TEXTURE7', textureFlags
+      this._setTextureToName(gl, material._normal, 'TEXTURE7', textureFlags);
 
       // ambientOcclusion
-      );this._setTextureToName(gl, material._ambientOcclusion, 'TEXTURE8', textureFlags
+      this._setTextureToName(gl, material._ambientOcclusion, 'TEXTURE8', textureFlags);
 
       // selfIllumination
-      );this._setTextureToName(gl, material._selfIllumination, 'TEXTURE9', textureFlags
+      this._setTextureToName(gl, material._selfIllumination, 'TEXTURE9', textureFlags);
 
       // metalness
-      );this._setTextureToName(gl, material._metalness, 'TEXTURE10', textureFlags
+      this._setTextureToName(gl, material._metalness, 'TEXTURE10', textureFlags);
 
       // roughness
-      );this._setTextureToName(gl, material._roughness, 'TEXTURE11', textureFlags
+      this._setTextureToName(gl, material._roughness, 'TEXTURE11', textureFlags);
 
       // TODO: cache uniform location
-      );gl.uniform1iv(gl.getUniformLocation(program, 'textureFlags'), new Int32Array(textureFlags));
+      gl.uniform1iv(gl.getUniformLocation(program, 'textureFlags'), new Int32Array(textureFlags));
 
       if (material.isDoubleSided) {
         gl.disable(gl.CULL_FACE);
@@ -9969,24 +10277,24 @@ var SCNGeometry = function (_NSObject) {
       // emission
       textureFlags.push(0);
 
-      gl.uniform1i(gl.getUniformLocation(program, 'selfIllumination'), 0
+      gl.uniform1i(gl.getUniformLocation(program, 'selfIllumination'), 0);
 
       // ambient
-      );this._setTextureToName(gl, material._ambient, 'TEXTURE1', textureFlags);
+      this._setTextureToName(gl, material._ambient, 'TEXTURE1', textureFlags);
 
-      textureFlags.push(0 // diffuse
-      );textureFlags.push(0 // specular
-      );textureFlags.push(0 // reflective
-      );textureFlags.push(0 // transparent
-      );textureFlags.push(0 // multiply
-      );textureFlags.push(0 // normal
-      );textureFlags.push(0 // ambientOcclusion
-      );textureFlags.push(0 // selfIllumination
-      );textureFlags.push(0 // metalness
-      );textureFlags.push(0 // roughness
+      textureFlags.push(0); // diffuse
+      textureFlags.push(0); // specular
+      textureFlags.push(0); // reflective
+      textureFlags.push(0); // transparent
+      textureFlags.push(0); // multiply
+      textureFlags.push(0); // normal
+      textureFlags.push(0); // ambientOcclusion
+      textureFlags.push(0); // selfIllumination
+      textureFlags.push(0); // metalness
+      textureFlags.push(0); // roughness
 
       // TODO: cache uniform location
-      );gl.uniform1iv(gl.getUniformLocation(program, 'textureFlags'), new Int32Array(textureFlags));
+      gl.uniform1iv(gl.getUniformLocation(program, 'textureFlags'), new Int32Array(textureFlags));
 
       if (material.isDoubleSided) {
         gl.disable(gl.CULL_FACE);
@@ -10180,10 +10488,10 @@ var SCNGeometry = function (_NSObject) {
     value: function _createCubeTexture(gl, image) {
       var texture = gl.createTexture();
 
-      gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture
+      gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture);
       // texImage2D(target, level, internalformat, width, height, border, format, type, source)
       // Safari complains that 'source' is not ArrayBufferView type, but WebGL2 should accept HTMLCanvasElement.
-      );var targets = [gl.TEXTURE_CUBE_MAP_POSITIVE_Z, gl.TEXTURE_CUBE_MAP_POSITIVE_X, gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, gl.TEXTURE_CUBE_MAP_NEGATIVE_X, gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, gl.TEXTURE_CUBE_MAP_POSITIVE_Y];
+      var targets = [gl.TEXTURE_CUBE_MAP_POSITIVE_Z, gl.TEXTURE_CUBE_MAP_POSITIVE_X, gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, gl.TEXTURE_CUBE_MAP_NEGATIVE_X, gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, gl.TEXTURE_CUBE_MAP_POSITIVE_Y];
       //const tx = [0, 1.0/6.0, 2.0/6.0, 3.0/6.0, 4.0/6.0, 5.0/6.0, 1]
       //const itx = [4, 1, 5, 0, 2, 3]
       var margin = 0.001;
@@ -10223,13 +10531,13 @@ var SCNGeometry = function (_NSObject) {
       //console.warn(`image size: ${image.naturalWidth} ${image.naturalHeight}`)
       canvas.getContext('2d').drawImage(image, 0, 0);
 
-      gl.bindTexture(gl.TEXTURE_2D, texture
+      gl.bindTexture(gl.TEXTURE_2D, texture);
       // texImage2D(target, level, internalformat, width, height, border, format, type, source)
       // Safari complains that 'source' is not ArrayBufferView type, but WebGL2 should accept HTMLCanvasElement.
-      );gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, image.width, image.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
-      gl.generateMipmap(gl.TEXTURE_2D
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, image.width, image.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
+      gl.generateMipmap(gl.TEXTURE_2D);
       //gl.bindTexture(gl.TEXTURE_2D, null)
-      );return texture;
+      return texture;
     }
 
     /**
@@ -10555,318 +10863,6 @@ var SCNGeometry = function (_NSObject) {
 }(_NSObject3.default);
 
 exports.default = SCNGeometry;
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * A structure that contains a point in a two-dimensional coordinate system.
- * @access public
- * @see https://developer.apple.com/documentation/coregraphics/cgpoint
- */
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var CGPoint = function () {
-  // Creating Point Values
-
-  /**
-   * Creates a point with coordinates specified as integer values.   
-   * @access public
-   * @constructor
-   * @param {number} x - 
-   * @param {number} y - 
-   * @see https://developer.apple.com/documentation/coregraphics/cgpoint/1455965-init
-   */
-  function CGPoint() {
-    var x = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-    var y = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-
-    _classCallCheck(this, CGPoint);
-
-    // Geometric Properties
-    this.x = x;
-    this.y = y;
-  }
-
-  // Special Values
-
-  /**
-   * The point with location (0,0).
-   * @type {CGPoint}
-   * @desc 
-   * @see https://developer.apple.com/documentation/coregraphics/cgpoint/1454433-zero
-   */
-
-
-  _createClass(CGPoint, [{
-    key: 'applying',
-
-
-    // Geometric Properties
-
-    // Transforming Points
-
-    /**
-     * Returns the point resulting from an affine transformation of an existing point.
-     * @access public
-     * @param {CGAffineTransform} t - The affine transform to apply. 
-     * @returns {CGPoint} - 
-     * @see https://developer.apple.com/documentation/coregraphics/cgpoint/1454251-applying
-     */
-    value: function applying(t) {
-      return null;
-    }
-
-    // Alternate Representations
-
-    /**
-     * Creates a point from a canonical dictionary representation.
-     * @access public
-     * @param {Map} dict - A dictionary containing x and y values for the point to create, in the format used by the dictionaryRepresentation property.
-     * @returns {void}
-     * @see https://developer.apple.com/documentation/coregraphics/cgpoint/2427118-init
-     */
-
-  }, {
-    key: 'equalTo',
-
-
-    // Comparing Points
-
-    /**
-     * Returns whether two points are equal. 
-     * @access public
-     * @param {CGPoint} point2 - 
-     * @returns {boolean} - 
-     * @see https://developer.apple.com/documentation/coregraphics/cgpoint/1456179-equalto
-     */
-    value: function equalTo(point2) {
-      var epsilon = 0.00001;
-      return Math.abs(this.x - point2.x) < epsilon && Math.abs(this.y - point2.y) < epsilon;
-    }
-
-    /**
-     * @access public
-     * @returns {CGPoint} -
-     */
-
-  }, {
-    key: 'copy',
-    value: function copy() {
-      return new CGPoint(this.x, this.y);
-    }
-  }, {
-    key: 'zero',
-    value: function zero() {
-      return new CGPoint(0, 0);
-    }
-
-    /**
-     * @access public
-     * @param {CGPoint} p -
-     * @returns {CGPoint} -
-     */
-
-  }, {
-    key: 'add',
-    value: function add(p) {
-      var r = new CGPoint();
-      r.x = this.x + p.x;
-      r.y = this.y + p.y;
-      return r;
-    }
-
-    /**
-     * @access public
-     * @param {CGPoint} p -
-     * @returns {CGPoint} -
-     */
-
-  }, {
-    key: 'sub',
-    value: function sub(p) {
-      var r = new CGPoint();
-      r.x = this.x - p.x;
-      r.y = this.y - p.y;
-      return r;
-    }
-
-    /**
-     * @access public
-     * @param {number} n -
-     * @returns {CGPoint} -
-     */
-
-  }, {
-    key: 'mul',
-    value: function mul(n) {
-      var r = new CGPoint();
-      r.x = this.x * n;
-      r.y = this.y * n;
-      return r;
-    }
-
-    /**
-     * @access public
-     * @param {CGPoint} p -
-     * @returns {number} -
-     */
-
-  }, {
-    key: 'dot',
-    value: function dot(p) {
-      return this.x * p.x + this.y * p.y;
-    }
-
-    /**
-     * @access public
-     * @param {CGPoint} p -
-     * @param {number} rate -
-     * @returns {CGPoint} -
-     */
-
-  }, {
-    key: 'lerp',
-    value: function lerp(p, rate) {
-      var r = new CGPoint();
-      r.x = this.x + rate * (p.x - this.x);
-      r.y = this.y + rate * (p.y - this.y);
-      return r;
-    }
-
-    /**
-     * @access public
-     * @returns {CGPoint} -
-     */
-
-  }, {
-    key: 'normalize',
-    value: function normalize() {
-      var len = this.length();
-      var r = new CGPoint();
-      if (len === 0) {
-        return r;
-      }
-      var sqr = 1.0 / len;
-      r.x = this.x * sqr;
-      r.y = this.y * sqr;
-      return r;
-    }
-
-    /**
-     * @access public
-     * @returns {number} -
-     */
-
-  }, {
-    key: 'length',
-    value: function length() {
-      return Math.sqrt(this.x * this.x + this.y * this.y);
-    }
-
-    /**
-     * @access public
-     * @returns {number[]} -
-     */
-
-  }, {
-    key: 'floatArray',
-    value: function floatArray() {
-      return [this.x, this.y];
-    }
-
-    /**
-     * @access public
-     * @returns {Float32Array} -
-     */
-
-  }, {
-    key: 'float32Array',
-    value: function float32Array() {
-      return new Float32Array([this.x, this.y]);
-    }
-  }, {
-    key: 'dictionaryRepresentation',
-
-
-    /**
-     * Returns a dictionary representation of the specified point.
-     * @type {Map}
-     * @desc 
-     * @see https://developer.apple.com/documentation/coregraphics/cgpoint/1455382-dictionaryrepresentation
-     */
-    get: function get() {
-      var map = new Map();
-      map.set('x', this.x);
-      map.set('y', this.y);
-      return map;
-    }
-
-    /**
-     * A textual representation of the point's coordinate values. 
-     * @type {string}
-     * @desc 
-     * @see https://developer.apple.com/documentation/coregraphics/cgpoint/1645825-debugdescription
-     */
-
-  }, {
-    key: 'debugDescription',
-    get: function get() {
-      return '{x: ' + this.x + ', y: ' + this.y + '}';
-    }
-
-    /**
-     * A representation of the point's structure and display style for use in debugging.
-     * @type {Mirror}
-     * @desc Mirrors are used by playgrounds and the debugger.
-     * @see https://developer.apple.com/documentation/coregraphics/cgpoint/1645834-custommirror
-     */
-
-  }, {
-    key: 'customMirror',
-    get: function get() {
-      return null;
-    }
-
-    /**
-     * A representation of the point for use in Playgrounds.
-     * @type {PlaygroundQuickLook}
-     * @desc 
-     * @see https://developer.apple.com/documentation/coregraphics/cgpoint/1645835-customplaygroundquicklook
-     */
-
-  }, {
-    key: 'customPlaygroundQuickLook',
-    get: function get() {
-      return null;
-    }
-  }], [{
-    key: 'pointWithDictionaryRepresentation',
-    value: function pointWithDictionaryRepresentation(dict) {
-      return new CGPoint(dict.get('x'), dict.get('y'));
-    }
-  }, {
-    key: 'zero',
-    get: function get() {
-      return new CGPoint(0, 0);
-    }
-  }]);
-
-  return CGPoint;
-}();
-
-exports.default = CGPoint;
 
 /***/ }),
 /* 11 */
@@ -11359,8 +11355,8 @@ var SCNVector4 = function () {
         //const m11 = 1 - (z * z + y * y) * cosWR
         var m11 = cosW + x * x * cosWR;
         euler.x = Math.atan2(m23, m33);
-        euler.y = Math.asin(s // How can I get euler.y > pi/2 ?
-        );euler.z = Math.atan2(m12, m11);
+        euler.y = Math.asin(s); // How can I get euler.y > pi/2 ?
+        euler.z = Math.atan2(m12, m11);
       }
 
       return euler;
@@ -11469,1059 +11465,15 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _NSObject2 = __webpack_require__(0);
-
-var _NSObject3 = _interopRequireDefault(_NSObject2);
-
-var _SCNBlendMode = __webpack_require__(88);
-
-var _SCNBlendMode2 = _interopRequireDefault(_SCNBlendMode);
-
-var _SCNColorMask = __webpack_require__(89);
-
-var _SCNColorMask2 = _interopRequireDefault(_SCNColorMask);
-
-var _SCNCullMode = __webpack_require__(48);
-
-var _SCNCullMode2 = _interopRequireDefault(_SCNCullMode);
-
-var _SCNFillMode = __webpack_require__(90);
-
-var _SCNFillMode2 = _interopRequireDefault(_SCNFillMode);
-
-var _SCNMaterialProperty = __webpack_require__(26);
-
-var _SCNMaterialProperty2 = _interopRequireDefault(_SCNMaterialProperty);
-
-var _SCNOrderedDictionary = __webpack_require__(22);
-
-var _SCNOrderedDictionary2 = _interopRequireDefault(_SCNOrderedDictionary);
-
-var _SCNTransparencyMode = __webpack_require__(93);
-
-var _SCNTransparencyMode2 = _interopRequireDefault(_SCNTransparencyMode);
-
-var _SKColor = __webpack_require__(2);
-
-var _SKColor2 = _interopRequireDefault(_SKColor);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-//import SCNAnimatable from './SCNAnimatable'
-
-//import SCNShadable from './SCNShadable'
-
-
-var _LightingModel = {
-  blinn: 'SCNLightingModelBlinn',
-  constant: 'SCNLightingModelConstant',
-  lambert: 'SCNLightingModelLambert',
-  phong: 'SCNLightingModelPhong',
-  physicallyBased: 'SCNLightingModelPhysicallyBased'
-
-  /**
-   * A set of shading attributes that define the appearance of a geometry's surface when rendered.
-   * @access public
-   * @extends {NSObject}
-   * @implements {SCNAnimatable}
-   * @implements {SCNShadable}
-   * @see https://developer.apple.com/documentation/scenekit/scnmaterial
-   */
-};
-var SCNMaterial = function (_NSObject) {
-  _inherits(SCNMaterial, _NSObject);
-
-  _createClass(SCNMaterial, null, [{
-    key: '_propTypes',
-    get: function get() {
-      return {
-        diffuse: ['SCNMaterialProperty', function (obj, value) {
-          obj._diffuse = value;
-          value._createPresentation();
-        }],
-        ambient: ['SCNMaterialProperty', function (obj, value) {
-          obj._ambient = value;
-          value._createPresentation();
-        }],
-        specular: ['SCNMaterialProperty', function (obj, value) {
-          obj._specular = value;
-          value._createPresentation();
-        }],
-        normal: ['SCNMaterialProperty', function (obj, value) {
-          obj._normal = value;
-          value._createPresentation();
-        }],
-        reflective: ['SCNMaterialProperty', function (obj, value) {
-          obj._reflective = value;
-          value._createPresentation();
-        }],
-        emission: ['SCNMaterialProperty', function (obj, value) {
-          obj._emission = value;
-          value._createPresentation();
-        }],
-        transparent: ['SCNMaterialProperty', function (obj, value) {
-          obj._transparent = value;
-          value._createPresentation();
-        }],
-        multiply: ['SCNMaterialProperty', function (obj, value) {
-          obj._multiply = value;
-          value._createPresentation();
-        }],
-        ambientOcclusion: ['SCNMaterialProperty', function (obj, value) {
-          obj._ambientOcclusion = value;
-          value._createPresentation();
-        }],
-        selfIllumination: ['SCNMaterialProperty', function (obj, value) {
-          obj._selfIllumination = value;
-          value._createPresentation();
-        }],
-        metalness: ['SCNMaterialProperty', function (obj, value) {
-          obj._metalness = value;
-          value._createPresentation();
-        }],
-        roughness: ['SCNMaterialProperty', function (obj, value) {
-          obj._roughness = value;
-          value._createPresentation();
-        }],
-        displacement: ['SCNMaterialProperty', function (obj, value) {
-          obj._displacement = value;
-          value._createPresentation();
-        }],
-        name: 'string',
-        shininess: 'float',
-        fresnelExponent: 'float',
-        transparency: 'integer',
-        transparencyMode: 'integer',
-        lightingModelName: ['string', 'lightingModel'],
-        litPerPixel: ['boolean', 'isLitPerPixel'],
-        doubleSided: ['boolean', 'isDoubleSided'],
-        cullMode: 'integer',
-        blendMode: 'integer',
-        locksAmbientWithDiffuse: 'boolean',
-        writesToDepthBuffer: 'boolean',
-        readsFromDepthBuffer: 'boolean',
-        colorBufferWriteMask: 'integer',
-        fillMode: 'integer',
-        valuesForUndefinedKeys: ['NSMutableDictionary', '_valuesForUndefinedKeys'],
-        shadableHelper: ['SCNShadableHelper', '_shadableHelper'],
-
-        avoidsOverLighting: ['boolean', null],
-        entityID: ['string', '_entityID'],
-        indexOfRefraction: ['integer', null],
-        selfIlluminationOcclusion: ['integer', null]
-      };
-    }
-
-    // Creating a Material
-
-    /**
-     * Creates a material from the specified Model I/O material object.
-     * @access public
-     * @constructor
-     * @param {MDLMaterial} mdlMaterial - A Model I/O material object.
-     * @desc The Model I/O framework provides universal support for import, export, description, and processing of several 3D asset file formats and related resources. (For details, see Model I/O.) The MDLMaterial class is a generic description of surface rendering to be used in rendering 3D object, supporting a superset of the attributes described by the SCNMaterial class. 
-     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1419835-init
-     */
-
-  }]);
-
-  function SCNMaterial(mdlMaterial) {
-    _classCallCheck(this, SCNMaterial);
-
-    // Configuring a Material’s Visual Properties
-
-    var _this = _possibleConstructorReturn(this, (SCNMaterial.__proto__ || Object.getPrototypeOf(SCNMaterial)).call(this));
-
-    _this._diffuse = new _SCNMaterialProperty2.default(_SKColor2.default.white);
-    _this._ambient = new _SCNMaterialProperty2.default(new _SKColor2.default(0.485, 0.485, 0.485, 1.0));
-    _this._specular = new _SCNMaterialProperty2.default(_SKColor2.default.black);
-    _this._normal = new _SCNMaterialProperty2.default(_SKColor2.default.white);
-    _this._reflective = new _SCNMaterialProperty2.default(_SKColor2.default.black);
-    _this._emission = new _SCNMaterialProperty2.default(_SKColor2.default.black);
-    _this._transparent = new _SCNMaterialProperty2.default(_SKColor2.default.white);
-    _this._multiply = new _SCNMaterialProperty2.default(_SKColor2.default.white);
-    _this._ambientOcclusion = new _SCNMaterialProperty2.default(_SKColor2.default.white);
-    _this._selfIllumination = new _SCNMaterialProperty2.default(_SKColor2.default.black);
-    _this._metalness = new _SCNMaterialProperty2.default(_SKColor2.default.black);
-    _this._roughness = new _SCNMaterialProperty2.default(new _SKColor2.default(0.485, 0.485, 0.485, 1.0));
-    _this._displacement = new _SCNMaterialProperty2.default(_SKColor2.default.black); // TODO: check the default value
-
-    // Customizing a Material
-
-    /**
-     * A name associated with the material.
-     * @type {?string}
-     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462525-name
-     */
-    _this.name = null;
-
-    /**
-     * The sharpness of specular highlights. Animatable.
-     * @type {number}
-     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462533-shininess
-     */
-    _this.shininess = 1.0;
-
-    /**
-     * A factor affecting the material’s reflectivity. Animatable.
-     * @type {number}
-     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462587-fresnelexponent
-     */
-    _this.fresnelExponent = 0.0;
-
-    /**
-     * The uniform transparency of the material. Animatable.
-     * @type {number}
-     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462567-transparency
-     */
-    _this.transparency = 1.0;
-
-    /**
-     * The mode SceneKit uses to calculate transparency for the material.
-     * @type {SCNTransparencyMode}
-     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462549-transparencymode
-     */
-    _this.transparencyMode = _SCNTransparencyMode2.default.aOne;
-
-    /**
-     * The lighting formula that SceneKit uses to render the material.
-     * @type {SCNMaterial.LightingModel}
-     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462518-lightingmodel
-     */
-    _this.lightingModel = _LightingModel.blinn;
-
-    /**
-     * A Boolean value that determines whether SceneKit performs lighting calculations per vertex or per pixel. Animatable.
-     * @type {boolean}
-     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462580-islitperpixel
-     */
-    _this.isLitPerPixel = true;
-
-    /**
-     * A Boolean value that determines whether SceneKit should render both front and back faces of a surface. Animatable.
-     * @type {boolean}
-     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462531-isdoublesided
-     */
-    _this.isDoubleSided = false;
-
-    /**
-     * The mode determining which faces of a surface SceneKit renders. Animatable.
-     * @type {SCNCullMode}
-     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462571-cullmode
-     */
-    _this.cullMode = _SCNCullMode2.default.back;
-
-    /**
-     * The mode that determines how pixel colors rendered using this material blend with other pixel colors in the rendering target.
-     * @type {SCNBlendMode}
-     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462585-blendmode
-     */
-    _this.blendMode = _SCNBlendMode2.default.alpha;
-
-    /**
-     * A Boolean value that determines whether the material responds identically to both ambient and diffuse lighting. Animatable.
-     * @type {boolean}
-     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462522-locksambientwithdiffuse
-     */
-    _this.locksAmbientWithDiffuse = true;
-
-    /**
-     * A Boolean value that determines whether SceneKit produces depth information when rendering the material.
-     * @type {boolean}
-     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462545-writestodepthbuffer
-     */
-    _this.writesToDepthBuffer = true;
-
-    /**
-     * A Boolean value that determines whether SceneKit uses depth information when rendering the material.
-     * @type {boolean}
-     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462562-readsfromdepthbuffer
-     */
-    _this.readsFromDepthBuffer = true;
-
-    /**
-     *
-     * @type {SCNColorMask}
-     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/2867554-colorbufferwritemask
-     */
-    _this.colorBufferWriteMask = _SCNColorMask2.default.all;
-
-    /**
-     * 
-     * @type {SCNFillMode}
-     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/2867442-fillmode
-     */
-    _this.fillMode = _SCNFillMode2.default.fill;
-
-    /////////////////
-    // SCNShadable //
-    /////////////////
-
-    // Assigning a Custom Shader Program
-
-    /**
-     * A program used when rendering the object.
-     * @type {?SCNProgram}
-     * @see https://developer.apple.com/documentation/scenekit/scnshadable/1523689-program
-     */
-    _this.program = null;
-
-    // Customizing SceneKit’s Shader Programs
-
-    /**
-     * A dictionary of GLSL source code snippets for customizing the shader programs provided by SceneKit.
-     * @type {?Map<SCNShaderModifierEntryPoint, string>}
-     * @see https://developer.apple.com/documentation/scenekit/scnshadable/1523348-shadermodifiers
-     */
-    _this.shaderModifiers = null;
-
-    /**
-     * @access private
-     * @type {Map<string, SCNBindingBlock>}
-     */
-    _this._bindingHandler = {};
-
-    /**
-     * @access private
-     * @type {Map<string, SCNBindingBlock>}
-     */
-    _this._unbindingHandler = {};
-
-    /**
-     * @access private
-     * @type {Object}
-     */
-    _this._valuesForUndefinedKeys = {};
-
-    ///////////////////
-    // SCNAnimatable //
-    ///////////////////
-
-    /**
-     * @access private
-     * @type {Map}
-     */
-    _this._animations = new _SCNOrderedDictionary2.default();
-
-    /**
-     * @access private
-     * @type {?string}
-     */
-    _this._entityID = null;
-
-    _this._createPresentationProperties
-
-    /**
-     * @access private
-     * @type {?SCNShadableHelper}
-     */
-    ();_this._shadableHelper = null;
-
-    /**
-     * @access private
-     * @type {Promise}
-     */
-    _this._loadedPromise = null;
-
-    return _this;
-  }
-
-  // Configuring a Material’s Visual Properties
-
-  /**
-   * An object that manages the material’s diffuse response to lighting.
-   * @type {SCNMaterialProperty}
-   * @desc Diffuse shading describes the amount and color of light reflected equally in all directions from each point on the material’s surface. The diffuse color of a pixel is independent of the point of view, so it can be thought of as a material’s “base” color or texture. By default, the diffuse property’s contents object is a white color. Figure 1 shows the effect of setting the diffuse property’s contents to a texture image on a material whose other properties have default contents.Figure 1 Adding a diffuse texture to a materialThe material’s lightingModel property determines the formula SceneKit uses to combine its diffuse color and other visual properties with lights and other contents in a scene to produce the final color for each rendered pixel in the rendered scene. For details, see Lighting Models.Adding a diffuse texture to a material
-   * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462589-diffuse
-   */
-
-
-  _createClass(SCNMaterial, [{
-    key: '_createPresentationProperties',
-    value: function _createPresentationProperties() {
-      this._diffuse._createPresentation();
-      this._ambient._createPresentation();
-      this._specular._createPresentation();
-      this._normal._createPresentation();
-      this._reflective._createPresentation();
-      this._emission._createPresentation();
-      this._transparent._createPresentation();
-      this._multiply._createPresentation();
-      this._ambientOcclusion._createPresentation();
-      this._selfIllumination._createPresentation();
-      this._metalness._createPresentation();
-      this._roughness._createPresentation();
-    }
-  }, {
-    key: '_copyPresentationProperties',
-    value: function _copyPresentationProperties() {
-      this._diffuse._copyPresentation();
-      this._ambient._copyPresentation();
-      this._specular._copyPresentation();
-      this._normal._copyPresentation();
-      this._reflective._copyPresentation();
-      this._emission._copyPresentation();
-      this._transparent._copyPresentation();
-      this._multiply._copyPresentation();
-      this._ambientOcclusion._copyPresentation();
-      this._selfIllumination._copyPresentation();
-      this._metalness._copyPresentation();
-      this._roughness._copyPresentation();
-    }
-
-    // Structures
-
-    /**
-     * @type {Object} LightingModel
-     * @property {string} blinn Shading that incorporates ambient, diffuse, and specular properties, where specular highlights are calculated using the Blinn-Phong  formula.
-     * @property {string} constant Uniform shading that incorporates ambient lighting only.
-     * @property {string} lambert Shading that incorporates ambient and diffuse properties only.
-     * @property {string} phong Shading that incorporates ambient, diffuse, and specular properties, where specular highlights are calculated using the Phong  formula.
-     * @property {string} physicallyBased Shading based on a realistic abstraction of physical lights and materials.
-     * @see https://developer.apple.com/documentation/scenekit/scnmaterial.lightingmodel
-     */
-
-  }, {
-    key: 'handleBindingOfSymbolHandler',
-
-
-    /////////////////
-    // SCNShadable //
-    /////////////////
-
-    // Handling Parameters in Custom OpenGL Shader Programs
-
-    /**
-     * Specifies a block to be called before rendering with programs with the specified GLSL uniform variable or attribute name.
-     * @access public
-     * @param {string} symbol - A GLSL uniform variable or attribute name.
-     * @param {?SCNBindingBlock} [block = null] - A block to be called by SceneKit.
-     * @returns {void}
-     * @desc Use this method to associate a block with a SceneKit object (geometry or material) to handle setup of an attribute or uniform variable in a custom SCNProgram shader associated with that object. SceneKit calls your block before rendering the object. In the block, you can execute any OpenGL commands or other code necessary for preparing your custom shader. For example, the following block updates the time uniform variable in a custom fragment shader for producing animated effects:CFTimeInterval startTime = CFAbsoluteTimeGetCurrent();
-    [myNode.geometry.firstMaterial handleBindingOfSymbol:@"time" usingBlock:
-      ^(unsigned int programID, unsigned int location, SCNNode *renderedNode, SCNRenderer *renderer) {
-          glUniform1f(location, CFAbsoluteTimeGetCurrent() - startTime);
-      }];
-    This method is for OpenGL shader programs only. To bind custom variable data for Metal shader programs, use the handleBinding(ofBufferNamed:frequency:handler:) method.CFTimeInterval startTime = CFAbsoluteTimeGetCurrent();
-    [myNode.geometry.firstMaterial handleBindingOfSymbol:@"time" usingBlock:
-      ^(unsigned int programID, unsigned int location, SCNNode *renderedNode, SCNRenderer *renderer) {
-          glUniform1f(location, CFAbsoluteTimeGetCurrent() - startTime);
-      }];
-      * @see https://developer.apple.com/documentation/scenekit/scnshadable/1523063-handlebinding
-     */
-    value: function handleBindingOfSymbolHandler(symbol) {
-      var block = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-
-      this._bindingHandler[symbol] = block;
-    }
-
-    /**
-     * Specifies a block to be called after rendering with programs with the specified GLSL uniform variable or attribute name.
-     * @access public
-     * @param {string} symbol - A GLSL uniform variable or attribute name.
-     * @param {?SCNBindingBlock} [block = null] - A block to be called by SceneKit.
-     * @returns {void}
-     * @desc Use this method to associate a block with a SceneKit object (geometry or material) to handle cleanup related to an attribute or uniform variable in a custom SCNProgram shader associated with that object. SceneKit will call your block after rendering the object. In the block, you can execute any OpenGL commands or other code necessary for post-rendering tasks.This method is for OpenGL shader programs only. To bind custom variable data for Metal shader programs, use the handleBinding(ofBufferNamed:frequency:handler:) method.
-     * @see https://developer.apple.com/documentation/scenekit/scnshadable/1522783-handleunbinding
-     */
-
-  }, {
-    key: 'handleUnbindingOfSymbolHandler',
-    value: function handleUnbindingOfSymbolHandler(symbol) {
-      var block = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-
-      this._unbindingHandler[symbol] = block;
-    }
-
-    /**
-     * @access private
-     * @param {SCNNode} node -
-     * @param {WebGLProgram} glProgram -
-     * @param {WebGLRenderingContext} gl -
-     * @param {SCNRenderer} renderer -
-     * @returns {void}
-     */
-
-  }, {
-    key: '_callBindingHandlerForNodeProgramContextRenderer',
-    value: function _callBindingHandlerForNodeProgramContextRenderer(node, glProgram, gl, renderer) {
-      var bindingKeys = Object.keys(this._bindingHandler);
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = bindingKeys[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var key = _step.value;
-
-          var handler = this._bindingHandler[key];
-          var loc = gl.getUniformBlockIndex(glProgram, key);
-          handler(glProgram, loc, node, renderer);
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator.return) {
-            _iterator.return();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-    }
-
-    /**
-     * @access private
-     * @param {SCNNode} node -
-     * @param {WebGLProgram} glProgram -
-     * @param {WebGLRenderingContext} gl -
-     * @param {SCNRenderer} renderer -
-     * @returns {void}
-     */
-
-  }, {
-    key: '_callUnindingHandlerForNodeProgramContextRenderer',
-    value: function _callUnindingHandlerForNodeProgramContextRenderer(node, glProgram, gl, renderer) {
-      var bindingKeys = Object.keys(this._unbindingHandler);
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
-
-      try {
-        for (var _iterator2 = bindingKeys[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var key = _step2.value;
-
-          var handler = this._unbindingHandler[key];
-          var loc = gl.getUniformBlockIndex(glProgram, key);
-          handler(glProgram, loc, node, renderer);
-        }
-      } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion2 && _iterator2.return) {
-            _iterator2.return();
-          }
-        } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
-          }
-        }
-      }
-    }
-
-    ///////////////////
-    // SCNAnimatable //
-    ///////////////////
-
-    // Managing Animations
-
-    /**
-     * Required. Adds an animation object for the specified key.
-     * @access public
-     * @param {CAAnimation} animation - The animation object to be added.
-     * @param {?string} key - An string identifying the animation for later retrieval. You may pass nil if you don’t need to reference the animation later.
-     * @returns {void}
-     * @desc Newly added animations begin executing after the current run loop cycle ends.SceneKit does not define any requirements for the contents of the key parameter—it need only be unique among the keys for other animations you add. If you add an animation with an existing key, this method overwrites the existing animation.
-     * @see https://developer.apple.com/documentation/scenekit/scnanimatable/1523386-addanimation
-     */
-
-  }, {
-    key: 'addAnimationForKey',
-    value: function addAnimationForKey(animation, key) {
-      if (typeof key === 'undefined' || key === null) {
-        key = Symbol();
-      }
-      var anim = animation.copy
-      // FIXME: use current frame time
-      ();anim._animationStartTime = Date.now() * 0.001;
-      anim._prevTime = anim._animationStartTime - 0.0000001;
-
-      this._animations.set(key, anim);
-    }
-
-    /**
-     * Required. Returns the animation with the specified key.
-     * @access public
-     * @param {string} key - A string identifying a previously added animation.
-     * @returns {?CAAnimation} - 
-     * @desc Attempting to modify any properties of the returned object results in undefined behavior.
-     * @see https://developer.apple.com/documentation/scenekit/scnanimatable/1524020-animation
-     */
-
-  }, {
-    key: 'animationForKey',
-    value: function animationForKey(key) {
-      return this._animations.get(key);
-    }
-
-    /**
-     * Required. Removes all the animations currently attached to the object.
-     * @access public
-     * @returns {void}
-     * @see https://developer.apple.com/documentation/scenekit/scnanimatable/1522762-removeallanimations
-     */
-
-  }, {
-    key: 'removeAllAnimations',
-    value: function removeAllAnimations() {
-      this._animations.clear();
-    }
-
-    /**
-     * Required. Removes the animation attached to the object with the specified key.
-     * @access public
-     * @param {string} key - A string identifying an attached animation to remove.
-     * @returns {void}
-     * @see https://developer.apple.com/documentation/scenekit/scnanimatable/1522880-removeanimation
-     */
-
-  }, {
-    key: 'removeAnimationForKey',
-    value: function removeAnimationForKey(key) {
-      this._animations.delete(key
-      // TODO: reset values
-      );
-    }
-
-    /**
-     * Required. Removes the animation attached to the object with the specified key, smoothly transitioning out of the animation’s effect.
-     * @access public
-     * @param {string} key - A string identifying an attached animation to remove.
-     * @param {number} duration - The duration for transitioning out of the animation’s effect before it is removed.
-     * @returns {void}
-     * @desc Use this method to create smooth transitions between the effects of multiple animations. For example, the geometry loaded from a scene file for a game character may have associated animations for player actions such as walking and jumping. When the player lands from a jump, you remove the jump animation so the character continues walking. If you use the removeAnimation(forKey:) method to remove the jump animation, SceneKit abruptly switches from the current frame of the jump animation to the current frame of the walk animation. If you use the removeAnimation(forKey:fadeOutDuration:) method instead, SceneKit plays both animations at once during that duration and interpolates vertex positions from one animation to the other, creating a smooth transition.
-     * @see https://developer.apple.com/documentation/scenekit/scnanimatable/1522841-removeanimation
-     */
-
-  }, {
-    key: 'removeAnimationForKeyFadeOutDuration',
-    value: function removeAnimationForKeyFadeOutDuration(key, duration) {}
-
-    /**
-     * Required. An array containing the keys of all animations currently attached to the object.
-     * @type {string[]}
-     * @desc This array contains all keys for which animations are attached to the object, or is empty if there are no attached animations. The ordering of animation keys in the array is arbitrary.
-     * @see https://developer.apple.com/documentation/scenekit/scnanimatable/1523610-animationkeys
-     */
-
-  }, {
-    key: 'pauseAnimationForKey',
-
-
-    // Pausing and Resuming Animations
-
-    /**
-     * Required. Pauses the animation attached to the object with the specified key.
-     * @access public
-     * @param {string} key - A string identifying an attached animation.
-     * @returns {void}
-     * @desc This method has no effect if no animation is attached to the object with the specified key.
-     * @see https://developer.apple.com/documentation/scenekit/scnanimatable/1523592-pauseanimation
-     */
-    value: function pauseAnimationForKey(key) {}
-
-    /**
-     * Required. Resumes a previously paused animation attached to the object with the specified key.
-     * @access public
-     * @param {string} key - A string identifying an attached animation.
-     * @returns {void}
-     * @desc This method has no effect if no animation is attached to the object with the specified key or if the specified animation is not currently paused.
-     * @see https://developer.apple.com/documentation/scenekit/scnanimatable/1523332-resumeanimation
-     */
-
-  }, {
-    key: 'resumeAnimationForKey',
-    value: function resumeAnimationForKey(key) {}
-
-    /**
-     * Required. Returns a Boolean value indicating whether the animation attached to the object with the specified key is paused.
-     * @access public
-     * @param {string} key - A string identifying an attached animation.
-     * @returns {boolean} - 
-     * @see https://developer.apple.com/documentation/scenekit/scnanimatable/1523703-isanimationpaused
-     */
-
-  }, {
-    key: 'isAnimationPausedForKey',
-    value: function isAnimationPausedForKey(key) {
-      return false;
-    }
-
-    // Instance Methods
-
-    /**
-     * Required. 
-     * @access public
-     * @param {number} speed - 
-     * @param {string} key - 
-     * @returns {void}
-     * @see https://developer.apple.com/documentation/scenekit/scnanimatable/1778343-setanimationspeed
-     */
-
-  }, {
-    key: 'setAnimationSpeedForKey',
-    value: function setAnimationSpeedForKey(speed, key) {}
-
-    /**
-     * @access private
-     * @returns {Promise} -
-     */
-
-  }, {
-    key: '_getLoadedPromise',
-    value: function _getLoadedPromise() {
-      if (this._loadedPromise) {
-        return this._loadedPromise;
-      }
-
-      var properties = [this._ambient, this._specular, this._normal, this._reflective, this._emission, this._transparent, this._multiply, this._ambientOcclusion, this._metalness, this._roughness];
-      var promises = [];
-      var _iteratorNormalCompletion3 = true;
-      var _didIteratorError3 = false;
-      var _iteratorError3 = undefined;
-
-      try {
-        for (var _iterator3 = properties[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-          var p = _step3.value;
-
-          if (p) {
-            promises.push(p.didLoad);
-          }
-        }
-        //this._loadedPromise = Promise.all(promises)
-        //return this._loadedPromise
-      } catch (err) {
-        _didIteratorError3 = true;
-        _iteratorError3 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion3 && _iterator3.return) {
-            _iterator3.return();
-          }
-        } finally {
-          if (_didIteratorError3) {
-            throw _iteratorError3;
-          }
-        }
-      }
-
-      return Promise.all(promises);
-    }
-
-    /**
-     * @access public
-     * @type {Promise} -
-     */
-
-  }, {
-    key: 'setValueForUndefinedKey',
-
-
-    /**
-     * Invoked by setValue(_:forKey:) when it finds no property for a given key.
-     * @access public
-     * @param {?Object} value - The value for the key identified by key.
-     * @param {string} key - A string that is not equal to the name of any of the receiver's properties.
-     * @returns {void}
-     * @desc Subclasses can override this method to handle the request in some other way. The default implementation raises an NSUndefinedKeyException.
-     * @see https://developer.apple.com/documentation/objectivec/nsobject/1413490-setvalue
-     */
-    value: function setValueForUndefinedKey(value, key) {
-      this._valuesForUndefinedKeys[key] = value;
-    }
-
-    /**
-     * Invoked by value(forKey:) when it finds no property corresponding to a given key.
-     * @access public
-     * @param {string} key - A string that is not equal to the name of any of the receiver's properties.
-     * @returns {?Object} - 
-     * @desc Subclasses can override this method to return an alternate value for undefined keys. The default implementation raises an NSUndefinedKeyException.
-     * @see https://developer.apple.com/documentation/objectivec/nsobject/1413457-value
-     */
-
-  }, {
-    key: 'valueForUndefinedKey',
-    value: function valueForUndefinedKey(key) {
-      if (typeof this._valuesForUndefinedKeys[key] !== 'undefined') {
-        return this._valuesForUndefinedKeys[key];
-      }
-      return _get(SCNMaterial.prototype.__proto__ || Object.getPrototypeOf(SCNMaterial.prototype), 'valueForUndefinedKey', this).call(this, key);
-    }
-  }, {
-    key: 'diffuse',
-    get: function get() {
-      return this._diffuse;
-    }
-
-    /**
-     * An object that manages the material’s response to ambient lighting.
-     * @type {SCNMaterialProperty}
-     * @desc Ambient shading describes the amount and color of ambient light reflected by the material. Ambient shading is uniform in all directions at all points on a surface. If a scene does not contain lights whose type is ambient, this property has no effect on a material’s appearance. By default, the ambient property’s contents object is a dark gray color. Changing the ambient property’s contents lets you specify a different color or texture for the areas of a surface not directly illuminated by lights in a scene. To make the material respond identically to both ambient and diffuse light, set its locksAmbientWithDiffuse property to true. Figure 1 shows a material (with a texture for its diffuse property) before and after setting the ambient property’s contents to a solid color.Figure 1 Adding an ambient color to a materialThe material’s lightingModel property determines the formula SceneKit uses to combine its ambient color and other visual properties with lights and other contents in a scene to produce the final color for each rendered pixel in the rendered scene. For details, see Lighting Models.This material property does not apply to physically-based materials (see physicallyBased).Adding an ambient color to a material
-     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462558-ambient
-     */
-
-  }, {
-    key: 'ambient',
-    get: function get() {
-      return this._ambient;
-    }
-
-    /**
-     * An object that manages the material’s specular response to lighting.
-     * @type {SCNMaterialProperty}
-     * @desc Specular shading describes the amount and color of light reflected by the material directly toward the viewer, forming a bright highlight on the surface and simulating a glossy or shiny appearance. You adjust the sharpness of specular highlights using the material’s shininess property.By default, the specular property’s contents object is a black color, causing the material to appear dull or matte. Changing the specular property’s contents to a brighter color causes specular highlights to appear in that color, making the surface appear shiny. When you apply a texture to the specular property, the texture image becomes a specular map—the brightness of each pixel in the image determines the tendency of each point on the material’s surface to create specular highlights when lit. Figure 1 shows a material (with a texture for its diffuse property) before and after providing a specular map image. Notice that the bright specular highlights appear only on portions of the surface where the specular map image is white.Figure 1 Adding a specular map to a materialThe material’s lightingModel property determines the formula SceneKit uses to combine its specularity and other visual properties with lights and other contents in a scene to produce the final color for each rendered pixel in the rendered scene. For details, see Lighting Models.This material property does not apply to physically-based materials (see physicallyBased).Adding a specular map to a material
-     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462516-specular
-     */
-
-  }, {
-    key: 'specular',
-    get: function get() {
-      return this._specular;
-    }
-
-    /**
-     * An object that defines the nominal orientation of the surface at each point for use in lighting.
-     * @type {SCNMaterialProperty}
-     * @desc Simulating the interaction of lights with a material requires information about the orientation of the surface at each point. Typically, normal vectors provided by a geometry object provide this information. However, this limits the level of detail for surface contours because a geometry can only provide one unique surface normal vector per vertex (and increasing vertex count to model a highly detailed surface exacts a high performance cost).Alternatively, you can use a texture image as a normal map that describes the orientation of a surface for each pixel in the texture. When SceneKit uses an image, it treats the R, G, and B components of each as the X, Y, and Z components of a surface normal vector. Because a normal map texture can store much more detailed surface information than a geometry, you can use a material’s normal property to simulate rough surfaces such as stone or add embossed or engraved designs to an otherwise smooth surface.By default, the normal property’s contents object is a white color. Setting the normal property’s contents to any solid color disables normal mapping, causing SceneKit to shade the material using only the surface normal information provided by its geometry. Setting the normal property’s contents to an image or other texture-mapped content enables normal mapping, which also automatically sets the material’s isLitPerPixel property to true. Figure 1 shows the effect of setting the normal property’s contents to a texture image on a material whose other properties have default contents.Figure 1 Adding a normal map to a materialThe material’s lightingModel property determines the formula SceneKit uses to combine its surface normals and other visual properties with lights and other contents in a scene to produce the final color for each rendered pixel in the rendered scene. For details, see Lighting Models.Adding a normal map to a material
-     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462542-normal
-     */
-
-  }, {
-    key: 'normal',
-    get: function get() {
-      return this._normal;
-    }
-
-    /**
-     * An object that defines the reflected color for each point on a surface.
-     * @type {SCNMaterialProperty}
-     * @desc You can simulate a mirrored or chromed finish on a surface by causing it to reflect its environment. SceneKit does not render real-time reflections of the objects in a scene, but it can use an environment map texture to simulate reflection of a static or animated image. When rendering each pixel on the surface, SceneKit traces the light from that point to a pixel in the environment map as if the surface was reflecting that image.By default, the reflective property’s contents object is a white color, causing the property to have no visible effect. Setting the reflective property’s contents to any solid color adds uniform shading to the material. To create a reflective effect, set the property’s contents to an image or other texture-mapped content.To produce a mirror-finish effect using an environment map, the texture image should take one of two forms:A sphere map, a square image whose content depicts an environment as reflected by a mirrored sphere.A cube map, an array of six square images which together form an imaginary cube enclosing the scene, whose inner surfaces are reflected by the material. You create a cube map by setting the reflective property’s contents object to an NSArray instance containing six images, each corresponding to a direction in the scene’s world coordinate space in the following order: +X, -X, +Y, -Y, +Z, -Z (or Right, Left, Top, Bottom, Near, Far).Figure 1 shows a material (with a texture for its normal property) before and after providing a cube map for the reflective property.Figure 1 Adding a reflective cube map to a materialThis material property does not apply to physically-based materials (see physicallyBased). Instead, such materials reflect environment-based lighting (see the SCNScene lightingEnvironment property) based on their metalness and roughness properties.Adding a reflective cube map to a material
-     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462520-reflective
-     */
-
-  }, {
-    key: 'reflective',
-    get: function get() {
-      return this._reflective;
-    }
-
-    /**
-     * An object that defines the color emitted by each point on a surface.
-     * @type {SCNMaterialProperty}
-     * @desc You can use an emissive map texture to simulate parts of a surface that glow with their own light. SceneKit does not treat the material as a light source—rather, the emission property determines colors for a material independent of lighting. (To create an object that appears to glow, you may wish to combine a geometry with an emissive map and additional SCNLight objects added to the scene.)By default, the emissive property’s contents object is a black color, causing the property to have no visible effect. Setting the emissive property’s contents to any solid color adds a uniform color to the material independent of lighting. To create a selective glow effect, set the property’s contents to an image or other texture-mapped content whose glowing areas use bright colors and whose other areas use darker colors. In the darker-colored portions of the emissive map (and portions with reduced opacity), the other visual properties of the material contribute to its appearance under scene lighting.Figure 1 shows a material (with a texture for its diffuse property) before and after providing an emissive map image.Figure 1 Adding an emissive map to a materialAdding an emissive map to a material
-     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462527-emission
-     */
-
-  }, {
-    key: 'emission',
-    get: function get() {
-      return this._emission;
-    }
-
-    /**
-     * An object that determines the opacity of each point in a material.
-     * @type {SCNMaterialProperty}
-     * @desc Use this property to selectively make parts of a material appear transparent. You can uniformly adjust the opacity of a material using its transparency property, or of all the content attached to a node using the node’s opacity property.By default, the transparent property’s contents object is a fully opaque black color, causing the property to have no visible effect. Setting the transparent property’s contents to any solid color uniformly fades the opacity of the material based on that color’s opacity value. To make parts of a material appear transparent, set the property’s contents to an image or other texture-mapped content whose alpha channel defines areas of full or partial opacity.Figure 1 shows a semitransparent material before and after providing a texture image for its transparent property. (To make the transparency effect more visible, a blue sphere is shown behind the transparent material.)Figure 1 Adding a transparent texture to a materialThe transparencyMode property controls how SceneKit interprets color information from the transparent property’s contents.Adding a transparent texture to a material
-     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462583-transparent
-     */
-
-  }, {
-    key: 'transparent',
-    get: function get() {
-      return this._transparent;
-    }
-
-    /**
-     * An object that provides color values that are multiplied with pixels in a material after all other shading is complete.
-     * @type {SCNMaterialProperty}
-     * @desc After combining a material’s other visual properties with lighting and other information about a scene, Scene kit multiplies the color of each rendered pixel by the color this property provides. You can use this property to darken or tint a surface independent of the effects of lighting and other properties, or to add precomputed lighting to a scene via a shadow map.By default, the multiply property’s contents object is a white color, causing the property to have no visible effect.Figure 1 shows a material (with textures for its diffuse and emission properties) before and after setting the multiply property’s contents to a solid color. Notice that the multiply color modulates even the bright areas added by the emissive map.Figure 1 Adding a multiply color to a materialAdding a multiply color to a material
-     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462575-multiply
-     */
-
-  }, {
-    key: 'multiply',
-    get: function get() {
-      return this._multiply;
-    }
-
-    /**
-     * An object that provides color values to be multiplied with the ambient light affecting the material.
-     * @type {SCNMaterialProperty}
-     * @desc Use this property to assign an ambient occlusion texture map to a surface. This property has no effect if there is no ambient light in the scene. If this property is not nil, SceneKit ignores the ambient property.When using physically-based shading (see physicallyBased), ambient occlusion approximates large-scale surface details that obscure global illumination.
-     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462579-ambientocclusion
-     */
-
-  }, {
-    key: 'ambientOcclusion',
-    get: function get() {
-      return this._ambientOcclusion;
-    }
-
-    /**
-     * An object that provides color values representing the global illumination of the surface.
-     * @type {SCNMaterialProperty}
-     * @desc Self-illumination applies to all materials, but is especially useful for those using physically-based shading (see physicallyBased). Physically-based materials work best with environment-based lighting (see the SCNScene property lightingEnvironment), but for some materials it can be useful to let a surface itself define part of its lighting—for example, an object whose position obscures it from the “sky” that provides the main lighting environment. When you assign contents to this property, they override the environmental lighting contribution to diffuse shading, but environmental lighting still contributes to specular effects.
-     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462524-selfillumination
-     */
-
-  }, {
-    key: 'selfIllumination',
-    get: function get() {
-      return this._selfIllumination;
-    }
-
-    /**
-     * An object that provides color values to determine how metallic the material’s surface appears.
-     * @type {SCNMaterialProperty}
-     * @desc This property measures only the total intensity of color values; texture contents are best defined in grayscale.This property generally approximates aspects of a physical surface—such as index of refraction, tendency to produce sharp reflections, and tendency to produce Fresnel reflections at grazing angles—that together produce an overall metallic or nonmetallic (also called dielectric) appearance. Lower values (darker colors) cause the material to appear more like a dielectric surface. Higher values (brighter colors) cause the surface to appear more metallic.This property applies only when the material’s lightingModel value is physicallyBased.
-     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1640554-metalness
-     */
-
-  }, {
-    key: 'metalness',
-    get: function get() {
-      return this._metalness;
-    }
-
-    /**
-     * An object that provides color values to determine the apparent smoothness of the surface.
-     * @type {SCNMaterialProperty}
-     * @desc This property measures only the total intensity of color values; texture contents are best defined in grayscale.This property approximates the level of microscopic detail—for example tiny bumps and cracks—in a surface. By approximating these “microfacets” as a single term, this property helps produce lighting calculations that resemble the energy-conserving laws of real-world physics, resulting in more realistic variation between matte and shiny surfaces. Lower values (darker colors) cause the material to appear shiny, with well-defined specular highlights. Higher values (brighter colors) cause specular highlights to spread out and the diffuse color of the material to become more retroreflective.This property applies only when the material’s lightingModel value is physicallyBased.
-     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1640555-roughness
-     */
-
-  }, {
-    key: 'roughness',
-    get: function get() {
-      return this._roughness;
-    }
-
-    /**
-     * 
-     * @type {SCNMaterialProperty}
-     * @desc
-     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/2867516-displacement
-     */
-
-  }, {
-    key: 'displacement',
-    get: function get() {
-      return this._displacement;
-    }
-  }, {
-    key: 'animationKeys',
-    get: function get() {
-      var keys = [];
-      var _iteratorNormalCompletion4 = true;
-      var _didIteratorError4 = false;
-      var _iteratorError4 = undefined;
-
-      try {
-        for (var _iterator4 = this._animations.keys()[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-          var key = _step4.value;
-
-          keys.push(key);
-        }
-      } catch (err) {
-        _didIteratorError4 = true;
-        _iteratorError4 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion4 && _iterator4.return) {
-            _iterator4.return();
-          }
-        } finally {
-          if (_didIteratorError4) {
-            throw _iteratorError4;
-          }
-        }
-      }
-
-      return keys;
-    }
-  }, {
-    key: 'didLoad',
-    get: function get() {
-      return this._getLoadedPromise();
-    }
-  }], [{
-    key: 'LightingModel',
-    get: function get() {
-      return _LightingModel;
-    }
-  }]);
-
-  return SCNMaterial;
-}(_NSObject3.default);
-
-exports.default = SCNMaterial;
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * The drawing primitive that connects vertices when rendering a geometry element, used by the primitiveType property to specify how SceneKit interprets the geometry element’s data.
- * @typedef {Object} SCNGeometryPrimitiveType
- * @property {number} triangles - The geometry element’s data is a sequence of triangles, with each triangle described by three new vertices.
- * @property {number} triangleStrip - The geometry element’s data is a sequence of triangles, with each triangle described by one new vertex and two vertices from the previous triangle. 
- * @property {number} line - The geometry element’s data is a sequence of line segments, with each line segment described by two new vertices. 
- * @property {number} point - The geometry element’s data is a sequence of unconnected points.
- * @property {number} polygon - 
- * @see https://developer.apple.com/documentation/scenekit/scngeometryprimitivetype
- */
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var SCNGeometryPrimitiveType = {
-  triangles: 0,
-  triangleStrip: 1,
-  line: 2,
-  point: 3,
-  polygon: 4
-};
-
-exports.default = SCNGeometryPrimitiveType;
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _CAAnimationGroup = __webpack_require__(76);
 
 var _CAAnimationGroup2 = _interopRequireDefault(_CAAnimationGroup);
 
-var _CABasicAnimation = __webpack_require__(45);
+var _CABasicAnimation = __webpack_require__(46);
 
 var _CABasicAnimation2 = _interopRequireDefault(_CABasicAnimation);
 
-var _CAMediaTimingFunction = __webpack_require__(47);
+var _CAMediaTimingFunction = __webpack_require__(48);
 
 var _CAMediaTimingFunction2 = _interopRequireDefault(_CAMediaTimingFunction);
 
@@ -12549,7 +11501,7 @@ var _SCNVector3 = __webpack_require__(11);
 
 var _SCNVector4 = _interopRequireDefault(_SCNVector3);
 
-var _SCNMovabilityHint = __webpack_require__(87);
+var _SCNMovabilityHint = __webpack_require__(88);
 
 var _SCNMovabilityHint2 = _interopRequireDefault(_SCNMovabilityHint);
 
@@ -13025,13 +11977,13 @@ var SCNNode = function (_NSObject) {
      */
     _this._nodeID = null;
 
-    _this._updateBoundingBox
+    _this._updateBoundingBox();
 
     /**
      * @access private
      * @type {Promise}
      */
-    ();_this._loadedPromise = null;
+    _this._loadedPromise = null;
     return _this;
   }
 
@@ -13703,9 +12655,9 @@ var SCNNode = function (_NSObject) {
             results.push.apply(results, _toConsumableArray(hits));
           }
         }
-      }
+      });
       // TODO: sort by the distance
-      );if (results.length > 0) {
+      if (results.length > 0) {
         console.error('hitTestWithSegmentFromTo: ' + results.length);
       }
       return results;
@@ -13988,13 +12940,12 @@ var SCNNode = function (_NSObject) {
       if (typeof key === 'undefined' || key === null) {
         key = Symbol();
       }
-      var act = action.copy
+      var act = action.copy();
       // FIXME: use current frame time
-      ();act._actionStartTime = Date.now() * 0.001;
+      act._actionStartTime = Date.now() * 0.001;
       act._completionHandler = block;
-      this._actions.set(key, act
+      this._actions.set(key, act);
       //this._copyTransformToPresentationRecursive()
-      );
     }
 
     // Inspecting a Node’s Running Actions
@@ -14656,9 +13607,9 @@ var SCNNode = function (_NSObject) {
 
       var paths = keyPath.split('.');
       var key = paths.shift();
-      var restPath = paths.join('.'
+      var restPath = paths.join('.');
       //console.log(`SCNNode setValueForKeyPath ${this.name} ${key} ${restPath}`)
-      );if (key === 'transform') {
+      if (key === 'transform') {
         switch (restPath) {
           case 'rotation.x':
             target._rotation.x = value;
@@ -15498,8 +14449,8 @@ var SCNNode = function (_NSObject) {
         return null;
       }
       var vp = this.lightViewProjectionTransform;
-      var scale = (0, _SCNMatrix4MakeTranslation2.default)(1.0, 1.0, 0.0).scale(0.5, 0.5, 1.0 // [-1, 1] => [0, 1]
-      );return vp.mult(scale);
+      var scale = (0, _SCNMatrix4MakeTranslation2.default)(1.0, 1.0, 0.0).scale(0.5, 0.5, 1.0); // [-1, 1] => [0, 1]
+      return vp.mult(scale);
     }
   }, {
     key: 'didLoad',
@@ -15564,10 +14515,10 @@ var SCNNode = function (_NSObject) {
       //console.log('_loadAnimationGroup start')
       var group = new _CAAnimationGroup2.default();
       var data = animation.animation;
-      group.isRemovedOnCompletion = Boolean(animation.removeOnCompletion
+      group.isRemovedOnCompletion = Boolean(animation.removeOnCompletion);
       // group.timingFunction
       // group.delegate
-      );group.usesSceneTimeBase = Boolean(animation.usesSceneTimeBase);
+      group.usesSceneTimeBase = Boolean(animation.usesSceneTimeBase);
       group.fadeInDuration = data.fadeInDuration;
       group.fadeOutDuration = data.fadeOutDuration;
       group.beginTime = data.beginTime;
@@ -15583,14 +14534,14 @@ var SCNNode = function (_NSObject) {
       // data.additive
       // data.attributes
       data.channels.forEach(function (channel) {
-        var keyPath = channel.targetPath.join('.'
+        var keyPath = channel.targetPath.join('.');
         //console.error(`SCNNode animation group keyPath: ${keyPath}`)
-        );var chAnim = _this6._loadAnimationData(channel.animation, keyPath);
+        var chAnim = _this6._loadAnimationData(channel.animation, keyPath);
         group.animations.push(chAnim);
-      }
+      });
       //console.log('_loadAnimationGroup done')
 
-      );return group;
+      return group;
     }
   }, {
     key: '_loadKeyframeAnimation',
@@ -15598,10 +14549,10 @@ var SCNNode = function (_NSObject) {
       //console.log(`_loadKeyframeAnimation ${keyPath} start`)
       var anim = new _CAKeyframeAnimation2.default(keyPath);
 
-      anim.isRemovedOnCompletion = Boolean(data.removeOnCompletion
+      anim.isRemovedOnCompletion = Boolean(data.removeOnCompletion);
       // anim.timingFunction
       // anim.delegate
-      );anim.usesSceneTimeBase = Boolean(data.sceneTimeBased);
+      anim.usesSceneTimeBase = Boolean(data.sceneTimeBased);
       anim.fadeInDuration = data.fadeInDuration;
       anim.fadeOutDuration = data.fadeOutDuration;
       anim.beginTime = data.beginTime;
@@ -15614,13 +14565,13 @@ var SCNNode = function (_NSObject) {
       var fillMode = [Constants.kCAFillModeRemoved, Constants.kCAFillModeForwards, Constants.kCAFillModeBackwards, Constants.kCAFillModeBoth];
       anim.fillMode = fillMode[data.fillModeMask];
       anim.isCumulative = Boolean(data.cumulative);
-      anim.isAdditive = Boolean(data.additive
+      anim.isAdditive = Boolean(data.additive);
       // data.attributes
 
-      );var keyframe = data.keyframeController;
-      anim.values = this._loadData(keyframe, 'values'
+      var keyframe = data.keyframeController;
+      anim.values = this._loadData(keyframe, 'values');
       //anim.path
-      );anim.keyTimes = this._loadData(keyframe, 'keytimes');
+      anim.keyTimes = this._loadData(keyframe, 'keytimes');
       switch (keyframe.interpolationMode) {
         case 0:
         default:
@@ -15664,13 +14615,13 @@ var SCNNode = function (_NSObject) {
       var fillMode = [Constants.kCAFillModeRemoved, Constants.kCAFillModeForwards, Constants.kCAFillModeBackwards, Constants.kCAFillModeBoth];
       anim.fillMode = fillMode[data.fillModeMask];
       anim.isCumulative = Boolean(data.cumulative);
-      anim.isAdditive = Boolean(data.additive
+      anim.isAdditive = Boolean(data.additive);
       // data.attributes
       // data.baseType
 
       //console.log(`_loadBasicAnimation ${keyPath} done`)
 
-      );return anim;
+      return anim;
     }
   }, {
     key: '_loadActionArray',
@@ -15836,6 +14787,1049 @@ var SCNNode = function (_NSObject) {
 exports.default = SCNNode;
 
 /***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _NSObject2 = __webpack_require__(0);
+
+var _NSObject3 = _interopRequireDefault(_NSObject2);
+
+var _SCNBlendMode = __webpack_require__(89);
+
+var _SCNBlendMode2 = _interopRequireDefault(_SCNBlendMode);
+
+var _SCNColorMask = __webpack_require__(90);
+
+var _SCNColorMask2 = _interopRequireDefault(_SCNColorMask);
+
+var _SCNCullMode = __webpack_require__(49);
+
+var _SCNCullMode2 = _interopRequireDefault(_SCNCullMode);
+
+var _SCNFillMode = __webpack_require__(91);
+
+var _SCNFillMode2 = _interopRequireDefault(_SCNFillMode);
+
+var _SCNMaterialProperty = __webpack_require__(26);
+
+var _SCNMaterialProperty2 = _interopRequireDefault(_SCNMaterialProperty);
+
+var _SCNOrderedDictionary = __webpack_require__(22);
+
+var _SCNOrderedDictionary2 = _interopRequireDefault(_SCNOrderedDictionary);
+
+var _SCNTransparencyMode = __webpack_require__(94);
+
+var _SCNTransparencyMode2 = _interopRequireDefault(_SCNTransparencyMode);
+
+var _SKColor = __webpack_require__(2);
+
+var _SKColor2 = _interopRequireDefault(_SKColor);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+//import SCNAnimatable from './SCNAnimatable'
+
+//import SCNShadable from './SCNShadable'
+
+
+var _LightingModel = {
+  blinn: 'SCNLightingModelBlinn',
+  constant: 'SCNLightingModelConstant',
+  lambert: 'SCNLightingModelLambert',
+  phong: 'SCNLightingModelPhong',
+  physicallyBased: 'SCNLightingModelPhysicallyBased'
+
+  /**
+   * A set of shading attributes that define the appearance of a geometry's surface when rendered.
+   * @access public
+   * @extends {NSObject}
+   * @implements {SCNAnimatable}
+   * @implements {SCNShadable}
+   * @see https://developer.apple.com/documentation/scenekit/scnmaterial
+   */
+};
+var SCNMaterial = function (_NSObject) {
+  _inherits(SCNMaterial, _NSObject);
+
+  _createClass(SCNMaterial, null, [{
+    key: '_propTypes',
+    get: function get() {
+      return {
+        diffuse: ['SCNMaterialProperty', function (obj, value) {
+          obj._diffuse = value;
+          value._createPresentation();
+        }],
+        ambient: ['SCNMaterialProperty', function (obj, value) {
+          obj._ambient = value;
+          value._createPresentation();
+        }],
+        specular: ['SCNMaterialProperty', function (obj, value) {
+          obj._specular = value;
+          value._createPresentation();
+        }],
+        normal: ['SCNMaterialProperty', function (obj, value) {
+          obj._normal = value;
+          value._createPresentation();
+        }],
+        reflective: ['SCNMaterialProperty', function (obj, value) {
+          obj._reflective = value;
+          value._createPresentation();
+        }],
+        emission: ['SCNMaterialProperty', function (obj, value) {
+          obj._emission = value;
+          value._createPresentation();
+        }],
+        transparent: ['SCNMaterialProperty', function (obj, value) {
+          obj._transparent = value;
+          value._createPresentation();
+        }],
+        multiply: ['SCNMaterialProperty', function (obj, value) {
+          obj._multiply = value;
+          value._createPresentation();
+        }],
+        ambientOcclusion: ['SCNMaterialProperty', function (obj, value) {
+          obj._ambientOcclusion = value;
+          value._createPresentation();
+        }],
+        selfIllumination: ['SCNMaterialProperty', function (obj, value) {
+          obj._selfIllumination = value;
+          value._createPresentation();
+        }],
+        metalness: ['SCNMaterialProperty', function (obj, value) {
+          obj._metalness = value;
+          value._createPresentation();
+        }],
+        roughness: ['SCNMaterialProperty', function (obj, value) {
+          obj._roughness = value;
+          value._createPresentation();
+        }],
+        displacement: ['SCNMaterialProperty', function (obj, value) {
+          obj._displacement = value;
+          value._createPresentation();
+        }],
+        name: 'string',
+        shininess: 'float',
+        fresnelExponent: 'float',
+        transparency: 'integer',
+        transparencyMode: 'integer',
+        lightingModelName: ['string', 'lightingModel'],
+        litPerPixel: ['boolean', 'isLitPerPixel'],
+        doubleSided: ['boolean', 'isDoubleSided'],
+        cullMode: 'integer',
+        blendMode: 'integer',
+        locksAmbientWithDiffuse: 'boolean',
+        writesToDepthBuffer: 'boolean',
+        readsFromDepthBuffer: 'boolean',
+        colorBufferWriteMask: 'integer',
+        fillMode: 'integer',
+        valuesForUndefinedKeys: ['NSMutableDictionary', '_valuesForUndefinedKeys'],
+        shadableHelper: ['SCNShadableHelper', '_shadableHelper'],
+
+        avoidsOverLighting: ['boolean', null],
+        entityID: ['string', '_entityID'],
+        indexOfRefraction: ['integer', null],
+        selfIlluminationOcclusion: ['integer', null]
+      };
+    }
+
+    // Creating a Material
+
+    /**
+     * Creates a material from the specified Model I/O material object.
+     * @access public
+     * @constructor
+     * @param {MDLMaterial} mdlMaterial - A Model I/O material object.
+     * @desc The Model I/O framework provides universal support for import, export, description, and processing of several 3D asset file formats and related resources. (For details, see Model I/O.) The MDLMaterial class is a generic description of surface rendering to be used in rendering 3D object, supporting a superset of the attributes described by the SCNMaterial class. 
+     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1419835-init
+     */
+
+  }]);
+
+  function SCNMaterial(mdlMaterial) {
+    _classCallCheck(this, SCNMaterial);
+
+    // Configuring a Material’s Visual Properties
+
+    var _this = _possibleConstructorReturn(this, (SCNMaterial.__proto__ || Object.getPrototypeOf(SCNMaterial)).call(this));
+
+    _this._diffuse = new _SCNMaterialProperty2.default(_SKColor2.default.white);
+    _this._ambient = new _SCNMaterialProperty2.default(new _SKColor2.default(0.485, 0.485, 0.485, 1.0));
+    _this._specular = new _SCNMaterialProperty2.default(_SKColor2.default.black);
+    _this._normal = new _SCNMaterialProperty2.default(_SKColor2.default.white);
+    _this._reflective = new _SCNMaterialProperty2.default(_SKColor2.default.black);
+    _this._emission = new _SCNMaterialProperty2.default(_SKColor2.default.black);
+    _this._transparent = new _SCNMaterialProperty2.default(_SKColor2.default.white);
+    _this._multiply = new _SCNMaterialProperty2.default(_SKColor2.default.white);
+    _this._ambientOcclusion = new _SCNMaterialProperty2.default(_SKColor2.default.white);
+    _this._selfIllumination = new _SCNMaterialProperty2.default(_SKColor2.default.black);
+    _this._metalness = new _SCNMaterialProperty2.default(_SKColor2.default.black);
+    _this._roughness = new _SCNMaterialProperty2.default(new _SKColor2.default(0.485, 0.485, 0.485, 1.0));
+    _this._displacement = new _SCNMaterialProperty2.default(_SKColor2.default.black); // TODO: check the default value
+
+    // Customizing a Material
+
+    /**
+     * A name associated with the material.
+     * @type {?string}
+     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462525-name
+     */
+    _this.name = null;
+
+    /**
+     * The sharpness of specular highlights. Animatable.
+     * @type {number}
+     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462533-shininess
+     */
+    _this.shininess = 1.0;
+
+    /**
+     * A factor affecting the material’s reflectivity. Animatable.
+     * @type {number}
+     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462587-fresnelexponent
+     */
+    _this.fresnelExponent = 0.0;
+
+    /**
+     * The uniform transparency of the material. Animatable.
+     * @type {number}
+     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462567-transparency
+     */
+    _this.transparency = 1.0;
+
+    /**
+     * The mode SceneKit uses to calculate transparency for the material.
+     * @type {SCNTransparencyMode}
+     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462549-transparencymode
+     */
+    _this.transparencyMode = _SCNTransparencyMode2.default.aOne;
+
+    /**
+     * The lighting formula that SceneKit uses to render the material.
+     * @type {SCNMaterial.LightingModel}
+     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462518-lightingmodel
+     */
+    _this.lightingModel = _LightingModel.blinn;
+
+    /**
+     * A Boolean value that determines whether SceneKit performs lighting calculations per vertex or per pixel. Animatable.
+     * @type {boolean}
+     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462580-islitperpixel
+     */
+    _this.isLitPerPixel = true;
+
+    /**
+     * A Boolean value that determines whether SceneKit should render both front and back faces of a surface. Animatable.
+     * @type {boolean}
+     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462531-isdoublesided
+     */
+    _this.isDoubleSided = false;
+
+    /**
+     * The mode determining which faces of a surface SceneKit renders. Animatable.
+     * @type {SCNCullMode}
+     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462571-cullmode
+     */
+    _this.cullMode = _SCNCullMode2.default.back;
+
+    /**
+     * The mode that determines how pixel colors rendered using this material blend with other pixel colors in the rendering target.
+     * @type {SCNBlendMode}
+     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462585-blendmode
+     */
+    _this.blendMode = _SCNBlendMode2.default.alpha;
+
+    /**
+     * A Boolean value that determines whether the material responds identically to both ambient and diffuse lighting. Animatable.
+     * @type {boolean}
+     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462522-locksambientwithdiffuse
+     */
+    _this.locksAmbientWithDiffuse = true;
+
+    /**
+     * A Boolean value that determines whether SceneKit produces depth information when rendering the material.
+     * @type {boolean}
+     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462545-writestodepthbuffer
+     */
+    _this.writesToDepthBuffer = true;
+
+    /**
+     * A Boolean value that determines whether SceneKit uses depth information when rendering the material.
+     * @type {boolean}
+     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462562-readsfromdepthbuffer
+     */
+    _this.readsFromDepthBuffer = true;
+
+    /**
+     *
+     * @type {SCNColorMask}
+     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/2867554-colorbufferwritemask
+     */
+    _this.colorBufferWriteMask = _SCNColorMask2.default.all;
+
+    /**
+     * 
+     * @type {SCNFillMode}
+     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/2867442-fillmode
+     */
+    _this.fillMode = _SCNFillMode2.default.fill;
+
+    /////////////////
+    // SCNShadable //
+    /////////////////
+
+    // Assigning a Custom Shader Program
+
+    /**
+     * A program used when rendering the object.
+     * @type {?SCNProgram}
+     * @see https://developer.apple.com/documentation/scenekit/scnshadable/1523689-program
+     */
+    _this.program = null;
+
+    // Customizing SceneKit’s Shader Programs
+
+    /**
+     * A dictionary of GLSL source code snippets for customizing the shader programs provided by SceneKit.
+     * @type {?Map<SCNShaderModifierEntryPoint, string>}
+     * @see https://developer.apple.com/documentation/scenekit/scnshadable/1523348-shadermodifiers
+     */
+    _this.shaderModifiers = null;
+
+    /**
+     * @access private
+     * @type {Map<string, SCNBindingBlock>}
+     */
+    _this._bindingHandler = {};
+
+    /**
+     * @access private
+     * @type {Map<string, SCNBindingBlock>}
+     */
+    _this._unbindingHandler = {};
+
+    /**
+     * @access private
+     * @type {Object}
+     */
+    _this._valuesForUndefinedKeys = {};
+
+    ///////////////////
+    // SCNAnimatable //
+    ///////////////////
+
+    /**
+     * @access private
+     * @type {Map}
+     */
+    _this._animations = new _SCNOrderedDictionary2.default();
+
+    /**
+     * @access private
+     * @type {?string}
+     */
+    _this._entityID = null;
+
+    _this._createPresentationProperties();
+
+    /**
+     * @access private
+     * @type {?SCNShadableHelper}
+     */
+    _this._shadableHelper = null;
+
+    /**
+     * @access private
+     * @type {Promise}
+     */
+    _this._loadedPromise = null;
+
+    return _this;
+  }
+
+  // Configuring a Material’s Visual Properties
+
+  /**
+   * An object that manages the material’s diffuse response to lighting.
+   * @type {SCNMaterialProperty}
+   * @desc Diffuse shading describes the amount and color of light reflected equally in all directions from each point on the material’s surface. The diffuse color of a pixel is independent of the point of view, so it can be thought of as a material’s “base” color or texture. By default, the diffuse property’s contents object is a white color. Figure 1 shows the effect of setting the diffuse property’s contents to a texture image on a material whose other properties have default contents.Figure 1 Adding a diffuse texture to a materialThe material’s lightingModel property determines the formula SceneKit uses to combine its diffuse color and other visual properties with lights and other contents in a scene to produce the final color for each rendered pixel in the rendered scene. For details, see Lighting Models.Adding a diffuse texture to a material
+   * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462589-diffuse
+   */
+
+
+  _createClass(SCNMaterial, [{
+    key: '_createPresentationProperties',
+    value: function _createPresentationProperties() {
+      this._diffuse._createPresentation();
+      this._ambient._createPresentation();
+      this._specular._createPresentation();
+      this._normal._createPresentation();
+      this._reflective._createPresentation();
+      this._emission._createPresentation();
+      this._transparent._createPresentation();
+      this._multiply._createPresentation();
+      this._ambientOcclusion._createPresentation();
+      this._selfIllumination._createPresentation();
+      this._metalness._createPresentation();
+      this._roughness._createPresentation();
+    }
+  }, {
+    key: '_copyPresentationProperties',
+    value: function _copyPresentationProperties() {
+      this._diffuse._copyPresentation();
+      this._ambient._copyPresentation();
+      this._specular._copyPresentation();
+      this._normal._copyPresentation();
+      this._reflective._copyPresentation();
+      this._emission._copyPresentation();
+      this._transparent._copyPresentation();
+      this._multiply._copyPresentation();
+      this._ambientOcclusion._copyPresentation();
+      this._selfIllumination._copyPresentation();
+      this._metalness._copyPresentation();
+      this._roughness._copyPresentation();
+    }
+
+    // Structures
+
+    /**
+     * @type {Object} LightingModel
+     * @property {string} blinn Shading that incorporates ambient, diffuse, and specular properties, where specular highlights are calculated using the Blinn-Phong  formula.
+     * @property {string} constant Uniform shading that incorporates ambient lighting only.
+     * @property {string} lambert Shading that incorporates ambient and diffuse properties only.
+     * @property {string} phong Shading that incorporates ambient, diffuse, and specular properties, where specular highlights are calculated using the Phong  formula.
+     * @property {string} physicallyBased Shading based on a realistic abstraction of physical lights and materials.
+     * @see https://developer.apple.com/documentation/scenekit/scnmaterial.lightingmodel
+     */
+
+  }, {
+    key: 'handleBindingOfSymbolHandler',
+
+
+    /////////////////
+    // SCNShadable //
+    /////////////////
+
+    // Handling Parameters in Custom OpenGL Shader Programs
+
+    /**
+     * Specifies a block to be called before rendering with programs with the specified GLSL uniform variable or attribute name.
+     * @access public
+     * @param {string} symbol - A GLSL uniform variable or attribute name.
+     * @param {?SCNBindingBlock} [block = null] - A block to be called by SceneKit.
+     * @returns {void}
+     * @desc Use this method to associate a block with a SceneKit object (geometry or material) to handle setup of an attribute or uniform variable in a custom SCNProgram shader associated with that object. SceneKit calls your block before rendering the object. In the block, you can execute any OpenGL commands or other code necessary for preparing your custom shader. For example, the following block updates the time uniform variable in a custom fragment shader for producing animated effects:CFTimeInterval startTime = CFAbsoluteTimeGetCurrent();
+    [myNode.geometry.firstMaterial handleBindingOfSymbol:@"time" usingBlock:
+      ^(unsigned int programID, unsigned int location, SCNNode *renderedNode, SCNRenderer *renderer) {
+          glUniform1f(location, CFAbsoluteTimeGetCurrent() - startTime);
+      }];
+    This method is for OpenGL shader programs only. To bind custom variable data for Metal shader programs, use the handleBinding(ofBufferNamed:frequency:handler:) method.CFTimeInterval startTime = CFAbsoluteTimeGetCurrent();
+    [myNode.geometry.firstMaterial handleBindingOfSymbol:@"time" usingBlock:
+      ^(unsigned int programID, unsigned int location, SCNNode *renderedNode, SCNRenderer *renderer) {
+          glUniform1f(location, CFAbsoluteTimeGetCurrent() - startTime);
+      }];
+      * @see https://developer.apple.com/documentation/scenekit/scnshadable/1523063-handlebinding
+     */
+    value: function handleBindingOfSymbolHandler(symbol) {
+      var block = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+      this._bindingHandler[symbol] = block;
+    }
+
+    /**
+     * Specifies a block to be called after rendering with programs with the specified GLSL uniform variable or attribute name.
+     * @access public
+     * @param {string} symbol - A GLSL uniform variable or attribute name.
+     * @param {?SCNBindingBlock} [block = null] - A block to be called by SceneKit.
+     * @returns {void}
+     * @desc Use this method to associate a block with a SceneKit object (geometry or material) to handle cleanup related to an attribute or uniform variable in a custom SCNProgram shader associated with that object. SceneKit will call your block after rendering the object. In the block, you can execute any OpenGL commands or other code necessary for post-rendering tasks.This method is for OpenGL shader programs only. To bind custom variable data for Metal shader programs, use the handleBinding(ofBufferNamed:frequency:handler:) method.
+     * @see https://developer.apple.com/documentation/scenekit/scnshadable/1522783-handleunbinding
+     */
+
+  }, {
+    key: 'handleUnbindingOfSymbolHandler',
+    value: function handleUnbindingOfSymbolHandler(symbol) {
+      var block = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+      this._unbindingHandler[symbol] = block;
+    }
+
+    /**
+     * @access private
+     * @param {SCNNode} node -
+     * @param {WebGLProgram} glProgram -
+     * @param {WebGLRenderingContext} gl -
+     * @param {SCNRenderer} renderer -
+     * @returns {void}
+     */
+
+  }, {
+    key: '_callBindingHandlerForNodeProgramContextRenderer',
+    value: function _callBindingHandlerForNodeProgramContextRenderer(node, glProgram, gl, renderer) {
+      var bindingKeys = Object.keys(this._bindingHandler);
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = bindingKeys[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var key = _step.value;
+
+          var handler = this._bindingHandler[key];
+          var loc = gl.getUniformBlockIndex(glProgram, key);
+          handler(glProgram, loc, node, renderer);
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+    }
+
+    /**
+     * @access private
+     * @param {SCNNode} node -
+     * @param {WebGLProgram} glProgram -
+     * @param {WebGLRenderingContext} gl -
+     * @param {SCNRenderer} renderer -
+     * @returns {void}
+     */
+
+  }, {
+    key: '_callUnindingHandlerForNodeProgramContextRenderer',
+    value: function _callUnindingHandlerForNodeProgramContextRenderer(node, glProgram, gl, renderer) {
+      var bindingKeys = Object.keys(this._unbindingHandler);
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = bindingKeys[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var key = _step2.value;
+
+          var handler = this._unbindingHandler[key];
+          var loc = gl.getUniformBlockIndex(glProgram, key);
+          handler(glProgram, loc, node, renderer);
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
+    }
+
+    ///////////////////
+    // SCNAnimatable //
+    ///////////////////
+
+    // Managing Animations
+
+    /**
+     * Required. Adds an animation object for the specified key.
+     * @access public
+     * @param {CAAnimation} animation - The animation object to be added.
+     * @param {?string} key - An string identifying the animation for later retrieval. You may pass nil if you don’t need to reference the animation later.
+     * @returns {void}
+     * @desc Newly added animations begin executing after the current run loop cycle ends.SceneKit does not define any requirements for the contents of the key parameter—it need only be unique among the keys for other animations you add. If you add an animation with an existing key, this method overwrites the existing animation.
+     * @see https://developer.apple.com/documentation/scenekit/scnanimatable/1523386-addanimation
+     */
+
+  }, {
+    key: 'addAnimationForKey',
+    value: function addAnimationForKey(animation, key) {
+      if (typeof key === 'undefined' || key === null) {
+        key = Symbol();
+      }
+      var anim = animation.copy();
+      // FIXME: use current frame time
+      anim._animationStartTime = Date.now() * 0.001;
+      anim._prevTime = anim._animationStartTime - 0.0000001;
+
+      this._animations.set(key, anim);
+    }
+
+    /**
+     * Required. Returns the animation with the specified key.
+     * @access public
+     * @param {string} key - A string identifying a previously added animation.
+     * @returns {?CAAnimation} - 
+     * @desc Attempting to modify any properties of the returned object results in undefined behavior.
+     * @see https://developer.apple.com/documentation/scenekit/scnanimatable/1524020-animation
+     */
+
+  }, {
+    key: 'animationForKey',
+    value: function animationForKey(key) {
+      return this._animations.get(key);
+    }
+
+    /**
+     * Required. Removes all the animations currently attached to the object.
+     * @access public
+     * @returns {void}
+     * @see https://developer.apple.com/documentation/scenekit/scnanimatable/1522762-removeallanimations
+     */
+
+  }, {
+    key: 'removeAllAnimations',
+    value: function removeAllAnimations() {
+      this._animations.clear();
+    }
+
+    /**
+     * Required. Removes the animation attached to the object with the specified key.
+     * @access public
+     * @param {string} key - A string identifying an attached animation to remove.
+     * @returns {void}
+     * @see https://developer.apple.com/documentation/scenekit/scnanimatable/1522880-removeanimation
+     */
+
+  }, {
+    key: 'removeAnimationForKey',
+    value: function removeAnimationForKey(key) {
+      this._animations.delete(key);
+      // TODO: reset values
+    }
+
+    /**
+     * Required. Removes the animation attached to the object with the specified key, smoothly transitioning out of the animation’s effect.
+     * @access public
+     * @param {string} key - A string identifying an attached animation to remove.
+     * @param {number} duration - The duration for transitioning out of the animation’s effect before it is removed.
+     * @returns {void}
+     * @desc Use this method to create smooth transitions between the effects of multiple animations. For example, the geometry loaded from a scene file for a game character may have associated animations for player actions such as walking and jumping. When the player lands from a jump, you remove the jump animation so the character continues walking. If you use the removeAnimation(forKey:) method to remove the jump animation, SceneKit abruptly switches from the current frame of the jump animation to the current frame of the walk animation. If you use the removeAnimation(forKey:fadeOutDuration:) method instead, SceneKit plays both animations at once during that duration and interpolates vertex positions from one animation to the other, creating a smooth transition.
+     * @see https://developer.apple.com/documentation/scenekit/scnanimatable/1522841-removeanimation
+     */
+
+  }, {
+    key: 'removeAnimationForKeyFadeOutDuration',
+    value: function removeAnimationForKeyFadeOutDuration(key, duration) {}
+
+    /**
+     * Required. An array containing the keys of all animations currently attached to the object.
+     * @type {string[]}
+     * @desc This array contains all keys for which animations are attached to the object, or is empty if there are no attached animations. The ordering of animation keys in the array is arbitrary.
+     * @see https://developer.apple.com/documentation/scenekit/scnanimatable/1523610-animationkeys
+     */
+
+  }, {
+    key: 'pauseAnimationForKey',
+
+
+    // Pausing and Resuming Animations
+
+    /**
+     * Required. Pauses the animation attached to the object with the specified key.
+     * @access public
+     * @param {string} key - A string identifying an attached animation.
+     * @returns {void}
+     * @desc This method has no effect if no animation is attached to the object with the specified key.
+     * @see https://developer.apple.com/documentation/scenekit/scnanimatable/1523592-pauseanimation
+     */
+    value: function pauseAnimationForKey(key) {}
+
+    /**
+     * Required. Resumes a previously paused animation attached to the object with the specified key.
+     * @access public
+     * @param {string} key - A string identifying an attached animation.
+     * @returns {void}
+     * @desc This method has no effect if no animation is attached to the object with the specified key or if the specified animation is not currently paused.
+     * @see https://developer.apple.com/documentation/scenekit/scnanimatable/1523332-resumeanimation
+     */
+
+  }, {
+    key: 'resumeAnimationForKey',
+    value: function resumeAnimationForKey(key) {}
+
+    /**
+     * Required. Returns a Boolean value indicating whether the animation attached to the object with the specified key is paused.
+     * @access public
+     * @param {string} key - A string identifying an attached animation.
+     * @returns {boolean} - 
+     * @see https://developer.apple.com/documentation/scenekit/scnanimatable/1523703-isanimationpaused
+     */
+
+  }, {
+    key: 'isAnimationPausedForKey',
+    value: function isAnimationPausedForKey(key) {
+      return false;
+    }
+
+    // Instance Methods
+
+    /**
+     * Required. 
+     * @access public
+     * @param {number} speed - 
+     * @param {string} key - 
+     * @returns {void}
+     * @see https://developer.apple.com/documentation/scenekit/scnanimatable/1778343-setanimationspeed
+     */
+
+  }, {
+    key: 'setAnimationSpeedForKey',
+    value: function setAnimationSpeedForKey(speed, key) {}
+
+    /**
+     * @access private
+     * @returns {Promise} -
+     */
+
+  }, {
+    key: '_getLoadedPromise',
+    value: function _getLoadedPromise() {
+      if (this._loadedPromise) {
+        return this._loadedPromise;
+      }
+
+      var properties = [this._ambient, this._specular, this._normal, this._reflective, this._emission, this._transparent, this._multiply, this._ambientOcclusion, this._metalness, this._roughness];
+      var promises = [];
+      var _iteratorNormalCompletion3 = true;
+      var _didIteratorError3 = false;
+      var _iteratorError3 = undefined;
+
+      try {
+        for (var _iterator3 = properties[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+          var p = _step3.value;
+
+          if (p) {
+            promises.push(p.didLoad);
+          }
+        }
+        //this._loadedPromise = Promise.all(promises)
+        //return this._loadedPromise
+      } catch (err) {
+        _didIteratorError3 = true;
+        _iteratorError3 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion3 && _iterator3.return) {
+            _iterator3.return();
+          }
+        } finally {
+          if (_didIteratorError3) {
+            throw _iteratorError3;
+          }
+        }
+      }
+
+      return Promise.all(promises);
+    }
+
+    /**
+     * @access public
+     * @type {Promise} -
+     */
+
+  }, {
+    key: 'setValueForUndefinedKey',
+
+
+    /**
+     * Invoked by setValue(_:forKey:) when it finds no property for a given key.
+     * @access public
+     * @param {?Object} value - The value for the key identified by key.
+     * @param {string} key - A string that is not equal to the name of any of the receiver's properties.
+     * @returns {void}
+     * @desc Subclasses can override this method to handle the request in some other way. The default implementation raises an NSUndefinedKeyException.
+     * @see https://developer.apple.com/documentation/objectivec/nsobject/1413490-setvalue
+     */
+    value: function setValueForUndefinedKey(value, key) {
+      this._valuesForUndefinedKeys[key] = value;
+    }
+
+    /**
+     * Invoked by value(forKey:) when it finds no property corresponding to a given key.
+     * @access public
+     * @param {string} key - A string that is not equal to the name of any of the receiver's properties.
+     * @returns {?Object} - 
+     * @desc Subclasses can override this method to return an alternate value for undefined keys. The default implementation raises an NSUndefinedKeyException.
+     * @see https://developer.apple.com/documentation/objectivec/nsobject/1413457-value
+     */
+
+  }, {
+    key: 'valueForUndefinedKey',
+    value: function valueForUndefinedKey(key) {
+      if (typeof this._valuesForUndefinedKeys[key] !== 'undefined') {
+        return this._valuesForUndefinedKeys[key];
+      }
+      return _get(SCNMaterial.prototype.__proto__ || Object.getPrototypeOf(SCNMaterial.prototype), 'valueForUndefinedKey', this).call(this, key);
+    }
+  }, {
+    key: 'diffuse',
+    get: function get() {
+      return this._diffuse;
+    }
+
+    /**
+     * An object that manages the material’s response to ambient lighting.
+     * @type {SCNMaterialProperty}
+     * @desc Ambient shading describes the amount and color of ambient light reflected by the material. Ambient shading is uniform in all directions at all points on a surface. If a scene does not contain lights whose type is ambient, this property has no effect on a material’s appearance. By default, the ambient property’s contents object is a dark gray color. Changing the ambient property’s contents lets you specify a different color or texture for the areas of a surface not directly illuminated by lights in a scene. To make the material respond identically to both ambient and diffuse light, set its locksAmbientWithDiffuse property to true. Figure 1 shows a material (with a texture for its diffuse property) before and after setting the ambient property’s contents to a solid color.Figure 1 Adding an ambient color to a materialThe material’s lightingModel property determines the formula SceneKit uses to combine its ambient color and other visual properties with lights and other contents in a scene to produce the final color for each rendered pixel in the rendered scene. For details, see Lighting Models.This material property does not apply to physically-based materials (see physicallyBased).Adding an ambient color to a material
+     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462558-ambient
+     */
+
+  }, {
+    key: 'ambient',
+    get: function get() {
+      return this._ambient;
+    }
+
+    /**
+     * An object that manages the material’s specular response to lighting.
+     * @type {SCNMaterialProperty}
+     * @desc Specular shading describes the amount and color of light reflected by the material directly toward the viewer, forming a bright highlight on the surface and simulating a glossy or shiny appearance. You adjust the sharpness of specular highlights using the material’s shininess property.By default, the specular property’s contents object is a black color, causing the material to appear dull or matte. Changing the specular property’s contents to a brighter color causes specular highlights to appear in that color, making the surface appear shiny. When you apply a texture to the specular property, the texture image becomes a specular map—the brightness of each pixel in the image determines the tendency of each point on the material’s surface to create specular highlights when lit. Figure 1 shows a material (with a texture for its diffuse property) before and after providing a specular map image. Notice that the bright specular highlights appear only on portions of the surface where the specular map image is white.Figure 1 Adding a specular map to a materialThe material’s lightingModel property determines the formula SceneKit uses to combine its specularity and other visual properties with lights and other contents in a scene to produce the final color for each rendered pixel in the rendered scene. For details, see Lighting Models.This material property does not apply to physically-based materials (see physicallyBased).Adding a specular map to a material
+     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462516-specular
+     */
+
+  }, {
+    key: 'specular',
+    get: function get() {
+      return this._specular;
+    }
+
+    /**
+     * An object that defines the nominal orientation of the surface at each point for use in lighting.
+     * @type {SCNMaterialProperty}
+     * @desc Simulating the interaction of lights with a material requires information about the orientation of the surface at each point. Typically, normal vectors provided by a geometry object provide this information. However, this limits the level of detail for surface contours because a geometry can only provide one unique surface normal vector per vertex (and increasing vertex count to model a highly detailed surface exacts a high performance cost).Alternatively, you can use a texture image as a normal map that describes the orientation of a surface for each pixel in the texture. When SceneKit uses an image, it treats the R, G, and B components of each as the X, Y, and Z components of a surface normal vector. Because a normal map texture can store much more detailed surface information than a geometry, you can use a material’s normal property to simulate rough surfaces such as stone or add embossed or engraved designs to an otherwise smooth surface.By default, the normal property’s contents object is a white color. Setting the normal property’s contents to any solid color disables normal mapping, causing SceneKit to shade the material using only the surface normal information provided by its geometry. Setting the normal property’s contents to an image or other texture-mapped content enables normal mapping, which also automatically sets the material’s isLitPerPixel property to true. Figure 1 shows the effect of setting the normal property’s contents to a texture image on a material whose other properties have default contents.Figure 1 Adding a normal map to a materialThe material’s lightingModel property determines the formula SceneKit uses to combine its surface normals and other visual properties with lights and other contents in a scene to produce the final color for each rendered pixel in the rendered scene. For details, see Lighting Models.Adding a normal map to a material
+     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462542-normal
+     */
+
+  }, {
+    key: 'normal',
+    get: function get() {
+      return this._normal;
+    }
+
+    /**
+     * An object that defines the reflected color for each point on a surface.
+     * @type {SCNMaterialProperty}
+     * @desc You can simulate a mirrored or chromed finish on a surface by causing it to reflect its environment. SceneKit does not render real-time reflections of the objects in a scene, but it can use an environment map texture to simulate reflection of a static or animated image. When rendering each pixel on the surface, SceneKit traces the light from that point to a pixel in the environment map as if the surface was reflecting that image.By default, the reflective property’s contents object is a white color, causing the property to have no visible effect. Setting the reflective property’s contents to any solid color adds uniform shading to the material. To create a reflective effect, set the property’s contents to an image or other texture-mapped content.To produce a mirror-finish effect using an environment map, the texture image should take one of two forms:A sphere map, a square image whose content depicts an environment as reflected by a mirrored sphere.A cube map, an array of six square images which together form an imaginary cube enclosing the scene, whose inner surfaces are reflected by the material. You create a cube map by setting the reflective property’s contents object to an NSArray instance containing six images, each corresponding to a direction in the scene’s world coordinate space in the following order: +X, -X, +Y, -Y, +Z, -Z (or Right, Left, Top, Bottom, Near, Far).Figure 1 shows a material (with a texture for its normal property) before and after providing a cube map for the reflective property.Figure 1 Adding a reflective cube map to a materialThis material property does not apply to physically-based materials (see physicallyBased). Instead, such materials reflect environment-based lighting (see the SCNScene lightingEnvironment property) based on their metalness and roughness properties.Adding a reflective cube map to a material
+     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462520-reflective
+     */
+
+  }, {
+    key: 'reflective',
+    get: function get() {
+      return this._reflective;
+    }
+
+    /**
+     * An object that defines the color emitted by each point on a surface.
+     * @type {SCNMaterialProperty}
+     * @desc You can use an emissive map texture to simulate parts of a surface that glow with their own light. SceneKit does not treat the material as a light source—rather, the emission property determines colors for a material independent of lighting. (To create an object that appears to glow, you may wish to combine a geometry with an emissive map and additional SCNLight objects added to the scene.)By default, the emissive property’s contents object is a black color, causing the property to have no visible effect. Setting the emissive property’s contents to any solid color adds a uniform color to the material independent of lighting. To create a selective glow effect, set the property’s contents to an image or other texture-mapped content whose glowing areas use bright colors and whose other areas use darker colors. In the darker-colored portions of the emissive map (and portions with reduced opacity), the other visual properties of the material contribute to its appearance under scene lighting.Figure 1 shows a material (with a texture for its diffuse property) before and after providing an emissive map image.Figure 1 Adding an emissive map to a materialAdding an emissive map to a material
+     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462527-emission
+     */
+
+  }, {
+    key: 'emission',
+    get: function get() {
+      return this._emission;
+    }
+
+    /**
+     * An object that determines the opacity of each point in a material.
+     * @type {SCNMaterialProperty}
+     * @desc Use this property to selectively make parts of a material appear transparent. You can uniformly adjust the opacity of a material using its transparency property, or of all the content attached to a node using the node’s opacity property.By default, the transparent property’s contents object is a fully opaque black color, causing the property to have no visible effect. Setting the transparent property’s contents to any solid color uniformly fades the opacity of the material based on that color’s opacity value. To make parts of a material appear transparent, set the property’s contents to an image or other texture-mapped content whose alpha channel defines areas of full or partial opacity.Figure 1 shows a semitransparent material before and after providing a texture image for its transparent property. (To make the transparency effect more visible, a blue sphere is shown behind the transparent material.)Figure 1 Adding a transparent texture to a materialThe transparencyMode property controls how SceneKit interprets color information from the transparent property’s contents.Adding a transparent texture to a material
+     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462583-transparent
+     */
+
+  }, {
+    key: 'transparent',
+    get: function get() {
+      return this._transparent;
+    }
+
+    /**
+     * An object that provides color values that are multiplied with pixels in a material after all other shading is complete.
+     * @type {SCNMaterialProperty}
+     * @desc After combining a material’s other visual properties with lighting and other information about a scene, Scene kit multiplies the color of each rendered pixel by the color this property provides. You can use this property to darken or tint a surface independent of the effects of lighting and other properties, or to add precomputed lighting to a scene via a shadow map.By default, the multiply property’s contents object is a white color, causing the property to have no visible effect.Figure 1 shows a material (with textures for its diffuse and emission properties) before and after setting the multiply property’s contents to a solid color. Notice that the multiply color modulates even the bright areas added by the emissive map.Figure 1 Adding a multiply color to a materialAdding a multiply color to a material
+     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462575-multiply
+     */
+
+  }, {
+    key: 'multiply',
+    get: function get() {
+      return this._multiply;
+    }
+
+    /**
+     * An object that provides color values to be multiplied with the ambient light affecting the material.
+     * @type {SCNMaterialProperty}
+     * @desc Use this property to assign an ambient occlusion texture map to a surface. This property has no effect if there is no ambient light in the scene. If this property is not nil, SceneKit ignores the ambient property.When using physically-based shading (see physicallyBased), ambient occlusion approximates large-scale surface details that obscure global illumination.
+     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462579-ambientocclusion
+     */
+
+  }, {
+    key: 'ambientOcclusion',
+    get: function get() {
+      return this._ambientOcclusion;
+    }
+
+    /**
+     * An object that provides color values representing the global illumination of the surface.
+     * @type {SCNMaterialProperty}
+     * @desc Self-illumination applies to all materials, but is especially useful for those using physically-based shading (see physicallyBased). Physically-based materials work best with environment-based lighting (see the SCNScene property lightingEnvironment), but for some materials it can be useful to let a surface itself define part of its lighting—for example, an object whose position obscures it from the “sky” that provides the main lighting environment. When you assign contents to this property, they override the environmental lighting contribution to diffuse shading, but environmental lighting still contributes to specular effects.
+     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1462524-selfillumination
+     */
+
+  }, {
+    key: 'selfIllumination',
+    get: function get() {
+      return this._selfIllumination;
+    }
+
+    /**
+     * An object that provides color values to determine how metallic the material’s surface appears.
+     * @type {SCNMaterialProperty}
+     * @desc This property measures only the total intensity of color values; texture contents are best defined in grayscale.This property generally approximates aspects of a physical surface—such as index of refraction, tendency to produce sharp reflections, and tendency to produce Fresnel reflections at grazing angles—that together produce an overall metallic or nonmetallic (also called dielectric) appearance. Lower values (darker colors) cause the material to appear more like a dielectric surface. Higher values (brighter colors) cause the surface to appear more metallic.This property applies only when the material’s lightingModel value is physicallyBased.
+     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1640554-metalness
+     */
+
+  }, {
+    key: 'metalness',
+    get: function get() {
+      return this._metalness;
+    }
+
+    /**
+     * An object that provides color values to determine the apparent smoothness of the surface.
+     * @type {SCNMaterialProperty}
+     * @desc This property measures only the total intensity of color values; texture contents are best defined in grayscale.This property approximates the level of microscopic detail—for example tiny bumps and cracks—in a surface. By approximating these “microfacets” as a single term, this property helps produce lighting calculations that resemble the energy-conserving laws of real-world physics, resulting in more realistic variation between matte and shiny surfaces. Lower values (darker colors) cause the material to appear shiny, with well-defined specular highlights. Higher values (brighter colors) cause specular highlights to spread out and the diffuse color of the material to become more retroreflective.This property applies only when the material’s lightingModel value is physicallyBased.
+     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/1640555-roughness
+     */
+
+  }, {
+    key: 'roughness',
+    get: function get() {
+      return this._roughness;
+    }
+
+    /**
+     * 
+     * @type {SCNMaterialProperty}
+     * @desc
+     * @see https://developer.apple.com/documentation/scenekit/scnmaterial/2867516-displacement
+     */
+
+  }, {
+    key: 'displacement',
+    get: function get() {
+      return this._displacement;
+    }
+  }, {
+    key: 'animationKeys',
+    get: function get() {
+      var keys = [];
+      var _iteratorNormalCompletion4 = true;
+      var _didIteratorError4 = false;
+      var _iteratorError4 = undefined;
+
+      try {
+        for (var _iterator4 = this._animations.keys()[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+          var key = _step4.value;
+
+          keys.push(key);
+        }
+      } catch (err) {
+        _didIteratorError4 = true;
+        _iteratorError4 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion4 && _iterator4.return) {
+            _iterator4.return();
+          }
+        } finally {
+          if (_didIteratorError4) {
+            throw _iteratorError4;
+          }
+        }
+      }
+
+      return keys;
+    }
+  }, {
+    key: 'didLoad',
+    get: function get() {
+      return this._getLoadedPromise();
+    }
+  }], [{
+    key: 'LightingModel',
+    get: function get() {
+      return _LightingModel;
+    }
+  }]);
+
+  return SCNMaterial;
+}(_NSObject3.default);
+
+exports.default = SCNMaterial;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * The drawing primitive that connects vertices when rendering a geometry element, used by the primitiveType property to specify how SceneKit interprets the geometry element’s data.
+ * @typedef {Object} SCNGeometryPrimitiveType
+ * @property {number} triangles - The geometry element’s data is a sequence of triangles, with each triangle described by three new vertices.
+ * @property {number} triangleStrip - The geometry element’s data is a sequence of triangles, with each triangle described by one new vertex and two vertices from the previous triangle. 
+ * @property {number} line - The geometry element’s data is a sequence of line segments, with each line segment described by two new vertices. 
+ * @property {number} point - The geometry element’s data is a sequence of unconnected points.
+ * @property {number} polygon - 
+ * @see https://developer.apple.com/documentation/scenekit/scngeometryprimitivetype
+ */
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var SCNGeometryPrimitiveType = {
+  triangles: 0,
+  triangleStrip: 1,
+  line: 2,
+  point: 3,
+  polygon: 4
+};
+
+exports.default = SCNGeometryPrimitiveType;
+
+/***/ }),
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -15852,7 +15846,7 @@ var _NSObject2 = __webpack_require__(0);
 
 var _NSObject3 = _interopRequireDefault(_NSObject2);
 
-var _SCNGeometryPrimitiveType = __webpack_require__(13);
+var _SCNGeometryPrimitiveType = __webpack_require__(14);
 
 var _SCNGeometryPrimitiveType2 = _interopRequireDefault(_SCNGeometryPrimitiveType);
 
@@ -16130,7 +16124,7 @@ var SCNGeometryElement = function (_NSObject) {
 }(_NSObject3.default);
 
 exports.default = SCNGeometryElement;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17).Buffer))
 
 /***/ }),
 /* 16 */
@@ -16145,11 +16139,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _CGPoint = __webpack_require__(10);
+var _CGPoint = __webpack_require__(8);
 
 var _CGPoint2 = _interopRequireDefault(_CGPoint);
 
-var _CGSize = __webpack_require__(8);
+var _CGSize = __webpack_require__(9);
 
 var _CGSize2 = _interopRequireDefault(_CGSize);
 
@@ -16718,3104 +16712,6 @@ exports.default = CGRect;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _NSObject2 = __webpack_require__(0);
-
-var _NSObject3 = _interopRequireDefault(_NSObject2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-//import SCNAnimatable from './SCNAnimatable'
-
-/**
- * The abstract superclass for objects that automatically adjust the position, rotation, or scale of a node based on rules you define.
- * @access public
- * @extends {NSObject}
- * @implements {SCNAnimatable}
- * @see https://developer.apple.com/documentation/scenekit/scnconstraint
- */
-var SCNConstraint = function (_NSObject) {
-  _inherits(SCNConstraint, _NSObject);
-
-  /**
-   * constructor
-   * @access public
-   * @constructor
-   */
-  function SCNConstraint() {
-    _classCallCheck(this, SCNConstraint);
-
-    // Tuning a Constraint’s Effect on Nodes
-
-    /**
-     * The influence of the constraint on the node’s transformation.
-     * @type {number}
-     * @see https://developer.apple.com/documentation/scenekit/scnconstraint/1468692-influencefactor
-     */
-    var _this = _possibleConstructorReturn(this, (SCNConstraint.__proto__ || Object.getPrototypeOf(SCNConstraint)).call(this));
-
-    _this.influenceFactor = 0;
-
-    return _this;
-  }
-
-  return SCNConstraint;
-}(_NSObject3.default);
-
-exports.default = SCNConstraint;
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _SCNMatrix = __webpack_require__(7);
-
-var _SCNMatrix2 = _interopRequireDefault(_SCNMatrix);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * Returns a matrix describing a translation transformation.
- * @access public
- * @param {number} tx - 
- * @param {number} ty - 
- * @param {number} tz - 
- * @returns {SCNMatrix4} - 
- * @see https://developer.apple.com/documentation/scenekit/1409679-scnmatrix4maketranslation
- */
-var SCNMatrix4MakeTranslation = function SCNMatrix4MakeTranslation(tx, ty, tz) {
-  return new _SCNMatrix2.default(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, tx, ty, tz, 1);
-};
-
-exports.default = SCNMatrix4MakeTranslation;
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _NSObject2 = __webpack_require__(0);
-
-var _NSObject3 = _interopRequireDefault(_NSObject2);
-
-var _CGPoint = __webpack_require__(10);
-
-var _CGPoint2 = _interopRequireDefault(_CGPoint);
-
-var _CGRect = __webpack_require__(16);
-
-var _CGRect2 = _interopRequireDefault(_CGRect);
-
-var _CGSize = __webpack_require__(8);
-
-var _CGSize2 = _interopRequireDefault(_CGSize);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-//import UIFocusItem from '../undefined/UIFocusItem'
-//import SKScene from './SKScene'
-//import SKAction from './SKAction'
-//import SKPhysicsBody from './SKPhysicsBody'
-//import GKPolygonObstacle from '../undefined/GKPolygonObstacle'
-//import GKEntity from '../undefined/GKEntity'
-//import NSMutableDictionary from '../undefined/NSMutableDictionary'
-//import SKConstraint from './SKConstraint'
-//import SKReachConstraints from './SKReachConstraints'
-//import NSCoder from '../undefined/NSCoder'
-//import SKAttributeValue from './SKAttributeValue'
-
-
-/**
- * The SKNode class is the fundamental building block of most SpriteKit content. 
- * @access public
- * @extends {NSObject}
- * @implements {UIFocusItem}
- * @see https://developer.apple.com/documentation/spritekit/sknode
- */
-var SKNode = function (_NSObject) {
-  _inherits(SKNode, _NSObject);
-
-  // Initializers
-
-  /**
-   * 
-   * @access public
-   * @constructor
-   * @see https://developer.apple.com/documentation/spritekit/sknode/1483097-init
-   */
-  function SKNode() {
-    _classCallCheck(this, SKNode);
-
-    // Inspecting the Node’s Position
-
-    /**
-     * The position of the node in its parent's coordinate system.
-     * @type {CGPoint}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483101-position
-     */
-    var _this = _possibleConstructorReturn(this, (SKNode.__proto__ || Object.getPrototypeOf(SKNode)).call(this));
-
-    _this.position = new _CGPoint2.default(0, 0);
-
-    /**
-     * The height of the node relative to its parent.
-     * @type {number}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483107-zposition
-     */
-    _this.zPosition = 0.0;
-
-    _this._frame = new _CGRect2.default(new _CGPoint2.default(0, 0), new _CGSize2.default(0, 0));
-
-    // Setting a Node’s Scaling and Rotation
-
-    /**
-     * A scaling factor that multiplies the width of a node and its children.
-     * @type {number}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483087-xscale
-     */
-    _this.xScale = 1.0;
-
-    /**
-     * A scaling factor that multiplies the height of a node and its children.
-     * @type {number}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483046-yscale
-     */
-    _this.yScale = 1.0;
-
-    /**
-     * The Euler rotation about the z axis (in radians).
-     * @type {number}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483089-zrotation
-     */
-    _this.zRotation = 0.0;
-
-    // Inspecting a Node’s Visibility
-
-    /**
-     * The transparency value applied to the node’s contents.
-     * @type {number}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483023-alpha
-     */
-    _this.alpha = 1.0;
-
-    /**
-     * A Boolean value that determines whether a node and its descendants are rendered.
-     * @type {boolean}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483048-ishidden
-     */
-    _this.isHidden = false;
-
-    // Determining Whether a Node Supports User Interaction
-
-    /**
-     * A Boolean value that indicates whether the node receives touch events.
-     * @type {boolean}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483109-isuserinteractionenabled
-     */
-    _this.isUserInteractionEnabled = false;
-
-    // Working with Node Trees
-
-    _this._children = [];
-    _this._parent = null;
-    _this._scene = null;
-
-    // Naming Nodes
-
-    /**
-     * The node’s assignable name.
-     * @type {?string}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483136-name
-     */
-    _this.name = null;
-
-    // Running Actions
-
-    /**
-     * A speed modifier applied to all actions executed by a node and its descendants.
-     * @type {number}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483036-speed
-     */
-    _this.speed = 1.0;
-
-    /**
-     * A Boolean value that determines whether actions on the node and its descendants are processed.
-     * @type {boolean}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483113-ispaused
-     */
-    _this.isPaused = false;
-
-    /**
-     * @access private
-     * @type {Map}
-     */
-    _this._actions = new Map();
-
-    // Adding Physics to a Node
-
-    /**
-     * The physics body associated with the node.
-     * @type {?SKPhysicsBody}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483117-physicsbody
-     */
-    _this.physicsBody = null;
-
-    // Working with GameplayKit Entities
-
-    /**
-     * The GameplayKit entity this node represents.
-     * @type {?GKEntity}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1640688-entity
-     */
-    //this.entity = null
-
-
-    // Storing Custom Node Data
-
-    /**
-     * A dictionary containing arbitrary data.
-     * @type {?NSMutableDictionary}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483121-userdata
-     */
-    _this.userData = null;
-
-    // Constraining a Node’s Behavior Relative to Other Nodes
-
-    /**
-     * Specifies the list of constraints to apply to the node.
-     * @type {?SKConstraint[]}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483124-constraints
-     */
-    _this.constraints = null;
-
-    /**
-     * Specifies the reach constraints to apply to the node when executing a reach action.
-     * @type {?SKReachConstraints}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483019-reachconstraints
-     */
-    _this.reachConstraints = null;
-
-    // Instance Properties
-
-    /**
-     * 
-     * @type {?Object[]}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1645045-accessibilitychildren
-     */
-    _this.accessibilityChildren = [];
-
-    /**
-     * 
-     * @type {CGRect}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1645044-accessibilityframe
-     */
-    _this.accessibilityFrame = new _CGRect2.default(new _CGPoint2.default(0, 0), new _CGSize2.default(0, 0));
-
-    /**
-     * 
-     * @type {?string}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1645041-accessibilityhelp
-     */
-    _this.accessibilityHelp = null;
-
-    /**
-     * 
-     * @type {?string}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1645039-accessibilitylabel
-     */
-    _this.accessibilityLabel = null;
-
-    /**
-     * 
-     * @type {?Object}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1645042-accessibilityparent
-     */
-    _this.accessibilityParent = null;
-
-    /**
-     * 
-     * @type {?string}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1645036-accessibilityrole
-     */
-    _this.accessibilityRole = 'AXImage';
-
-    /**
-     * 
-     * @type {?string}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1645035-accessibilityroledescription
-     */
-    _this.accessibilityRoleDescription = 'SKNode';
-
-    /**
-     * 
-     * @type {?string}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1645043-accessibilitysubrole
-     */
-    _this.accessibilitySubrole = null;
-
-    /**
-     * The values of each attribute associated with the node's attached shader. 
-     * @type {Map<string, SKAttributeValue>}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1644181-attributevalues
-     */
-    _this.attributeValues = new Map();
-
-    /**
-     * 
-     * @type {boolean}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1645038-isaccessibilityelement
-     */
-    _this.isAccessibilityElement = false;
-
-    /**
-     * 
-     * @type {boolean}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1645037-isaccessibilityenabled
-     */
-    _this.isAccessibilityEnabled = false;
-
-    /**
-     * @type {SKNode}
-     * @access private
-     */
-    _this.__presentation = null;
-
-    _this._isPresentationInstance = false;
-    _this._worldPosition = new _CGPoint2.default(0, 0);
-    _this._worldZPosition = 0;
-    _this._worldXScale = 1;
-    _this._worldYScale = 1;
-    _this._worldZRotation = 0;
-    return _this;
-  }
-
-  /**
-   * 
-   * @access public
-   * @param {NSCoder} aDecoder - 
-   * @returns {void}
-   * @see https://developer.apple.com/documentation/spritekit/sknode/1483142-init
-   */
-  //initWithCoder(aDecoder) {
-  //}
-
-
-  // Creating a New Node
-
-  /**
-   * Creates a new node by loading an archive file from the game’s main bundle.
-   * @access public
-   * @param {string} filename - The name of the file, without a file extension. The file must be in the app’s main bundle and have a .sks filename extension.
-   * @returns {void}
-   * @desc If you call this method on a subclass of the SKScene class and the object in the archive is an SKScene object, the returned object is initialized as if it is a member of the subclass. You use this behavior to create scene layouts in the Xcode Editor and provide custom behaviors in your subclass. 
-   * @see https://developer.apple.com/documentation/spritekit/sknode/1483083-init
-   */
-
-
-  _createClass(SKNode, [{
-    key: 'calculateAccumulatedFrame',
-
-
-    // Inspecting the Node’s Position
-
-    /**
-     * Calculates a rectangle in the parent’s coordinate system that contains the content of the node and all of its descendants. 
-     * @access public
-     * @returns {CGRect} - 
-     * @desc The frame takes into the account the cumulative effect of the xScale, yScale, and zRotation properties of each node in the subtree.Listing 1 shows how calculateAccumulatedFrame() can be used display the bounding box of a shape node. The child node, although smaller than its parent, is rotated by 30° so that its bounds extend beyond its parent's bounds. After childNode has been added to parentNode, a further shape node, boundingBoxNode, is created with its size based on the accumulated frame of parentNode.Listing 1 Displaying the accumulated frame of a shape nodelet parentNode = SKShapeNode(rectOf: CGSize(width: 500, height: 500))
-    parentNode.lineWidth = 2
-    parentNode.strokeColor = .blue
-    parentNode.fillColor = .clear
-       
-    let childNode = SKShapeNode(rectOf: CGSize(width: 400, height: 400))
-    childNode.strokeColor = .red
-    childNode.fillColor = .clear
-    childNode.zRotation = -CGFloat.pi / 6 // pi / 6 = 30°
-       
-    parentNode.addChild(childNode)
-       
-    let boundingBoxNode = SKShapeNode(rectOf: parentNode.calculateAccumulatedFrame().size)
-    boundingBoxNode.lineWidth = 1
-    boundingBoxNode.strokeColor = .black
-    boundingBoxNode.fillColor = .clear
-    boundingBoxNode.path = boundingBoxNode.path?.copy(dashingWithPhase: 0,
-                                                    lengths: [10,10])
-       
-    parentNode.addChild(boundingBoxNode)
-    Figure 1 shows the result of Listing 1 with parentNode rendered in blue, childNode rendered in red and the boundingBoxNode rendered with a dashed line. Figure 1 Displaying the accumulated frame of a shape nodeDisplaying the accumulated frame of a shape nodelet parentNode = SKShapeNode(rectOf: CGSize(width: 500, height: 500))
-    parentNode.lineWidth = 2
-    parentNode.strokeColor = .blue
-    parentNode.fillColor = .clear
-       
-    let childNode = SKShapeNode(rectOf: CGSize(width: 400, height: 400))
-    childNode.strokeColor = .red
-    childNode.fillColor = .clear
-    childNode.zRotation = -CGFloat.pi / 6 // pi / 6 = 30°
-       
-    parentNode.addChild(childNode)
-       
-    let boundingBoxNode = SKShapeNode(rectOf: parentNode.calculateAccumulatedFrame().size)
-    boundingBoxNode.lineWidth = 1
-    boundingBoxNode.strokeColor = .black
-    boundingBoxNode.fillColor = .clear
-    boundingBoxNode.path = boundingBoxNode.path?.copy(dashingWithPhase: 0,
-                                                    lengths: [10,10])
-       
-    parentNode.addChild(boundingBoxNode)
-    Displaying the accumulated frame of a shape node
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483066-calculateaccumulatedframe
-     */
-    value: function calculateAccumulatedFrame() {
-      var r = this._frame.copy();
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = this._children[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var child = _step.value;
-
-          r = r.union(child.calculateAccumulatedFrame());
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator.return) {
-            _iterator.return();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-
-      return r;
-    }
-
-    /**
-     * A rectangle in the parent’s coordinate system that contains the node’s content, ignoring the node’s children.
-     * @type {CGRect}
-     * @desc The frame is the smallest rectangle that contains the node’s content, taking into account the node’s xScale, yScale, and zRotation properties. Not all nodes contain content of their own.
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483026-frame
-     */
-
-  }, {
-    key: 'setScale',
-
-
-    // Setting a Node’s Scaling and Rotation
-
-    /**
-     * Sets the xScale and yScale properties of the node.
-     * @access public
-     * @param {number} scale - The new value to use for the node’s xScale and yScale properties.
-     * @returns {void}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483126-setscale
-     */
-    value: function setScale(scale) {
-      this.xScale = scale;
-      this.yScale = scale;
-    }
-
-    // Working with Node Trees
-
-    /**
-     * Adds a node to the end of the receiver’s list of child nodes.
-     * @access public
-     * @param {SKNode} node - The node to add. The node must not already have a parent.
-     * @returns {void}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483054-addchild
-     */
-
-  }, {
-    key: 'addChild',
-    value: function addChild(node) {
-      if (this._children.indexOf(node) >= 0) {
-        return;
-      }
-      node.removeFromParent();
-      this._children.push(node);
-      node._parent = this;
-    }
-
-    /**
-     * Inserts a child into a specific position in the receiver’s list of child nodes.
-     * @access public
-     * @param {SKNode} node - The node to add. The node must not already have a parent.
-     * @param {number} index - The position in the array to insert the node.
-     * @returns {void}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483062-insertchild
-     */
-
-  }, {
-    key: 'insertChildAt',
-    value: function insertChildAt(node, index) {
-      if (this._children.indexOf(node) >= 0) {
-        return;
-      }
-      node.removeFromParent();
-      this._insertObjectInChildrenAtIndex(node, index);
-      this._parent = this;
-    }
-
-    /**
-     * Compares the parameter node to the receiving node.
-     * @access public
-     * @param {SKNode} node - The node to compare to the receiving node.
-     * @returns {boolean} - 
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483078-isequal
-     */
-
-  }, {
-    key: 'isEqualTo',
-    value: function isEqualTo(node) {
-      return false;
-    }
-
-    /**
-     * Moves the node to a new parent node in the scene. 
-     * @access public
-     * @param {SKNode} parent - An SKNode object to move the receiver to. This node must be in the same scene as the node’s current parent.
-     * @returns {void}
-     * @desc The node maintains its current position in scene coordinates.
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483021-move
-     */
-
-  }, {
-    key: 'moveToParent',
-    value: function moveToParent(parent) {
-      parent.addChild(this);
-    }
-
-    /**
-     * Removes the receiving node from its parent.
-     * @access public
-     * @returns {void}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483119-removefromparent
-     */
-
-  }, {
-    key: 'removeFromParent',
-    value: function removeFromParent() {
-      var parentNode = this._parent;
-      if (parentNode === null) {
-        return;
-      }
-      var index = parentNode._children.indexOf(this);
-      if (index < 0) {
-        return;
-      }
-      parentNode._removeObjectFromChildrenAtIndex(index);
-    }
-
-    /**
-     * Removes all of the node’s children.
-     * @access public
-     * @returns {void}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483040-removeallchildren
-     */
-
-  }, {
-    key: 'removeAllChildren',
-    value: function removeAllChildren() {
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
-
-      try {
-        for (var _iterator2 = this._children[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var child = _step2.value;
-
-          child.removeFromParent();
-        }
-      } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion2 && _iterator2.return) {
-            _iterator2.return();
-          }
-        } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
-          }
-        }
-      }
-    }
-
-    /**
-     * Removes a list of children from the receiving node.
-     * @access public
-     * @param {SKNode[]} nodes - An array of SKNode objects that are all children of the receiving node.
-     * @returns {void}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483091-removechildren
-     */
-
-  }, {
-    key: 'removeChildrenIn',
-    value: function removeChildrenIn(nodes) {
-      var _iteratorNormalCompletion3 = true;
-      var _didIteratorError3 = false;
-      var _iteratorError3 = undefined;
-
-      try {
-        for (var _iterator3 = nodes[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-          var node = _step3.value;
-
-          if (this._children.indexOf(node) >= 0) {
-            node.removeFromParent();
-          }
-        }
-      } catch (err) {
-        _didIteratorError3 = true;
-        _iteratorError3 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion3 && _iterator3.return) {
-            _iterator3.return();
-          }
-        } finally {
-          if (_didIteratorError3) {
-            throw _iteratorError3;
-          }
-        }
-      }
-    }
-
-    /**
-     *
-     * @access private
-     * @param {number} index -
-     * @returns {void}
-     */
-
-  }, {
-    key: '_removeObjectFromChildrenAtIndex',
-    value: function _removeObjectFromChildrenAtIndex(index) {
-      var arr = this._children.splice(index, 1);
-      if (arr.length === 0) {
-        return;
-      }
-      var obj = arr[0];
-
-      obj._parent = null;
-    }
-
-    /**
-     *
-     * @access private
-     * @param {SCNNode} object -
-     * @param {number} index -
-     * @returns {void}
-     */
-
-  }, {
-    key: '_insertObjectInChildrenAtIndex',
-    value: function _insertObjectInChildrenAtIndex(object, index) {
-      var length = this._children.length;
-      if (index > length) {
-        throw new Error('SKNode.children out of index: ' + index + ' > ' + length);
-      }
-      this._children.splice(index, 0, object);
-    }
-
-    /**
-     * Returns a Boolean value that indicates whether the node is a descendant of the target node.
-     * @access public
-     * @param {SKNode} parent - An SKNode object to test against.
-     * @returns {boolean} - 
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483111-inparenthierarchy
-     */
-
-  }, {
-    key: 'inParentHierarchy',
-    value: function inParentHierarchy(parent) {
-      return false;
-    }
-    /**
-     * The node’s children.
-     * @type {SKNode[]}
-     * @desc The objects in this array are all SKNode objects.
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483028-children
-     */
-
-  }, {
-    key: 'childNodeWithName',
-
-
-    // Naming Nodes
-
-    /**
-     * Searches the children of the receiving node for a node with a specific name.
-     * @access public
-     * @param {string} name - The name to search for. This may be either the literal name of the node or a customized search string. See Searching the Node Tree.
-     * @returns {?SKNode} - 
-     * @desc If more than one child share the same name, the first node discovered is returned.
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483060-childnode
-     */
-    value: function childNodeWithName(name) {
-      var _iteratorNormalCompletion4 = true;
-      var _didIteratorError4 = false;
-      var _iteratorError4 = undefined;
-
-      try {
-        for (var _iterator4 = this._children[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-          var child = _step4.value;
-
-          if (child.name === name) {
-            return child;
-          }
-        }
-      } catch (err) {
-        _didIteratorError4 = true;
-        _iteratorError4 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion4 && _iterator4.return) {
-            _iterator4.return();
-          }
-        } finally {
-          if (_didIteratorError4) {
-            throw _iteratorError4;
-          }
-        }
-      }
-
-      return null;
-    }
-
-    /**
-     * Search the children of the receiving node to perform processing for nodes which share a name.
-     * @access public
-     * @param {string} name - The name to search for. This may be either the literal name of the node or a customized search string. See Searching the Node Tree.
-     * @param {function(arg1: SKNode, arg2: UnsafeMutablePointer<ObjCBool>): void} block - A block to execute on nodes that match the name parameter. The block has the signature (node: SKNode, stop: UnsafeMutablePointer<ObjCBool>).
-     * @returns {void}
-     * @desc This method enumerates the child array in order, searching for nodes whose names match the search parameter. The block is called once for each node that matches the name parameter.The following code shows how you could enumerate through the child nodes of a scene with a name containing the string yellow. Each matching node is hidden until the enumeration finds a node that also contains the string triangle. When this node is reached, stop is set to true and the processing stops.Listing 1 Enumerating child nodesscene.enumerateChildNodes(withName: "*yellow*") {
-      (node, stop) in
-      
-      node.run(SKAction.hide())
-      
-      if let name = node.name, name.contains("triangle") {
-          stop.initialize(to: true)
-      }
-    }
-    You can also search by class name using enumerateChildNodes(withName:using:). However, for custom classes, you need to specify the fully annotated class name (i.e. the project name followed by the class name). The following code shows a custom class, SpaceshipNode, based on SKSpriteNode, and created in a project named SpaceGame. The first search fails to return an instance of  SpaceshipNode added as a child of parentNode:Listing 2 Enumerating child nodesclass SpaceshipNode: SKSpriteNode {
-    }
-       
-    let parentNode = SKNode()
-    let childNode = SpaceshipNode()
-    parentNode.addChild(childNode)
-       
-    parentNode.enumerateChildNodes(withName: "SpaceshipNode") {
-      node, _ in
-      // Unannotated name, returns no results 
-    }
-       
-    parentNode.enumerateChildNodes(withName: "SpaceGame.SpaceshipNode") {
-      node, _ in
-      // Annotated name, successfully returns `childNode` 
-    }
-       
-    parentNode.enumerateChildNodes(withName: "SKSpriteNode") {
-      node, _ in
-      // Superclass name, successfully returns `childNode` 
-    }
-    Enumerating child nodesscene.enumerateChildNodes(withName: "*yellow*") {
-      (node, stop) in
-      
-      node.run(SKAction.hide())
-      
-      if let name = node.name, name.contains("triangle") {
-          stop.initialize(to: true)
-      }
-    }
-    Enumerating child nodesclass SpaceshipNode: SKSpriteNode {
-    }
-       
-    let parentNode = SKNode()
-    let childNode = SpaceshipNode()
-    parentNode.addChild(childNode)
-       
-    parentNode.enumerateChildNodes(withName: "SpaceshipNode") {
-      node, _ in
-      // Unannotated name, returns no results 
-    }
-       
-    parentNode.enumerateChildNodes(withName: "SpaceGame.SpaceshipNode") {
-      node, _ in
-      // Annotated name, successfully returns `childNode` 
-    }
-       
-    parentNode.enumerateChildNodes(withName: "SKSpriteNode") {
-      node, _ in
-      // Superclass name, successfully returns `childNode` 
-    }
-      * @see https://developer.apple.com/documentation/spritekit/sknode/1483024-enumeratechildnodes
-     */
-
-  }, {
-    key: 'enumerateChildNodesWithNameUsing',
-    value: function enumerateChildNodesWithNameUsing(name, block) {}
-
-    // Running Actions
-
-    /**
-     * Adds an action to the list of actions executed by the node.
-     * @access public
-     * @param {SKAction} action - The action to perform.
-     * @returns {void}
-     * @desc The new action is processed the next time the scene’s animation loop is processed.
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483093-run
-     */
-
-  }, {
-    key: 'run',
-    value: function run(action) {
-      this.runWithKey(action, Symbol());
-    }
-
-    /**
-     * Adds an action to the list of actions executed by the node.
-     * @access public
-     * @param {SKAction} action - The action to perform.
-     * @param {function(): void} block - A completion block called when the action completes.
-     * @returns {void}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483103-run
-     */
-
-  }, {
-    key: 'runCompletion',
-    value: function runCompletion(action, block) {
-      this._runActionForKeyCompletionHandler(action, Symbol(), block);
-    }
-
-    /**
-     * Adds an identifiable action to the list of actions executed by the node.
-     * @access public
-     * @param {SKAction} action - The action to perform.
-     * @param {string} key - A unique key used to identify the action.
-     * @returns {void}
-     * @desc This method is identical to run(_:), but the action is stored so that it can be retrieved later. If an action using the same key is already running, it is removed before the new action is added.
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483042-run
-     */
-
-  }, {
-    key: 'runWithKey',
-    value: function runWithKey(action, key) {
-      this._runActionForKeyCompletionHandler(action, key, null);
-    }
-  }, {
-    key: '_runActionForKeyCompletionHandler',
-    value: function _runActionForKeyCompletionHandler(action, key, block) {
-      var _key = key;
-      if (typeof key === 'undefined' || key === null) {
-        _key = Symbol();
-      }
-      var act = action.copy
-      // FIXME: use current frame time
-      ();act._actionStartTime = Date.now() * 0.001;
-      act._completionHandler = block;
-      this._actions.set(_key, act);
-    }
-
-    /**
-     * Returns an action associated with a specific key.
-     * @access public
-     * @param {string} key - A string that uniquely identifies an action.
-     * @returns {?SKAction} - 
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483138-action
-     */
-
-  }, {
-    key: 'actionForKey',
-    value: function actionForKey(key) {
-      return this._actions.get(key);
-    }
-
-    /**
-     * Returns a Boolean value that indicates whether the node is executing actions.
-     * @access public
-     * @returns {boolean} - 
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483081-hasactions
-     */
-
-  }, {
-    key: 'hasActions',
-    value: function hasActions() {
-      return this._actions.size > 0;
-    }
-
-    /**
-     * Ends and removes all actions from the node.
-     * @access public
-     * @returns {void}
-     * @desc When an action is removed from the node, any remaining animation the action would perform is skipped; however, previous changes are not reverted. It is possible that an action may make a final change to the scene when removed; if so, it is documented for the specific action in SKAction.
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483030-removeallactions
-     */
-
-  }, {
-    key: 'removeAllActions',
-    value: function removeAllActions() {
-      // TODO: stop actions
-      this._actions.clear();
-    }
-
-    /**
-     * Removes an action associated with a specific key.
-     * @access public
-     * @param {string} key - A string that uniquely identifies an action.
-     * @returns {void}
-     * @desc If an action is found that matches the key, it is removed from the node.
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483076-removeaction
-     */
-
-  }, {
-    key: 'removeActionForKey',
-    value: function removeActionForKey(key) {
-      // TODO: stop action
-      this._actions.delete(key);
-    }
-
-    // Converting to and from the Node’s Coordinate System
-
-    /**
-     * Converts a point from the coordinate system of another node in the node tree to the coordinate system of this node.
-     * @access public
-     * @param {CGPoint} point - A point in the other node’s coordinate system.
-     * @param {SKNode} node - Another node in the same node tree as this node.
-     * @returns {CGPoint} - 
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483058-convert
-     */
-
-  }, {
-    key: 'convertFrom',
-    value: function convertFrom(point, node) {
-      return null;
-    }
-
-    /**
-     * Converts a point in this node’s coordinate system to the coordinate system of another node in the node tree.
-     * @access public
-     * @param {CGPoint} point - A point in this node’s coordinate system.
-     * @param {SKNode} node - Another node in the same node tree as this node.
-     * @returns {CGPoint} - 
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483056-convert
-     */
-
-  }, {
-    key: 'convertTo',
-    value: function convertTo(point, node) {
-      return null;
-    }
-
-    // Determining If a Point Lies in a Node
-
-    /**
-     * Returns a Boolean value that indicates whether a point lies inside the parent’s coordinate system.
-     * @access public
-     * @param {CGPoint} p - A CGPoint to test against.
-     * @returns {boolean} - 
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483044-contains
-     */
-
-  }, {
-    key: 'contains',
-    value: function contains(p) {
-      return false;
-    }
-
-    /**
-     * Returns the deepest visible descendant that intersects a point.
-     * @access public
-     * @param {CGPoint} p - A point in the node’s coordinate system.
-     * @returns {SKNode} - 
-     * @desc A point is considered to be in a node if it lies inside the rectangle returned by the calculateAccumulatedFrame() method.
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483099-atpoint
-     */
-
-  }, {
-    key: 'atPoint',
-    value: function atPoint(p) {
-      return null;
-    }
-
-    /**
-     * Returns an array of all visible descendants that intersect a point.
-     * @access public
-     * @param {CGPoint} p - A point in the node’s coordinate system.
-     * @returns {SKNode[]} - 
-     * @desc A point is considered to be in a node if it lies inside the rectangle returned by the calculateAccumulatedFrame() method.
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483072-nodes
-     */
-
-  }, {
-    key: 'nodesAt',
-    value: function nodesAt(p) {
-      return null;
-    }
-
-    // Performing Node Intersections
-
-    /**
-     * Returns a Boolean value that indicates whether this node intersects the specified node.
-     * @access public
-     * @param {SKNode} node - Another node in the same node tree.
-     * @returns {boolean} - 
-     * @desc The two nodes are considered to intersect if their frames intersect. The children of both nodes are ignored in this test.
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483140-intersects
-     */
-
-  }, {
-    key: 'intersects',
-    value: function intersects(node) {
-      return false;
-    }
-
-    // Creating GameplayKit Obstacles from a Set of Nodes
-
-    /**
-     * Converts each node into an obstacle by transforming its bounds into the scene’s coordinate system.
-     * @access public
-     * @param {SKNode[]} nodes - An array of SKNode objects.
-     * @returns {GKPolygonObstacle[]} - 
-     * @desc Use the array of obstacles to create an obstacle graph (GKObstacleGraph) in GameplayKit. See GameplayKit and GameplayKit Programming Guide.
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483132-obstacles
-     */
-
-  }, {
-    key: 'accessibilityHitTest',
-
-
-    // Instance Methods
-
-    /**
-     * 
-     * @access public
-     * @param {CGPoint} point - 
-     * @returns {?Object} - 
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1645040-accessibilityhittest
-     */
-    value: function accessibilityHitTest(point) {
-      return null;
-    }
-
-    /**
-     * Sets an attribute value for an attached shader
-     * @deprecated
-     * @access public
-     * @param {SKAttributeValue} value - An attribute value object containing the scalar or vector value to set in the attached shader. 
-     * @param {string} key - The attribute name.
-     * @returns {void}
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1644180-setvalue
-     */
-
-  }, {
-    key: 'setValueForAttribute',
-    value: function setValueForAttribute(value, key) {
-      this.attributeValues.set(key, value);
-    }
-
-    /**
-     * The value of a shader attribute.
-     * @deprecated
-     * @access public
-     * @param {string} key - The attribute name.
-     * @returns {?SKAttributeValue} - 
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1644182-value
-     */
-
-  }, {
-    key: 'valueForAttributeNamed',
-    value: function valueForAttributeNamed(key) {
-      return this.attributeValues.get(key);
-    }
-
-    /**
-     * @type {SKNode}
-     */
-
-  }, {
-    key: 'copy',
-
-
-    /**
-     *
-     * @access public
-     * @returns {SKNode} -
-     */
-    value: function copy() {
-      var node = _get(SKNode.prototype.__proto__ || Object.getPrototypeOf(SKNode.prototype), 'copy', this).call(this);
-      node._copyValue(this);
-      return node;
-    }
-  }, {
-    key: '_copyValue',
-    value: function _copyValue(src) {
-      this.position = src.position.copy();
-      this.zPosition = src.zPosition;
-      this._frame = src._frame;
-      this.xScale = src.xScale;
-      this.yScale = src.yScale;
-      this.zRotation = src.zRotation;
-      this.alpha = src.alpha;
-      this.isHidden = src.isHidden;
-      this.isUserInteractionEnabled = src.isUserInteractionEnabled;
-      this.name = src.name;
-      this.speed = src.speed;
-      this.isPaused = src.isPaused;
-      this._actions = new Map(src._actions);
-      this.physicsBody = src.physicsBody;
-      this.userData = src.userData;
-      this.constraints = src.constraints;
-      this.reachConstraints = src.reachConstraints;
-      this.accessibilityChildren = src.accessibilityChildren;
-      this.accessibilityFrame = src.accessibilityFrame.copy();
-      this.accessibilityHelp = src.accessibilityHelp;
-      this.accessibilityLabel = src.accessibilityLabel;
-      this.accessibilityParent = src.accessibilityParent;
-      this.accessibilityRole = src.accessibilityRole;
-      this.accessibilityRoleDescription = src.accessibilityRoleDescription;
-      this.accessibilitySubrole = src.accessibilitySubrole;
-      this.attributeValues = new Map(src.attributeValues);
-      this.isAccessibilityElement = src.isAccessibilityElement;
-      this.isAccessibilityEnabled = src.isAccessibilityEnabled;
-    }
-
-    /**
-     * @access private
-     * @param {WebGLRenderingContext} gl -
-     * @returns {void}
-     */
-
-  }, {
-    key: '_render',
-    value: function _render(gl) {
-      // nothing to draw
-    }
-  }, {
-    key: '_copyTransformToPresentation',
-    value: function _copyTransformToPresentation() {
-      if (this.__presentation === null) {
-        return;
-      }
-      var p = this.__presentation;
-      p.position = this.position;
-      p.zPosition = this.zPosition;
-      p.xScale = this.xScale;
-      p.yScale = this.yScale;
-      p.zRotation = this.zRotation;
-    }
-  }, {
-    key: '_updateWorldTransform',
-    value: function _updateWorldTransform() {
-      var p = null;
-      var pz = 0;
-      if (this._parent === null) {
-        p = new _CGPoint2.default(0, 0);
-      } else {
-        p = this._parent._worldPosition;
-        pz = this._parent._worldZPosition;
-      }
-      this._worldPosition = this.position.add(p);
-      this._worldZPosition = this.zPosition + pz;
-
-      if (this._presentation) {
-        var pp = null;
-        var ppz = 0;
-        var pxScale = 1;
-        var pyScale = 1;
-        if (this._parent === null) {
-          pp = new _CGPoint2.default(0, 0);
-        } else if (this._parent._presentation === null) {
-          pp = this._parent._worldPosition;
-          ppz = this._parent._worldZPosition;
-          pxScale = this._parent._worldXScale;
-          pyScale = this._parent._worldYScale;
-        } else {
-          pp = this._parent._presentation._worldPosition;
-          ppz = this._parent._presentation._worldZPosition;
-          pxScale = this._parent._presentation._worldXScale;
-          pyScale = this._parent._presentation._worldYScale;
-        }
-        //this._presentation._worldPosition = this._presentation.position.add(pp)
-        this._presentation._worldPosition.x = pp.x + this._presentation.position.x * pxScale;
-        this._presentation._worldPosition.y = pp.y + this._presentation.position.y * pyScale;
-        this._presentation._worldZPosition = this._presentation.zPosition + ppz;
-        this._presentation._worldXScale = this._presentation.xScale * pxScale;
-        this._presentation._worldYScale = this._presentation.yScale * pyScale;
-      }
-
-      var _iteratorNormalCompletion5 = true;
-      var _didIteratorError5 = false;
-      var _iteratorError5 = undefined;
-
-      try {
-        for (var _iterator5 = this._children[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-          var child = _step5.value;
-
-          child._updateWorldTransform();
-        }
-      } catch (err) {
-        _didIteratorError5 = true;
-        _iteratorError5 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion5 && _iterator5.return) {
-            _iterator5.return();
-          }
-        } finally {
-          if (_didIteratorError5) {
-            throw _iteratorError5;
-          }
-        }
-      }
-    }
-  }, {
-    key: 'frame',
-    get: function get() {
-      return this._frame;
-    }
-  }, {
-    key: 'children',
-    get: function get() {
-      return this._children.slice(0);
-    }
-    /**
-     * The node’s parent node.
-     * @type {?SKNode}
-     * @desc If the node is not in a node tree, the value is nil.
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483080-parent
-     */
-
-  }, {
-    key: 'parent',
-    get: function get() {
-      return this._parent;
-    }
-
-    /**
-     * The scene node that contains the node.
-     * @type {?SKScene}
-     * @desc If the node is not embedded in a scene, the value is nil.
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483064-scene
-     */
-
-  }, {
-    key: 'scene',
-    get: function get() {
-      return this._scene;
-    }
-  }, {
-    key: '_presentation',
-    get: function get() {
-      return this.__presentation;
-    }
-  }], [{
-    key: 'nodeWithFileNamed',
-    value: function nodeWithFileNamed(filename) {
-      var node = new SKNode();
-      return node;
-    }
-  }, {
-    key: 'obstaclesFromNodeBounds',
-    value: function obstaclesFromNodeBounds(nodes) {
-      return null;
-    }
-
-    /**
-     * Converts each node into an obstacle by transforming the node’s physics body shape into the scene’s coordinate system.
-     * @access public
-     * @param {SKNode[]} nodes - An array of SKNode objects.
-     * @returns {GKPolygonObstacle[]} - 
-     * @desc Use the array of obstacles to create an obstacle graph (GKObstacleGraph) in GameplayKit. See GameplayKit and GameplayKit Programming Guide.
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483085-obstacles
-     */
-
-  }, {
-    key: 'obstaclesFromNodePhysicsBodies',
-    value: function obstaclesFromNodePhysicsBodies(nodes) {
-      return null;
-    }
-
-    /**
-     * Converts each node into an obstacle by first transforming the node’s texture into a physics shape and then converting that shape into the scene’s coordinate system.
-     * @access public
-     * @param {SKNode[]} sprites - An array of SKNode objects.
-     * @param {number} accuracy - A floating point value between 0.001 and 1.0, inclusive. Higher values create a more precise (but more complex) representation of the obstacle.
-     * @returns {GKPolygonObstacle[]} - 
-     * @desc Use the array of obstacles to create an obstacle graph (GKObstacleGraph) in GameplayKit. See GameplayKit and GameplayKit Programming Guide.
-     * @see https://developer.apple.com/documentation/spritekit/sknode/1483134-obstacles
-     */
-
-  }, {
-    key: 'obstaclesFromSpriteTextures',
-    value: function obstaclesFromSpriteTextures(sprites, accuracy) {
-      return null;
-    }
-  }]);
-
-  return SKNode;
-}(_NSObject3.default);
-
-exports.default = SKNode;
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _NSObject2 = __webpack_require__(0);
-
-var _NSObject3 = _interopRequireDefault(_NSObject2);
-
-var _SKActionTimingMode = __webpack_require__(23);
-
-var _SKActionTimingMode2 = _interopRequireDefault(_SKActionTimingMode);
-
-var _CGPoint = __webpack_require__(10);
-
-var _CGPoint2 = _interopRequireDefault(_CGPoint);
-
-var _CGSize = __webpack_require__(8);
-
-var _CGSize2 = _interopRequireDefault(_CGSize);
-
-var _CGRect = __webpack_require__(16);
-
-var _CGRect2 = _interopRequireDefault(_CGRect);
-
-var _SKColor = __webpack_require__(2);
-
-var _SKColor2 = _interopRequireDefault(_SKColor);
-
-var _InstanceOf2 = __webpack_require__(3);
-
-var _InstanceOf3 = _interopRequireDefault(_InstanceOf2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-//import CGVector from '../CoreGraphics/CGVector'
-
-//import CGPath from '../CoreGraphics/CGPath'
-
-//import SKTexture from './SKTexture'
-//import SKWarpGeometry from './SKWarpGeometry'
-//import SKNode from './SKNode'
-//import SKActionTimingFunction from './SKActionTimingFunction'
-
-
-/**
- * An object that is executed by an SKNode to change its structure or content.
- * @access public
- * @extends {NSObject}
- * @see https://developer.apple.com/documentation/spritekit/skaction
- */
-var SKAction = function (_NSObject) {
-  _inherits(SKAction, _NSObject);
-
-  // Creating Custom Actions
-
-  /**
-   * Creates an action of the given name from an action file with a new duration.
-   * @access public
-   * @constructor
-   * @param {string} name - The name of the action.
-   * @param {string} url - The URL of the file containing the action.
-   * @param {number} sec - The duration of the action, in seconds.
-   * @see https://developer.apple.com/documentation/spritekit/skaction/1417754-init
-   */
-  function SKAction(name, url, sec) {
-    _classCallCheck(this, SKAction);
-
-    // Inspecting an Action’s Animation Properties
-
-    /**
-     * A speed factor that modifies how fast an action runs.
-     * @type {number}
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417718-speed
-     */
-    var _this = _possibleConstructorReturn(this, (SKAction.__proto__ || Object.getPrototypeOf(SKAction)).call(this));
-
-    _this._speed = 1.0;
-
-    /**
-     * The timing mode used to execute an action.
-     * @type {SKActionTimingMode}
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417807-timingmode
-     */
-    _this._timingMode = _SKActionTimingMode2.default.linear;
-
-    /**
-     * A block used to customize the timing function.
-     * @type {SKActionTimingFunction}
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417666-timingfunction
-     */
-    _this._timingFunction = null;
-
-    /**
-     * The duration required to complete an action.
-     * @type {number}
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417790-duration
-     */
-    _this._duration = 0;
-
-    /**
-     * @access private
-     * @type {boolean}
-     */
-    _this._finished = false;
-
-    _this._beginTime = 0;
-    _this._isRunning = false;
-    _this._pausedTime = 0;
-    _this._completionHandler = null;
-
-    _this.__actionStartTime = null;
-    return _this;
-  }
-
-  /**
-   * A speed factor that modifies how fast an action runs.
-   * @type {number}
-   * @see https://developer.apple.com/documentation/spritekit/skaction/1417718-speed
-   */
-
-
-  _createClass(SKAction, [{
-    key: 'copy',
-
-
-    /**
-     * @access public
-     * @returns {SKAction} -
-     */
-    value: function copy() {
-      var action = _get(SKAction.prototype.__proto__ || Object.getPrototypeOf(SKAction.prototype), 'copy', this).call(this);
-
-      action._beginTime = this._beginTime;
-      action._duration = this._duration;
-      action._speed = this.speed;
-      action._timingMode = this.timingMode;
-      action._timingFunction = this.timingFunction;
-      action._finished = this._finished;
-      //action._isRunning = this._isRunning
-      //action._pausedTime = this._pausedTime
-      //action._completionHandler = this._completionHandler
-
-      return action;
-    }
-
-    /**
-     * apply action to the given node.
-     * @access private
-     * @param {Object} obj - target object to apply this action.
-     * @param {number} time - active time
-     * @param {boolean} [needTimeConversion = true] -
-     * @returns {void}
-     */
-
-  }, {
-    key: '_applyAction',
-    value: function _applyAction(obj, time) {
-      var needTimeConversion = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
-
-      var t = this._getTime(time, needTimeConversion
-      //this._handleEvents(obj, t)
-      );
-    }
-  }, {
-    key: '_getTime',
-    value: function _getTime(time, needTimeConversion) {
-      if (!needTimeConversion) {
-        if (time >= 1.0 && !this._finished) {
-          this._finished = true;
-        }
-        return time;
-      }
-
-      var baseTime = this._basetimeFromTime(time);
-      if (this.timingFunction === null) {
-        return baseTime;
-      }
-
-      return this.timingFunction._getValueAtTime(baseTime);
-    }
-
-    /**
-     * convert parent time to base time
-     * @access private
-     * @param {number} time - parent time
-     * @returns {number} - animation base time for the current frame (0-1 or null).
-     */
-
-  }, {
-    key: '_basetimeFromTime',
-    value: function _basetimeFromTime(time) {
-      var activeTime = time - this._actionStartTime;
-      return this._basetimeFromActivetime(activeTime);
-    }
-
-    /**
-     * convert parent time to active time
-     * @access private
-     * @param {number} time - parent time
-     * @returns {number} - animation active time for the current frame.
-     */
-
-  }, {
-    key: '_activetimeFromTime',
-    value: function _activetimeFromTime(time) {
-      return time - this._actionStartTime;
-    }
-
-    /**
-     * convert active time to base time
-     * @access private
-     * @param {number} time - active time
-     * @returns {number} - animation base time for the current frame (0-1 or null).
-     */
-
-  }, {
-    key: '_basetimeFromActivetime',
-    value: function _basetimeFromActivetime(time) {
-      var dt = time - this._beginTime;
-      //let dt = time
-      if (this.speed === 0) {
-        return 0;
-      }
-      if (this._duration === 0) {
-        return dt / Math.abs(this.speed);
-      }
-      var duration = this._duration / Math.abs(this.speed);
-      if (duration === 0) {
-        duration = 0.25;
-      }
-
-      if (dt >= duration) {
-        // the action is over.
-        if (!this._finished) {
-          this._finished = true;
-        }
-      }
-
-      return dt / duration;
-    }
-
-    /**
-     * @access private
-     * @param {Object} from -
-     * @param {Object} to -
-     * @param {number} t -
-     * @returns {Object} -
-     */
-
-  }, {
-    key: '_lerp',
-    value: function _lerp(from, to, t) {
-      if (t === null) {
-        // the action is over.
-        return to;
-      }
-      //if(from instanceof SCNVector4){
-      //  // TODO: slerp for Quaternion
-      //  return from.lerp(to, t)
-      //}else if(from instanceof SCNVector3){
-      //  return from.lerp(to, t)
-      //}else if(from instanceof CGSize){
-      if ((0, _InstanceOf3.default)(from, _CGSize2.default)) {
-        return from._lerp(to, t);
-      } else if ((0, _InstanceOf3.default)(from, _CGPoint2.default)) {
-        return from._lerp(to, t);
-      } else if ((0, _InstanceOf3.default)(from, _CGRect2.default)) {
-        return from._lerp(to, t);
-      } else if ((0, _InstanceOf3.default)(from, _SKColor2.default)) {
-        return from._lerp(to, t);
-      }
-      return from + (to - from) * t;
-    }
-
-    /**
-     * @access private
-     * @param {Object} from -
-     * @param {Object} to -
-     * @param {number} t -
-     * @returns {Object} -
-     */
-    //_slerp(from, to, t) {
-    //  if(!(from instanceof SCNVector4)){
-    //    throw new Error('SCNAction._slerp: object is not SCNVector4')
-    //  }
-    //  return from.slerp(to, t)
-    //}
-
-  }, {
-    key: '_resetFinished',
-    value: function _resetFinished() {
-      this._finished = false;
-    }
-
-    /**
-     * Creates an action of the given name from an action file.
-     * @access public
-     * @param {string} name - The name of the action.
-     * @returns {SKAction} -
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417814-init
-     */
-
-  }, {
-    key: 'reversed',
-
-
-    // Reversing an Action
-
-    /**
-     * Creates an action that reverses the behavior of another action.
-     * @access public
-     * @returns {SKAction} - 
-     * @desc This method always returns an action object; however, not all actions are reversible. When reversed, some actions return an object that either does nothing or that performs the same action as the original action. For details on how an action is reversed, see the description of the class method used to create that action.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417803-reversed
-     */
-    value: function reversed() {
-      return null;
-    }
-  }, {
-    key: 'speed',
-    get: function get() {
-      return this._speed;
-    },
-    set: function set(newValue) {
-      this._speed = newValue;
-    }
-
-    /**
-     * The timing mode used to execute an action.
-     * @type {SKActionTimingMode}
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417807-timingmode
-     */
-
-  }, {
-    key: 'timingMode',
-    get: function get() {
-      return this._timingMode;
-    },
-    set: function set(newValue) {
-      this._timingMode = newValue;
-    }
-
-    /**
-     * A block used to customize the timing function.
-     * @type {SKActionTimingFunction}
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417666-timingfunction
-     */
-
-  }, {
-    key: 'timingFunction',
-    get: function get() {
-      return this._timingFunction;
-    },
-    set: function set(newValue) {
-      this._timingFunction = newValue;
-    }
-
-    /**
-     * The duration required to complete an action.
-     * @type {number}
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417790-duration
-     */
-
-  }, {
-    key: 'duration',
-    get: function get() {
-      return this._duration;
-    },
-    set: function set(newValue) {
-      this._duration = newValue;
-    }
-  }, {
-    key: '_actionStartTime',
-    get: function get() {
-      return this.__actionStartTime;
-    },
-    set: function set(newValue) {
-      this.__actionStartTime = newValue;
-    }
-  }], [{
-    key: 'actionWithName',
-    value: function actionWithName(name) {
-      return new SKAction(name, null, 0.25);
-    }
-
-    /**
-     * Creates an action of the given name from an action file with a new duration.
-     * @access public
-     * @param {string} name - The name of the action.
-     * @param {number} sec - The duration of the action.
-     * @returns {void}
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417697-init
-     */
-
-  }, {
-    key: 'actionWithNamedDuration',
-    value: function actionWithNamedDuration(name, sec) {
-      return new SKAction(name, null, sec);
-    }
-
-    /**
-     * Creates an action of the given name from an action file.
-     * @access public
-     * @param {string} name - The name of the action.
-     * @param {string} url - The URL of the file containing the action.
-     * @returns {void}
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417680-init
-     */
-
-  }, {
-    key: 'actionWithNamedFrom',
-    value: function actionWithNamedFrom(name, url) {
-      return new SKAction(name, url);
-    }
-
-    // Creating Actions That Move Nodes
-
-    /**
-     * Creates an action that moves a node relative to its current position.
-     * @access public
-     * @param {number} deltaX - The x-value, in points, to add to the node’s position.
-     * @param {number} deltaY - The y-value, in points, to add to the node’s position.
-     * @param {number} sec - The duration of the animation.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the node’s position property animates from its current position to its new position.This action is reversible; the reverse is created as if the following code is executed:let negDelta = CGVector(dx: -deltaX, dy: -deltaY)
-    let action = SKAction.moveBy(x: -deltaX, y: -deltaX, duration: sec)
-    let negDelta = CGVector(dx: -deltaX, dy: -deltaY)
-    let action = SKAction.moveBy(x: -deltaX, y: -deltaX, duration: sec)
-      * @see https://developer.apple.com/documentation/spritekit/skaction/1417722-moveby
-     */
-
-  }, {
-    key: 'moveByXYDuration',
-    value: function moveByXYDuration(deltaX, deltaY, sec) {
-      return null;
-    }
-
-    /**
-     * Creates an action that moves a node relative to its current position.
-     * @access public
-     * @param {CGVector} delta - A vector that describes the change to apply to the node’s position.
-     * @param {number} sec - The duration of the animation.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the node’s position property animates from its current position to its new position.This action is reversible; the reverse is created as if the following code is executed:let negDelta = CGVector(dx: -deltaX, dy: -deltaY)
-    let action = SKAction.move(by: negDelta, duration: sec)
-    let negDelta = CGVector(dx: -deltaX, dy: -deltaY)
-    let action = SKAction.move(by: negDelta, duration: sec)
-      * @see https://developer.apple.com/documentation/spritekit/skaction/1417739-move
-     */
-
-  }, {
-    key: 'moveByDuration',
-    value: function moveByDuration(delta, sec) {
-      return null;
-    }
-
-    /**
-     * Creates an action that moves a node to a new position.
-     * @access public
-     * @param {CGPoint} location - The coordinates for the node’s new position.
-     * @param {number} sec - The duration of the animation.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the node’s position property animates from its current position to its new position.This action is not reversible; the reverse of this action has the same duration but does not move the node.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417768-move
-     */
-
-  }, {
-    key: 'moveToDuration',
-    value: function moveToDuration(location, sec) {
-      return null;
-    }
-
-    /**
-     * Creates an action that moves the node along a relative path, orienting the node to the path.
-     * @access public
-     * @param {CGPath} path - A Core Graphics path whose coordinates are relative to the node’s current position.
-     * @param {number} sec - The duration of the animation.
-     * @returns {SKAction} - 
-     * @desc Calling this method is equivalent to calling the follow(_:asOffset:orientToPath:duration:) method, passing in true to both the offset and orient parameters.This action is reversible; the resulting action creates and then follows a reversed path with the same duration.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417822-follow
-     */
-
-  }, {
-    key: 'followDuration',
-    value: function followDuration(path, sec) {
-      return null;
-    }
-
-    /**
-     * Creates an action that moves the node along a relative path at a specified speed, orienting the node to the path.
-     * @access public
-     * @param {CGPath} path - A Core Graphics path whose coordinates are relative to the node’s current position.
-     * @param {number} speed - The speed at which the node should move, in points per second.
-     * @returns {SKAction} - 
-     * @desc Calling this method is equivalent to calling the follow(_:asOffset:orientToPath:speed:) method, passing in true to both the offset and orient parameters.This action is reversible; the resulting action creates and then follows a reversed path with the same speed.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417786-follow
-     */
-
-  }, {
-    key: 'follow',
-    value: function follow(path, speed) {
-      return null;
-    }
-
-    /**
-     * Creates an action that moves the node along a path.
-     * @access public
-     * @param {CGPath} path - A path to follow.
-     * @param {boolean} offset - If true, the points in the path are relative offsets to the node’s starting position. If false, the points in the node are absolute coordinate values.
-     * @param {boolean} orient - If true, the node’s zRotation property animates so that the node turns to follow the path. If false, the zRotation property of the node is unchanged.
-     * @param {number} sec - The duration of the animation.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the node’s position and zRotation properties are animated along the provided path.This action is reversible; the resulting action creates a reversed path and then follows it, with the same duration.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417662-follow
-     */
-
-  }, {
-    key: 'followAsOffsetOrientToPathDuration',
-    value: function followAsOffsetOrientToPathDuration(path, offset, orient, sec) {
-      return null;
-    }
-
-    /**
-     * Creates an action that moves the node at a specified speed along a path.
-     * @access public
-     * @param {CGPath} path - A path to follow.
-     * @param {boolean} offset - If true, the points in the path are relative offsets to the node’s starting position. If false, the points in the node are absolute coordinate values.
-     * @param {boolean} orient - If true, the node’s zRotation property animates so that the node turns to follow the path. If false, the zRotation property of the node is unchanged.
-     * @param {number} speed - The speed at which the node should move, in points per second.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the node’s position and zRotation properties are animated along the provided path. The duration of the action is determined by the length of the path and the speed of the node.This action is reversible; the resulting action creates a reversed path and then follows it, with the same speed.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417798-follow
-     */
-
-  }, {
-    key: 'followAsOffsetOrientToPath',
-    value: function followAsOffsetOrientToPath(path, offset, orient, speed) {
-      return null;
-    }
-
-    // Creating Actions That Rotate Nodes
-
-    /**
-     * Creates an action that rotates the node by a relative value.
-     * @access public
-     * @param {number} radians - The amount to rotate the node, in radians.
-     * @param {number} sec - The duration of the animation.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the node’s zRotation property animates to the new angle.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.rotate(byAngle: -radians, duration: sec)
-    let action = SKAction.rotate(byAngle: -radians, duration: sec)
-      * @see https://developer.apple.com/documentation/spritekit/skaction/1417805-rotate
-     */
-
-  }, {
-    key: 'rotateByAngleDuration',
-    value: function rotateByAngleDuration(radians, sec) {
-      return null;
-    }
-
-    /**
-     * Creates an action that rotates the node counterclockwise to an absolute angle.
-     * @access public
-     * @param {number} radians - The angle to rotate the node to, in radians.
-     * @param {number} sec - The duration of the animation.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the node’s zRotation property is interpolated to the new angle.This action is not reversible; the reverse of this action has the same duration but does not change anything.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417668-rotate
-     */
-
-  }, {
-    key: 'rotateToAngleDuration',
-    value: function rotateToAngleDuration(radians, sec) {
-      return null;
-    }
-
-    // Creating Actions That Change a Node’s Animation Speed
-
-    /**
-     * Creates an action that changes how fast the node executes actions by a relative value.
-     * @access public
-     * @param {number} speed - The amount to add to the node’s speed.
-     * @param {number} sec - The duration of the animation.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the node’s speed property animates to the new value.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.speed(by: -speed, duration: sec)
-    let action = SKAction.speed(by: -speed, duration: sec)
-      * @see https://developer.apple.com/documentation/spritekit/skaction/1417690-speed
-     */
-
-  }, {
-    key: 'speedByDuration',
-    value: function speedByDuration(speed, sec) {
-      return null;
-    }
-
-    /**
-     * Creates an action that changes how fast the node executes actions.
-     * @access public
-     * @param {number} speed - The new value for the node’s speed.
-     * @param {number} sec - The duration of the animation.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the node’s speed property animates to the new value.This action is not reversible; the reverse of this action has the same duration but does not change anything.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417684-speed
-     */
-
-  }, {
-    key: 'speedToDuration',
-    value: function speedToDuration(speed, sec) {
-      return null;
-    }
-
-    // Creating Actions That Change a Node’s Scale
-
-    /**
-     * Creates an action that changes the x and y scale values of a node by a relative value.
-     * @access public
-     * @param {number} scale - The amount to add to the node’s x and y scale values.
-     * @param {number} sec - The duration of the animation.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the node’s xScale and yScale properties are animated to the new value.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.scale(by: -scale, duration: sec)
-    let action = SKAction.scale(by: -scale, duration: sec)
-      * @see https://developer.apple.com/documentation/spritekit/skaction/1417741-scale
-     */
-
-  }, {
-    key: 'scaleByDuration',
-    value: function scaleByDuration(scale, sec) {
-      return null;
-    }
-
-    /**
-     * Creates an action that changes the x and y scale values of a node to achieve 
-     * @access public
-     * @param {CGSize} size - The new size of the node.
-     * @param {number} sec - The duration of the animation.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the node’s xScale and yScale properties are animated to achieve the specified size in its parent's coordinate space. This action is not reversible; the reverse of this action has the same duration but does not change anything.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1643619-scale
-     */
-
-  }, {
-    key: 'scaleToDuration',
-    value: function scaleToDuration(size, sec) {
-      return null;
-    }
-
-    /**
-     * Creates an action that adds relative values to the x and y scale values of a node.
-     * @access public
-     * @param {number} xScale - The amount to add to the node’s x scale value.
-     * @param {number} yScale - The amount to add to the node’s y scale value.
-     * @param {number} sec - The duration of the animation.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the node’s xScale and yScale properties are animated to the new value.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.scaleX(by: -scaleX, y: -scaleY, duration: sec)
-    let action = SKAction.scaleX(by: -scaleX, y: -scaleY, duration: sec)
-      * @see https://developer.apple.com/documentation/spritekit/skaction/1417796-scalex
-     */
-
-  }, {
-    key: 'scaleXByYDuration',
-    value: function scaleXByYDuration(xScale, yScale, sec) {
-      return null;
-    }
-
-    /**
-     * Creates an action that changes the x and y scale values of a node.
-     * @access public
-     * @param {number} xScale - The new value for the node’s x scale value.
-     * @param {number} yScale - The new value for the node’s y scale value.
-     * @param {number} sec - The duration of the animation.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the node’s xScale and yScale properties are animated to the new value.This action is not reversible; the reverse of this action has the same duration but does not change anything.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417728-scalex
-     */
-
-  }, {
-    key: 'scaleXToYDuration',
-    value: function scaleXToYDuration(xScale, yScale, sec) {
-      return null;
-    }
-
-    /**
-     * Creates an action that changes the x scale value of a node to a new value.
-     * @access public
-     * @param {number} scale - The new value for the node’s x scale value.
-     * @param {number} sec - The duration of the animation.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the node’s xScale property animates to the new value.This action is not reversible; the reverse of this action has the same duration but does not change anything.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417699-scalex
-     */
-
-  }, {
-    key: 'scaleXToDuration',
-    value: function scaleXToDuration(scale, sec) {
-      return null;
-    }
-
-    /**
-     * Creates an action that changes the y scale value of a node to a new value.
-     * @access public
-     * @param {number} scale - The new value for the node’s y scale value.
-     * @param {number} sec - The duration of the animation.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the node’s yScale property animates to the new value.This action is not reversible; the reverse of this action has the same duration but does not change anything.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417708-scaley
-     */
-
-  }, {
-    key: 'scaleYToDuration',
-    value: function scaleYToDuration(scale, sec) {
-      return null;
-    }
-
-    // Creating Actions to Show or Hide a Node
-
-    /**
-     * Creates an action that makes a node visible.
-     * @access public
-     * @returns {SKAction} - 
-     * @desc This action has an instantaneous duration. When the action executes, the node’s isHidden property is set to false.This action is reversible; the reversed action hides the node.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417660-unhide
-     */
-
-  }, {
-    key: 'unhide',
-    value: function unhide() {
-      return null;
-    }
-
-    /**
-     * Creates an action that hides a node.
-     * @access public
-     * @returns {SKAction} - 
-     * @desc This action has an instantaneous duration. When the action executes, the node’s isHidden property is set to true.This action is reversible; the reversed action shows the node.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417704-hide
-     */
-
-  }, {
-    key: 'hide',
-    value: function hide() {
-      return null;
-    }
-
-    // Creating Actions That Change a Node’s Transparency
-
-    /**
-     * Creates an action that changes the alpha value of the node to 1.0.
-     * @access public
-     * @param {number} sec - The duration of the animation.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the node’s alpha property animates from its current value to 1.0.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.fadeOut(withDuration: sec)
-    let action = SKAction.fadeOut(withDuration: sec)
-      * @see https://developer.apple.com/documentation/spritekit/skaction/1417818-fadein
-     */
-
-  }, {
-    key: 'fadeInWithDuration',
-    value: function fadeInWithDuration(sec) {
-      return null;
-    }
-
-    /**
-     * Creates an action that changes the alpha value of the node to 0.0.
-     * @access public
-     * @param {number} sec - The duration of the animation.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the node’s alpha property animates from its current value to 0.0. This causes the node to disappear.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.fadeIn(withDuration: sec)
-    let action = SKAction.fadeIn(withDuration: sec)
-      * @see https://developer.apple.com/documentation/spritekit/skaction/1417738-fadeout
-     */
-
-  }, {
-    key: 'fadeOutWithDuration',
-    value: function fadeOutWithDuration(sec) {
-      return null;
-    }
-
-    /**
-     * Creates an action that adjusts the alpha value of a node by a relative value.
-     * @access public
-     * @param {number} factor - The amount to add to the node’s alpha value.
-     * @param {number} sec - The duration of the animation.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the node’s alpha property animates to its new value.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.fadeAlpha(by: -factor, duration: sec)
-    let action = SKAction.fadeAlpha(by: -factor, duration: sec)
-      * @see https://developer.apple.com/documentation/spritekit/skaction/1417716-fadealpha
-     */
-
-  }, {
-    key: 'fadeAlphaByDuration',
-    value: function fadeAlphaByDuration(factor, sec) {
-      return null;
-    }
-
-    /**
-     * Creates an action that adjusts the alpha value of a node to a new value.
-     * @access public
-     * @param {number} alpha - The new value of the node’s alpha.
-     * @param {number} sec - The duration of the animation.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the node’s alpha property animates to its new value.This action is not reversible; the reverse of this action has the same duration but does not change anything.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417673-fadealpha
-     */
-
-  }, {
-    key: 'fadeAlphaToDuration',
-    value: function fadeAlphaToDuration(alpha, sec) {
-      return null;
-    }
-
-    // Creating Actions That Change a Sprite Node’s Content
-
-    /**
-     * Creates an action that adjusts the size of a sprite.
-     * @access public
-     * @param {number} width - The amount to add to the sprite’s width.
-     * @param {number} height - The amount to add to the sprite’s height.
-     * @param {number} duration - The duration of the animation.
-     * @returns {SKAction} - 
-     * @desc This action can only be executed by a SKSpriteNode object. When the action executes, the sprite’s size property animates to its new value.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.resize(byWidth: -width, height: -height, duration: sec)
-    let action = SKAction.resize(byWidth: -width, height: -height, duration: sec)
-      * @see https://developer.apple.com/documentation/spritekit/skaction/1417812-resize
-     */
-
-  }, {
-    key: 'resizeByWidth',
-    value: function resizeByWidth(width, height, duration) {
-      return null;
-    }
-
-    /**
-     * Creates an action that changes the height of a sprite to a new absolute value.
-     * @access public
-     * @param {number} height - The new height of the sprite.
-     * @param {number} duration - The duration of the animation.
-     * @returns {SKAction} - 
-     * @desc This action can only be executed by an SKSpriteNode object. When the action executes, the sprite’s size property animates to its new value.This action is not reversible; the reverse of this action has the same duration but does not change anything.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417825-resize
-     */
-
-  }, {
-    key: 'resizeToHeight',
-    value: function resizeToHeight(height, duration) {
-      return null;
-    }
-
-    /**
-     * Creates an action that changes the width of a sprite to a new absolute value.
-     * @access public
-     * @param {number} width - The new width of the sprite.
-     * @param {number} duration - The duration of the animation.
-     * @returns {SKAction} - 
-     * @desc This action can only be executed by an SKSpriteNode object. When the action executes, the sprite’s size property animates to its new value.This action is not reversible; the reverse of this action has the same duration but does not change anything.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417686-resize
-     */
-
-  }, {
-    key: 'resizeToWidth',
-    value: function resizeToWidth(width, duration) {
-      return null;
-    }
-
-    /**
-     * Creates an action that changes a sprite’s texture.
-     * @access public
-     * @param {SKTexture} texture - The new texture to use on the sprite.
-     * @returns {SKAction} - 
-     * @desc This action can only be executed by an SKSpriteNode object. When the action executes, the sprite’s texture property changes immediately to the new texture.This action is not reversible; the reverse of this action does nothing.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417784-settexture
-     */
-
-  }, {
-    key: 'setTexture',
-    value: function setTexture(texture) {
-      return null;
-    }
-
-    /**
-     * Creates an action that animates changes to a sprite’s texture.
-     * @access public
-     * @param {SKTexture[]} textures - An array of textures to use when animating a sprite.
-     * @param {number} sec - The duration, in seconds, that each texture is displayed. 
-     * @returns {SKAction} - 
-     * @desc This action can only be executed by an SKSpriteNode object. When the action executes, the sprite’s texture property animates through the array of textures. The sprite’s texture property is changed to the next texture in the array. The action then pauses for the specified time before continuing. The action continues until it has finished animating through all of the textures in the array. The total duration of the action is the number of textures multiplied by the frame interval.This action is reversible; the resulting action animates through the same textures from last to first.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417828-animate
-     */
-
-  }, {
-    key: 'animateWithTimePerFrame',
-    value: function animateWithTimePerFrame(textures, sec) {
-      return null;
-    }
-
-    /**
-     * Creates an action that changes a sprite’s normal texture.
-     * @access public
-     * @param {SKTexture} texture - The new texture to use on the sprite.
-     * @returns {SKAction} - 
-     * @desc This action can only be executed by an SKSpriteNode object. When the action executes, the sprite’s normalTexture property changes immediately to the new texture.This action is not reversible; the reverse of this action does nothing.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417706-setnormaltexture
-     */
-
-  }, {
-    key: 'setNormalTexture',
-    value: function setNormalTexture(texture) {
-      return null;
-    }
-
-    /**
-     * Creates an action that animates changes to a sprite’s normal texture.
-     * @access public
-     * @param {SKTexture[]} textures - An array of textures to use.
-     * @param {number} sec - The amount of time that each texture is displayed.
-     * @returns {SKAction} - 
-     * @desc This action can only be executed by an SKSpriteNode object. When the action executes, the sprite’s normalTexture property animates through the array of textures. The sprite’s normalTexture property is changed to the next texture in the array. The action then pauses for the specified time before continuing. The action continues until it has finished animating through all of the textures in the array. The total duration of the action is the number of textures multiplied by the frame interval.This action is reversible; the resulting action animates through the same textures from last to first.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417746-animate
-     */
-
-  }, {
-    key: 'animateWithNormalTexturesTimePerFrame',
-    value: function animateWithNormalTexturesTimePerFrame(textures, sec) {
-      return null;
-    }
-
-    /**
-     * Creates an animation that animates a sprite’s color and blend factor.
-     * @access public
-     * @param {CGColor} color - The new color for the sprite.
-     * @param {number} colorBlendFactor - The new blend factor for the sprite.
-     * @param {number} sec - The duration of the animation.
-     * @returns {SKAction} - 
-     * @desc This action can only be executed by an SKSpriteNode object. When the action executes, the sprite’s color and colorBlendFactor properties are animated to their new values.This action is not reversible; the reverse of this action does nothing.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417678-colorize
-     */
-
-  }, {
-    key: 'colorizeWithDuration',
-    value: function colorizeWithDuration(color, colorBlendFactor, sec) {
-      return null;
-    }
-
-    // Creating Physics Actions
-
-    /**
-     * Creates an action that applies a force to the center of gravity of a node’s physics body.
-     * @access public
-     * @param {CGVector} force - A vector that describes how much force is applied in each dimension. The force is measured in Newtons.
-     * @param {number} sec - The duration over which the force is applied to the physics body.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the force is applied continuously to the physics body for the duration of the action. This action accelerates the body without imparting any angular acceleration to it.This action is reversible; it applies an equal force in the opposite direction.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417782-applyforce
-     */
-
-  }, {
-    key: 'applyForceDuration',
-    value: function applyForceDuration(force, sec) {
-      return null;
-    }
-
-    /**
-     * Creates an action that applies a torque to an node’s physics body.
-     * @access public
-     * @param {number} torque - The amount of torque, in Newton-meters.
-     * @param {number} sec - The duration over which the torque is applied to the physics body.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the torque is applied continuously to the physics body for the duration of the action. This action generates an angular acceleration on the body without causing any linear acceleration.This action is reversible; it applies an equal torque in the opposite direction.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417756-applytorque
-     */
-
-  }, {
-    key: 'applyTorqueDuration',
-    value: function applyTorqueDuration(torque, sec) {
-      return null;
-    }
-
-    /**
-     * Creates an action that applies an force to a specific point on a node’s physics body.
-     * @access public
-     * @param {CGVector} force - A vector that describes how much force is applied in each dimension. The force is measured in Newtons.
-     * @param {CGPoint} point - A point in scene coordinates that defines where the force is applied to the physics body.
-     * @param {number} sec - The duration over which the force is applied to the physics body.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the force is applied continuously to the physics body for the duration of the action. Because the force is applied to a specific point on the body, it may impart both linear acceleration and angular acceleration. This action is reversible; it applies an equal force in the opposite direction.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417823-applyforce
-     */
-
-  }, {
-    key: 'applyForceAtDuration',
-    value: function applyForceAtDuration(force, point, sec) {
-      return null;
-    }
-
-    /**
-     * Creates an action that applies an impulse to the center of gravity of a physics body.
-     * @access public
-     * @param {CGVector} impulse - A vector that describes how much momentum to impart to the body in each dimension over the duration of the action. The impulse is measured in Newton-seconds.
-     * @param {number} sec - The duration over which the total impulse should be applied to the physics body.
-     * @returns {SKAction} - 
-     * @desc When the action executes, applies a constant force to the physics body for the duration of the action. The force is calculated by dividing the impulse strength by the duration of the action. For example, if an impulse of 1 Newton-second is applied to the physics body, and the the duration is 10 seconds, then a force of 0.1 Newtons is applied to the physics body.This action is reversible; it applies an equal impulse in the opposite direction.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417770-applyimpulse
-     */
-
-  }, {
-    key: 'applyImpulseDuration',
-    value: function applyImpulseDuration(impulse, sec) {
-      return null;
-    }
-
-    /**
-     * Creates an action that applies an angular impulse to a node’s physics body.
-     * @access public
-     * @param {number} impulse - The total impulse to apply to the physics body. The impulse is measured in Newton-seconds.
-     * @param {number} sec - The number of seconds over which to apply the impulse. For example, if you specify a duration of four seconds, one quarter of the impulse will be applied each second.
-     * @returns {SKAction} - 
-     * @desc When the action executes, applies a constant torque to the physics body for the duration of the action. The torque is calculated by dividing the impulse strength by the duration of the action. This action affects the body’s angular velocity without changing the body’s linear velocity.This action is reversible; it applies an equal angular impulse in the opposite direction.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417775-applyangularimpulse
-     */
-
-  }, {
-    key: 'applyAngularImpulseDuration',
-    value: function applyAngularImpulseDuration(impulse, sec) {
-      return null;
-    }
-
-    /**
-     * Creates an action that applies an impulse to a specific point of a node’s physics body.
-     * @access public
-     * @param {CGVector} impulse - The total impulse to apply to the physics body. The impulse is measured in Newton-seconds.
-     * @param {CGPoint} point - A point in scene coordinates that defines where the impulse was applied to the physics body.
-     * @param {number} sec - A new action object.
-     * @returns {SKAction} - 
-     * @desc When the action executes, applies a constant force to the physics body for the duration of the action. The force is calculated by dividing the impulse strength by the duration of the action. For example, if an impulse of 1 Newton-second is applied to the physics body, and the the duration is 10 seconds, then a force of 0.1 Newtons is applied to the physics body. Because the force is applied to a specific point on the body, it may impart both linear acceleration and angular acceleration.This action is reversible; it applies an equal impulse in the opposite direction.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417732-applyimpulse
-     */
-
-  }, {
-    key: 'applyImpulseAtDuration',
-    value: function applyImpulseAtDuration(impulse, point, sec) {
-      return null;
-    }
-
-    /**
-     * Creates an action that changes the charge of a node’s physics body to a new value.
-     * @access public
-     * @param {number} v - The new charge of the physics body.
-     * @param {number} duration - The duration of the animation.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the physics body’s charge property animates from its current value to its new value.This action is not reversible.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417752-changecharge
-     */
-
-  }, {
-    key: 'changeChargeTo',
-    value: function changeChargeTo(v, duration) {
-      return null;
-    }
-
-    /**
-     * Creates an action that changes the charge of a node’s physics body by a relative value.
-     * @access public
-     * @param {number} v - The amount to add to the physics body’s charge.
-     * @param {number} duration - The duration of the animation.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the physics body’s charge property animates from its current value to its new value.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.changeCharge(by: -v, duration: sec)
-    let action = SKAction.changeCharge(by: -v, duration: sec)
-      * @see https://developer.apple.com/documentation/spritekit/skaction/1417714-changecharge
-     */
-
-  }, {
-    key: 'changeChargeBy',
-    value: function changeChargeBy(v, duration) {
-      return null;
-    }
-
-    /**
-     * Creates an action that changes the mass of a node’s physics body to a new value.
-     * @access public
-     * @param {number} v - The new mass of the physics body.
-     * @param {number} duration - The duration of the animation.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the physics body’s mass property animates from its current value to its new value.This action is not reversible.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417780-changemass
-     */
-
-  }, {
-    key: 'changeMassTo',
-    value: function changeMassTo(v, duration) {
-      return null;
-    }
-
-    /**
-     * Creates an action that changes the mass of a node’s physics body by a relative value.
-     * @access public
-     * @param {number} v - The amount to add to the physics body’s mass.
-     * @param {number} duration - The duration of the animation.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the physics body’s mass property animates from its current value to its new value.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.changeMass(by: -v, duration: sec)
-    let action = SKAction.changeMass(by: -v, duration: sec)
-      * @see https://developer.apple.com/documentation/spritekit/skaction/1417710-changemass
-     */
-
-  }, {
-    key: 'changeMassBy',
-    value: function changeMassBy(v, duration) {
-      return null;
-    }
-
-    /**
-     * Creates an action that animates a change of a physics field’s strength.
-     * @access public
-     * @param {number} strength - The new strength for the field.
-     * @param {number} sec - The duration of the animation.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the field node’s strength property animates from its current value to its new value.This action is not reversible; the reverse of this action has the same duration but does not do anything.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417815-strength
-     */
-
-  }, {
-    key: 'strengthToDuration',
-    value: function strengthToDuration(strength, sec) {
-      return null;
-    }
-
-    /**
-     * Creates an action that animates a change of a physics field’s strength to a value relative to the existing value.
-     * @access public
-     * @param {number} strength - The value to add to the field.
-     * @param {number} sec - The duration of the animation.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the field node’s strength property animates from its current value to its new value.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.strength(by: -strength, duration: sec)
-    let action = SKAction.strength(by: -strength, duration: sec)
-      * @see https://developer.apple.com/documentation/spritekit/skaction/1417762-strength
-     */
-
-  }, {
-    key: 'strengthByDuration',
-    value: function strengthByDuration(strength, sec) {
-      return null;
-    }
-
-    /**
-     * Creates an action that animates a change of a physics field’s falloff.
-     * @access public
-     * @param {number} falloff - The new falloff for the field.
-     * @param {number} sec - The duration of the animation, in seconds.
-     * @returns {SKAction} - 
-     * @desc When the action runs, the field node’s falloff property animates from its current value to its new value. This action is not reversible.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417758-falloff
-     */
-
-  }, {
-    key: 'falloffToDuration',
-    value: function falloffToDuration(falloff, sec) {
-      return null;
-    }
-
-    /**
-     * Creates an action that animates a change of a physics field’s falloff to a value relative to the existing value.
-     * @access public
-     * @param {number} falloff - The value to add to the falloff.
-     * @param {number} sec - The duration of the animation, in seconds.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the field node’s falloff property animates from its current value to its new value.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.falloff(by: -falloff, duration: sec)
-    let action = SKAction.falloff(by: -falloff, duration: sec)
-      * @see https://developer.apple.com/documentation/spritekit/skaction/1417766-falloff
-     */
-
-  }, {
-    key: 'falloffByDuration',
-    value: function falloffByDuration(falloff, sec) {
-      return null;
-    }
-
-    // Creating Actions to Warp a Node
-
-    /**
-     * Creates an action to distort a node through a sequence of SKWarpGeometry objects.  
-     * @access public
-     * @param {SKWarpGeometry[]} warps - The sequence of warps to apply to the node.
-     * @param {number[]} times - The times at which each warp distortion in the sequence should complete.
-     * @returns {?SKAction} - 
-     * @desc The numberOfColumns and numberOfRows in each geometry in the sequence should match.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1690937-animate
-     */
-
-  }, {
-    key: 'animateWithWarps',
-    value: function animateWithWarps(warps, times) {
-      return null;
-    }
-
-    /**
-     * Creates an action to distort a node based using an SKWarpGeometry object.  
-     * @access public
-     * @param {SKWarpGeometry} warp - The warp geometry to distort the node to.
-     * @param {number} duration - The duration of the animation.
-     * @returns {?SKAction} - 
-     * @desc The numberOfColumns and numberOfRows in the node's current geometry should match those of the specified geometry.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1690951-warp
-     */
-
-  }, {
-    key: 'warpTo',
-    value: function warpTo(warp, duration) {
-      return null;
-    }
-
-    // Creating Audio Actions
-
-    /**
-     * Creates an action that plays a sound.
-     * @access public
-     * @param {string} soundFile - The name of a sound file in the app’s bundle.
-     * @param {boolean} wait - If true, the duration of this action is the same as the length of the audio playback. If false, the action is considered to have completed immediately.
-     * @returns {SKAction} - 
-     * @desc Use SKAction playSoundFileNamed:waitForCompletion: only for short incidentals. Use AVAudioPlayer for long running background music. This action is not reversible; the reversed action is identical to the original action.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417664-playsoundfilenamed
-     */
-
-  }, {
-    key: 'playSoundFileNamedWaitForCompletion',
-    value: function playSoundFileNamedWaitForCompletion(soundFile, wait) {
-      return null;
-    }
-
-    /**
-     * Creates an action that tells an audio node to start playback.
-     * @access public
-     * @returns {SKAction} - 
-     * @desc This action may only be executed on an SKAudioNode object.This action is not reversible.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417730-play
-     */
-
-  }, {
-    key: 'play',
-    value: function play() {
-      return null;
-    }
-
-    /**
-     * Creates an action that tells an audio node to pause playback.
-     * @access public
-     * @returns {SKAction} - 
-     * @desc This action may only be executed on an SKAudioNode object. The audio is paused, and if restarted, resumes at where it was paused.This action is not reversible.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417820-pause
-     */
-
-  }, {
-    key: 'pause',
-    value: function pause() {
-      return null;
-    }
-
-    /**
-     * Creates an action that tells an audio node to stop playback.
-     * @access public
-     * @returns {SKAction} - 
-     * @desc This action may only be executed on an SKAudioNode object. The audio is stopped, and if restarted, begins at the beginning.This action is not reversible.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417794-stop
-     */
-
-  }, {
-    key: 'stop',
-    value: function stop() {
-      return null;
-    }
-
-    /**
-     * Creates an action that changes an audio node’s playback rate to a new value.
-     * @access public
-     * @param {number} v - The new value for the playback rate. A playback rate of 1.0 represents normal speed.
-     * @param {number} duration - The duration of the animation, in seconds.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the audio node’s playback rate animates from its current value to its new value. For more information, see AVAudio3DMixing.This action is not reversible.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417808-changeplaybackrate
-     */
-
-  }, {
-    key: 'changePlaybackRateTo',
-    value: function changePlaybackRateTo(v, duration) {
-      return null;
-    }
-
-    /**
-     * Creates an action that changes an audio node’s playback rate by a relative amount.
-     * @access public
-     * @param {number} v - The amount to change the playback rate by. A playback rate of 1.0 represents normal speed.
-     * @param {number} duration - The duration of the animation, in seconds.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the audio node’s playback rate animates from its current value to its new value. For more information, see AVAudio3DMixing.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.changePlaybackRate(by: -v, duration: sec)
-    let action = SKAction.changePlaybackRate(by: -v, duration: sec)
-      * @see https://developer.apple.com/documentation/spritekit/skaction/1417670-changeplaybackrate
-     */
-
-  }, {
-    key: 'changePlaybackRateBy',
-    value: function changePlaybackRateBy(v, duration) {
-      return null;
-    }
-
-    /**
-     * Creates an action that changes an audio node’s volume to a new value.
-     * @access public
-     * @param {number} v - The new value for the volume. The value should be between 0.0 (silence) and 1.0 (maximum value for source audio), inclusive. 
-     * @param {number} duration - The duration of the animation, in seconds.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the audio node’s volume animates from its current value to its new value. For more information, see AVAudio3DMixing.This action is not reversible.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417682-changevolume
-     */
-
-  }, {
-    key: 'changeVolumeTo',
-    value: function changeVolumeTo(v, duration) {
-      return null;
-    }
-
-    /**
-     * Creates an action that changes an audio node’s volume by a relative value.
-     * @access public
-     * @param {number} v - The amount to change the volume by. 
-     * @param {number} duration - The duration of the animation, in seconds.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the audio node’s volume animates from its current value to its new value. For more information, see AVAudio3DMixing.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.changeVolume(by: -v, duration: sec)
-    let action = SKAction.changeVolume(by: -v, duration: sec)
-      * @see https://developer.apple.com/documentation/spritekit/skaction/1417726-changevolume
-     */
-
-  }, {
-    key: 'changeVolumeBy',
-    value: function changeVolumeBy(v, duration) {
-      return null;
-    }
-
-    /**
-     * Creates an action that changes an audio node’s obstruction to a new value.
-     * @access public
-     * @param {number} v - The new value for the obstruction, in decibels.
-     * @param {number} duration - The duration of the animation, in seconds.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the audio node’s obstruction animates from its current value to its new value. Passing this action a value of -100 yields the greatest reduction in volume. For more information, see AVAudio3DMixing.This action is not reversible.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1519718-changeobstruction
-     */
-
-  }, {
-    key: 'changeObstructionTo',
-    value: function changeObstructionTo(v, duration) {
-      return null;
-    }
-
-    /**
-     * Creates an action that changes an audio node’s obstruction by a relative value.
-     * @access public
-     * @param {number} v - The amount to change the obstruction by, in decibels.
-     * @param {number} duration - The duration of the animation, in seconds.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the audio node’s obstruction animates from its current value to its new value. For more information, see AVAudio3DMixing.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.changeObstruction(by: -v, duration: sec)
-    let action = SKAction.changeObstruction(by: -v, duration: sec)
-      * @see https://developer.apple.com/documentation/spritekit/skaction/1520346-changeobstruction
-     */
-
-  }, {
-    key: 'changeObstructionBy',
-    value: function changeObstructionBy(v, duration) {
-      return null;
-    }
-
-    /**
-     * Creates an action that changes an audio node’s occlusion to a new value.
-     * @access public
-     * @param {number} v - The new value for the occlusion, in decibels.
-     * @param {number} duration - The duration of the animation, in seconds.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the audio node’s occlusion animates from its current value to its new value. Passing this action a value of -100 yields the greatest reduction in volume. For more information, see AVAudio3DMixing.This action is not reversible.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1520433-changeocclusion
-     */
-
-  }, {
-    key: 'changeOcclusionTo',
-    value: function changeOcclusionTo(v, duration) {
-      return null;
-    }
-
-    /**
-     * Creates an action that changes an audio node’s occlusion by a relative value.
-     * @access public
-     * @param {number} v - The amount to change the occlusion by, in decibels.
-     * @param {number} duration - The duration of the animation, in seconds.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the audio node’s occlusion animates from its current value to its new value. For more information, see AVAudio3DMixing.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.changeOcclusion(by: -v, duration: sec)
-    let action = SKAction.changeOcclusion(by: -v, duration: sec)
-      * @see https://developer.apple.com/documentation/spritekit/skaction/1520117-changeocclusion
-     */
-
-  }, {
-    key: 'changeOcclusionBy',
-    value: function changeOcclusionBy(v, duration) {
-      return null;
-    }
-
-    /**
-     * Creates an action that changes an audio node’s reverb to a new value.
-     * @access public
-     * @param {number} v - The new value for the reverb. The value should be between 0.0 and 1.0, inclusive.
-     * @param {number} duration - The duration of the animation, in seconds.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the audio node’s reverb animates from its current value to its new value. For more information, see AVAudio3DMixing.This action is not reversible.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1520320-changereverb
-     */
-
-  }, {
-    key: 'changeReverbTo',
-    value: function changeReverbTo(v, duration) {
-      return null;
-    }
-
-    /**
-     * Creates an action that changes an audio node’s reverb by a relative value.
-     * @access public
-     * @param {number} v - The amount to change the reverb by.
-     * @param {number} duration - The duration of the animation, in seconds.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the audio node’s reverb animates from its current value to its new value. For more information, see AVAudio3DMixing.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.changeReverb(by: -v, duration: sec)
-    let action = SKAction.changeReverb(by: -v, duration: sec)
-      * @see https://developer.apple.com/documentation/spritekit/skaction/1519568-changereverb
-     */
-
-  }, {
-    key: 'changeReverbBy',
-    value: function changeReverbBy(v, duration) {
-      return null;
-    }
-
-    /**
-     * Creates an action that changes an audio node’s stereo panning to a new value.
-     * @access public
-     * @param {number} v - The new value for stereo panning. The value must between -1.0 (left channel only) and 1.0 (right channel only), inclusive.
-     * @param {number} duration - The duration of the animation, in seconds.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the audio node’s stereo panning animates from its current value to its new value. For more information, see AVAudio3DMixing.This action is not reversible.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1519976-stereopan
-     */
-
-  }, {
-    key: 'stereoPanTo',
-    value: function stereoPanTo(v, duration) {
-      return null;
-    }
-
-    /**
-     * Creates an action that changes an audio node’s stereo panning by a relative value.
-     * @access public
-     * @param {number} v - The amount to change the stereo panning by. 
-     * @param {number} duration - The duration of the animation, in seconds.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the audio node’s stereo panning animates from its current value to its new value. For more information, see AVAudio3DMixing.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.stereoPan(by: -v, duration: sec)
-    let action = SKAction.stereoPan(by: -v, duration: sec)
-      * @see https://developer.apple.com/documentation/spritekit/skaction/1519713-stereopan
-     */
-
-  }, {
-    key: 'stereoPanBy',
-    value: function stereoPanBy(v, duration) {
-      return null;
-    }
-
-    // Removing Nodes from the Scene
-
-    /**
-     * Creates an action that removes the node from its parent.
-     * @access public
-     * @returns {SKAction} - 
-     * @desc When the action executes, the node is immediately removed from its parent.This action is not reversible; the reverse of this action is the same action.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417748-removefromparent
-     */
-
-  }, {
-    key: 'removeFromParent',
-    value: function removeFromParent() {
-      return null;
-    }
-
-    // Creating Actions That Perform Actions on a Node’s Child
-
-    /**
-     * Creates an action that runs an action on a named child object.
-     * @access public
-     * @param {SKAction} action - The action to execute.
-     * @param {string} name - The name of a child object. See the name property on the SKNode object.
-     * @returns {SKAction} - 
-     * @desc This action has an instantaneous duration, although the action executed on the child may have a duration of its own. When the action executes, it looks up an appropriate child node and calls its run(_:) method, passing in the action to execute. This action is reversible; it tells the child to execute the reverse of the action specified by the action parameter.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417671-run
-     */
-
-  }, {
-    key: 'runOnChildWithName',
-    value: function runOnChildWithName(action, name) {
-      return null;
-    }
-
-    // Creating Actions That Combine or Repeat Other Actions
-
-    /**
-     * Creates an action that runs a collection of actions in parallel.
-     * @access public
-     * @param {SKAction[]} actions - An array of SKAction objects.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the actions that comprise the group all start immediately and run in parallel. The duration of the group action is the longest duration among the collection of actions. If an action in the group has a duration less than the group’s duration, the action completes, then idles until the group completes the remaining actions. This matters most when creating a repeating action that repeats a group.This action is reversible; it creates a new group action that contains the reverse of each action specified in the group. 
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417688-group
-     */
-
-  }, {
-    key: 'group',
-    value: function group(actions) {
-      return null;
-    }
-
-    /**
-     * Creates an action that runs a collection of actions sequentially.
-     * @access public
-     * @param {SKAction[]} actions - An array of SKAction objects.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the first action in the sequence starts and runs to completion. Subsequent actions in the sequence run in a similar fashion until all of the actions in the sequence have executed. The duration of the sequence action is the sum of the durations of the actions in the sequence.This action is reversible; it creates a new sequence action that reverses the order of the actions. Each action in the reversed sequence is itself reversed. For example, if an action sequence is {1,2,3}, the reversed sequence would be {3R,2R,1R}.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417817-sequence
-     */
-
-  }, {
-    key: 'sequence',
-    value: function sequence(actions) {
-      return null;
-    }
-
-    /**
-     * Creates an action that repeats another action a specified number of times.
-     * @access public
-     * @param {SKAction} action - The action to execute.
-     * @param {number} count - The number of times to execute the action.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the associated action runs to completion and then repeats, until the count is reached.This action is reversible; it creates a new action that is the reverse of the specified action and then repeats it the same number of times.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417750-repeat
-     */
-
-  }, {
-    key: 'repeat',
-    value: function repeat(action, count) {
-      return null;
-    }
-
-    /**
-     * Creates an action that repeats another action forever.
-     * @access public
-     * @param {SKAction} action - The action to execute.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the associated action runs to completion and then repeats.This action is reversible; it creates a new action that is the reverse of the specified action and then repeats it forever.NoteThe action to be repeated must have a non-instantaneous duration.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417676-repeatforever
-     */
-
-  }, {
-    key: 'repeatForever',
-    value: function repeatForever(action) {
-      return null;
-    }
-
-    // Creating an Action to Introduce a Delay into a Sequence
-
-    /**
-     * Creates an action that idles for a specified period of time.
-     * @access public
-     * @param {number} sec - The amount of time to wait.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the action waits for the specified amount of time, then ends. This is typically used as part of a sequence of actions to insert a delay between two other actions. You might also use it in conjunction with the run(_:completion:) method to trigger code that needs to run at a later time.This action is not reversible; the reverse of this action is the same action.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417788-wait
-     */
-
-  }, {
-    key: 'waitForDuration',
-    value: function waitForDuration(sec) {
-      return null;
-    }
-
-    /**
-     * Creates an action that idles for a randomized period of time.
-     * @access public
-     * @param {number} sec - The average amount of time to wait.
-     * @param {number} durationRange - The range of possible values for the duration.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the action waits for the specified amount of time, then ends. This is typically used as part of a sequence of actions to insert a delay between two other actions. However, you might also use it in conjunction with the run(_:completion:) method to trigger code that needs to run at a later time.Each time the action is executed, the action computes a new random value for the duration. The duration may vary in either direction by up to half of the value of the durationRange parameter.This action is not reversible; the reverse of this action is the same action.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417760-wait
-     */
-
-  }, {
-    key: 'waitForDurationWithRange',
-    value: function waitForDurationWithRange(sec, durationRange) {
-      return null;
-    }
-
-    // Creating Actions to Perform Inverse Kinematic Calculations
-
-    /**
-     * Creates an action that performs an inverse kinematic reach.
-     * @access public
-     * @param {SKNode} node - The node whose position the current node should move closer to. 
-     * @param {SKNode} root - The highest level ancestor of the target node that should be rotated.
-     * @param {number} sec - The length of the animation.
-     * @returns {SKAction} - 
-     * @desc This action is typically used to implement character animation across a series of moving parts. When the action executes, it performs an inverse kinematic calculation to determine new rotation values for the target node and any of its ancestors up to and including the root node. Each node is rotated around its anchor point in an attempt to get the targeted node’s position closer to the intended destination. Each node’s rotation value is constrained by that node’s reachConstraints property. If the action cannot successfully reach the target position, it gets the node as close as it can to the target position.This action is not reversible; the reverse of this action is the same action.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417827-reach
-     */
-
-  }, {
-    key: 'reachToRootNodeDuration',
-    value: function reachToRootNodeDuration(node, root, sec) {
-      return null;
-    }
-
-    /**
-     * Creates an action that performs an inverse kinematic reach.
-     * @access public
-     * @param {CGPoint} position - The intended destination for the node, specified in the scene’s coordinate system. 
-     * @param {SKNode} root - The highest level ancestor of the target node that should be rotated.
-     * @param {number} velocity - The maximum speed at which the node should move.
-     * @returns {SKAction} - 
-     * @desc This action is typically used to implement character animation across a series of moving parts. When the action executes, it performs an inverse kinematic calculation to determine new rotation values for the target node and any of its ancestors up to and including the root node. Each node is rotated around its anchor point in an attempt to get the targeted node’s position closer to the intended destination. Each node’s rotation value is constrained by that node’s reachConstraints property. If the action cannot successfully reach the target position, it gets the node as close as it can to the target position.The duration of the action is calculated implicitly based on the speed of movement and the distance that the node needs to travel.This action is not reversible; the reverse of this action is the same action.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417720-reach
-     */
-
-  }, {
-    key: 'reachToRootNode',
-    value: function reachToRootNode(position, root, velocity) {
-      return null;
-    }
-
-    /**
-     * Creates an action that executes a block over a duration.
-     * @access public
-     * @param {number} seconds - The duration of the action, in seconds.
-     * @param {function(arg1: SKNode, arg2: number): void} block - The block to run. The block takes the following parameters:nodeThe node on which the action is running.elapsedTimeThe amount of time that has passed in the animation.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the block is called repeatedly until the action’s duration expires. The elapsed time is computed and passed to the block whenever the block is called.This action is not reversible; the reverse action executes the same block.The following code shows how you can create a custom action to update an attribute of an SKShader attached to a sprite node. let customAction = SKAction.customAction(withDuration: 2.0) {
-      node, elapsedTime in
-      
-      if let node = node as? SKSpriteNode {
-          node.setValue(SKAttributeValue(float: Float(elapsedTime)),
-                                         forAttribute: "a_time")
-      }
-    }
-    let customAction = SKAction.customAction(withDuration: 2.0) {
-      node, elapsedTime in
-      
-      if let node = node as? SKSpriteNode {
-          node.setValue(SKAttributeValue(float: Float(elapsedTime)),
-                                         forAttribute: "a_time")
-      }
-    }
-      * @see https://developer.apple.com/documentation/spritekit/skaction/1417745-customaction
-     */
-
-  }, {
-    key: 'customActionWithDurationActionBlock',
-    value: function customActionWithDurationActionBlock(seconds, block) {
-      return null;
-    }
-
-    /**
-     * Creates an action that calls a method on an object.
-     * @access public
-     * @param {function} selector - The selector of the method to call.
-     * @param {Object} target - The target object.
-     * @returns {SKAction} - 
-     * @desc The action object maintains a strong reference to the target object.When the action executes, the target object’s method is called. This action occurs instantaneously.This action is not reversible; the reverse of this action calls the selector again.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417764-perform
-     */
-
-  }, {
-    key: 'performOnTarget',
-    value: function performOnTarget(selector, target) {
-      return null;
-    }
-
-    /**
-     * Creates an action that executes a block.
-     * @access public
-     * @param {function(): void} block - The block to run.
-     * @returns {SKAction} - 
-     * @desc When the action executes, the block is called. This action takes place instantaneously.This action is not reversible; the reverse action executes the same block.
-     * @see https://developer.apple.com/documentation/spritekit/skaction/1417692-run
-     */
-
-  }, {
-    key: 'run',
-    value: function run(block) {
-      return null;
-    }
-  }]);
-
-  return SKAction;
-}(_NSObject3.default);
-
-exports.default = SKAction;
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
 /* WEBPACK VAR INJECTION */(function(global) {/*!
  * The buffer module from node.js, for the browser.
  *
@@ -19826,9 +16722,9 @@ exports.default = SKAction;
 
 
 
-var base64 = __webpack_require__(128)
-var ieee754 = __webpack_require__(129)
-var isArray = __webpack_require__(130)
+var base64 = __webpack_require__(130)
+var ieee754 = __webpack_require__(131)
+var isArray = __webpack_require__(132)
 
 exports.Buffer = Buffer
 exports.SlowBuffer = SlowBuffer
@@ -21606,7 +18502,3104 @@ function isnan (val) {
   return val !== val // eslint-disable-line no-self-compare
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(127)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(129)))
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _SCNMatrix = __webpack_require__(7);
+
+var _SCNMatrix2 = _interopRequireDefault(_SCNMatrix);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * Returns a matrix describing a translation transformation.
+ * @access public
+ * @param {number} tx - 
+ * @param {number} ty - 
+ * @param {number} tz - 
+ * @returns {SCNMatrix4} - 
+ * @see https://developer.apple.com/documentation/scenekit/1409679-scnmatrix4maketranslation
+ */
+var SCNMatrix4MakeTranslation = function SCNMatrix4MakeTranslation(tx, ty, tz) {
+  return new _SCNMatrix2.default(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, tx, ty, tz, 1);
+};
+
+exports.default = SCNMatrix4MakeTranslation;
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _NSObject2 = __webpack_require__(0);
+
+var _NSObject3 = _interopRequireDefault(_NSObject2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+//import SCNAnimatable from './SCNAnimatable'
+
+/**
+ * The abstract superclass for objects that automatically adjust the position, rotation, or scale of a node based on rules you define.
+ * @access public
+ * @extends {NSObject}
+ * @implements {SCNAnimatable}
+ * @see https://developer.apple.com/documentation/scenekit/scnconstraint
+ */
+var SCNConstraint = function (_NSObject) {
+  _inherits(SCNConstraint, _NSObject);
+
+  /**
+   * constructor
+   * @access public
+   * @constructor
+   */
+  function SCNConstraint() {
+    _classCallCheck(this, SCNConstraint);
+
+    // Tuning a Constraint’s Effect on Nodes
+
+    /**
+     * The influence of the constraint on the node’s transformation.
+     * @type {number}
+     * @see https://developer.apple.com/documentation/scenekit/scnconstraint/1468692-influencefactor
+     */
+    var _this = _possibleConstructorReturn(this, (SCNConstraint.__proto__ || Object.getPrototypeOf(SCNConstraint)).call(this));
+
+    _this.influenceFactor = 0;
+
+    return _this;
+  }
+
+  return SCNConstraint;
+}(_NSObject3.default);
+
+exports.default = SCNConstraint;
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _NSObject2 = __webpack_require__(0);
+
+var _NSObject3 = _interopRequireDefault(_NSObject2);
+
+var _CGPoint = __webpack_require__(8);
+
+var _CGPoint2 = _interopRequireDefault(_CGPoint);
+
+var _CGRect = __webpack_require__(16);
+
+var _CGRect2 = _interopRequireDefault(_CGRect);
+
+var _CGSize = __webpack_require__(9);
+
+var _CGSize2 = _interopRequireDefault(_CGSize);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+//import UIFocusItem from '../undefined/UIFocusItem'
+//import SKScene from './SKScene'
+//import SKAction from './SKAction'
+//import SKPhysicsBody from './SKPhysicsBody'
+//import GKPolygonObstacle from '../undefined/GKPolygonObstacle'
+//import GKEntity from '../undefined/GKEntity'
+//import NSMutableDictionary from '../undefined/NSMutableDictionary'
+//import SKConstraint from './SKConstraint'
+//import SKReachConstraints from './SKReachConstraints'
+//import NSCoder from '../undefined/NSCoder'
+//import SKAttributeValue from './SKAttributeValue'
+
+
+/**
+ * The SKNode class is the fundamental building block of most SpriteKit content. 
+ * @access public
+ * @extends {NSObject}
+ * @implements {UIFocusItem}
+ * @see https://developer.apple.com/documentation/spritekit/sknode
+ */
+var SKNode = function (_NSObject) {
+  _inherits(SKNode, _NSObject);
+
+  // Initializers
+
+  /**
+   * 
+   * @access public
+   * @constructor
+   * @see https://developer.apple.com/documentation/spritekit/sknode/1483097-init
+   */
+  function SKNode() {
+    _classCallCheck(this, SKNode);
+
+    // Inspecting the Node’s Position
+
+    /**
+     * The position of the node in its parent's coordinate system.
+     * @type {CGPoint}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483101-position
+     */
+    var _this = _possibleConstructorReturn(this, (SKNode.__proto__ || Object.getPrototypeOf(SKNode)).call(this));
+
+    _this.position = new _CGPoint2.default(0, 0);
+
+    /**
+     * The height of the node relative to its parent.
+     * @type {number}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483107-zposition
+     */
+    _this.zPosition = 0.0;
+
+    _this._frame = new _CGRect2.default(new _CGPoint2.default(0, 0), new _CGSize2.default(0, 0));
+
+    // Setting a Node’s Scaling and Rotation
+
+    /**
+     * A scaling factor that multiplies the width of a node and its children.
+     * @type {number}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483087-xscale
+     */
+    _this.xScale = 1.0;
+
+    /**
+     * A scaling factor that multiplies the height of a node and its children.
+     * @type {number}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483046-yscale
+     */
+    _this.yScale = 1.0;
+
+    /**
+     * The Euler rotation about the z axis (in radians).
+     * @type {number}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483089-zrotation
+     */
+    _this.zRotation = 0.0;
+
+    // Inspecting a Node’s Visibility
+
+    /**
+     * The transparency value applied to the node’s contents.
+     * @type {number}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483023-alpha
+     */
+    _this.alpha = 1.0;
+
+    /**
+     * A Boolean value that determines whether a node and its descendants are rendered.
+     * @type {boolean}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483048-ishidden
+     */
+    _this.isHidden = false;
+
+    // Determining Whether a Node Supports User Interaction
+
+    /**
+     * A Boolean value that indicates whether the node receives touch events.
+     * @type {boolean}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483109-isuserinteractionenabled
+     */
+    _this.isUserInteractionEnabled = false;
+
+    // Working with Node Trees
+
+    _this._children = [];
+    _this._parent = null;
+    _this._scene = null;
+
+    // Naming Nodes
+
+    /**
+     * The node’s assignable name.
+     * @type {?string}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483136-name
+     */
+    _this.name = null;
+
+    // Running Actions
+
+    /**
+     * A speed modifier applied to all actions executed by a node and its descendants.
+     * @type {number}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483036-speed
+     */
+    _this.speed = 1.0;
+
+    /**
+     * A Boolean value that determines whether actions on the node and its descendants are processed.
+     * @type {boolean}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483113-ispaused
+     */
+    _this.isPaused = false;
+
+    /**
+     * @access private
+     * @type {Map}
+     */
+    _this._actions = new Map();
+
+    // Adding Physics to a Node
+
+    /**
+     * The physics body associated with the node.
+     * @type {?SKPhysicsBody}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483117-physicsbody
+     */
+    _this.physicsBody = null;
+
+    // Working with GameplayKit Entities
+
+    /**
+     * The GameplayKit entity this node represents.
+     * @type {?GKEntity}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1640688-entity
+     */
+    //this.entity = null
+
+
+    // Storing Custom Node Data
+
+    /**
+     * A dictionary containing arbitrary data.
+     * @type {?NSMutableDictionary}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483121-userdata
+     */
+    _this.userData = null;
+
+    // Constraining a Node’s Behavior Relative to Other Nodes
+
+    /**
+     * Specifies the list of constraints to apply to the node.
+     * @type {?SKConstraint[]}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483124-constraints
+     */
+    _this.constraints = null;
+
+    /**
+     * Specifies the reach constraints to apply to the node when executing a reach action.
+     * @type {?SKReachConstraints}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483019-reachconstraints
+     */
+    _this.reachConstraints = null;
+
+    // Instance Properties
+
+    /**
+     * 
+     * @type {?Object[]}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1645045-accessibilitychildren
+     */
+    _this.accessibilityChildren = [];
+
+    /**
+     * 
+     * @type {CGRect}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1645044-accessibilityframe
+     */
+    _this.accessibilityFrame = new _CGRect2.default(new _CGPoint2.default(0, 0), new _CGSize2.default(0, 0));
+
+    /**
+     * 
+     * @type {?string}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1645041-accessibilityhelp
+     */
+    _this.accessibilityHelp = null;
+
+    /**
+     * 
+     * @type {?string}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1645039-accessibilitylabel
+     */
+    _this.accessibilityLabel = null;
+
+    /**
+     * 
+     * @type {?Object}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1645042-accessibilityparent
+     */
+    _this.accessibilityParent = null;
+
+    /**
+     * 
+     * @type {?string}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1645036-accessibilityrole
+     */
+    _this.accessibilityRole = 'AXImage';
+
+    /**
+     * 
+     * @type {?string}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1645035-accessibilityroledescription
+     */
+    _this.accessibilityRoleDescription = 'SKNode';
+
+    /**
+     * 
+     * @type {?string}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1645043-accessibilitysubrole
+     */
+    _this.accessibilitySubrole = null;
+
+    /**
+     * The values of each attribute associated with the node's attached shader. 
+     * @type {Map<string, SKAttributeValue>}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1644181-attributevalues
+     */
+    _this.attributeValues = new Map();
+
+    /**
+     * 
+     * @type {boolean}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1645038-isaccessibilityelement
+     */
+    _this.isAccessibilityElement = false;
+
+    /**
+     * 
+     * @type {boolean}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1645037-isaccessibilityenabled
+     */
+    _this.isAccessibilityEnabled = false;
+
+    /**
+     * @type {SKNode}
+     * @access private
+     */
+    _this.__presentation = null;
+
+    _this._isPresentationInstance = false;
+    _this._worldPosition = new _CGPoint2.default(0, 0);
+    _this._worldZPosition = 0;
+    _this._worldXScale = 1;
+    _this._worldYScale = 1;
+    _this._worldZRotation = 0;
+    return _this;
+  }
+
+  /**
+   * 
+   * @access public
+   * @param {NSCoder} aDecoder - 
+   * @returns {void}
+   * @see https://developer.apple.com/documentation/spritekit/sknode/1483142-init
+   */
+  //initWithCoder(aDecoder) {
+  //}
+
+
+  // Creating a New Node
+
+  /**
+   * Creates a new node by loading an archive file from the game’s main bundle.
+   * @access public
+   * @param {string} filename - The name of the file, without a file extension. The file must be in the app’s main bundle and have a .sks filename extension.
+   * @returns {void}
+   * @desc If you call this method on a subclass of the SKScene class and the object in the archive is an SKScene object, the returned object is initialized as if it is a member of the subclass. You use this behavior to create scene layouts in the Xcode Editor and provide custom behaviors in your subclass. 
+   * @see https://developer.apple.com/documentation/spritekit/sknode/1483083-init
+   */
+
+
+  _createClass(SKNode, [{
+    key: 'calculateAccumulatedFrame',
+
+
+    // Inspecting the Node’s Position
+
+    /**
+     * Calculates a rectangle in the parent’s coordinate system that contains the content of the node and all of its descendants. 
+     * @access public
+     * @returns {CGRect} - 
+     * @desc The frame takes into the account the cumulative effect of the xScale, yScale, and zRotation properties of each node in the subtree.Listing 1 shows how calculateAccumulatedFrame() can be used display the bounding box of a shape node. The child node, although smaller than its parent, is rotated by 30° so that its bounds extend beyond its parent's bounds. After childNode has been added to parentNode, a further shape node, boundingBoxNode, is created with its size based on the accumulated frame of parentNode.Listing 1 Displaying the accumulated frame of a shape nodelet parentNode = SKShapeNode(rectOf: CGSize(width: 500, height: 500))
+    parentNode.lineWidth = 2
+    parentNode.strokeColor = .blue
+    parentNode.fillColor = .clear
+       
+    let childNode = SKShapeNode(rectOf: CGSize(width: 400, height: 400))
+    childNode.strokeColor = .red
+    childNode.fillColor = .clear
+    childNode.zRotation = -CGFloat.pi / 6 // pi / 6 = 30°
+       
+    parentNode.addChild(childNode)
+       
+    let boundingBoxNode = SKShapeNode(rectOf: parentNode.calculateAccumulatedFrame().size)
+    boundingBoxNode.lineWidth = 1
+    boundingBoxNode.strokeColor = .black
+    boundingBoxNode.fillColor = .clear
+    boundingBoxNode.path = boundingBoxNode.path?.copy(dashingWithPhase: 0,
+                                                    lengths: [10,10])
+       
+    parentNode.addChild(boundingBoxNode)
+    Figure 1 shows the result of Listing 1 with parentNode rendered in blue, childNode rendered in red and the boundingBoxNode rendered with a dashed line. Figure 1 Displaying the accumulated frame of a shape nodeDisplaying the accumulated frame of a shape nodelet parentNode = SKShapeNode(rectOf: CGSize(width: 500, height: 500))
+    parentNode.lineWidth = 2
+    parentNode.strokeColor = .blue
+    parentNode.fillColor = .clear
+       
+    let childNode = SKShapeNode(rectOf: CGSize(width: 400, height: 400))
+    childNode.strokeColor = .red
+    childNode.fillColor = .clear
+    childNode.zRotation = -CGFloat.pi / 6 // pi / 6 = 30°
+       
+    parentNode.addChild(childNode)
+       
+    let boundingBoxNode = SKShapeNode(rectOf: parentNode.calculateAccumulatedFrame().size)
+    boundingBoxNode.lineWidth = 1
+    boundingBoxNode.strokeColor = .black
+    boundingBoxNode.fillColor = .clear
+    boundingBoxNode.path = boundingBoxNode.path?.copy(dashingWithPhase: 0,
+                                                    lengths: [10,10])
+       
+    parentNode.addChild(boundingBoxNode)
+    Displaying the accumulated frame of a shape node
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483066-calculateaccumulatedframe
+     */
+    value: function calculateAccumulatedFrame() {
+      var r = this._frame.copy();
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = this._children[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          var child = _step.value;
+
+          r = r.union(child.calculateAccumulatedFrame());
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator.return) {
+            _iterator.return();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+
+      return r;
+    }
+
+    /**
+     * A rectangle in the parent’s coordinate system that contains the node’s content, ignoring the node’s children.
+     * @type {CGRect}
+     * @desc The frame is the smallest rectangle that contains the node’s content, taking into account the node’s xScale, yScale, and zRotation properties. Not all nodes contain content of their own.
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483026-frame
+     */
+
+  }, {
+    key: 'setScale',
+
+
+    // Setting a Node’s Scaling and Rotation
+
+    /**
+     * Sets the xScale and yScale properties of the node.
+     * @access public
+     * @param {number} scale - The new value to use for the node’s xScale and yScale properties.
+     * @returns {void}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483126-setscale
+     */
+    value: function setScale(scale) {
+      this.xScale = scale;
+      this.yScale = scale;
+    }
+
+    // Working with Node Trees
+
+    /**
+     * Adds a node to the end of the receiver’s list of child nodes.
+     * @access public
+     * @param {SKNode} node - The node to add. The node must not already have a parent.
+     * @returns {void}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483054-addchild
+     */
+
+  }, {
+    key: 'addChild',
+    value: function addChild(node) {
+      if (this._children.indexOf(node) >= 0) {
+        return;
+      }
+      node.removeFromParent();
+      this._children.push(node);
+      node._parent = this;
+    }
+
+    /**
+     * Inserts a child into a specific position in the receiver’s list of child nodes.
+     * @access public
+     * @param {SKNode} node - The node to add. The node must not already have a parent.
+     * @param {number} index - The position in the array to insert the node.
+     * @returns {void}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483062-insertchild
+     */
+
+  }, {
+    key: 'insertChildAt',
+    value: function insertChildAt(node, index) {
+      if (this._children.indexOf(node) >= 0) {
+        return;
+      }
+      node.removeFromParent();
+      this._insertObjectInChildrenAtIndex(node, index);
+      this._parent = this;
+    }
+
+    /**
+     * Compares the parameter node to the receiving node.
+     * @access public
+     * @param {SKNode} node - The node to compare to the receiving node.
+     * @returns {boolean} - 
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483078-isequal
+     */
+
+  }, {
+    key: 'isEqualTo',
+    value: function isEqualTo(node) {
+      return false;
+    }
+
+    /**
+     * Moves the node to a new parent node in the scene. 
+     * @access public
+     * @param {SKNode} parent - An SKNode object to move the receiver to. This node must be in the same scene as the node’s current parent.
+     * @returns {void}
+     * @desc The node maintains its current position in scene coordinates.
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483021-move
+     */
+
+  }, {
+    key: 'moveToParent',
+    value: function moveToParent(parent) {
+      parent.addChild(this);
+    }
+
+    /**
+     * Removes the receiving node from its parent.
+     * @access public
+     * @returns {void}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483119-removefromparent
+     */
+
+  }, {
+    key: 'removeFromParent',
+    value: function removeFromParent() {
+      var parentNode = this._parent;
+      if (parentNode === null) {
+        return;
+      }
+      var index = parentNode._children.indexOf(this);
+      if (index < 0) {
+        return;
+      }
+      parentNode._removeObjectFromChildrenAtIndex(index);
+    }
+
+    /**
+     * Removes all of the node’s children.
+     * @access public
+     * @returns {void}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483040-removeallchildren
+     */
+
+  }, {
+    key: 'removeAllChildren',
+    value: function removeAllChildren() {
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = this._children[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var child = _step2.value;
+
+          child.removeFromParent();
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+            _iterator2.return();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
+    }
+
+    /**
+     * Removes a list of children from the receiving node.
+     * @access public
+     * @param {SKNode[]} nodes - An array of SKNode objects that are all children of the receiving node.
+     * @returns {void}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483091-removechildren
+     */
+
+  }, {
+    key: 'removeChildrenIn',
+    value: function removeChildrenIn(nodes) {
+      var _iteratorNormalCompletion3 = true;
+      var _didIteratorError3 = false;
+      var _iteratorError3 = undefined;
+
+      try {
+        for (var _iterator3 = nodes[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+          var node = _step3.value;
+
+          if (this._children.indexOf(node) >= 0) {
+            node.removeFromParent();
+          }
+        }
+      } catch (err) {
+        _didIteratorError3 = true;
+        _iteratorError3 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion3 && _iterator3.return) {
+            _iterator3.return();
+          }
+        } finally {
+          if (_didIteratorError3) {
+            throw _iteratorError3;
+          }
+        }
+      }
+    }
+
+    /**
+     *
+     * @access private
+     * @param {number} index -
+     * @returns {void}
+     */
+
+  }, {
+    key: '_removeObjectFromChildrenAtIndex',
+    value: function _removeObjectFromChildrenAtIndex(index) {
+      var arr = this._children.splice(index, 1);
+      if (arr.length === 0) {
+        return;
+      }
+      var obj = arr[0];
+
+      obj._parent = null;
+    }
+
+    /**
+     *
+     * @access private
+     * @param {SCNNode} object -
+     * @param {number} index -
+     * @returns {void}
+     */
+
+  }, {
+    key: '_insertObjectInChildrenAtIndex',
+    value: function _insertObjectInChildrenAtIndex(object, index) {
+      var length = this._children.length;
+      if (index > length) {
+        throw new Error('SKNode.children out of index: ' + index + ' > ' + length);
+      }
+      this._children.splice(index, 0, object);
+    }
+
+    /**
+     * Returns a Boolean value that indicates whether the node is a descendant of the target node.
+     * @access public
+     * @param {SKNode} parent - An SKNode object to test against.
+     * @returns {boolean} - 
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483111-inparenthierarchy
+     */
+
+  }, {
+    key: 'inParentHierarchy',
+    value: function inParentHierarchy(parent) {
+      return false;
+    }
+    /**
+     * The node’s children.
+     * @type {SKNode[]}
+     * @desc The objects in this array are all SKNode objects.
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483028-children
+     */
+
+  }, {
+    key: 'childNodeWithName',
+
+
+    // Naming Nodes
+
+    /**
+     * Searches the children of the receiving node for a node with a specific name.
+     * @access public
+     * @param {string} name - The name to search for. This may be either the literal name of the node or a customized search string. See Searching the Node Tree.
+     * @returns {?SKNode} - 
+     * @desc If more than one child share the same name, the first node discovered is returned.
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483060-childnode
+     */
+    value: function childNodeWithName(name) {
+      var _iteratorNormalCompletion4 = true;
+      var _didIteratorError4 = false;
+      var _iteratorError4 = undefined;
+
+      try {
+        for (var _iterator4 = this._children[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+          var child = _step4.value;
+
+          if (child.name === name) {
+            return child;
+          }
+        }
+      } catch (err) {
+        _didIteratorError4 = true;
+        _iteratorError4 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion4 && _iterator4.return) {
+            _iterator4.return();
+          }
+        } finally {
+          if (_didIteratorError4) {
+            throw _iteratorError4;
+          }
+        }
+      }
+
+      return null;
+    }
+
+    /**
+     * Search the children of the receiving node to perform processing for nodes which share a name.
+     * @access public
+     * @param {string} name - The name to search for. This may be either the literal name of the node or a customized search string. See Searching the Node Tree.
+     * @param {function(arg1: SKNode, arg2: UnsafeMutablePointer<ObjCBool>): void} block - A block to execute on nodes that match the name parameter. The block has the signature (node: SKNode, stop: UnsafeMutablePointer<ObjCBool>).
+     * @returns {void}
+     * @desc This method enumerates the child array in order, searching for nodes whose names match the search parameter. The block is called once for each node that matches the name parameter.The following code shows how you could enumerate through the child nodes of a scene with a name containing the string yellow. Each matching node is hidden until the enumeration finds a node that also contains the string triangle. When this node is reached, stop is set to true and the processing stops.Listing 1 Enumerating child nodesscene.enumerateChildNodes(withName: "*yellow*") {
+      (node, stop) in
+      
+      node.run(SKAction.hide())
+      
+      if let name = node.name, name.contains("triangle") {
+          stop.initialize(to: true)
+      }
+    }
+    You can also search by class name using enumerateChildNodes(withName:using:). However, for custom classes, you need to specify the fully annotated class name (i.e. the project name followed by the class name). The following code shows a custom class, SpaceshipNode, based on SKSpriteNode, and created in a project named SpaceGame. The first search fails to return an instance of  SpaceshipNode added as a child of parentNode:Listing 2 Enumerating child nodesclass SpaceshipNode: SKSpriteNode {
+    }
+       
+    let parentNode = SKNode()
+    let childNode = SpaceshipNode()
+    parentNode.addChild(childNode)
+       
+    parentNode.enumerateChildNodes(withName: "SpaceshipNode") {
+      node, _ in
+      // Unannotated name, returns no results 
+    }
+       
+    parentNode.enumerateChildNodes(withName: "SpaceGame.SpaceshipNode") {
+      node, _ in
+      // Annotated name, successfully returns `childNode` 
+    }
+       
+    parentNode.enumerateChildNodes(withName: "SKSpriteNode") {
+      node, _ in
+      // Superclass name, successfully returns `childNode` 
+    }
+    Enumerating child nodesscene.enumerateChildNodes(withName: "*yellow*") {
+      (node, stop) in
+      
+      node.run(SKAction.hide())
+      
+      if let name = node.name, name.contains("triangle") {
+          stop.initialize(to: true)
+      }
+    }
+    Enumerating child nodesclass SpaceshipNode: SKSpriteNode {
+    }
+       
+    let parentNode = SKNode()
+    let childNode = SpaceshipNode()
+    parentNode.addChild(childNode)
+       
+    parentNode.enumerateChildNodes(withName: "SpaceshipNode") {
+      node, _ in
+      // Unannotated name, returns no results 
+    }
+       
+    parentNode.enumerateChildNodes(withName: "SpaceGame.SpaceshipNode") {
+      node, _ in
+      // Annotated name, successfully returns `childNode` 
+    }
+       
+    parentNode.enumerateChildNodes(withName: "SKSpriteNode") {
+      node, _ in
+      // Superclass name, successfully returns `childNode` 
+    }
+      * @see https://developer.apple.com/documentation/spritekit/sknode/1483024-enumeratechildnodes
+     */
+
+  }, {
+    key: 'enumerateChildNodesWithNameUsing',
+    value: function enumerateChildNodesWithNameUsing(name, block) {}
+
+    // Running Actions
+
+    /**
+     * Adds an action to the list of actions executed by the node.
+     * @access public
+     * @param {SKAction} action - The action to perform.
+     * @returns {void}
+     * @desc The new action is processed the next time the scene’s animation loop is processed.
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483093-run
+     */
+
+  }, {
+    key: 'run',
+    value: function run(action) {
+      this.runWithKey(action, Symbol());
+    }
+
+    /**
+     * Adds an action to the list of actions executed by the node.
+     * @access public
+     * @param {SKAction} action - The action to perform.
+     * @param {function(): void} block - A completion block called when the action completes.
+     * @returns {void}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483103-run
+     */
+
+  }, {
+    key: 'runCompletion',
+    value: function runCompletion(action, block) {
+      this._runActionForKeyCompletionHandler(action, Symbol(), block);
+    }
+
+    /**
+     * Adds an identifiable action to the list of actions executed by the node.
+     * @access public
+     * @param {SKAction} action - The action to perform.
+     * @param {string} key - A unique key used to identify the action.
+     * @returns {void}
+     * @desc This method is identical to run(_:), but the action is stored so that it can be retrieved later. If an action using the same key is already running, it is removed before the new action is added.
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483042-run
+     */
+
+  }, {
+    key: 'runWithKey',
+    value: function runWithKey(action, key) {
+      this._runActionForKeyCompletionHandler(action, key, null);
+    }
+  }, {
+    key: '_runActionForKeyCompletionHandler',
+    value: function _runActionForKeyCompletionHandler(action, key, block) {
+      var _key = key;
+      if (typeof key === 'undefined' || key === null) {
+        _key = Symbol();
+      }
+      var act = action.copy();
+      // FIXME: use current frame time
+      act._actionStartTime = Date.now() * 0.001;
+      act._completionHandler = block;
+      this._actions.set(_key, act);
+    }
+
+    /**
+     * Returns an action associated with a specific key.
+     * @access public
+     * @param {string} key - A string that uniquely identifies an action.
+     * @returns {?SKAction} - 
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483138-action
+     */
+
+  }, {
+    key: 'actionForKey',
+    value: function actionForKey(key) {
+      return this._actions.get(key);
+    }
+
+    /**
+     * Returns a Boolean value that indicates whether the node is executing actions.
+     * @access public
+     * @returns {boolean} - 
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483081-hasactions
+     */
+
+  }, {
+    key: 'hasActions',
+    value: function hasActions() {
+      return this._actions.size > 0;
+    }
+
+    /**
+     * Ends and removes all actions from the node.
+     * @access public
+     * @returns {void}
+     * @desc When an action is removed from the node, any remaining animation the action would perform is skipped; however, previous changes are not reverted. It is possible that an action may make a final change to the scene when removed; if so, it is documented for the specific action in SKAction.
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483030-removeallactions
+     */
+
+  }, {
+    key: 'removeAllActions',
+    value: function removeAllActions() {
+      // TODO: stop actions
+      this._actions.clear();
+    }
+
+    /**
+     * Removes an action associated with a specific key.
+     * @access public
+     * @param {string} key - A string that uniquely identifies an action.
+     * @returns {void}
+     * @desc If an action is found that matches the key, it is removed from the node.
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483076-removeaction
+     */
+
+  }, {
+    key: 'removeActionForKey',
+    value: function removeActionForKey(key) {
+      // TODO: stop action
+      this._actions.delete(key);
+    }
+
+    // Converting to and from the Node’s Coordinate System
+
+    /**
+     * Converts a point from the coordinate system of another node in the node tree to the coordinate system of this node.
+     * @access public
+     * @param {CGPoint} point - A point in the other node’s coordinate system.
+     * @param {SKNode} node - Another node in the same node tree as this node.
+     * @returns {CGPoint} - 
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483058-convert
+     */
+
+  }, {
+    key: 'convertFrom',
+    value: function convertFrom(point, node) {
+      return null;
+    }
+
+    /**
+     * Converts a point in this node’s coordinate system to the coordinate system of another node in the node tree.
+     * @access public
+     * @param {CGPoint} point - A point in this node’s coordinate system.
+     * @param {SKNode} node - Another node in the same node tree as this node.
+     * @returns {CGPoint} - 
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483056-convert
+     */
+
+  }, {
+    key: 'convertTo',
+    value: function convertTo(point, node) {
+      return null;
+    }
+
+    // Determining If a Point Lies in a Node
+
+    /**
+     * Returns a Boolean value that indicates whether a point lies inside the parent’s coordinate system.
+     * @access public
+     * @param {CGPoint} p - A CGPoint to test against.
+     * @returns {boolean} - 
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483044-contains
+     */
+
+  }, {
+    key: 'contains',
+    value: function contains(p) {
+      return false;
+    }
+
+    /**
+     * Returns the deepest visible descendant that intersects a point.
+     * @access public
+     * @param {CGPoint} p - A point in the node’s coordinate system.
+     * @returns {SKNode} - 
+     * @desc A point is considered to be in a node if it lies inside the rectangle returned by the calculateAccumulatedFrame() method.
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483099-atpoint
+     */
+
+  }, {
+    key: 'atPoint',
+    value: function atPoint(p) {
+      return null;
+    }
+
+    /**
+     * Returns an array of all visible descendants that intersect a point.
+     * @access public
+     * @param {CGPoint} p - A point in the node’s coordinate system.
+     * @returns {SKNode[]} - 
+     * @desc A point is considered to be in a node if it lies inside the rectangle returned by the calculateAccumulatedFrame() method.
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483072-nodes
+     */
+
+  }, {
+    key: 'nodesAt',
+    value: function nodesAt(p) {
+      return null;
+    }
+
+    // Performing Node Intersections
+
+    /**
+     * Returns a Boolean value that indicates whether this node intersects the specified node.
+     * @access public
+     * @param {SKNode} node - Another node in the same node tree.
+     * @returns {boolean} - 
+     * @desc The two nodes are considered to intersect if their frames intersect. The children of both nodes are ignored in this test.
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483140-intersects
+     */
+
+  }, {
+    key: 'intersects',
+    value: function intersects(node) {
+      return false;
+    }
+
+    // Creating GameplayKit Obstacles from a Set of Nodes
+
+    /**
+     * Converts each node into an obstacle by transforming its bounds into the scene’s coordinate system.
+     * @access public
+     * @param {SKNode[]} nodes - An array of SKNode objects.
+     * @returns {GKPolygonObstacle[]} - 
+     * @desc Use the array of obstacles to create an obstacle graph (GKObstacleGraph) in GameplayKit. See GameplayKit and GameplayKit Programming Guide.
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483132-obstacles
+     */
+
+  }, {
+    key: 'accessibilityHitTest',
+
+
+    // Instance Methods
+
+    /**
+     * 
+     * @access public
+     * @param {CGPoint} point - 
+     * @returns {?Object} - 
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1645040-accessibilityhittest
+     */
+    value: function accessibilityHitTest(point) {
+      return null;
+    }
+
+    /**
+     * Sets an attribute value for an attached shader
+     * @deprecated
+     * @access public
+     * @param {SKAttributeValue} value - An attribute value object containing the scalar or vector value to set in the attached shader. 
+     * @param {string} key - The attribute name.
+     * @returns {void}
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1644180-setvalue
+     */
+
+  }, {
+    key: 'setValueForAttribute',
+    value: function setValueForAttribute(value, key) {
+      this.attributeValues.set(key, value);
+    }
+
+    /**
+     * The value of a shader attribute.
+     * @deprecated
+     * @access public
+     * @param {string} key - The attribute name.
+     * @returns {?SKAttributeValue} - 
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1644182-value
+     */
+
+  }, {
+    key: 'valueForAttributeNamed',
+    value: function valueForAttributeNamed(key) {
+      return this.attributeValues.get(key);
+    }
+
+    /**
+     * @type {SKNode}
+     */
+
+  }, {
+    key: 'copy',
+
+
+    /**
+     *
+     * @access public
+     * @returns {SKNode} -
+     */
+    value: function copy() {
+      var node = _get(SKNode.prototype.__proto__ || Object.getPrototypeOf(SKNode.prototype), 'copy', this).call(this);
+      node._copyValue(this);
+      return node;
+    }
+  }, {
+    key: '_copyValue',
+    value: function _copyValue(src) {
+      this.position = src.position.copy();
+      this.zPosition = src.zPosition;
+      this._frame = src._frame;
+      this.xScale = src.xScale;
+      this.yScale = src.yScale;
+      this.zRotation = src.zRotation;
+      this.alpha = src.alpha;
+      this.isHidden = src.isHidden;
+      this.isUserInteractionEnabled = src.isUserInteractionEnabled;
+      this.name = src.name;
+      this.speed = src.speed;
+      this.isPaused = src.isPaused;
+      this._actions = new Map(src._actions);
+      this.physicsBody = src.physicsBody;
+      this.userData = src.userData;
+      this.constraints = src.constraints;
+      this.reachConstraints = src.reachConstraints;
+      this.accessibilityChildren = src.accessibilityChildren;
+      this.accessibilityFrame = src.accessibilityFrame.copy();
+      this.accessibilityHelp = src.accessibilityHelp;
+      this.accessibilityLabel = src.accessibilityLabel;
+      this.accessibilityParent = src.accessibilityParent;
+      this.accessibilityRole = src.accessibilityRole;
+      this.accessibilityRoleDescription = src.accessibilityRoleDescription;
+      this.accessibilitySubrole = src.accessibilitySubrole;
+      this.attributeValues = new Map(src.attributeValues);
+      this.isAccessibilityElement = src.isAccessibilityElement;
+      this.isAccessibilityEnabled = src.isAccessibilityEnabled;
+    }
+
+    /**
+     * @access private
+     * @param {WebGLRenderingContext} gl -
+     * @returns {void}
+     */
+
+  }, {
+    key: '_render',
+    value: function _render(gl) {
+      // nothing to draw
+    }
+  }, {
+    key: '_copyTransformToPresentation',
+    value: function _copyTransformToPresentation() {
+      if (this.__presentation === null) {
+        return;
+      }
+      var p = this.__presentation;
+      p.position = this.position;
+      p.zPosition = this.zPosition;
+      p.xScale = this.xScale;
+      p.yScale = this.yScale;
+      p.zRotation = this.zRotation;
+    }
+  }, {
+    key: '_updateWorldTransform',
+    value: function _updateWorldTransform() {
+      var p = null;
+      var pz = 0;
+      if (this._parent === null) {
+        p = new _CGPoint2.default(0, 0);
+      } else {
+        p = this._parent._worldPosition;
+        pz = this._parent._worldZPosition;
+      }
+      this._worldPosition = this.position.add(p);
+      this._worldZPosition = this.zPosition + pz;
+
+      if (this._presentation) {
+        var pp = null;
+        var ppz = 0;
+        var pxScale = 1;
+        var pyScale = 1;
+        if (this._parent === null) {
+          pp = new _CGPoint2.default(0, 0);
+        } else if (this._parent._presentation === null) {
+          pp = this._parent._worldPosition;
+          ppz = this._parent._worldZPosition;
+          pxScale = this._parent._worldXScale;
+          pyScale = this._parent._worldYScale;
+        } else {
+          pp = this._parent._presentation._worldPosition;
+          ppz = this._parent._presentation._worldZPosition;
+          pxScale = this._parent._presentation._worldXScale;
+          pyScale = this._parent._presentation._worldYScale;
+        }
+        //this._presentation._worldPosition = this._presentation.position.add(pp)
+        this._presentation._worldPosition.x = pp.x + this._presentation.position.x * pxScale;
+        this._presentation._worldPosition.y = pp.y + this._presentation.position.y * pyScale;
+        this._presentation._worldZPosition = this._presentation.zPosition + ppz;
+        this._presentation._worldXScale = this._presentation.xScale * pxScale;
+        this._presentation._worldYScale = this._presentation.yScale * pyScale;
+      }
+
+      var _iteratorNormalCompletion5 = true;
+      var _didIteratorError5 = false;
+      var _iteratorError5 = undefined;
+
+      try {
+        for (var _iterator5 = this._children[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+          var child = _step5.value;
+
+          child._updateWorldTransform();
+        }
+      } catch (err) {
+        _didIteratorError5 = true;
+        _iteratorError5 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion5 && _iterator5.return) {
+            _iterator5.return();
+          }
+        } finally {
+          if (_didIteratorError5) {
+            throw _iteratorError5;
+          }
+        }
+      }
+    }
+  }, {
+    key: 'frame',
+    get: function get() {
+      return this._frame;
+    }
+  }, {
+    key: 'children',
+    get: function get() {
+      return this._children.slice(0);
+    }
+    /**
+     * The node’s parent node.
+     * @type {?SKNode}
+     * @desc If the node is not in a node tree, the value is nil.
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483080-parent
+     */
+
+  }, {
+    key: 'parent',
+    get: function get() {
+      return this._parent;
+    }
+
+    /**
+     * The scene node that contains the node.
+     * @type {?SKScene}
+     * @desc If the node is not embedded in a scene, the value is nil.
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483064-scene
+     */
+
+  }, {
+    key: 'scene',
+    get: function get() {
+      return this._scene;
+    }
+  }, {
+    key: '_presentation',
+    get: function get() {
+      return this.__presentation;
+    }
+  }], [{
+    key: 'nodeWithFileNamed',
+    value: function nodeWithFileNamed(filename) {
+      var node = new SKNode();
+      return node;
+    }
+  }, {
+    key: 'obstaclesFromNodeBounds',
+    value: function obstaclesFromNodeBounds(nodes) {
+      return null;
+    }
+
+    /**
+     * Converts each node into an obstacle by transforming the node’s physics body shape into the scene’s coordinate system.
+     * @access public
+     * @param {SKNode[]} nodes - An array of SKNode objects.
+     * @returns {GKPolygonObstacle[]} - 
+     * @desc Use the array of obstacles to create an obstacle graph (GKObstacleGraph) in GameplayKit. See GameplayKit and GameplayKit Programming Guide.
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483085-obstacles
+     */
+
+  }, {
+    key: 'obstaclesFromNodePhysicsBodies',
+    value: function obstaclesFromNodePhysicsBodies(nodes) {
+      return null;
+    }
+
+    /**
+     * Converts each node into an obstacle by first transforming the node’s texture into a physics shape and then converting that shape into the scene’s coordinate system.
+     * @access public
+     * @param {SKNode[]} sprites - An array of SKNode objects.
+     * @param {number} accuracy - A floating point value between 0.001 and 1.0, inclusive. Higher values create a more precise (but more complex) representation of the obstacle.
+     * @returns {GKPolygonObstacle[]} - 
+     * @desc Use the array of obstacles to create an obstacle graph (GKObstacleGraph) in GameplayKit. See GameplayKit and GameplayKit Programming Guide.
+     * @see https://developer.apple.com/documentation/spritekit/sknode/1483134-obstacles
+     */
+
+  }, {
+    key: 'obstaclesFromSpriteTextures',
+    value: function obstaclesFromSpriteTextures(sprites, accuracy) {
+      return null;
+    }
+  }]);
+
+  return SKNode;
+}(_NSObject3.default);
+
+exports.default = SKNode;
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _NSObject2 = __webpack_require__(0);
+
+var _NSObject3 = _interopRequireDefault(_NSObject2);
+
+var _SKActionTimingMode = __webpack_require__(23);
+
+var _SKActionTimingMode2 = _interopRequireDefault(_SKActionTimingMode);
+
+var _CGPoint = __webpack_require__(8);
+
+var _CGPoint2 = _interopRequireDefault(_CGPoint);
+
+var _CGSize = __webpack_require__(9);
+
+var _CGSize2 = _interopRequireDefault(_CGSize);
+
+var _CGRect = __webpack_require__(16);
+
+var _CGRect2 = _interopRequireDefault(_CGRect);
+
+var _SKColor = __webpack_require__(2);
+
+var _SKColor2 = _interopRequireDefault(_SKColor);
+
+var _InstanceOf2 = __webpack_require__(3);
+
+var _InstanceOf3 = _interopRequireDefault(_InstanceOf2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+//import CGVector from '../CoreGraphics/CGVector'
+
+//import CGPath from '../CoreGraphics/CGPath'
+
+//import SKTexture from './SKTexture'
+//import SKWarpGeometry from './SKWarpGeometry'
+//import SKNode from './SKNode'
+//import SKActionTimingFunction from './SKActionTimingFunction'
+
+
+/**
+ * An object that is executed by an SKNode to change its structure or content.
+ * @access public
+ * @extends {NSObject}
+ * @see https://developer.apple.com/documentation/spritekit/skaction
+ */
+var SKAction = function (_NSObject) {
+  _inherits(SKAction, _NSObject);
+
+  // Creating Custom Actions
+
+  /**
+   * Creates an action of the given name from an action file with a new duration.
+   * @access public
+   * @constructor
+   * @param {string} name - The name of the action.
+   * @param {string} url - The URL of the file containing the action.
+   * @param {number} sec - The duration of the action, in seconds.
+   * @see https://developer.apple.com/documentation/spritekit/skaction/1417754-init
+   */
+  function SKAction(name, url, sec) {
+    _classCallCheck(this, SKAction);
+
+    // Inspecting an Action’s Animation Properties
+
+    /**
+     * A speed factor that modifies how fast an action runs.
+     * @type {number}
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417718-speed
+     */
+    var _this = _possibleConstructorReturn(this, (SKAction.__proto__ || Object.getPrototypeOf(SKAction)).call(this));
+
+    _this._speed = 1.0;
+
+    /**
+     * The timing mode used to execute an action.
+     * @type {SKActionTimingMode}
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417807-timingmode
+     */
+    _this._timingMode = _SKActionTimingMode2.default.linear;
+
+    /**
+     * A block used to customize the timing function.
+     * @type {SKActionTimingFunction}
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417666-timingfunction
+     */
+    _this._timingFunction = null;
+
+    /**
+     * The duration required to complete an action.
+     * @type {number}
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417790-duration
+     */
+    _this._duration = 0;
+
+    /**
+     * @access private
+     * @type {boolean}
+     */
+    _this._finished = false;
+
+    _this._beginTime = 0;
+    _this._isRunning = false;
+    _this._pausedTime = 0;
+    _this._completionHandler = null;
+
+    _this.__actionStartTime = null;
+    return _this;
+  }
+
+  /**
+   * A speed factor that modifies how fast an action runs.
+   * @type {number}
+   * @see https://developer.apple.com/documentation/spritekit/skaction/1417718-speed
+   */
+
+
+  _createClass(SKAction, [{
+    key: 'copy',
+
+
+    /**
+     * @access public
+     * @returns {SKAction} -
+     */
+    value: function copy() {
+      var action = _get(SKAction.prototype.__proto__ || Object.getPrototypeOf(SKAction.prototype), 'copy', this).call(this);
+
+      action._beginTime = this._beginTime;
+      action._duration = this._duration;
+      action._speed = this.speed;
+      action._timingMode = this.timingMode;
+      action._timingFunction = this.timingFunction;
+      action._finished = this._finished;
+      //action._isRunning = this._isRunning
+      //action._pausedTime = this._pausedTime
+      //action._completionHandler = this._completionHandler
+
+      return action;
+    }
+
+    /**
+     * apply action to the given node.
+     * @access private
+     * @param {Object} obj - target object to apply this action.
+     * @param {number} time - active time
+     * @param {boolean} [needTimeConversion = true] -
+     * @returns {void}
+     */
+
+  }, {
+    key: '_applyAction',
+    value: function _applyAction(obj, time) {
+      var needTimeConversion = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+
+      var t = this._getTime(time, needTimeConversion);
+      //this._handleEvents(obj, t)
+    }
+  }, {
+    key: '_getTime',
+    value: function _getTime(time, needTimeConversion) {
+      if (!needTimeConversion) {
+        if (time >= 1.0 && !this._finished) {
+          this._finished = true;
+        }
+        return time;
+      }
+
+      var baseTime = this._basetimeFromTime(time);
+      if (this.timingFunction === null) {
+        return baseTime;
+      }
+
+      return this.timingFunction._getValueAtTime(baseTime);
+    }
+
+    /**
+     * convert parent time to base time
+     * @access private
+     * @param {number} time - parent time
+     * @returns {number} - animation base time for the current frame (0-1 or null).
+     */
+
+  }, {
+    key: '_basetimeFromTime',
+    value: function _basetimeFromTime(time) {
+      var activeTime = time - this._actionStartTime;
+      return this._basetimeFromActivetime(activeTime);
+    }
+
+    /**
+     * convert parent time to active time
+     * @access private
+     * @param {number} time - parent time
+     * @returns {number} - animation active time for the current frame.
+     */
+
+  }, {
+    key: '_activetimeFromTime',
+    value: function _activetimeFromTime(time) {
+      return time - this._actionStartTime;
+    }
+
+    /**
+     * convert active time to base time
+     * @access private
+     * @param {number} time - active time
+     * @returns {number} - animation base time for the current frame (0-1 or null).
+     */
+
+  }, {
+    key: '_basetimeFromActivetime',
+    value: function _basetimeFromActivetime(time) {
+      var dt = time - this._beginTime;
+      //let dt = time
+      if (this.speed === 0) {
+        return 0;
+      }
+      if (this._duration === 0) {
+        return dt / Math.abs(this.speed);
+      }
+      var duration = this._duration / Math.abs(this.speed);
+      if (duration === 0) {
+        duration = 0.25;
+      }
+
+      if (dt >= duration) {
+        // the action is over.
+        if (!this._finished) {
+          this._finished = true;
+        }
+      }
+
+      return dt / duration;
+    }
+
+    /**
+     * @access private
+     * @param {Object} from -
+     * @param {Object} to -
+     * @param {number} t -
+     * @returns {Object} -
+     */
+
+  }, {
+    key: '_lerp',
+    value: function _lerp(from, to, t) {
+      if (t === null) {
+        // the action is over.
+        return to;
+      }
+      //if(from instanceof SCNVector4){
+      //  // TODO: slerp for Quaternion
+      //  return from.lerp(to, t)
+      //}else if(from instanceof SCNVector3){
+      //  return from.lerp(to, t)
+      //}else if(from instanceof CGSize){
+      if ((0, _InstanceOf3.default)(from, _CGSize2.default)) {
+        return from._lerp(to, t);
+      } else if ((0, _InstanceOf3.default)(from, _CGPoint2.default)) {
+        return from._lerp(to, t);
+      } else if ((0, _InstanceOf3.default)(from, _CGRect2.default)) {
+        return from._lerp(to, t);
+      } else if ((0, _InstanceOf3.default)(from, _SKColor2.default)) {
+        return from._lerp(to, t);
+      }
+      return from + (to - from) * t;
+    }
+
+    /**
+     * @access private
+     * @param {Object} from -
+     * @param {Object} to -
+     * @param {number} t -
+     * @returns {Object} -
+     */
+    //_slerp(from, to, t) {
+    //  if(!(from instanceof SCNVector4)){
+    //    throw new Error('SCNAction._slerp: object is not SCNVector4')
+    //  }
+    //  return from.slerp(to, t)
+    //}
+
+  }, {
+    key: '_resetFinished',
+    value: function _resetFinished() {
+      this._finished = false;
+    }
+
+    /**
+     * Creates an action of the given name from an action file.
+     * @access public
+     * @param {string} name - The name of the action.
+     * @returns {SKAction} -
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417814-init
+     */
+
+  }, {
+    key: 'reversed',
+
+
+    // Reversing an Action
+
+    /**
+     * Creates an action that reverses the behavior of another action.
+     * @access public
+     * @returns {SKAction} - 
+     * @desc This method always returns an action object; however, not all actions are reversible. When reversed, some actions return an object that either does nothing or that performs the same action as the original action. For details on how an action is reversed, see the description of the class method used to create that action.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417803-reversed
+     */
+    value: function reversed() {
+      return null;
+    }
+  }, {
+    key: 'speed',
+    get: function get() {
+      return this._speed;
+    },
+    set: function set(newValue) {
+      this._speed = newValue;
+    }
+
+    /**
+     * The timing mode used to execute an action.
+     * @type {SKActionTimingMode}
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417807-timingmode
+     */
+
+  }, {
+    key: 'timingMode',
+    get: function get() {
+      return this._timingMode;
+    },
+    set: function set(newValue) {
+      this._timingMode = newValue;
+    }
+
+    /**
+     * A block used to customize the timing function.
+     * @type {SKActionTimingFunction}
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417666-timingfunction
+     */
+
+  }, {
+    key: 'timingFunction',
+    get: function get() {
+      return this._timingFunction;
+    },
+    set: function set(newValue) {
+      this._timingFunction = newValue;
+    }
+
+    /**
+     * The duration required to complete an action.
+     * @type {number}
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417790-duration
+     */
+
+  }, {
+    key: 'duration',
+    get: function get() {
+      return this._duration;
+    },
+    set: function set(newValue) {
+      this._duration = newValue;
+    }
+  }, {
+    key: '_actionStartTime',
+    get: function get() {
+      return this.__actionStartTime;
+    },
+    set: function set(newValue) {
+      this.__actionStartTime = newValue;
+    }
+  }], [{
+    key: 'actionWithName',
+    value: function actionWithName(name) {
+      return new SKAction(name, null, 0.25);
+    }
+
+    /**
+     * Creates an action of the given name from an action file with a new duration.
+     * @access public
+     * @param {string} name - The name of the action.
+     * @param {number} sec - The duration of the action.
+     * @returns {void}
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417697-init
+     */
+
+  }, {
+    key: 'actionWithNamedDuration',
+    value: function actionWithNamedDuration(name, sec) {
+      return new SKAction(name, null, sec);
+    }
+
+    /**
+     * Creates an action of the given name from an action file.
+     * @access public
+     * @param {string} name - The name of the action.
+     * @param {string} url - The URL of the file containing the action.
+     * @returns {void}
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417680-init
+     */
+
+  }, {
+    key: 'actionWithNamedFrom',
+    value: function actionWithNamedFrom(name, url) {
+      return new SKAction(name, url);
+    }
+
+    // Creating Actions That Move Nodes
+
+    /**
+     * Creates an action that moves a node relative to its current position.
+     * @access public
+     * @param {number} deltaX - The x-value, in points, to add to the node’s position.
+     * @param {number} deltaY - The y-value, in points, to add to the node’s position.
+     * @param {number} sec - The duration of the animation.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the node’s position property animates from its current position to its new position.This action is reversible; the reverse is created as if the following code is executed:let negDelta = CGVector(dx: -deltaX, dy: -deltaY)
+    let action = SKAction.moveBy(x: -deltaX, y: -deltaX, duration: sec)
+    let negDelta = CGVector(dx: -deltaX, dy: -deltaY)
+    let action = SKAction.moveBy(x: -deltaX, y: -deltaX, duration: sec)
+      * @see https://developer.apple.com/documentation/spritekit/skaction/1417722-moveby
+     */
+
+  }, {
+    key: 'moveByXYDuration',
+    value: function moveByXYDuration(deltaX, deltaY, sec) {
+      return null;
+    }
+
+    /**
+     * Creates an action that moves a node relative to its current position.
+     * @access public
+     * @param {CGVector} delta - A vector that describes the change to apply to the node’s position.
+     * @param {number} sec - The duration of the animation.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the node’s position property animates from its current position to its new position.This action is reversible; the reverse is created as if the following code is executed:let negDelta = CGVector(dx: -deltaX, dy: -deltaY)
+    let action = SKAction.move(by: negDelta, duration: sec)
+    let negDelta = CGVector(dx: -deltaX, dy: -deltaY)
+    let action = SKAction.move(by: negDelta, duration: sec)
+      * @see https://developer.apple.com/documentation/spritekit/skaction/1417739-move
+     */
+
+  }, {
+    key: 'moveByDuration',
+    value: function moveByDuration(delta, sec) {
+      return null;
+    }
+
+    /**
+     * Creates an action that moves a node to a new position.
+     * @access public
+     * @param {CGPoint} location - The coordinates for the node’s new position.
+     * @param {number} sec - The duration of the animation.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the node’s position property animates from its current position to its new position.This action is not reversible; the reverse of this action has the same duration but does not move the node.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417768-move
+     */
+
+  }, {
+    key: 'moveToDuration',
+    value: function moveToDuration(location, sec) {
+      return null;
+    }
+
+    /**
+     * Creates an action that moves the node along a relative path, orienting the node to the path.
+     * @access public
+     * @param {CGPath} path - A Core Graphics path whose coordinates are relative to the node’s current position.
+     * @param {number} sec - The duration of the animation.
+     * @returns {SKAction} - 
+     * @desc Calling this method is equivalent to calling the follow(_:asOffset:orientToPath:duration:) method, passing in true to both the offset and orient parameters.This action is reversible; the resulting action creates and then follows a reversed path with the same duration.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417822-follow
+     */
+
+  }, {
+    key: 'followDuration',
+    value: function followDuration(path, sec) {
+      return null;
+    }
+
+    /**
+     * Creates an action that moves the node along a relative path at a specified speed, orienting the node to the path.
+     * @access public
+     * @param {CGPath} path - A Core Graphics path whose coordinates are relative to the node’s current position.
+     * @param {number} speed - The speed at which the node should move, in points per second.
+     * @returns {SKAction} - 
+     * @desc Calling this method is equivalent to calling the follow(_:asOffset:orientToPath:speed:) method, passing in true to both the offset and orient parameters.This action is reversible; the resulting action creates and then follows a reversed path with the same speed.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417786-follow
+     */
+
+  }, {
+    key: 'follow',
+    value: function follow(path, speed) {
+      return null;
+    }
+
+    /**
+     * Creates an action that moves the node along a path.
+     * @access public
+     * @param {CGPath} path - A path to follow.
+     * @param {boolean} offset - If true, the points in the path are relative offsets to the node’s starting position. If false, the points in the node are absolute coordinate values.
+     * @param {boolean} orient - If true, the node’s zRotation property animates so that the node turns to follow the path. If false, the zRotation property of the node is unchanged.
+     * @param {number} sec - The duration of the animation.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the node’s position and zRotation properties are animated along the provided path.This action is reversible; the resulting action creates a reversed path and then follows it, with the same duration.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417662-follow
+     */
+
+  }, {
+    key: 'followAsOffsetOrientToPathDuration',
+    value: function followAsOffsetOrientToPathDuration(path, offset, orient, sec) {
+      return null;
+    }
+
+    /**
+     * Creates an action that moves the node at a specified speed along a path.
+     * @access public
+     * @param {CGPath} path - A path to follow.
+     * @param {boolean} offset - If true, the points in the path are relative offsets to the node’s starting position. If false, the points in the node are absolute coordinate values.
+     * @param {boolean} orient - If true, the node’s zRotation property animates so that the node turns to follow the path. If false, the zRotation property of the node is unchanged.
+     * @param {number} speed - The speed at which the node should move, in points per second.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the node’s position and zRotation properties are animated along the provided path. The duration of the action is determined by the length of the path and the speed of the node.This action is reversible; the resulting action creates a reversed path and then follows it, with the same speed.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417798-follow
+     */
+
+  }, {
+    key: 'followAsOffsetOrientToPath',
+    value: function followAsOffsetOrientToPath(path, offset, orient, speed) {
+      return null;
+    }
+
+    // Creating Actions That Rotate Nodes
+
+    /**
+     * Creates an action that rotates the node by a relative value.
+     * @access public
+     * @param {number} radians - The amount to rotate the node, in radians.
+     * @param {number} sec - The duration of the animation.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the node’s zRotation property animates to the new angle.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.rotate(byAngle: -radians, duration: sec)
+    let action = SKAction.rotate(byAngle: -radians, duration: sec)
+      * @see https://developer.apple.com/documentation/spritekit/skaction/1417805-rotate
+     */
+
+  }, {
+    key: 'rotateByAngleDuration',
+    value: function rotateByAngleDuration(radians, sec) {
+      return null;
+    }
+
+    /**
+     * Creates an action that rotates the node counterclockwise to an absolute angle.
+     * @access public
+     * @param {number} radians - The angle to rotate the node to, in radians.
+     * @param {number} sec - The duration of the animation.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the node’s zRotation property is interpolated to the new angle.This action is not reversible; the reverse of this action has the same duration but does not change anything.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417668-rotate
+     */
+
+  }, {
+    key: 'rotateToAngleDuration',
+    value: function rotateToAngleDuration(radians, sec) {
+      return null;
+    }
+
+    // Creating Actions That Change a Node’s Animation Speed
+
+    /**
+     * Creates an action that changes how fast the node executes actions by a relative value.
+     * @access public
+     * @param {number} speed - The amount to add to the node’s speed.
+     * @param {number} sec - The duration of the animation.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the node’s speed property animates to the new value.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.speed(by: -speed, duration: sec)
+    let action = SKAction.speed(by: -speed, duration: sec)
+      * @see https://developer.apple.com/documentation/spritekit/skaction/1417690-speed
+     */
+
+  }, {
+    key: 'speedByDuration',
+    value: function speedByDuration(speed, sec) {
+      return null;
+    }
+
+    /**
+     * Creates an action that changes how fast the node executes actions.
+     * @access public
+     * @param {number} speed - The new value for the node’s speed.
+     * @param {number} sec - The duration of the animation.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the node’s speed property animates to the new value.This action is not reversible; the reverse of this action has the same duration but does not change anything.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417684-speed
+     */
+
+  }, {
+    key: 'speedToDuration',
+    value: function speedToDuration(speed, sec) {
+      return null;
+    }
+
+    // Creating Actions That Change a Node’s Scale
+
+    /**
+     * Creates an action that changes the x and y scale values of a node by a relative value.
+     * @access public
+     * @param {number} scale - The amount to add to the node’s x and y scale values.
+     * @param {number} sec - The duration of the animation.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the node’s xScale and yScale properties are animated to the new value.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.scale(by: -scale, duration: sec)
+    let action = SKAction.scale(by: -scale, duration: sec)
+      * @see https://developer.apple.com/documentation/spritekit/skaction/1417741-scale
+     */
+
+  }, {
+    key: 'scaleByDuration',
+    value: function scaleByDuration(scale, sec) {
+      return null;
+    }
+
+    /**
+     * Creates an action that changes the x and y scale values of a node to achieve 
+     * @access public
+     * @param {CGSize} size - The new size of the node.
+     * @param {number} sec - The duration of the animation.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the node’s xScale and yScale properties are animated to achieve the specified size in its parent's coordinate space. This action is not reversible; the reverse of this action has the same duration but does not change anything.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1643619-scale
+     */
+
+  }, {
+    key: 'scaleToDuration',
+    value: function scaleToDuration(size, sec) {
+      return null;
+    }
+
+    /**
+     * Creates an action that adds relative values to the x and y scale values of a node.
+     * @access public
+     * @param {number} xScale - The amount to add to the node’s x scale value.
+     * @param {number} yScale - The amount to add to the node’s y scale value.
+     * @param {number} sec - The duration of the animation.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the node’s xScale and yScale properties are animated to the new value.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.scaleX(by: -scaleX, y: -scaleY, duration: sec)
+    let action = SKAction.scaleX(by: -scaleX, y: -scaleY, duration: sec)
+      * @see https://developer.apple.com/documentation/spritekit/skaction/1417796-scalex
+     */
+
+  }, {
+    key: 'scaleXByYDuration',
+    value: function scaleXByYDuration(xScale, yScale, sec) {
+      return null;
+    }
+
+    /**
+     * Creates an action that changes the x and y scale values of a node.
+     * @access public
+     * @param {number} xScale - The new value for the node’s x scale value.
+     * @param {number} yScale - The new value for the node’s y scale value.
+     * @param {number} sec - The duration of the animation.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the node’s xScale and yScale properties are animated to the new value.This action is not reversible; the reverse of this action has the same duration but does not change anything.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417728-scalex
+     */
+
+  }, {
+    key: 'scaleXToYDuration',
+    value: function scaleXToYDuration(xScale, yScale, sec) {
+      return null;
+    }
+
+    /**
+     * Creates an action that changes the x scale value of a node to a new value.
+     * @access public
+     * @param {number} scale - The new value for the node’s x scale value.
+     * @param {number} sec - The duration of the animation.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the node’s xScale property animates to the new value.This action is not reversible; the reverse of this action has the same duration but does not change anything.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417699-scalex
+     */
+
+  }, {
+    key: 'scaleXToDuration',
+    value: function scaleXToDuration(scale, sec) {
+      return null;
+    }
+
+    /**
+     * Creates an action that changes the y scale value of a node to a new value.
+     * @access public
+     * @param {number} scale - The new value for the node’s y scale value.
+     * @param {number} sec - The duration of the animation.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the node’s yScale property animates to the new value.This action is not reversible; the reverse of this action has the same duration but does not change anything.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417708-scaley
+     */
+
+  }, {
+    key: 'scaleYToDuration',
+    value: function scaleYToDuration(scale, sec) {
+      return null;
+    }
+
+    // Creating Actions to Show or Hide a Node
+
+    /**
+     * Creates an action that makes a node visible.
+     * @access public
+     * @returns {SKAction} - 
+     * @desc This action has an instantaneous duration. When the action executes, the node’s isHidden property is set to false.This action is reversible; the reversed action hides the node.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417660-unhide
+     */
+
+  }, {
+    key: 'unhide',
+    value: function unhide() {
+      return null;
+    }
+
+    /**
+     * Creates an action that hides a node.
+     * @access public
+     * @returns {SKAction} - 
+     * @desc This action has an instantaneous duration. When the action executes, the node’s isHidden property is set to true.This action is reversible; the reversed action shows the node.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417704-hide
+     */
+
+  }, {
+    key: 'hide',
+    value: function hide() {
+      return null;
+    }
+
+    // Creating Actions That Change a Node’s Transparency
+
+    /**
+     * Creates an action that changes the alpha value of the node to 1.0.
+     * @access public
+     * @param {number} sec - The duration of the animation.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the node’s alpha property animates from its current value to 1.0.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.fadeOut(withDuration: sec)
+    let action = SKAction.fadeOut(withDuration: sec)
+      * @see https://developer.apple.com/documentation/spritekit/skaction/1417818-fadein
+     */
+
+  }, {
+    key: 'fadeInWithDuration',
+    value: function fadeInWithDuration(sec) {
+      return null;
+    }
+
+    /**
+     * Creates an action that changes the alpha value of the node to 0.0.
+     * @access public
+     * @param {number} sec - The duration of the animation.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the node’s alpha property animates from its current value to 0.0. This causes the node to disappear.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.fadeIn(withDuration: sec)
+    let action = SKAction.fadeIn(withDuration: sec)
+      * @see https://developer.apple.com/documentation/spritekit/skaction/1417738-fadeout
+     */
+
+  }, {
+    key: 'fadeOutWithDuration',
+    value: function fadeOutWithDuration(sec) {
+      return null;
+    }
+
+    /**
+     * Creates an action that adjusts the alpha value of a node by a relative value.
+     * @access public
+     * @param {number} factor - The amount to add to the node’s alpha value.
+     * @param {number} sec - The duration of the animation.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the node’s alpha property animates to its new value.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.fadeAlpha(by: -factor, duration: sec)
+    let action = SKAction.fadeAlpha(by: -factor, duration: sec)
+      * @see https://developer.apple.com/documentation/spritekit/skaction/1417716-fadealpha
+     */
+
+  }, {
+    key: 'fadeAlphaByDuration',
+    value: function fadeAlphaByDuration(factor, sec) {
+      return null;
+    }
+
+    /**
+     * Creates an action that adjusts the alpha value of a node to a new value.
+     * @access public
+     * @param {number} alpha - The new value of the node’s alpha.
+     * @param {number} sec - The duration of the animation.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the node’s alpha property animates to its new value.This action is not reversible; the reverse of this action has the same duration but does not change anything.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417673-fadealpha
+     */
+
+  }, {
+    key: 'fadeAlphaToDuration',
+    value: function fadeAlphaToDuration(alpha, sec) {
+      return null;
+    }
+
+    // Creating Actions That Change a Sprite Node’s Content
+
+    /**
+     * Creates an action that adjusts the size of a sprite.
+     * @access public
+     * @param {number} width - The amount to add to the sprite’s width.
+     * @param {number} height - The amount to add to the sprite’s height.
+     * @param {number} duration - The duration of the animation.
+     * @returns {SKAction} - 
+     * @desc This action can only be executed by a SKSpriteNode object. When the action executes, the sprite’s size property animates to its new value.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.resize(byWidth: -width, height: -height, duration: sec)
+    let action = SKAction.resize(byWidth: -width, height: -height, duration: sec)
+      * @see https://developer.apple.com/documentation/spritekit/skaction/1417812-resize
+     */
+
+  }, {
+    key: 'resizeByWidth',
+    value: function resizeByWidth(width, height, duration) {
+      return null;
+    }
+
+    /**
+     * Creates an action that changes the height of a sprite to a new absolute value.
+     * @access public
+     * @param {number} height - The new height of the sprite.
+     * @param {number} duration - The duration of the animation.
+     * @returns {SKAction} - 
+     * @desc This action can only be executed by an SKSpriteNode object. When the action executes, the sprite’s size property animates to its new value.This action is not reversible; the reverse of this action has the same duration but does not change anything.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417825-resize
+     */
+
+  }, {
+    key: 'resizeToHeight',
+    value: function resizeToHeight(height, duration) {
+      return null;
+    }
+
+    /**
+     * Creates an action that changes the width of a sprite to a new absolute value.
+     * @access public
+     * @param {number} width - The new width of the sprite.
+     * @param {number} duration - The duration of the animation.
+     * @returns {SKAction} - 
+     * @desc This action can only be executed by an SKSpriteNode object. When the action executes, the sprite’s size property animates to its new value.This action is not reversible; the reverse of this action has the same duration but does not change anything.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417686-resize
+     */
+
+  }, {
+    key: 'resizeToWidth',
+    value: function resizeToWidth(width, duration) {
+      return null;
+    }
+
+    /**
+     * Creates an action that changes a sprite’s texture.
+     * @access public
+     * @param {SKTexture} texture - The new texture to use on the sprite.
+     * @returns {SKAction} - 
+     * @desc This action can only be executed by an SKSpriteNode object. When the action executes, the sprite’s texture property changes immediately to the new texture.This action is not reversible; the reverse of this action does nothing.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417784-settexture
+     */
+
+  }, {
+    key: 'setTexture',
+    value: function setTexture(texture) {
+      return null;
+    }
+
+    /**
+     * Creates an action that animates changes to a sprite’s texture.
+     * @access public
+     * @param {SKTexture[]} textures - An array of textures to use when animating a sprite.
+     * @param {number} sec - The duration, in seconds, that each texture is displayed. 
+     * @returns {SKAction} - 
+     * @desc This action can only be executed by an SKSpriteNode object. When the action executes, the sprite’s texture property animates through the array of textures. The sprite’s texture property is changed to the next texture in the array. The action then pauses for the specified time before continuing. The action continues until it has finished animating through all of the textures in the array. The total duration of the action is the number of textures multiplied by the frame interval.This action is reversible; the resulting action animates through the same textures from last to first.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417828-animate
+     */
+
+  }, {
+    key: 'animateWithTimePerFrame',
+    value: function animateWithTimePerFrame(textures, sec) {
+      return null;
+    }
+
+    /**
+     * Creates an action that changes a sprite’s normal texture.
+     * @access public
+     * @param {SKTexture} texture - The new texture to use on the sprite.
+     * @returns {SKAction} - 
+     * @desc This action can only be executed by an SKSpriteNode object. When the action executes, the sprite’s normalTexture property changes immediately to the new texture.This action is not reversible; the reverse of this action does nothing.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417706-setnormaltexture
+     */
+
+  }, {
+    key: 'setNormalTexture',
+    value: function setNormalTexture(texture) {
+      return null;
+    }
+
+    /**
+     * Creates an action that animates changes to a sprite’s normal texture.
+     * @access public
+     * @param {SKTexture[]} textures - An array of textures to use.
+     * @param {number} sec - The amount of time that each texture is displayed.
+     * @returns {SKAction} - 
+     * @desc This action can only be executed by an SKSpriteNode object. When the action executes, the sprite’s normalTexture property animates through the array of textures. The sprite’s normalTexture property is changed to the next texture in the array. The action then pauses for the specified time before continuing. The action continues until it has finished animating through all of the textures in the array. The total duration of the action is the number of textures multiplied by the frame interval.This action is reversible; the resulting action animates through the same textures from last to first.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417746-animate
+     */
+
+  }, {
+    key: 'animateWithNormalTexturesTimePerFrame',
+    value: function animateWithNormalTexturesTimePerFrame(textures, sec) {
+      return null;
+    }
+
+    /**
+     * Creates an animation that animates a sprite’s color and blend factor.
+     * @access public
+     * @param {CGColor} color - The new color for the sprite.
+     * @param {number} colorBlendFactor - The new blend factor for the sprite.
+     * @param {number} sec - The duration of the animation.
+     * @returns {SKAction} - 
+     * @desc This action can only be executed by an SKSpriteNode object. When the action executes, the sprite’s color and colorBlendFactor properties are animated to their new values.This action is not reversible; the reverse of this action does nothing.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417678-colorize
+     */
+
+  }, {
+    key: 'colorizeWithDuration',
+    value: function colorizeWithDuration(color, colorBlendFactor, sec) {
+      return null;
+    }
+
+    // Creating Physics Actions
+
+    /**
+     * Creates an action that applies a force to the center of gravity of a node’s physics body.
+     * @access public
+     * @param {CGVector} force - A vector that describes how much force is applied in each dimension. The force is measured in Newtons.
+     * @param {number} sec - The duration over which the force is applied to the physics body.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the force is applied continuously to the physics body for the duration of the action. This action accelerates the body without imparting any angular acceleration to it.This action is reversible; it applies an equal force in the opposite direction.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417782-applyforce
+     */
+
+  }, {
+    key: 'applyForceDuration',
+    value: function applyForceDuration(force, sec) {
+      return null;
+    }
+
+    /**
+     * Creates an action that applies a torque to an node’s physics body.
+     * @access public
+     * @param {number} torque - The amount of torque, in Newton-meters.
+     * @param {number} sec - The duration over which the torque is applied to the physics body.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the torque is applied continuously to the physics body for the duration of the action. This action generates an angular acceleration on the body without causing any linear acceleration.This action is reversible; it applies an equal torque in the opposite direction.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417756-applytorque
+     */
+
+  }, {
+    key: 'applyTorqueDuration',
+    value: function applyTorqueDuration(torque, sec) {
+      return null;
+    }
+
+    /**
+     * Creates an action that applies an force to a specific point on a node’s physics body.
+     * @access public
+     * @param {CGVector} force - A vector that describes how much force is applied in each dimension. The force is measured in Newtons.
+     * @param {CGPoint} point - A point in scene coordinates that defines where the force is applied to the physics body.
+     * @param {number} sec - The duration over which the force is applied to the physics body.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the force is applied continuously to the physics body for the duration of the action. Because the force is applied to a specific point on the body, it may impart both linear acceleration and angular acceleration. This action is reversible; it applies an equal force in the opposite direction.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417823-applyforce
+     */
+
+  }, {
+    key: 'applyForceAtDuration',
+    value: function applyForceAtDuration(force, point, sec) {
+      return null;
+    }
+
+    /**
+     * Creates an action that applies an impulse to the center of gravity of a physics body.
+     * @access public
+     * @param {CGVector} impulse - A vector that describes how much momentum to impart to the body in each dimension over the duration of the action. The impulse is measured in Newton-seconds.
+     * @param {number} sec - The duration over which the total impulse should be applied to the physics body.
+     * @returns {SKAction} - 
+     * @desc When the action executes, applies a constant force to the physics body for the duration of the action. The force is calculated by dividing the impulse strength by the duration of the action. For example, if an impulse of 1 Newton-second is applied to the physics body, and the the duration is 10 seconds, then a force of 0.1 Newtons is applied to the physics body.This action is reversible; it applies an equal impulse in the opposite direction.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417770-applyimpulse
+     */
+
+  }, {
+    key: 'applyImpulseDuration',
+    value: function applyImpulseDuration(impulse, sec) {
+      return null;
+    }
+
+    /**
+     * Creates an action that applies an angular impulse to a node’s physics body.
+     * @access public
+     * @param {number} impulse - The total impulse to apply to the physics body. The impulse is measured in Newton-seconds.
+     * @param {number} sec - The number of seconds over which to apply the impulse. For example, if you specify a duration of four seconds, one quarter of the impulse will be applied each second.
+     * @returns {SKAction} - 
+     * @desc When the action executes, applies a constant torque to the physics body for the duration of the action. The torque is calculated by dividing the impulse strength by the duration of the action. This action affects the body’s angular velocity without changing the body’s linear velocity.This action is reversible; it applies an equal angular impulse in the opposite direction.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417775-applyangularimpulse
+     */
+
+  }, {
+    key: 'applyAngularImpulseDuration',
+    value: function applyAngularImpulseDuration(impulse, sec) {
+      return null;
+    }
+
+    /**
+     * Creates an action that applies an impulse to a specific point of a node’s physics body.
+     * @access public
+     * @param {CGVector} impulse - The total impulse to apply to the physics body. The impulse is measured in Newton-seconds.
+     * @param {CGPoint} point - A point in scene coordinates that defines where the impulse was applied to the physics body.
+     * @param {number} sec - A new action object.
+     * @returns {SKAction} - 
+     * @desc When the action executes, applies a constant force to the physics body for the duration of the action. The force is calculated by dividing the impulse strength by the duration of the action. For example, if an impulse of 1 Newton-second is applied to the physics body, and the the duration is 10 seconds, then a force of 0.1 Newtons is applied to the physics body. Because the force is applied to a specific point on the body, it may impart both linear acceleration and angular acceleration.This action is reversible; it applies an equal impulse in the opposite direction.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417732-applyimpulse
+     */
+
+  }, {
+    key: 'applyImpulseAtDuration',
+    value: function applyImpulseAtDuration(impulse, point, sec) {
+      return null;
+    }
+
+    /**
+     * Creates an action that changes the charge of a node’s physics body to a new value.
+     * @access public
+     * @param {number} v - The new charge of the physics body.
+     * @param {number} duration - The duration of the animation.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the physics body’s charge property animates from its current value to its new value.This action is not reversible.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417752-changecharge
+     */
+
+  }, {
+    key: 'changeChargeTo',
+    value: function changeChargeTo(v, duration) {
+      return null;
+    }
+
+    /**
+     * Creates an action that changes the charge of a node’s physics body by a relative value.
+     * @access public
+     * @param {number} v - The amount to add to the physics body’s charge.
+     * @param {number} duration - The duration of the animation.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the physics body’s charge property animates from its current value to its new value.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.changeCharge(by: -v, duration: sec)
+    let action = SKAction.changeCharge(by: -v, duration: sec)
+      * @see https://developer.apple.com/documentation/spritekit/skaction/1417714-changecharge
+     */
+
+  }, {
+    key: 'changeChargeBy',
+    value: function changeChargeBy(v, duration) {
+      return null;
+    }
+
+    /**
+     * Creates an action that changes the mass of a node’s physics body to a new value.
+     * @access public
+     * @param {number} v - The new mass of the physics body.
+     * @param {number} duration - The duration of the animation.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the physics body’s mass property animates from its current value to its new value.This action is not reversible.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417780-changemass
+     */
+
+  }, {
+    key: 'changeMassTo',
+    value: function changeMassTo(v, duration) {
+      return null;
+    }
+
+    /**
+     * Creates an action that changes the mass of a node’s physics body by a relative value.
+     * @access public
+     * @param {number} v - The amount to add to the physics body’s mass.
+     * @param {number} duration - The duration of the animation.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the physics body’s mass property animates from its current value to its new value.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.changeMass(by: -v, duration: sec)
+    let action = SKAction.changeMass(by: -v, duration: sec)
+      * @see https://developer.apple.com/documentation/spritekit/skaction/1417710-changemass
+     */
+
+  }, {
+    key: 'changeMassBy',
+    value: function changeMassBy(v, duration) {
+      return null;
+    }
+
+    /**
+     * Creates an action that animates a change of a physics field’s strength.
+     * @access public
+     * @param {number} strength - The new strength for the field.
+     * @param {number} sec - The duration of the animation.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the field node’s strength property animates from its current value to its new value.This action is not reversible; the reverse of this action has the same duration but does not do anything.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417815-strength
+     */
+
+  }, {
+    key: 'strengthToDuration',
+    value: function strengthToDuration(strength, sec) {
+      return null;
+    }
+
+    /**
+     * Creates an action that animates a change of a physics field’s strength to a value relative to the existing value.
+     * @access public
+     * @param {number} strength - The value to add to the field.
+     * @param {number} sec - The duration of the animation.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the field node’s strength property animates from its current value to its new value.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.strength(by: -strength, duration: sec)
+    let action = SKAction.strength(by: -strength, duration: sec)
+      * @see https://developer.apple.com/documentation/spritekit/skaction/1417762-strength
+     */
+
+  }, {
+    key: 'strengthByDuration',
+    value: function strengthByDuration(strength, sec) {
+      return null;
+    }
+
+    /**
+     * Creates an action that animates a change of a physics field’s falloff.
+     * @access public
+     * @param {number} falloff - The new falloff for the field.
+     * @param {number} sec - The duration of the animation, in seconds.
+     * @returns {SKAction} - 
+     * @desc When the action runs, the field node’s falloff property animates from its current value to its new value. This action is not reversible.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417758-falloff
+     */
+
+  }, {
+    key: 'falloffToDuration',
+    value: function falloffToDuration(falloff, sec) {
+      return null;
+    }
+
+    /**
+     * Creates an action that animates a change of a physics field’s falloff to a value relative to the existing value.
+     * @access public
+     * @param {number} falloff - The value to add to the falloff.
+     * @param {number} sec - The duration of the animation, in seconds.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the field node’s falloff property animates from its current value to its new value.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.falloff(by: -falloff, duration: sec)
+    let action = SKAction.falloff(by: -falloff, duration: sec)
+      * @see https://developer.apple.com/documentation/spritekit/skaction/1417766-falloff
+     */
+
+  }, {
+    key: 'falloffByDuration',
+    value: function falloffByDuration(falloff, sec) {
+      return null;
+    }
+
+    // Creating Actions to Warp a Node
+
+    /**
+     * Creates an action to distort a node through a sequence of SKWarpGeometry objects.  
+     * @access public
+     * @param {SKWarpGeometry[]} warps - The sequence of warps to apply to the node.
+     * @param {number[]} times - The times at which each warp distortion in the sequence should complete.
+     * @returns {?SKAction} - 
+     * @desc The numberOfColumns and numberOfRows in each geometry in the sequence should match.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1690937-animate
+     */
+
+  }, {
+    key: 'animateWithWarps',
+    value: function animateWithWarps(warps, times) {
+      return null;
+    }
+
+    /**
+     * Creates an action to distort a node based using an SKWarpGeometry object.  
+     * @access public
+     * @param {SKWarpGeometry} warp - The warp geometry to distort the node to.
+     * @param {number} duration - The duration of the animation.
+     * @returns {?SKAction} - 
+     * @desc The numberOfColumns and numberOfRows in the node's current geometry should match those of the specified geometry.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1690951-warp
+     */
+
+  }, {
+    key: 'warpTo',
+    value: function warpTo(warp, duration) {
+      return null;
+    }
+
+    // Creating Audio Actions
+
+    /**
+     * Creates an action that plays a sound.
+     * @access public
+     * @param {string} soundFile - The name of a sound file in the app’s bundle.
+     * @param {boolean} wait - If true, the duration of this action is the same as the length of the audio playback. If false, the action is considered to have completed immediately.
+     * @returns {SKAction} - 
+     * @desc Use SKAction playSoundFileNamed:waitForCompletion: only for short incidentals. Use AVAudioPlayer for long running background music. This action is not reversible; the reversed action is identical to the original action.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417664-playsoundfilenamed
+     */
+
+  }, {
+    key: 'playSoundFileNamedWaitForCompletion',
+    value: function playSoundFileNamedWaitForCompletion(soundFile, wait) {
+      return null;
+    }
+
+    /**
+     * Creates an action that tells an audio node to start playback.
+     * @access public
+     * @returns {SKAction} - 
+     * @desc This action may only be executed on an SKAudioNode object.This action is not reversible.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417730-play
+     */
+
+  }, {
+    key: 'play',
+    value: function play() {
+      return null;
+    }
+
+    /**
+     * Creates an action that tells an audio node to pause playback.
+     * @access public
+     * @returns {SKAction} - 
+     * @desc This action may only be executed on an SKAudioNode object. The audio is paused, and if restarted, resumes at where it was paused.This action is not reversible.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417820-pause
+     */
+
+  }, {
+    key: 'pause',
+    value: function pause() {
+      return null;
+    }
+
+    /**
+     * Creates an action that tells an audio node to stop playback.
+     * @access public
+     * @returns {SKAction} - 
+     * @desc This action may only be executed on an SKAudioNode object. The audio is stopped, and if restarted, begins at the beginning.This action is not reversible.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417794-stop
+     */
+
+  }, {
+    key: 'stop',
+    value: function stop() {
+      return null;
+    }
+
+    /**
+     * Creates an action that changes an audio node’s playback rate to a new value.
+     * @access public
+     * @param {number} v - The new value for the playback rate. A playback rate of 1.0 represents normal speed.
+     * @param {number} duration - The duration of the animation, in seconds.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the audio node’s playback rate animates from its current value to its new value. For more information, see AVAudio3DMixing.This action is not reversible.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417808-changeplaybackrate
+     */
+
+  }, {
+    key: 'changePlaybackRateTo',
+    value: function changePlaybackRateTo(v, duration) {
+      return null;
+    }
+
+    /**
+     * Creates an action that changes an audio node’s playback rate by a relative amount.
+     * @access public
+     * @param {number} v - The amount to change the playback rate by. A playback rate of 1.0 represents normal speed.
+     * @param {number} duration - The duration of the animation, in seconds.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the audio node’s playback rate animates from its current value to its new value. For more information, see AVAudio3DMixing.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.changePlaybackRate(by: -v, duration: sec)
+    let action = SKAction.changePlaybackRate(by: -v, duration: sec)
+      * @see https://developer.apple.com/documentation/spritekit/skaction/1417670-changeplaybackrate
+     */
+
+  }, {
+    key: 'changePlaybackRateBy',
+    value: function changePlaybackRateBy(v, duration) {
+      return null;
+    }
+
+    /**
+     * Creates an action that changes an audio node’s volume to a new value.
+     * @access public
+     * @param {number} v - The new value for the volume. The value should be between 0.0 (silence) and 1.0 (maximum value for source audio), inclusive. 
+     * @param {number} duration - The duration of the animation, in seconds.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the audio node’s volume animates from its current value to its new value. For more information, see AVAudio3DMixing.This action is not reversible.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417682-changevolume
+     */
+
+  }, {
+    key: 'changeVolumeTo',
+    value: function changeVolumeTo(v, duration) {
+      return null;
+    }
+
+    /**
+     * Creates an action that changes an audio node’s volume by a relative value.
+     * @access public
+     * @param {number} v - The amount to change the volume by. 
+     * @param {number} duration - The duration of the animation, in seconds.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the audio node’s volume animates from its current value to its new value. For more information, see AVAudio3DMixing.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.changeVolume(by: -v, duration: sec)
+    let action = SKAction.changeVolume(by: -v, duration: sec)
+      * @see https://developer.apple.com/documentation/spritekit/skaction/1417726-changevolume
+     */
+
+  }, {
+    key: 'changeVolumeBy',
+    value: function changeVolumeBy(v, duration) {
+      return null;
+    }
+
+    /**
+     * Creates an action that changes an audio node’s obstruction to a new value.
+     * @access public
+     * @param {number} v - The new value for the obstruction, in decibels.
+     * @param {number} duration - The duration of the animation, in seconds.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the audio node’s obstruction animates from its current value to its new value. Passing this action a value of -100 yields the greatest reduction in volume. For more information, see AVAudio3DMixing.This action is not reversible.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1519718-changeobstruction
+     */
+
+  }, {
+    key: 'changeObstructionTo',
+    value: function changeObstructionTo(v, duration) {
+      return null;
+    }
+
+    /**
+     * Creates an action that changes an audio node’s obstruction by a relative value.
+     * @access public
+     * @param {number} v - The amount to change the obstruction by, in decibels.
+     * @param {number} duration - The duration of the animation, in seconds.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the audio node’s obstruction animates from its current value to its new value. For more information, see AVAudio3DMixing.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.changeObstruction(by: -v, duration: sec)
+    let action = SKAction.changeObstruction(by: -v, duration: sec)
+      * @see https://developer.apple.com/documentation/spritekit/skaction/1520346-changeobstruction
+     */
+
+  }, {
+    key: 'changeObstructionBy',
+    value: function changeObstructionBy(v, duration) {
+      return null;
+    }
+
+    /**
+     * Creates an action that changes an audio node’s occlusion to a new value.
+     * @access public
+     * @param {number} v - The new value for the occlusion, in decibels.
+     * @param {number} duration - The duration of the animation, in seconds.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the audio node’s occlusion animates from its current value to its new value. Passing this action a value of -100 yields the greatest reduction in volume. For more information, see AVAudio3DMixing.This action is not reversible.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1520433-changeocclusion
+     */
+
+  }, {
+    key: 'changeOcclusionTo',
+    value: function changeOcclusionTo(v, duration) {
+      return null;
+    }
+
+    /**
+     * Creates an action that changes an audio node’s occlusion by a relative value.
+     * @access public
+     * @param {number} v - The amount to change the occlusion by, in decibels.
+     * @param {number} duration - The duration of the animation, in seconds.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the audio node’s occlusion animates from its current value to its new value. For more information, see AVAudio3DMixing.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.changeOcclusion(by: -v, duration: sec)
+    let action = SKAction.changeOcclusion(by: -v, duration: sec)
+      * @see https://developer.apple.com/documentation/spritekit/skaction/1520117-changeocclusion
+     */
+
+  }, {
+    key: 'changeOcclusionBy',
+    value: function changeOcclusionBy(v, duration) {
+      return null;
+    }
+
+    /**
+     * Creates an action that changes an audio node’s reverb to a new value.
+     * @access public
+     * @param {number} v - The new value for the reverb. The value should be between 0.0 and 1.0, inclusive.
+     * @param {number} duration - The duration of the animation, in seconds.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the audio node’s reverb animates from its current value to its new value. For more information, see AVAudio3DMixing.This action is not reversible.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1520320-changereverb
+     */
+
+  }, {
+    key: 'changeReverbTo',
+    value: function changeReverbTo(v, duration) {
+      return null;
+    }
+
+    /**
+     * Creates an action that changes an audio node’s reverb by a relative value.
+     * @access public
+     * @param {number} v - The amount to change the reverb by.
+     * @param {number} duration - The duration of the animation, in seconds.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the audio node’s reverb animates from its current value to its new value. For more information, see AVAudio3DMixing.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.changeReverb(by: -v, duration: sec)
+    let action = SKAction.changeReverb(by: -v, duration: sec)
+      * @see https://developer.apple.com/documentation/spritekit/skaction/1519568-changereverb
+     */
+
+  }, {
+    key: 'changeReverbBy',
+    value: function changeReverbBy(v, duration) {
+      return null;
+    }
+
+    /**
+     * Creates an action that changes an audio node’s stereo panning to a new value.
+     * @access public
+     * @param {number} v - The new value for stereo panning. The value must between -1.0 (left channel only) and 1.0 (right channel only), inclusive.
+     * @param {number} duration - The duration of the animation, in seconds.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the audio node’s stereo panning animates from its current value to its new value. For more information, see AVAudio3DMixing.This action is not reversible.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1519976-stereopan
+     */
+
+  }, {
+    key: 'stereoPanTo',
+    value: function stereoPanTo(v, duration) {
+      return null;
+    }
+
+    /**
+     * Creates an action that changes an audio node’s stereo panning by a relative value.
+     * @access public
+     * @param {number} v - The amount to change the stereo panning by. 
+     * @param {number} duration - The duration of the animation, in seconds.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the audio node’s stereo panning animates from its current value to its new value. For more information, see AVAudio3DMixing.This action is reversible; the reverse is created as if the following code is executed:let action = SKAction.stereoPan(by: -v, duration: sec)
+    let action = SKAction.stereoPan(by: -v, duration: sec)
+      * @see https://developer.apple.com/documentation/spritekit/skaction/1519713-stereopan
+     */
+
+  }, {
+    key: 'stereoPanBy',
+    value: function stereoPanBy(v, duration) {
+      return null;
+    }
+
+    // Removing Nodes from the Scene
+
+    /**
+     * Creates an action that removes the node from its parent.
+     * @access public
+     * @returns {SKAction} - 
+     * @desc When the action executes, the node is immediately removed from its parent.This action is not reversible; the reverse of this action is the same action.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417748-removefromparent
+     */
+
+  }, {
+    key: 'removeFromParent',
+    value: function removeFromParent() {
+      return null;
+    }
+
+    // Creating Actions That Perform Actions on a Node’s Child
+
+    /**
+     * Creates an action that runs an action on a named child object.
+     * @access public
+     * @param {SKAction} action - The action to execute.
+     * @param {string} name - The name of a child object. See the name property on the SKNode object.
+     * @returns {SKAction} - 
+     * @desc This action has an instantaneous duration, although the action executed on the child may have a duration of its own. When the action executes, it looks up an appropriate child node and calls its run(_:) method, passing in the action to execute. This action is reversible; it tells the child to execute the reverse of the action specified by the action parameter.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417671-run
+     */
+
+  }, {
+    key: 'runOnChildWithName',
+    value: function runOnChildWithName(action, name) {
+      return null;
+    }
+
+    // Creating Actions That Combine or Repeat Other Actions
+
+    /**
+     * Creates an action that runs a collection of actions in parallel.
+     * @access public
+     * @param {SKAction[]} actions - An array of SKAction objects.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the actions that comprise the group all start immediately and run in parallel. The duration of the group action is the longest duration among the collection of actions. If an action in the group has a duration less than the group’s duration, the action completes, then idles until the group completes the remaining actions. This matters most when creating a repeating action that repeats a group.This action is reversible; it creates a new group action that contains the reverse of each action specified in the group. 
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417688-group
+     */
+
+  }, {
+    key: 'group',
+    value: function group(actions) {
+      return null;
+    }
+
+    /**
+     * Creates an action that runs a collection of actions sequentially.
+     * @access public
+     * @param {SKAction[]} actions - An array of SKAction objects.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the first action in the sequence starts and runs to completion. Subsequent actions in the sequence run in a similar fashion until all of the actions in the sequence have executed. The duration of the sequence action is the sum of the durations of the actions in the sequence.This action is reversible; it creates a new sequence action that reverses the order of the actions. Each action in the reversed sequence is itself reversed. For example, if an action sequence is {1,2,3}, the reversed sequence would be {3R,2R,1R}.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417817-sequence
+     */
+
+  }, {
+    key: 'sequence',
+    value: function sequence(actions) {
+      return null;
+    }
+
+    /**
+     * Creates an action that repeats another action a specified number of times.
+     * @access public
+     * @param {SKAction} action - The action to execute.
+     * @param {number} count - The number of times to execute the action.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the associated action runs to completion and then repeats, until the count is reached.This action is reversible; it creates a new action that is the reverse of the specified action and then repeats it the same number of times.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417750-repeat
+     */
+
+  }, {
+    key: 'repeat',
+    value: function repeat(action, count) {
+      return null;
+    }
+
+    /**
+     * Creates an action that repeats another action forever.
+     * @access public
+     * @param {SKAction} action - The action to execute.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the associated action runs to completion and then repeats.This action is reversible; it creates a new action that is the reverse of the specified action and then repeats it forever.NoteThe action to be repeated must have a non-instantaneous duration.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417676-repeatforever
+     */
+
+  }, {
+    key: 'repeatForever',
+    value: function repeatForever(action) {
+      return null;
+    }
+
+    // Creating an Action to Introduce a Delay into a Sequence
+
+    /**
+     * Creates an action that idles for a specified period of time.
+     * @access public
+     * @param {number} sec - The amount of time to wait.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the action waits for the specified amount of time, then ends. This is typically used as part of a sequence of actions to insert a delay between two other actions. You might also use it in conjunction with the run(_:completion:) method to trigger code that needs to run at a later time.This action is not reversible; the reverse of this action is the same action.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417788-wait
+     */
+
+  }, {
+    key: 'waitForDuration',
+    value: function waitForDuration(sec) {
+      return null;
+    }
+
+    /**
+     * Creates an action that idles for a randomized period of time.
+     * @access public
+     * @param {number} sec - The average amount of time to wait.
+     * @param {number} durationRange - The range of possible values for the duration.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the action waits for the specified amount of time, then ends. This is typically used as part of a sequence of actions to insert a delay between two other actions. However, you might also use it in conjunction with the run(_:completion:) method to trigger code that needs to run at a later time.Each time the action is executed, the action computes a new random value for the duration. The duration may vary in either direction by up to half of the value of the durationRange parameter.This action is not reversible; the reverse of this action is the same action.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417760-wait
+     */
+
+  }, {
+    key: 'waitForDurationWithRange',
+    value: function waitForDurationWithRange(sec, durationRange) {
+      return null;
+    }
+
+    // Creating Actions to Perform Inverse Kinematic Calculations
+
+    /**
+     * Creates an action that performs an inverse kinematic reach.
+     * @access public
+     * @param {SKNode} node - The node whose position the current node should move closer to. 
+     * @param {SKNode} root - The highest level ancestor of the target node that should be rotated.
+     * @param {number} sec - The length of the animation.
+     * @returns {SKAction} - 
+     * @desc This action is typically used to implement character animation across a series of moving parts. When the action executes, it performs an inverse kinematic calculation to determine new rotation values for the target node and any of its ancestors up to and including the root node. Each node is rotated around its anchor point in an attempt to get the targeted node’s position closer to the intended destination. Each node’s rotation value is constrained by that node’s reachConstraints property. If the action cannot successfully reach the target position, it gets the node as close as it can to the target position.This action is not reversible; the reverse of this action is the same action.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417827-reach
+     */
+
+  }, {
+    key: 'reachToRootNodeDuration',
+    value: function reachToRootNodeDuration(node, root, sec) {
+      return null;
+    }
+
+    /**
+     * Creates an action that performs an inverse kinematic reach.
+     * @access public
+     * @param {CGPoint} position - The intended destination for the node, specified in the scene’s coordinate system. 
+     * @param {SKNode} root - The highest level ancestor of the target node that should be rotated.
+     * @param {number} velocity - The maximum speed at which the node should move.
+     * @returns {SKAction} - 
+     * @desc This action is typically used to implement character animation across a series of moving parts. When the action executes, it performs an inverse kinematic calculation to determine new rotation values for the target node and any of its ancestors up to and including the root node. Each node is rotated around its anchor point in an attempt to get the targeted node’s position closer to the intended destination. Each node’s rotation value is constrained by that node’s reachConstraints property. If the action cannot successfully reach the target position, it gets the node as close as it can to the target position.The duration of the action is calculated implicitly based on the speed of movement and the distance that the node needs to travel.This action is not reversible; the reverse of this action is the same action.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417720-reach
+     */
+
+  }, {
+    key: 'reachToRootNode',
+    value: function reachToRootNode(position, root, velocity) {
+      return null;
+    }
+
+    /**
+     * Creates an action that executes a block over a duration.
+     * @access public
+     * @param {number} seconds - The duration of the action, in seconds.
+     * @param {function(arg1: SKNode, arg2: number): void} block - The block to run. The block takes the following parameters:nodeThe node on which the action is running.elapsedTimeThe amount of time that has passed in the animation.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the block is called repeatedly until the action’s duration expires. The elapsed time is computed and passed to the block whenever the block is called.This action is not reversible; the reverse action executes the same block.The following code shows how you can create a custom action to update an attribute of an SKShader attached to a sprite node. let customAction = SKAction.customAction(withDuration: 2.0) {
+      node, elapsedTime in
+      
+      if let node = node as? SKSpriteNode {
+          node.setValue(SKAttributeValue(float: Float(elapsedTime)),
+                                         forAttribute: "a_time")
+      }
+    }
+    let customAction = SKAction.customAction(withDuration: 2.0) {
+      node, elapsedTime in
+      
+      if let node = node as? SKSpriteNode {
+          node.setValue(SKAttributeValue(float: Float(elapsedTime)),
+                                         forAttribute: "a_time")
+      }
+    }
+      * @see https://developer.apple.com/documentation/spritekit/skaction/1417745-customaction
+     */
+
+  }, {
+    key: 'customActionWithDurationActionBlock',
+    value: function customActionWithDurationActionBlock(seconds, block) {
+      return null;
+    }
+
+    /**
+     * Creates an action that calls a method on an object.
+     * @access public
+     * @param {function} selector - The selector of the method to call.
+     * @param {Object} target - The target object.
+     * @returns {SKAction} - 
+     * @desc The action object maintains a strong reference to the target object.When the action executes, the target object’s method is called. This action occurs instantaneously.This action is not reversible; the reverse of this action calls the selector again.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417764-perform
+     */
+
+  }, {
+    key: 'performOnTarget',
+    value: function performOnTarget(selector, target) {
+      return null;
+    }
+
+    /**
+     * Creates an action that executes a block.
+     * @access public
+     * @param {function(): void} block - The block to run.
+     * @returns {SKAction} - 
+     * @desc When the action executes, the block is called. This action takes place instantaneously.This action is not reversible; the reverse action executes the same block.
+     * @see https://developer.apple.com/documentation/spritekit/skaction/1417692-run
+     */
+
+  }, {
+    key: 'run',
+    value: function run(block) {
+      return null;
+    }
+  }]);
+
+  return SKAction;
+}(_NSObject3.default);
+
+exports.default = SKAction;
 
 /***/ }),
 /* 22 */
@@ -22325,7 +22318,7 @@ var _NSObject2 = __webpack_require__(0);
 
 var _NSObject3 = _interopRequireDefault(_NSObject2);
 
-var _SCNFilterMode = __webpack_require__(91);
+var _SCNFilterMode = __webpack_require__(92);
 
 var _SCNFilterMode2 = _interopRequireDefault(_SCNFilterMode);
 
@@ -22341,7 +22334,7 @@ var _SCNTransaction = __webpack_require__(35);
 
 var _SCNTransaction2 = _interopRequireDefault(_SCNTransaction);
 
-var _SCNWrapMode = __webpack_require__(92);
+var _SCNWrapMode = __webpack_require__(93);
 
 var _SCNWrapMode2 = _interopRequireDefault(_SCNWrapMode);
 
@@ -22455,14 +22448,14 @@ var SCNMaterialProperty = function (_NSObject) {
      * @type {SCNMatrix4}
      * @see https://developer.apple.com/documentation/scenekit/scnmaterialproperty/1395388-contentstransform
      */
-    _this.contentsTransform = (0, _SCNMatrix4MakeTranslation2.default)(0, 0, 0
+    _this.contentsTransform = (0, _SCNMatrix4MakeTranslation2.default)(0, 0, 0);
 
     /**
      * The wrapping behavior for the S texture coordinate.
      * @type {SCNWrapMode}
      * @see https://developer.apple.com/documentation/scenekit/scnmaterialproperty/1395384-wraps
      */
-    );_this.wrapS = _SCNWrapMode2.default.clamp;
+    _this.wrapS = _SCNWrapMode2.default.clamp;
 
     /**
      * The wrapping behavior for the T texture coordinate.
@@ -22636,9 +22629,9 @@ var SCNMaterialProperty = function (_NSObject) {
       if (typeof key === 'undefined' || key === null) {
         key = Symbol();
       }
-      var anim = animation.copy
+      var anim = animation.copy();
       // FIXME: use current frame time
-      ();anim._animationStartTime = Date.now() * 0.001;
+      anim._animationStartTime = Date.now() * 0.001;
       anim._prevTime = anim._animationStartTime - 0.0000001;
 
       this._animations.set(key, anim);
@@ -22683,9 +22676,8 @@ var SCNMaterialProperty = function (_NSObject) {
   }, {
     key: 'removeAnimationForKey',
     value: function removeAnimationForKey(key) {
-      this._animations.delete(key
+      this._animations.delete(key);
       // TODO: reset values
-      );
     }
 
     /**
@@ -22889,6 +22881,9 @@ var SCNMaterialProperty = function (_NSObject) {
       var _this2 = this;
 
       var image = new Image();
+      // TODO: check option if it allows cross-domain.
+      image.crossOrigin = 'anonymous';
+
       var __path = path;
       if (__path.indexOf('file:///') === 0) {
         __path = __path.slice(8);
@@ -22935,9 +22930,8 @@ var SCNMaterialProperty = function (_NSObject) {
     value: function float32Array() {
       var target = this.__presentation ? this.__presentation : this;
       if ((0, _InstanceOf3.default)(target._contents, _SKColor2.default)) {
-        return target._contents.float32Array
+        return target._contents.float32Array();
         //return target._contents.srgbToLinear().float32Array()
-        ();
       }
       return new Float32Array([1, 1, 1, 1]);
     }
@@ -23118,15 +23112,15 @@ var _NSObject2 = __webpack_require__(0);
 
 var _NSObject3 = _interopRequireDefault(_NSObject2);
 
-var _GCGamepad = __webpack_require__(63);
+var _GCGamepad = __webpack_require__(64);
 
 var _GCGamepad2 = _interopRequireDefault(_GCGamepad);
 
-var _GCExtendedGamepad = __webpack_require__(65);
+var _GCExtendedGamepad = __webpack_require__(66);
 
 var _GCExtendedGamepad2 = _interopRequireDefault(_GCExtendedGamepad);
 
-var _GCMicroGamepad = __webpack_require__(66);
+var _GCMicroGamepad = __webpack_require__(67);
 
 var _GCMicroGamepad2 = _interopRequireDefault(_GCMicroGamepad);
 
@@ -23845,11 +23839,11 @@ var _SCNBox = __webpack_require__(34);
 
 var _SCNBox2 = _interopRequireDefault(_SCNBox);
 
-var _SCNCapsule = __webpack_require__(49);
+var _SCNCapsule = __webpack_require__(50);
 
 var _SCNCapsule2 = _interopRequireDefault(_SCNCapsule);
 
-var _SCNGeometryPrimitiveType = __webpack_require__(13);
+var _SCNGeometryPrimitiveType = __webpack_require__(14);
 
 var _SCNGeometryPrimitiveType2 = _interopRequireDefault(_SCNGeometryPrimitiveType);
 
@@ -23857,7 +23851,7 @@ var _SCNGeometrySource = __webpack_require__(6);
 
 var _SCNGeometrySource2 = _interopRequireDefault(_SCNGeometrySource);
 
-var _SCNHitTestResult = __webpack_require__(50);
+var _SCNHitTestResult = __webpack_require__(51);
 
 var _SCNHitTestResult2 = _interopRequireDefault(_SCNHitTestResult);
 
@@ -23865,19 +23859,19 @@ var _SCNMatrix = __webpack_require__(7);
 
 var _SCNMatrix2 = _interopRequireDefault(_SCNMatrix);
 
-var _SCNPhysicsBodyType = __webpack_require__(51);
+var _SCNPhysicsBodyType = __webpack_require__(52);
 
 var _SCNPhysicsBodyType2 = _interopRequireDefault(_SCNPhysicsBodyType);
 
-var _SCNPhysicsContact = __webpack_require__(94);
+var _SCNPhysicsContact = __webpack_require__(95);
 
 var _SCNPhysicsContact2 = _interopRequireDefault(_SCNPhysicsContact);
 
-var _SCNPhysicsShape = __webpack_require__(52);
+var _SCNPhysicsShape = __webpack_require__(53);
 
 var _SCNPhysicsShape2 = _interopRequireDefault(_SCNPhysicsShape);
 
-var _SCNSphere = __webpack_require__(53);
+var _SCNSphere = __webpack_require__(54);
 
 var _SCNSphere2 = _interopRequireDefault(_SCNSphere);
 
@@ -24435,8 +24429,8 @@ var SCNPhysicsWorld = function (_NSObject) {
         for (var _iterator4 = objects[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
           var _obj = _step4.value;
 
-          var _body = _obj.physicsBody;
-          _body._prevPosition = _body._position;
+          var body = _obj.physicsBody;
+          body._prevPosition = body._position;
         }
       } catch (err) {
         _didIteratorError4 = true;
@@ -24617,9 +24611,9 @@ var SCNPhysicsWorld = function (_NSObject) {
       var contact = new _SCNPhysicsContact2.default();
       contact._nodeA = boxA._node;
       contact._nodeB = boxB._node;
-      contact._contactPoint = boxA._position.add(d.mul(0.5) // TODO: implement
-      );contact._contactNormal = d.normalize // TODO: implement
-      ();contact._penetrationDistance = 0; // TODO: implement
+      contact._contactPoint = boxA._position.add(d.mul(0.5)); // TODO: implement
+      contact._contactNormal = d.normalize(); // TODO: implement
+      contact._penetrationDistance = 0; // TODO: implement
 
       return [contact];
     }
@@ -25301,9 +25295,9 @@ var SCNPhysicsWorld = function (_NSObject) {
       }
 
       var pA = n.convertPositionFrom(pointA, null);
-      var pB = n.convertPositionFrom(pointB, null
+      var pB = n.convertPositionFrom(pointB, null);
       //if(this._segmentBoundingBoxIntersects(pA, pB, geo.boundingBox) !== null){
-      );var r = this._segmentBoundingBoxIntersects(pA, pB, geo.boundingBox);
+      var r = this._segmentBoundingBoxIntersects(pA, pB, geo.boundingBox);
       if (r !== null) {
         console.error('segmentBoundingBoxIntersects: ' + r.near + ', ' + r.far);
         return this._hitTestWithSegmentGeometry(pA, pB, geo);
@@ -25519,11 +25513,11 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _SCNMaterial = __webpack_require__(12);
+var _SCNMaterial = __webpack_require__(13);
 
 var _SCNMaterial2 = _interopRequireDefault(_SCNMaterial);
 
-var _SCNGeometry2 = __webpack_require__(9);
+var _SCNGeometry2 = __webpack_require__(10);
 
 var _SCNGeometry3 = _interopRequireDefault(_SCNGeometry2);
 
@@ -25535,7 +25529,7 @@ var _SCNGeometryElement = __webpack_require__(15);
 
 var _SCNGeometryElement2 = _interopRequireDefault(_SCNGeometryElement);
 
-var _SCNGeometryPrimitiveType = __webpack_require__(13);
+var _SCNGeometryPrimitiveType = __webpack_require__(14);
 
 var _SCNGeometryPrimitiveType2 = _interopRequireDefault(_SCNGeometryPrimitiveType);
 
@@ -25702,11 +25696,11 @@ var SCNBox = function (_SCNGeometry) {
       var back = -this.length * 0.5;
 
       // front
-      sourceData.push(left, bottom, front // position
-      );sourceData.push(0, 0, 1 // normal
-      );sourceData.push(0, 1 // texcoord
+      sourceData.push(left, bottom, front); // position
+      sourceData.push(0, 0, 1); // normal
+      sourceData.push(0, 1); // texcoord
 
-      );sourceData.push(left, top, front);
+      sourceData.push(left, top, front);
       sourceData.push(0, 0, 1);
       sourceData.push(0, 0);
 
@@ -25719,10 +25713,10 @@ var SCNBox = function (_SCNGeometry) {
       sourceData.push(1, 0);
 
       indexData.push(0, 3, 1);
-      indexData.push(0, 2, 3
+      indexData.push(0, 2, 3);
 
       // right
-      );sourceData.push(right, bottom, front);
+      sourceData.push(right, bottom, front);
       sourceData.push(1, 0, 0);
       sourceData.push(0, 1);
 
@@ -25739,10 +25733,10 @@ var SCNBox = function (_SCNGeometry) {
       sourceData.push(1, 0);
 
       indexData.push(4, 7, 5);
-      indexData.push(4, 6, 7
+      indexData.push(4, 6, 7);
 
       // back
-      );sourceData.push(right, bottom, back);
+      sourceData.push(right, bottom, back);
       sourceData.push(0, 0, -1);
       sourceData.push(0, 1);
 
@@ -25759,10 +25753,10 @@ var SCNBox = function (_SCNGeometry) {
       sourceData.push(1, 0);
 
       indexData.push(8, 11, 9);
-      indexData.push(8, 10, 11
+      indexData.push(8, 10, 11);
 
       // left
-      );sourceData.push(left, bottom, back);
+      sourceData.push(left, bottom, back);
       sourceData.push(-1, 0, 0);
       sourceData.push(0, 1);
 
@@ -25779,10 +25773,10 @@ var SCNBox = function (_SCNGeometry) {
       sourceData.push(1, 0);
 
       indexData.push(12, 15, 13);
-      indexData.push(12, 14, 15
+      indexData.push(12, 14, 15);
 
       // top
-      );sourceData.push(left, top, front);
+      sourceData.push(left, top, front);
       sourceData.push(0, 1, 0);
       sourceData.push(0, 1);
 
@@ -25799,10 +25793,10 @@ var SCNBox = function (_SCNGeometry) {
       sourceData.push(1, 0);
 
       indexData.push(16, 19, 17);
-      indexData.push(16, 18, 19
+      indexData.push(16, 18, 19);
 
       // bottom
-      );sourceData.push(left, bottom, back);
+      sourceData.push(left, bottom, back);
       sourceData.push(0, -1, 0);
       sourceData.push(0, 1);
 
@@ -25926,7 +25920,7 @@ var _NSObject2 = __webpack_require__(0);
 
 var _NSObject3 = _interopRequireDefault(_NSObject2);
 
-var _CABasicAnimation = __webpack_require__(45);
+var _CABasicAnimation = __webpack_require__(46);
 
 var _CABasicAnimation2 = _interopRequireDefault(_CABasicAnimation);
 
@@ -26366,7 +26360,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.BinaryRequest = undefined;
 
-var _AjaxRequest2 = __webpack_require__(54);
+var _AjaxRequest2 = __webpack_require__(55);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -26474,8 +26468,8 @@ _ClassList.registerClass = function (classObj, className) {
       for (var _iterator2 = _instanceProperties[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
         var _name = _step2.value;
 
-        var _org = Object.getOwnPropertyDescriptor(_NSObject2.default.prototype, _name);
-        Object.defineProperty(classObj.prototype, _name, _org);
+        var org = Object.getOwnPropertyDescriptor(_NSObject2.default.prototype, _name);
+        Object.defineProperty(classObj.prototype, _name, org);
       }
     } catch (err) {
       _didIteratorError2 = true;
@@ -26515,7 +26509,7 @@ var _GCControllerElement2 = __webpack_require__(31);
 
 var _GCControllerElement3 = _interopRequireDefault(_GCControllerElement2);
 
-var _GCControllerAxisInput = __webpack_require__(64);
+var _GCControllerAxisInput = __webpack_require__(65);
 
 var _GCControllerAxisInput2 = _interopRequireDefault(_GCControllerAxisInput);
 
@@ -26681,7 +26675,7 @@ var _NSObject2 = __webpack_require__(0);
 
 var _NSObject3 = _interopRequireDefault(_NSObject2);
 
-var _CGPoint = __webpack_require__(10);
+var _CGPoint = __webpack_require__(8);
 
 var _CGPoint2 = _interopRequireDefault(_CGPoint);
 
@@ -26689,11 +26683,11 @@ var _CGRect = __webpack_require__(16);
 
 var _CGRect2 = _interopRequireDefault(_CGRect);
 
-var _CGSize = __webpack_require__(8);
+var _CGSize = __webpack_require__(9);
 
 var _CGSize2 = _interopRequireDefault(_CGSize);
 
-var _CGVector = __webpack_require__(60);
+var _CGVector = __webpack_require__(61);
 
 var _CGVector2 = _interopRequireDefault(_CGVector);
 
@@ -27684,7 +27678,7 @@ var _FileReader2 = __webpack_require__(43);
 
 var _FileReader3 = _interopRequireDefault(_FileReader2);
 
-var _BinaryReader2 = __webpack_require__(69);
+var _BinaryReader2 = __webpack_require__(70);
 
 var _BinaryReader3 = _interopRequireDefault(_BinaryReader2);
 
@@ -27902,7 +27896,7 @@ var NSKeyedUnarchiver = function (_NSCoder) {
       this._offsetSize = reader.readUnsignedByte();
       this._objCount = reader.readUnsignedLongLong();
       var topIndex = reader.readUnsignedLongLong();
-      var tablePos = reader.readUnsignedLongLong
+      var tablePos = reader.readUnsignedLongLong();
 
       //console.log(`dataLen: ${dataLen}`)
       //console.log(`intSize: ${intSize}`)
@@ -27911,7 +27905,7 @@ var NSKeyedUnarchiver = function (_NSCoder) {
       //console.log(`topIndex: ${topIndex}`)
       //console.log(`tablePos: ${tablePos}`)
 
-      ();this._offsetArray = [];
+      this._offsetArray = [];
       var pos = tablePos;
       reader.seek(pos);
       var objCount = this._objCount;
@@ -27957,9 +27951,9 @@ var NSKeyedUnarchiver = function (_NSCoder) {
         }
       } else if (type1 === 0x10) {
         // Int
-        var len = Math.pow(2, type2
+        var len = Math.pow(2, type2);
         //console.log('   type: integer ' + len)
-        );return reader.readInteger(len, signed);
+        return reader.readInteger(len, signed);
       } else if (type1 === 0x20) {
         // Float
         var _len = Math.pow(2, type2);
@@ -27976,38 +27970,37 @@ var NSKeyedUnarchiver = function (_NSCoder) {
         //console.log('   type: Date')
       } else if (type1 === 0x40) {
         // Data
-        var count = this._getDataSize(type2
+        var count = this._getDataSize(type2);
         //console.log(`   type: Data: length: ${count}`)
-        );return reader.readData(count);
+        return reader.readData(count);
       } else if (type1 === 0x50) {
         // ASCII
-        var _count = this._getDataSize(type2
+        var _count = this._getDataSize(type2);
         //console.log('   type: ascii ' + count)
-        );return reader.readString(_count, 'ascii');
+        return reader.readString(_count, 'ascii');
       } else if (type1 === 0x60) {
         // UTF-16
-        var _count2 = this._getDataSize(type2
+        var _count2 = this._getDataSize(type2);
         //console.log('   type: UTF-16 ' + count)
-        );return reader.readString(_count2, 'utf16be' // Big Endian might not be supported...
-        );
+        return reader.readString(_count2, 'utf16be'); // Big Endian might not be supported...
       } else if (type1 === 0x80) {
         // UID
-        var uid = reader.readInteger(type2 + 1, false
+        var uid = reader.readInteger(type2 + 1, false);
         //console.log('   type: UID: ' + uid)
-        );return new _UID(this, uid);
+        return new _UID(this, uid);
       } else if (type1 === 0xA0) {
         // Array
-        var _count3 = this._getDataSize(type2
+        var _count3 = this._getDataSize(type2);
         //console.log('   type: array: ' + count)
-        );var arrIndex = [];
+        var arrIndex = [];
         for (var i = 0; i < _count3; i++) {
           arrIndex.push(reader.readInteger(this._offsetSize, false));
         }
         var arr = arrIndex.map(function (index) {
           return _this2._parseObjAtIndex(index);
-        }
+        });
         //console.log(`***arr.length: ${arr.length}`)
-        );return arr;
+        return arr;
       } else if (type1 === 0xC0) {
         // Set
         var _count4 = this._getDataSize(type2);
@@ -28033,11 +28026,11 @@ var NSKeyedUnarchiver = function (_NSCoder) {
         }
         var result = {};
         for (var _i4 = 0; _i4 < _count5; _i4++) {
-          var key = this._parseObjAtIndex(keyIndex[_i4]
+          var key = this._parseObjAtIndex(keyIndex[_i4]);
           //console.log('key: ' + key)
-          );var val = this._parseObjAtIndex(valueIndex[_i4]
+          var val = this._parseObjAtIndex(valueIndex[_i4]);
           //console.log('val: ' + val)
-          );result[key] = val;
+          result[key] = val;
         }
         return result;
       }
@@ -28311,9 +28304,9 @@ var NSKeyedUnarchiver = function (_NSCoder) {
       if (this._decodingFinished) {
         throw new Error('can\'t decode \'' + key + '\' after finishDecoding() is called');
       }
-      var parsedObj = this.decodeObjectForKey(key
+      var parsedObj = this.decodeObjectForKey(key);
       //console.log(`${key}: ${parsedObj.constructor.name}`)
-      );if (!(parsedObj instanceof Buffer)) {
+      if (!(parsedObj instanceof Buffer)) {
         throw new Error('propertylist of key ' + key + ' is not Buffer data');
       }
       //console.log(`***header: ${parsedObj.toString('ascii', 0, 8)}`)
@@ -28480,7 +28473,7 @@ var NSKeyedUnarchiver = function (_NSCoder) {
 }(_NSCoder3.default);
 
 exports.default = NSKeyedUnarchiver;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17).Buffer))
 
 /***/ }),
 /* 42 */
@@ -28512,6 +28505,295 @@ exports.default = FileReader;
 
 /***/ }),
 /* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+//
+// Escape Codec Library: ecl.js (Ver.041208)
+//
+// Copyright (C) http://nurucom-archives.hp.infoseek.co.jp/digital/
+//
+
+var EscapeSJIS = function EscapeSJIS(str) {
+	return str.replace(/[^*+.-9A-Z_a-z-]/g, function (s) {
+		var c = s.charCodeAt(0),
+		    m;
+		return c < 128 ? (c < 16 ? "%0" : "%") + c.toString(16).toUpperCase() : 65376 < c && c < 65440 ? "%" + (c - 65216).toString(16).toUpperCase() : (c = JCT11280.indexOf(s)) < 0 ? "%81E" : "%" + ((m = ((c < 8272 ? c : c = JCT11280.lastIndexOf(s)) - (c %= 188)) / 188) < 31 ? m + 129 : m + 193).toString(16).toUpperCase() + (64 < (c += c < 63 ? 64 : 65) && c < 91 || 95 == c || 96 < c && c < 123 ? String.fromCharCode(c) : "%" + c.toString(16).toUpperCase());
+	});
+};
+
+var UnescapeSJIS = function UnescapeSJIS(str) {
+	return str.replace(/%(8[1-9A-F]|[9E][0-9A-F]|F[0-9A-C])(%[4-689A-F][0-9A-F]|%7[0-9A-E]|[@-~])|%([0-7][0-9A-F]|A[1-9A-F]|[B-D][0-9A-F])/ig, function (s) {
+		var c = parseInt(s.substring(1, 3), 16),
+		    l = s.length;
+		return 3 == l ? String.fromCharCode(c < 160 ? c : c + 65216) : JCT11280.charAt((c < 160 ? c - 129 : c - 193) * 188 + (4 == l ? s.charCodeAt(3) - 64 : (c = parseInt(s.substring(4), 16)) < 127 ? c - 64 : c - 65));
+	});
+};
+
+var EscapeEUCJP = function EscapeEUCJP(str) {
+	return str.replace(/[^*+.-9A-Z_a-z-]/g, function (s) {
+		var c = s.charCodeAt(0);
+		return (c < 128 ? (c < 16 ? "%0" : "%") + c.toString(16) : 65376 < c && c < 65440 ? "%8E%" + (c - 65216).toString(16) : (c = JCT8836.indexOf(s)) < 0 ? "%A1%A6" : "%" + ((c - (c %= 94)) / 94 + 161).toString(16) + "%" + (c + 161).toString(16)).toUpperCase();
+	});
+};
+
+var UnescapeEUCJP = function UnescapeEUCJP(str) {
+	return str.replace(/(%A[1-9A-F]|%[B-E][0-9A-F]|%F[0-9A-E]){2}|%8E%(A[1-9A-F]|[B-D][0-9A-F])|%[0-7][0-9A-F]/ig, function (s) {
+		var c = parseInt(s.substring(1), 16);
+		return c < 161 ? String.fromCharCode(c < 128 ? c : parseInt(s.substring(4), 16) + 65216) : JCT8836.charAt((c - 161) * 94 + parseInt(s.substring(4), 16) - 161);
+	});
+};
+
+var EscapeJIS7 = function EscapeJIS7(str) {
+	var u = String.fromCharCode,
+	    ri = u(92, 120, 48, 48, 45, 92, 120, 55, 70),
+	    rj = u(65377, 45, 65439, 93, 43),
+	    H = function H(c) {
+		return 41 < c && c < 58 && 44 != c || 64 < c && c < 91 || 95 == c || 96 < c && c < 123 ? u(c) : "%" + c.toString(16).toUpperCase();
+	},
+	    I = function I(s) {
+		var c = s.charCodeAt(0);
+		return (c < 16 ? "%0" : "%") + c.toString(16).toUpperCase();
+	},
+	    rI = new RegExp();rI.compile("[^*+.-9A-Z_a-z-]", "g");
+	return ("g" + str + "g").replace(RegExp("[" + ri + "]+", "g"), function (s) {
+		return "%1B%28B" + s.replace(rI, I);
+	}).replace(RegExp("[" + rj, "g"), function (s) {
+		var c,
+		    i = 0,
+		    t = "%1B%28I";while (c = s.charCodeAt(i++)) {
+			t += H(c - 65344);
+		}return t;
+	}).replace(RegExp("[^" + ri + rj, "g"), function (s) {
+		var a,
+		    c,
+		    i = 0,
+		    t = "%1B%24B";while (a = s.charAt(i++)) {
+			t += (c = JCT8836.indexOf(a)) < 0 ? "%21%26" : H((c - (c %= 94)) / 94 + 33) + H(c + 33);
+		}return t;
+	}).slice(8, -1);
+};
+
+var UnescapeJIS7 = function UnescapeJIS7(str) {
+	var i = 0,
+	    p,
+	    q,
+	    s = "",
+	    u = String.fromCharCode,
+	    P = ("%28B" + str.replace(/%49/g, "I").replace(/%1B%24%4[02]|%1B%24@/ig, "%1B%24B")).split(/%1B/i),
+	    I = function I(s) {
+		return u(parseInt(s.substring(1), 16));
+	},
+	    J = function J(s) {
+		return u((3 == s.length ? parseInt(s.substring(1), 16) : s.charCodeAt(0)) + 65344);
+	},
+	    K = function K(s) {
+		var l = s.length;
+		return JCT8836.charAt(4 < l ? (parseInt(s.substring(1), 16) - 33) * 94 + parseInt(s.substring(4), 16) - 33 : 2 < l ? (37 == (l = s.charCodeAt(0)) ? (parseInt(s.substring(1, 3), 16) - 33) * 94 + s.charCodeAt(3) : (l - 33) * 94 + parseInt(s.substring(2), 16)) - 33 : (s.charCodeAt(0) - 33) * 94 + s.charCodeAt(1) - 33);
+	},
+	    rI = new RegExp(),
+	    rJ = new RegExp(),
+	    rK = new RegExp();
+	rI.compile("%[0-7][0-9A-F]", "ig");rJ.compile("(%2[1-9A-F]|%[3-5][0-9A-F])|[!-_]", "ig");
+	rK.compile("(%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E]){2}|(%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E])[!-~]|[!-~](%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E])|[!-~]{2}", "ig");
+	while (p = P[i++]) {
+		s += "%24B" == (q = p.substring(0, 4)) ? p.substring(4).replace(rK, K) : "%28I" == q ? p.substring(4).replace(rJ, J) : p.replace(rI, I).substring(2);
+	}return s;
+};
+
+var EscapeJIS8 = function EscapeJIS8(str) {
+	var u = String.fromCharCode,
+	    r = u(92, 120, 48, 48, 45, 92, 120, 55, 70, 65377, 45, 65439, 93, 43),
+	    H = function H(c) {
+		return 41 < c && c < 58 && 44 != c || 64 < c && c < 91 || 95 == c || 96 < c && c < 123 ? u(c) : "%" + c.toString(16).toUpperCase();
+	},
+	    I = function I(s) {
+		var c = s.charCodeAt(0);
+		return (c < 16 ? "%0" : "%") + (c < 128 ? c : c - 65216).toString(16).toUpperCase();
+	},
+	    rI = new RegExp();rI.compile("[^*+.-9A-Z_a-z-]", "g");
+	return ("g" + str + "g").replace(RegExp("[" + r, "g"), function (s) {
+		return "%1B%28B" + s.replace(rI, I);
+	}).replace(RegExp("[^" + r, "g"), function (s) {
+		var a,
+		    c,
+		    i = 0,
+		    t = "%1B%24B";while (a = s.charAt(i++)) {
+			t += (c = JCT8836.indexOf(a)) < 0 ? "%21%26" : H((c - (c %= 94)) / 94 + 33) + H(c + 33);
+		}return t;
+	}).slice(8, -1);
+};
+
+var UnescapeJIS8 = function UnescapeJIS8(str) {
+	var i = 0,
+	    p,
+	    s = "",
+	    P = ("%28B" + str.replace(/%1B%24%4[02]|%1B%24@/ig, "%1B%24B")).split(/%1B/i),
+	    I = function I(s) {
+		var c = parseInt(s.substring(1), 16);
+		return String.fromCharCode(c < 128 ? c : c + 65216);
+	},
+	    K = function K(s) {
+		var l = s.length;
+		return JCT8836.charAt(4 < l ? (parseInt(s.substring(1), 16) - 33) * 94 + parseInt(s.substring(4), 16) - 33 : 2 < l ? (37 == (l = s.charCodeAt(0)) ? (parseInt(s.substring(1, 3), 16) - 33) * 94 + s.charCodeAt(3) : (l - 33) * 94 + parseInt(s.substring(2), 16)) - 33 : (s.charCodeAt(0) - 33) * 94 + s.charCodeAt(1) - 33);
+	},
+	    rI = new RegExp(),
+	    rK = new RegExp();
+	rI.compile("%([0-7][0-9A-F]|A[1-9A-F]|[B-D][0-9A-F])", "ig");
+	rK.compile("(%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E]){2}|(%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E])[!-~]|[!-~](%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E])|[!-~]{2}", "ig");
+	while (p = P[i++]) {
+		s += "%24B" == p.substring(0, 4) ? p.substring(4).replace(rK, K) : p.replace(rI, I).substring(2);
+	}return s;
+};
+
+var EscapeUnicode = function EscapeUnicode(str) {
+	return str.replace(/[^*+.-9A-Z_a-z-]/g, function (s) {
+		var c = s.charCodeAt(0);
+		return (c < 16 ? "%0" : c < 256 ? "%" : c < 4096 ? "%u0" : "%u") + c.toString(16).toUpperCase();
+	});
+};
+
+var UnescapeUnicode = function UnescapeUnicode(str) {
+	return str.replace(/%u[0-9A-F]{4}|%[0-9A-F]{2}/ig, function (s) {
+		return String.fromCharCode("0x" + s.substring(s.length / 3));
+	});
+};
+
+var EscapeUTF7 = function EscapeUTF7(str) {
+	var B = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".split(""),
+	    E = function E(s) {
+		var c = s.charCodeAt(0);
+		return B[c >> 10] + B[c >> 4 & 63] + B[(c & 15) << 2 | (c = s.charCodeAt(1)) >> 14] + (0 <= c ? B[c >> 8 & 63] + B[c >> 2 & 63] + B[(c & 3) << 4 | (c = s.charCodeAt(2)) >> 12] + (0 <= c ? B[c >> 6 & 63] + B[c & 63] : "") : "");
+	},
+	    re = new RegExp();re.compile("[^+]{1,3}", "g");
+	return (str + "g").replace(/[^*+.-9A-Z_a-z-]+[*+.-9A-Z_a-z-]|[+]/g, function (s) {
+		if ("+" == s) return "+-";
+		var l = s.length - 1,
+		    w = s.charAt(l);
+		return "+" + s.substring(0, l).replace(re, E) + ("+" == w ? "-+-" : "*" == w || "." == w || "_" == w ? w : "-" + w);
+	}).slice(0, -1);
+};
+
+var UnescapeUTF7 = function UnescapeUTF7(str) {
+	var i = 0,
+	    B = {};
+	while (i < 64) {
+		B["ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".charAt(i)] = i++;
+	}return str.replace(RegExp("[+][+/-9A-Za-z]*-?", "g"), function (s) {
+		if ("+-" == s) return "+";
+		var b = B[s.charAt(1)],
+		    c,
+		    i = 1,
+		    t = "";
+		while (0 <= b) {
+			if ((c = i & 7) < 6) c = c < 3 ? b << 10 | B[s.charAt(++i)] << 4 | (b = B[s.charAt(++i)]) >> 2 : (b & 3) << 14 | B[s.charAt(++i)] << 8 | B[s.charAt(++i)] << 2 | (b = B[s.charAt(++i)]) >> 4;else {
+				c = (b & 15) << 12 | B[s.charAt(++i)] << 6 | B[s.charAt(++i)];b = B[s.charAt(++i)];
+			}
+			if (c) t += String.fromCharCode(c);
+		}
+		return t;
+	});
+};
+
+var EscapeUTF8 = function EscapeUTF8(str) {
+	return str.replace(/[^*+.-9A-Z_a-z-]/g, function (s) {
+		var c = s.charCodeAt(0);
+		return (c < 16 ? "%0" + c.toString(16) : c < 128 ? "%" + c.toString(16) : c < 2048 ? "%" + (c >> 6 | 192).toString(16) + "%" + (c & 63 | 128).toString(16) : "%" + (c >> 12 | 224).toString(16) + "%" + (c >> 6 & 63 | 128).toString(16) + "%" + (c & 63 | 128).toString(16)).toUpperCase();
+	});
+};
+
+var UnescapeUTF8 = function UnescapeUTF8(str) {
+	return str.replace(/%(E(0%[AB]|[1-CEF]%[89AB]|D%[89])[0-9A-F]|C[2-9A-F]|D[0-9A-F])%[89AB][0-9A-F]|%[0-7][0-9A-F]/ig, function (s) {
+		var c = parseInt(s.substring(1), 16);
+		return String.fromCharCode(c < 128 ? c : c < 224 ? (c & 31) << 6 | parseInt(s.substring(4), 16) & 63 : ((c & 15) << 6 | parseInt(s.substring(4), 16) & 63) << 6 | parseInt(s.substring(7), 16) & 63);
+	});
+};
+
+var EscapeUTF16LE = function EscapeUTF16LE(str) {
+	var H = function H(c) {
+		return 41 < c && c < 58 && 44 != c || 64 < c && c < 91 || 95 == c || 96 < c && c < 123 ? String.fromCharCode(c) : (c < 16 ? "%0" : "%") + c.toString(16).toUpperCase();
+	};
+	return str.replace(/[^ ]| /g, function (s) {
+		var c = s.charCodeAt(0);return H(c & 255) + H(c >> 8);
+	});
+};
+
+var UnescapeUTF16LE = function UnescapeUTF16LE(str) {
+	var u = String.fromCharCode,
+	    b = u(92, 120, 48, 48, 45, 92, 120, 70, 70);
+	return str.replace(/^%FF%FE/i, "").replace(RegExp("%[0-9A-F]{2}%[0-9A-F]{2}|%[0-9A-F]{2}[" + b + "]|[" + b + "]%[0-9A-F]{2}|[" + b + "]{2}", "ig"), function (s) {
+		var l = s.length;
+		return u(4 < l ? "0x" + s.substring(4, 6) + s.substring(1, 3) : 2 < l ? 37 == (l = s.charCodeAt(0)) ? parseInt(s.substring(1, 3), 16) | s.charCodeAt(3) << 8 : l | parseInt(s.substring(2), 16) << 8 : s.charCodeAt(0) | s.charCodeAt(1) << 8);
+	});
+};
+
+var GetEscapeCodeType = function GetEscapeCodeType(str) {
+	if (/%u[0-9A-F]{4}/i.test(str)) return "Unicode";
+	if (/%([0-9A-DF][0-9A-F]%[8A]0%|E0%80|[0-7][0-9A-F]|C[01])%[8A]0|%00|%[7F]F/i.test(str)) return "UTF16LE";
+	if (/%E[0-9A-F]%[8A]0%[8A]0|%[CD][0-9A-F]%[8A]0/i.test(str)) return "UTF8";
+	if (/%F[DE]/i.test(str)) return (/%8[0-9A-D]|%9[0-9A-F]|%A0/i.test(str) ? "UTF16LE" : "EUCJP"
+	);
+	if (/%1B/i.test(str)) return (/%[A-D][0-9A-F]/i.test(str) ? "JIS8" : "JIS7"
+	);
+	var S = str.substring(0, 6143).replace(/%[0-9A-F]{2}|[^ ]| /ig, function (s) {
+		return s.length < 3 ? "40" : s.substring(1);
+	}),
+	    c,
+	    C,
+	    i = 0,
+	    T;
+	while (0 <= (c = parseInt(S.substring(i, i += 2), 16)) && i < 4092) {
+		if (128 <= c) {
+			if ((C = parseInt(S.substring(i, i + 2), 16)) < 128) i += 2;else if (194 <= c && c < 240 && C < 192) {
+				if (c < 224) {
+					T = "UTF8";i += 2;continue;
+				}
+				if (2 == parseInt(S.charAt(i + 2), 16) >> 2) {
+					T = "UTF8";i += 4;continue;
+				}
+			}
+			if (142 == c && 161 <= C && C < 224) {
+				if (!T) T = "EUCJP";if ("EUCJP" == T) continue;
+			}
+			if (c < 161) return "SJIS";
+			if (c < 224 && !T) {
+				if ((164 == c && C < 244 || 165 == c && C < 247) && 161 <= C) i += 2;else T = 224 <= C ? "EUCJP" : "SJIS";
+			} else T = "EUCJP";
+		}
+	}return T ? T : "EUCJP";
+};
+
+var JCT11280 = Function('var a="zKV33~jZ4zN=~ji36XazM93y!{~k2y!o~k0ZlW6zN?3Wz3W?{EKzK[33[`y|;-~j^YOTz$!~kNy|L1$353~jV3zKk3~k-4P4zK_2+~jY4y!xYHR~jlz$_~jk4z$e3X5He<0y!wy|X3[:~l|VU[F3VZ056Hy!nz/m1XD61+1XY1E1=1y|bzKiz!H034zKj~mEz#c5ZA3-3X$1~mBz$$3~lyz#,4YN5~mEz#{ZKZ3V%7Y}!J3X-YEX_J(3~mAz =V;kE0/y|F3y!}~m>z/U~mI~j_2+~mA~jp2;~m@~k32;~m>V}2u~mEX#2x~mBy+x2242(~mBy,;2242(~may->2&XkG2;~mIy-_2&NXd2;~mGz,{4<6:.:B*B:XC4>6:.>B*BBXSA+A:X]E&E<~r#z+625z s2+zN=`HXI@YMXIAXZYUM8X4K/:Q!Z&33 3YWX[~mB`{zKt4z (zV/z 3zRw2%Wd39]S11z$PAXH5Xb;ZQWU1ZgWP%3~o@{Dgl#gd}T){Uo{y5_d{e@}C(} WU9|cB{w}bzvV|)[} H|zT}d||0~{]Q|(l{|x{iv{dw}(5}[Z|kuZ }cq{{y|ij}.I{idbof%cu^d}Rj^y|-M{ESYGYfYsZslS`?ZdYO__gLYRZ&fvb4oKfhSf^d<Yeasc1f&a=hnYG{QY{D`Bsa|u,}Dl|_Q{C%xK|Aq}C>|c#ryW=}eY{L+`)][YF_Ub^h4}[X|?r|u_ex}TL@YR]j{SrXgo*|Gv|rK}B#mu{R1}hs|dP{C7|^Qt3|@P{YVV |8&}#D}ef{e/{Rl|>Hni}R1{Z#{D[}CQlQ||E}[s{SG_+i8eplY[=[|ec[$YXn#`hcm}YR|{Ci(_[ql|?8p3]-}^t{wy}4la&pc|3e{Rp{LqiJ],] `kc(]@chYnrM`O^,ZLYhZB]ywyfGY~aex!_Qww{a!|)*lHrM{N+n&YYj~Z b c#e_[hZSon|rOt`}hBXa^i{lh|<0||r{KJ{kni)|x,|0auY{D!^Sce{w;|@S|cA}Xn{C1h${E]Z-XgZ*XPbp]^_qbH^e[`YM|a||+=]!Lc}]vdBc=j-YSZD]YmyYLYKZ9Z>Xcczc2{Yh}9Fc#Z.l{}(D{G{{mRhC|L3b#|xK[Bepj#ut`H[,{E9Yr}1b{[e]{ZFk7[ZYbZ0XL]}Ye[(`d}c!|*y`Dg=b;gR]Hm=hJho}R-[n}9;{N![7k_{UbmN]rf#pTe[x8}!Qcs_rs[m`|>N}^V})7{^r|/E}),}HH{OYe2{Skx)e<_.cj.cjoMhc^d}0uYZd!^J_@g,[[[?{i@][|3S}Yl3|!1|eZ|5IYw|1D}e7|Cv{OHbnx-`wvb[6[4} =g+k:{C:}ed{S]|2M]-}WZ|/q{LF|dYu^}Gs^c{Z=}h>|/i|{W]:|ip{N:|zt|S<{DH[p_tvD{N<[8Axo{X4a.^o^X>Yfa59`#ZBYgY~_t^9`jZHZn`>G[oajZ;X,i)Z.^~YJe ZiZF^{][[#Zt^|]Fjx]&_5dddW]P0C[-]}]d|y {C_jUql] |OpaA[Z{lp|rz}:Mu#]_Yf6{Ep?f5`$[6^D][^u[$[6^.Z8]]ePc2U/=]K^_+^M{q*|9tYuZ,s(dS{i=|bNbB{uG}0jZOa:[-]dYtu3]:]<{DJ_SZIqr_`l=Yt`gkTnXb3d@kiq0a`Z{|!B|}e}Ww{Sp,^Z|0>_Z}36|]A|-t}lt{R6pi|v8hPu#{C>YOZHYmg/Z4nicK[}hF_Bg|YRZ7c|crkzYZY}_iXcZ.|)U|L5{R~qi^Uga@Y[xb}&qdbd6h5|Btw[}c<{Ds53[Y7]?Z<|e0{L[ZK]mXKZ#Z2^tavf0`PE[OSOaP`4gi`qjdYMgys/?[nc,}EEb,eL]g[n{E_b/vcvgb.{kcwi`~v%|0:|iK{Jh_vf5lb}KL|(oi=LrzhhY_^@`zgf[~g)[J_0fk_V{T)}I_{D&_/d9W/|MU[)f$xW}?$xr4<{Lb{y4}&u{XJ|cm{Iu{jQ}CMkD{CX|7A}G~{kt)nB|d5|<-}WJ}@||d@|Iy}Ts|iL|/^|no|0;}L6{Pm]7}$zf:|r2}?C_k{R(}-w|`G{Gy[g]bVje=_0|PT{^Y^yjtT[[[l!Ye_`ZN]@[n_)j3nEgMa]YtYpZy].d-Y_cjb~Y~[nc~sCi3|zg}B0}do{O^{|$`_|D{}U&|0+{J3|8*]iayx{a{xJ_9|,c{Ee]QXlYb]$[%YMc*]w[aafe]aVYi[fZEii[xq2YQZHg]Y~h#|Y:thre^@^|_F^CbTbG_1^qf7{L-`VFx Zr|@EZ;gkZ@slgko`[e}T:{Cu^pddZ_`yav^Ea+[#ZBbSbO`elQfLui}.F|txYcbQ`XehcGe~fc^RlV{D_0ZAej[l&jShxG[ipB_=u:eU}3e8[=j|{D(}dO{Do[BYUZ0/]AYE]ALYhZcYlYP/^-^{Yt_1_-;YT`P4BZG=IOZ&]H[e]YYd[9^F[1YdZxZ?Z{Z<]Ba2[5Yb[0Z4l?]d_;_)a?YGEYiYv`_XmZs4ZjY^Zb]6gqGaX^9Y}dXZr[g|]Y}K aFZp^k^F]M`^{O1Ys]ZCgCv4|E>}8eb7}l`{L5[Z_faQ|c2}Fj}hw^#|Ng|B||w2|Sh{v+[G}aB|MY}A{|8o}X~{E8paZ:]i^Njq]new)`-Z>haounWhN}c#{DfZ|fK]KqGZ=:u|fqoqcv}2ssm}.r{]{nIfV{JW)[K|,Z{Uxc|]l_KdCb%]cfobya3`p}G^|LZiSC]U|(X|kBlVg[kNo({O:g:|-N|qT}9?{MBiL}Sq{`P|3a|u.{Uaq:{_o|^S}jX{Fob0`;|#y_@[V[K|cw[<_ }KU|0F}d3|et{Q7{LuZttsmf^kYZ`Af`}$x}U`|Ww}d]| >}K,r&|XI|*e{C/a-bmr1fId4[;b>tQ_:]hk{b-pMge]gfpo.|(w[jgV{EC1Z,YhaY^q,_G[c_g[J0YX]`[h^hYK^_Yib,` {i6vf@YM^hdOKZZn(jgZ>bzSDc^Z%[[o9[2=/YHZ(_/Gu_`*|8z{DUZxYt^vuvZjhi^lc&gUd4|<UiA`z]$b/Z?l}YI^jaHxe|;F}l${sQ}5g}hA|e4}?o{ih}Uz{C)jPe4]H^J[Eg[|AMZMlc}:,{iz}#*|gc{Iq|/:|zK{l&}#u|myd{{M&v~nV};L|(g|I]ogddb0xsd7^V})$uQ{HzazsgxtsO^l}F>ZB]r|{7{j@cU^{{CbiYoHlng]f+nQ[bkTn/}<-d9q {KXadZYo+n|l[|lc}V2{[a{S4Zam~Za^`{HH{xx_SvF|ak=c^[v^7_rYT`ld@]:_ub%[$[m](Shu}G2{E.ZU_L_R{tz`vj(f?^}hswz}GdZ}{S:h`aD|?W|`dgG|if{a8|J1{N,}-Ao3{H#{mfsP|[ bzn+}_Q{MT{u4kHcj_q`eZj[8o0jy{p7}C|[}l){MuYY{|Ff!Ykn3{rT|m,^R|,R}$~Ykgx{P!]>iXh6[l[/}Jgcg{JYZ.^qYfYIZl[gZ#Xj[Pc7YyZD^+Yt;4;`e8YyZVbQ7YzZxXja.7SYl[s]2^/Ha$[6ZGYrb%XiYdf2]H]kZkZ*ZQ[ZYS^HZXcCc%Z|[(bVZ]]:OJQ_DZCg<[,]%Zaa [g{C00HY[c%[ChyZ,Z_`PbXa+eh`^&jPi0a[ggvhlekL]w{Yp^v}[e{~;k%a&k^|nR_z_Qng}[E}*Wq:{k^{FJZpXRhmh3^p>de^=_7`|ZbaAZtdhZ?n4ZL]u`9ZNc3g%[6b=e.ZVfC[ZZ^^^hD{E(9c(kyZ=bb|Sq{k`|vmr>izlH[u|e`}49}Y%}FT{[z{Rk}Bz{TCc/lMiAqkf(m$hDc;qooi[}^o:c^|Qm}a_{mrZ(pA`,}<2sY| adf_%|}`}Y5U;}/4|D>|$X{jw{C<|F.hK|*A{MRZ8Zsm?imZm_?brYWZrYx`yVZc3a@f?aK^ojEd {bN}/3ZH]/$YZhm^&j 9|(S|b]mF}UI{q&aM]LcrZ5^.|[j`T_V_Gak}9J[ ZCZD|^h{N9{~&[6Zd{}B}2O|cv]K}3s}Uy|l,fihW{EG`j_QOp~Z$F^zexS`dcISfhZBXP|.vn|_HYQ|)9|cr]<`&Z6]m_(ZhPcSg>`Z]5`~1`0Xcb4k1{O!bz|CN_T{LR|a/gFcD|j<{Z._[f)mPc:1`WtIaT1cgYkZOaVZOYFrEe[}T$}Ch}mk{K-^@]fH{Hdi`c*Z&|Kt{if[C{Q;{xYB`dYIX:ZB[}]*[{{p9|4GYRh2ao{DS|V+[zd$`F[ZXKadb*A] Ys]Maif~a/Z2bmclb8{Jro_rz|x9cHojbZ{GzZx_)]:{wAayeDlx}<=`g{H1{l#}9i|)=|lP{Qq}.({La|!Y{i2EZfp=c*}Cc{EDvVB|;g}2t{W4av^Bn=]ri,|y?|3+}T*ckZ*{Ffr5e%|sB{lx^0]eZb]9[SgAjS_D|uHZx]dive[c.YPkcq/}db{EQh&hQ|eg}G!ljil|BO]X{Qr_GkGl~YiYWu=c3eb}29v3|D|}4i||.{Mv})V{SP1{FX}CZW6{cm|vO{pS|e#}A~|1i}81|Mw}es|5[}3w{C`h9aL]o{}p[G`>i%a1Z@`Ln2bD[$_h`}ZOjhdTrH{[j_:k~kv[Sdu]CtL}41{I |[[{]Zp$]XjxjHt_eThoa#h>sSt8|gK|TVi[Y{t=}Bs|b7Zpr%{gt|Yo{CS[/{iteva|cf^hgn}($_c^wmb^Wm+|55jrbF|{9^ q6{C&c+ZKdJkq_xOYqZYSYXYl`8]-cxZAq/b%b*_Vsa[/Ybjac/OaGZ4fza|a)gY{P?| I|Y |,pi1n7}9bm9ad|=d{aV|2@[(}B`d&|Uz}B}{`q|/H|!JkM{FU|CB|.{}Az}#P|lk}K{|2rk7{^8^?`/|k>|Ka{Sq}Gz}io{DxZh[yK_#}9<{TRdgc]`~Z>JYmYJ]|`!ZKZ]gUcx|^E[rZCd`f9oQ[NcD_$ZlZ;Zr}mX|=!|$6ZPZYtIo%fj}CpcN|B,{VDw~gb}@hZg`Q{LcmA[(bo`<|@$|o1|Ss}9Z_}tC|G`{F/|9nd}i=}V-{L8aaeST]daRbujh^xlpq8|}zs4bj[S`J|]?G{P#{rD{]I`OlH{Hm]VYuSYUbRc*6[j`8]pZ[bt_/^Jc*[<Z?YE|Xb|?_Z^Vcas]h{t9|Uwd)_(=0^6Zb{Nc} E[qZAeX[a]P^|_J>e8`W^j_Y}R{{Jp__]Ee#e:iWb9q_wKbujrbR}CY`,{mJ}gz{Q^{t~N|? gSga`V_||:#mi}3t|/I`X{N*|ct|2g{km}gi|{={jC}F;|E}{ZZjYf*frmu}8Tdroi{T[|+~}HG{cJ}DM{Lp{Ctd&}$hi3|FZ| m}Kr|38}^c|m_|Tr{Qv|36}?Up>|;S{DV{k_as}BK{P}}9p|t`jR{sAm4{D=b4pWa[}Xi{EjwEkI}3S|E?u=X0{jf} S|NM|JC{qo^3cm]-|JUx/{Cj{s>{Crt[UXuv|D~|j|d{YXZR}Aq}0r}(_{pJfi_z}0b|-vi)Z mFe,{f4|q`b{}^Z{HM{rbeHZ|^x_o|XM|L%|uFXm}@C_{{Hhp%a7|0p[Xp+^K}9U{bP}: tT}B|}+$|b2|[^|~h{FAby[`{}xgygrt~h1[li`c4vz|,7p~b(|mviN}^pg[{N/|g3|^0c,gE|f%|7N{q[|tc|TKA{LU}I@|AZp(}G-sz{F |qZ{}F|f-}RGn6{Z]_5})B}UJ{FFb2]4ZI@v=k,]t_Dg5Bj]Z-]L]vrpdvdGlk|gF}G]|IW}Y0[G| /bo|Te^,_B}#n^^{QHYI[?hxg{[`]D^IYRYTb&kJ[cri[g_9]Ud~^_]<p@_e_XdNm-^/|5)|h_{J;{kacVopf!q;asqd}n)|.m|bf{QW|U)}b+{tL|w``N|to{t ZO|T]jF}CB|0Q{e5Zw|k |We}5:{HO{tPwf_uajjBfX}-V_C_{{r~gg|Ude;s+}KNXH}! `K}eW{Upwbk%ogaW}9EYN}YY|&v|SL{C3[5s.]Y]I]u{M6{pYZ`^,`ZbCYR[1mNg>rsk0Ym[jrE]RYiZTr*YJ{Ge|%-lf|y(`=[t}E6{k!|3)}Zk} ][G{E~cF{u3U.rJ|a9p#o#ZE|?|{sYc#vv{E=|LC}cu{N8`/`3`9rt[4|He{cq|iSYxY`}V |(Q|t4{C?]k_Vlvk)BZ^r<{CL}#h}R+[<|i=}X|{KAo]|W<`K{NW|Zx}#;|fe{IMr<|K~tJ_x}AyLZ?{GvbLnRgN}X&{H7|x~}Jm{]-| GpNu0}.ok>|c4{PYisrDZ|fwh9|hfo@{H~XSbO]Odv]%`N]b1Y]]|eIZ}_-ZA]aj,>eFn+j[aQ_+]h[J_m_g]%_wf.`%k1e#Z?{CvYu_B^|gk`Xfh^M3`afGZ-Z|[m{L}|k3cp[it ^>YUi~d>{T*}YJ{Q5{Jxa$hg|%4`}|LAgvb }G}{P=|<;Ux{_skR{cV|-*|s-{Mp|XP|$G|_J}c6cM{_=_D|*9^$ec{V;|4S{qO|w_|.7}d0|/D}e}|0G{Dq]Kdp{}dfDi>}B%{Gd|nl}lf{C-{y}|ANZr}#={T~|-(}c&{pI|ft{lsVP}){|@u}!W|bcmB{d?|iW|:dxj{PSkO|Hl]Li:}VYk@|2={fnWt{M3`cZ6|)}|Xj}BYa?vo{e4|L7|B7{L7|1W|lvYO}W8nJ|$Vih|{T{d*_1|:-n2dblk``fT{Ky|-%}m!|Xy|-a{Pz}[l{kFjz|iH}9N{WE{x,|jz}R {P|{D)c=nX|Kq|si}Ge{sh|[X{RF{t`|jsr*fYf,rK|/9}$}}Nf{y!1|<Std}4Wez{W${Fd_/^O[ooqaw_z[L`Nbv[;l7V[ii3_PeM}.h^viqYjZ*j1}+3{bt{DR[;UG}3Og,rS{JO{qw{d<_zbAh<R[1_r`iZTbv^^a}c{iEgQZ<exZFg.^Rb+`Uj{a+{z<[~r!]`[[|rZYR|?F|qppp]L|-d|}K}YZUM|=Y|ktm*}F]{D;g{uI|7kg^}%?Z%ca{N[_<q4xC]i|PqZC]n}.bDrnh0Wq{tr|OMn6tM|!6|T`{O`|>!]ji+]_bTeU}Tq|ds}n|{Gm{z,f)}&s{DPYJ`%{CGd5v4tvb*hUh~bf]z`jajiFqAii]bfy^U{Or|m+{I)cS|.9k:e3`^|xN}@Dnlis`B|Qo{`W|>||kA}Y}{ERYuYx`%[exd`]|OyiHtb}HofUYbFo![5|+]gD{NIZR|Go}.T{rh^4]S|C9_}xO^i`vfQ}C)bK{TL}cQ|79iu}9a];sj{P.o!f[Y]pM``Jda^Wc9ZarteBZClxtM{LW}l9|a.mU}KX}4@{I+f1}37|8u}9c|v${xGlz}jP{Dd1}e:}31}%3X$|22i<v+r@~mf{sN{C67G97855F4YL5}8f{DT|xy{sO{DXB334@55J1)4.G9A#JDYtXTYM4, YQD9;XbXm9SX]IB^4UN=Xn<5(;(F3YW@XkH-X_VM[DYM:5XP!T&Y`6|,^{IS-*D.H>:LXjYQ0I3XhAF:9:(==.F*3F1189K/7163D,:@|e2{LS36D4hq{Lw/84443@4.933:0307::6D7}&l{Mx657;89;,K5678H&93D(H<&<>0B90X^I;}Ag1{P%3A+>><975}[S{PZE453?4|T2{Q+5187;>447:81{C=hL6{Me^:=7ii{R=.=F<81;48?|h8}Uh{SE|,VxL{ST,7?9Y_5Xk3A#:$%YSYdXeKXOD8+TXh7(@>(YdXYHXl9J6X_5IXaL0N?3YK7Xh!1?XgYz9YEXhXaYPXhC3X`-YLY_XfVf[EGXZ5L8BXL9YHX]SYTXjLXdJ: YcXbQXg1PX]Yx4|Jr{Ys4.8YU+XIY`0N,<H%-H;:0@,74/:8546I=9177154870UC]d<C3HXl7ALYzXFXWP<<?E!88E5@03YYXJ?YJ@6YxX-YdXhYG|9o{`iXjY_>YVXe>AYFX[/(I@0841?):-B=14337:8=|14{c&93788|di{cW-0>0<097/A;N{FqYpugAFT%X/Yo3Yn,#=XlCYHYNX[Xk3YN:YRT4?)-YH%A5XlYF3C1=NWyY}>:74-C673<69545v {iT85YED=64=.F4..9878/D4378?48B3:7:7/1VX[f4{D,{l<5E75{dAbRB-8-@+;DBF/$ZfW8S<4YhXA.(5@*11YV8./S95C/0R-A4AXQYI7?68167B95HA1*<M3?1/@;/=54XbYP36}lc{qzSS38:19?,/39193574/66878Yw1X-87E6=;964X`T734:>86>1/=0;(I-1::7ALYGXhF+Xk[@W%TYbX7)KXdYEXi,H-XhYMRXfYK?XgXj.9HX_SX]YL1XmYJ>Y}WwIXiI-3-GXcYyXUYJ$X`Vs[7;XnYEZ;XF! 3;%8;PXX(N3Y[)Xi1YE&/ :;74YQ6X`33C;-(>Xm0(TYF/!YGXg8 9L5P01YPXO-5%C|qd{{/K/E6,=0144:361:955;6443@?B7*7:F89&F35YaX-CYf,XiFYRXE_e{}sF 0*7XRYPYfXa5YXXY8Xf8Y~XmA[9VjYj*#YMXIYOXk,HHX40YxYMXU8OXe;YFXLYuPXP?EB[QV0CXfY{:9XV[FWE0D6X^YVP*$4%OXiYQ(|xp|%c3{}V`1>Y`XH00:8/M6XhQ1:;3414|TE|&o@1*=81G8<3}6<|(f6>>>5-5:8;093B^3U*+*^*UT30XgYU&7*O1953)5@E78--F7YF*B&0:%P68W9Zn5974J9::3}Vk|-,C)=)1AJ4+<3YGXfY[XQXmT1M-XcYTYZXCYZXEYXXMYN,17>XIG*SaS|/eYJXbI?XdNZ+WRYP<F:R PXf;0Xg`$|1GX9YdXjLYxWX!ZIXGYaXNYm6X9YMX?9EXmZ&XZ#XQ>YeXRXfAY[4 ;0X!Zz0XdN$XhYL XIY^XGNXUYS/1YFXhYk.TXn4DXjB{jg|4DEX]:XcZMW=A.+QYL<LKXc[vV$+&PX*Z3XMYIXUQ:ZvW< YSXFZ,XBYeXMM)?Xa XiZ4/EXcP3%}&-|6~:1(-+YT$@XIYRBC<}&,|7aJ6}bp|8)K1|Xg|8C}[T|8Q.89;-964I38361<=/;883651467<7:>?1:.}le|:Z=39;1Y^)?:J=?XfLXbXi=Q0YVYOXaXiLXmJXO5?.SFXiCYW}-;|=u&D-X`N0X^,YzYRXO(QX_YW9`I|>hZ:N&X)DQXP@YH#XmNXi$YWX^=!G6YbYdX>XjY|XlX^XdYkX>YnXUXPYF)FXT[EVTMYmYJXmYSXmNXi#GXmT3X8HOX[ZiXN]IU2>8YdX1YbX<YfWuZ8XSXcZU%0;1XnXkZ_WTG,XZYX5YSX Yp 05G?XcYW(IXg6K/XlYP4XnI @XnO1W4Zp-9C@%QDYX+OYeX9>--YSXkD.YR%Q/Yo YUX].Xi<HYEZ2WdCE6YMXa7F)=,D>-@9/8@5=?7164;35387?N<618=6>7D+C50<6B03J0{Hj|N9$D,9I-,.KB3}m |NzE0::/81YqXjMXl7YG; [.W=Z0X4XQY]:MXiR,XgM?9$9>:?E;YE77VS[Y564760391?14941:0=:8B:;/1DXjFA-564=0B3XlH1+D85:0Q!B#:-6&N/:9<-R3/7Xn<*3J4.H:+334B.=>30H.;3833/76464665755:/83H6633:=;.>5645}&E|Y)?1/YG-,93&N3AE@5 <L1-G/8A0D858/30>8<549=@B8] V0[uVQYlXeD(P#ID&7T&7;Xi0;7T-$YE)E=1:E1GR):--0YI7=E<}n9|aT6783A>D7&4YG7=391W;Zx<5+>F#J39}o/|cc;6=A050EQXg8A1-}D-|d^5548083563695D?-.YOXd37I$@LYLWeYlX<Yd+YR A$;3-4YQ-9XmA0!9/XLY_YT(=5XdDI>YJ5XP1ZAW{9>X_6R(XhYO65&J%DA)C-!B:97#A9;@?F;&;(9=11/=657/H,<8}bz|j^5446>.L+&Y^8Xb6?(CYOXb*YF(8X`FYR(XPYVXmPQ%&DD(XmZXW??YOXZXfCYJ79,O)XnYF7K0!QXmXi4IYFRXS,6<%-:YO(+:-3Q!1E1:W,Zo}Am|n~;3580534*?3Zc4=9334361693:30C<6/717:<1/;>59&:4}6!|rS36=1?75<8}[B|s809983579I.A.>84758=108564741H*9E{L{|u%YQ<%6XfH.YUXe4YL@,>N}Tv|ve*G0X)Z;/)3@A74(4P&A1X:YVH97;,754*A66:1 D739E3553545558E4?-?K17/770843XAYf838A7K%N!YW4.$T19Z`WJ*0XdYJXTYOXNZ 1XaN1A+I&Xi.Xk3Z3GB&5%WhZ1+5#Y[X<4YMXhQYoQXVXbYQ8XSYUX4YXBXWDMG0WxZA[8V+Z8X;D],Va$%YeX?FXfX[XeYf<X:Z[WsYz8X_Y]%XmQ(!7BXIZFX]&YE3F$(1XgYgYE& +[+W!<YMYFXc;+PXCYI9YrWxGXY9DY[!GXiI7::)OC;*$.>N*HA@{C|}&k=:<TB83X`3YL+G4XiK]i}(fYK<=5$.FYE%4*5*H*6XkCYL=*6Xi6!Yi1KXR4YHXbC8Xj,B9ZbWx/XbYON#5B}Ue}+QKXnF1&YV5XmYQ0!*3IXBYb71?1B75XmF;0B976;H/RXU:YZX;BG-NXj;XjI>A#D3B636N;,*%<D:0;YRXY973H5)-4FXOYf0:0;/7759774;7;:/855:543L43<?6=E,.A4:C=L)%4YV!1(YE/4YF+ F3%;S;&JC:%/?YEXJ4GXf/YS-EXEYW,9;E}X$}547EXiK=51-?71C%?57;5>463553Zg90;6447?<>4:9.7538XgN{|!}9K/E&3-:D+YE1)YE/3;37/:05}n<}:UX8Yj4Yt864@JYK..G=.(A Q3%6K>3(P3#AYE$-6H/456*C=.XHY[#S.<780191;057C)=6HXj?955B:K1 E>-B/9,;5.!L?:0>/.@//:;7833YZ56<4:YE=/:7Z_WGC%3I6>XkC*&NA16X=Yz2$X:Y^&J48<99k8}CyB-61<18K946YO4{|N}E)YIB9K0L>4=46<1K0+R;6-=1883:478;4,S+3YJX`GJXh.Yp+Xm6MXcYpX(>7Yo,/:X=Z;Xi0YTYHXjYmXiXj;*;I-8S6N#XgY}.3XfYGO3C/$XjL$*NYX,1 6;YH&<XkK9C#I74.>}Hd`A748X[T450[n75<4439:18A107>|ET}Rf<1;14876/Yb983E<5.YNXd4149>,S=/4E/<306443G/06}0&}UkYSXFYF=44=-5095=88;63844,9E6644{PL}WA8:>)7+>763>>0/B3A545CCnT}Xm|dv}Xq1L/YNXk/H8;;.R63351YY747@15YE4J8;46;.38.>4A369.=-83,;Ye3?:3@YE.4-+N353;/;@(X[YYD>@/05-I*@.:551741Yf5>6A443<3535;.58/86=D4753442$635D1>0359NQ @73:3:>><Xn?;43C14 ?Y|X611YG1&<+,4<*,YLXl<1/AIXjF*N89A4Z576K1XbJ5YF.ZOWN.YGXO/YQ01:4G38Xl1;KI0YFXB=R<7;D/,/4>;$I,YGXm94@O35Yz66695385.>:6A#5}W7n^4336:4157597434433<3|XA}m`>=D>:4A.337370?-6Q96{`E|4A}C`|Qs{Mk|J+~r>|o,wHv>Vw}!c{H!|Gb|*Ca5}J||,U{t+{CN[!M65YXOY_*B,Y[Z9XaX[QYJYLXPYuZ%XcZ8LY[SYPYKZM<LMYG9OYqSQYM~[e{UJXmQYyZM_)>YjN1~[f3{aXFY|Yk:48YdH^NZ0|T){jVFYTZNFY^YTYN~[h{nPYMYn3I]`EYUYsYIZEYJ7Yw)YnXPQYH+Z.ZAZY]^Z1Y`YSZFZyGYHXLYG 8Yd#4~[i|+)YH9D?Y^F~Y7|-eYxZ^WHYdYfZQ~[j|3>~[k|3oYmYqY^XYYO=Z*4[]Z/OYLXhZ1YLZIXgYIHYEYK,<Y`YEXIGZI[3YOYcB4SZ!YHZ*&Y{Xi3~[l|JSY`Zz?Z,~[m|O=Yi>??XnYWXmYS617YVYIHZ(Z4[~L4/=~[n|Yu{P)|];YOHHZ}~[o33|a>~[r|aE]DH~[s|e$Zz~[t|kZFY~XhYXZB[`Y}~[u|{SZ&OYkYQYuZ2Zf8D~[v}% ~[w3},Q[X]+YGYeYPIS~[y}4aZ!YN^!6PZ*~[z}?E~[{3}CnZ=~[}}EdDZz/9A3(3S<,YR8.D=*XgYPYcXN3Z5 4)~[~}JW=$Yu.XX~] }KDX`PXdZ4XfYpTJLY[F5]X~[2Yp}U+DZJ::<446[m@~]#3}]1~]%}^LZwZQ5Z`/OT<Yh^ -~]&}jx[ ~m<z!%2+~ly4VY-~o>}p62yz!%2+Xf2+~ly4VY-zQ`z (=] 2z~o2",C={" ":0,"!":1},c=34,i=2,p,s="",u=String.fromCharCode,t=u(12539);while(++c<127)C[u(c)]=c^39&&c^92?i++:0;i=0;while(0<=(c=C[a.charAt(i++)]))if(16==c)if((c=C[a.charAt(i++)])<87){if(86==c)c=1879;while(c--)s+=u(++p)}else s+=s.substr(8272,360);else if(c<86)s+=u(p+=c<51?c-16:(c-55)*92+C[a.charAt(i++)]);else if((c=((c-86)*92+C[a.charAt(i++)])*92+C[a.charAt(i++)])<49152)s+=u(p=c<40960?c:c|57344);else{c&=511;while(c--)s+=t;p=12539}return s')();
+
+var JCT8836 = JCT11280.substring(0, 8836);
+
+exports.EscapeSJIS = EscapeSJIS;
+exports.UnescapeSJIS = UnescapeSJIS;
+exports.EscapeEUCJP = EscapeEUCJP;
+exports.UnescapeEUCJP = UnescapeEUCJP;
+exports.EscapeJIS7 = EscapeJIS7;
+exports.UnescapeJIS7 = UnescapeJIS7;
+exports.EscapeJIS8 = EscapeJIS8;
+exports.UnescapeJIS8 = UnescapeJIS8;
+exports.EscapeUnicode = EscapeUnicode;
+exports.UnescapeUnicode = UnescapeUnicode;
+exports.EscapeUTF7 = EscapeUTF7;
+exports.UnescapeUTF7 = UnescapeUTF7;
+exports.EscapeUTF8 = EscapeUTF8;
+exports.UnescapeUTF8 = UnescapeUTF8;
+exports.EscapeUTF16LE = EscapeUTF16LE;
+exports.UnescapeUTF16LE = UnescapeUTF16LE;
+exports.GetEscapeCodeType = GetEscapeCodeType;
+exports.JCT11280 = JCT11280;
+exports.JCT8836 = JCT8836;
+
+/***/ }),
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28657,7 +28939,7 @@ var GKAgent = function (_GKComponent) {
 exports.default = GKAgent;
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28671,7 +28953,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _CAPropertyAnimation2 = __webpack_require__(46);
+var _CAPropertyAnimation2 = __webpack_require__(47);
 
 var _CAPropertyAnimation3 = _interopRequireDefault(_CAPropertyAnimation2);
 
@@ -28861,13 +29143,13 @@ var CABasicAnimation = function (_CAPropertyAnimation) {
         // TODO: retain prevValue
         //value = this._lerp(prevValue, currentValue, t)
       }
-      var value = this._lerp(fromValue, toValue, t
+      var value = this._lerp(fromValue, toValue, t);
 
       //if(this.keyPath === 'rotation.w'){
       //  console.log(`from: ${fromValue}, to: ${toValue}, t: ${t}, value: ${value}`)
       //}
 
-      );if (this.isAdditive) {
+      if (this.isAdditive) {
         if (isObject) {
           //value = value.add(obj.valueForKeyPath(this.keyPath))
           value = value.add(this._baseValue);
@@ -28892,7 +29174,7 @@ var CABasicAnimation = function (_CAPropertyAnimation) {
 exports.default = CABasicAnimation;
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28910,11 +29192,11 @@ var _CAAnimation2 = __webpack_require__(24);
 
 var _CAAnimation3 = _interopRequireDefault(_CAAnimation2);
 
-var _CGPoint = __webpack_require__(10);
+var _CGPoint = __webpack_require__(8);
 
 var _CGPoint2 = _interopRequireDefault(_CGPoint);
 
-var _CGSize = __webpack_require__(8);
+var _CGSize = __webpack_require__(9);
 
 var _CGSize2 = _interopRequireDefault(_CGSize);
 
@@ -29068,9 +29350,9 @@ var CAPropertyAnimation = function (_CAAnimation) {
       if (this.valueFunction !== null) {
         value = this.valueFunction._getValueAtTime(t);
       }
-      value = this._calculateWithBaseValue(obj, value
+      value = this._calculateWithBaseValue(obj, value);
       //console.log(`CAPropertyAnimation: obj: ${obj.name}, time: ${time}, keyPath: ${this.keyPath}, value: ${value}`)
-      );this._applyValue(obj, value);
+      this._applyValue(obj, value);
       this._handleEvents(obj, t);
     }
   }, {
@@ -29147,7 +29429,7 @@ var CAPropertyAnimation = function (_CAAnimation) {
 exports.default = CAPropertyAnimation;
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29309,7 +29591,7 @@ var CAMediaTimingFunction = function (_NSObject) {
 exports.default = CAMediaTimingFunction;
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29334,7 +29616,7 @@ var SCNCullMode = {
 exports.default = SCNCullMode;
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29348,7 +29630,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _SCNGeometry2 = __webpack_require__(9);
+var _SCNGeometry2 = __webpack_require__(10);
 
 var _SCNGeometry3 = _interopRequireDefault(_SCNGeometry2);
 
@@ -29356,7 +29638,7 @@ var _SCNGeometryElement = __webpack_require__(15);
 
 var _SCNGeometryElement2 = _interopRequireDefault(_SCNGeometryElement);
 
-var _SCNGeometryPrimitiveType = __webpack_require__(13);
+var _SCNGeometryPrimitiveType = __webpack_require__(14);
 
 var _SCNGeometryPrimitiveType2 = _interopRequireDefault(_SCNGeometryPrimitiveType);
 
@@ -29364,7 +29646,7 @@ var _SCNGeometrySource = __webpack_require__(6);
 
 var _SCNGeometrySource2 = _interopRequireDefault(_SCNGeometrySource);
 
-var _SCNMaterial = __webpack_require__(12);
+var _SCNMaterial = __webpack_require__(13);
 
 var _SCNMaterial2 = _interopRequireDefault(_SCNMaterial);
 
@@ -29480,13 +29762,13 @@ var SCNCapsule = function (_SCNGeometry) {
           var zNom = z * ySin[_lat];
 
           // vertex
-          sourceData.push(xNom * this.capRadius, y + yNom[_lat] * this.capRadius, zNom * this.capRadius
+          sourceData.push(xNom * this.capRadius, y + yNom[_lat] * this.capRadius, zNom * this.capRadius);
 
           // normal
-          );sourceData.push(xNom, yNom[_lat], zNom
+          sourceData.push(xNom, yNom[_lat], zNom);
 
           // texcoord
-          );sourceData.push(tx, 1.0 - 0.25 * _lat / hemiLen);
+          sourceData.push(tx, 1.0 - 0.25 * _lat / hemiLen);
 
           if (_lat === hemiLen) {
             // put the same data again
@@ -29502,13 +29784,13 @@ var SCNCapsule = function (_SCNGeometry) {
           var _zNom = z * ySin[_lat2];
 
           // vertex
-          sourceData.push(_xNom * this.capRadius, y + yNom[_lat2] * this.capRadius, _zNom * this.capRadius
+          sourceData.push(_xNom * this.capRadius, y + yNom[_lat2] * this.capRadius, _zNom * this.capRadius);
 
           // normal
-          );sourceData.push(_xNom, yNom[_lat2], _zNom
+          sourceData.push(_xNom, yNom[_lat2], _zNom);
 
           // texcoord
-          );sourceData.push(tx, 0.50 - 0.25 * _lat2 / hemiLen);
+          sourceData.push(tx, 0.50 - 0.25 * _lat2 / hemiLen);
 
           if (_lat2 === hemiLen) {
             // put the same data again
@@ -29630,7 +29912,7 @@ var SCNCapsule = function (_SCNGeometry) {
 exports.default = SCNCapsule;
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29841,7 +30123,7 @@ var SCNHitTestResult = function (_NSObject) {
 exports.default = SCNHitTestResult;
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29868,7 +30150,7 @@ var SCNPhysicsBodyType = {
 exports.default = SCNPhysicsBodyType;
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29888,19 +30170,19 @@ var _SCNBox = __webpack_require__(34);
 
 var _SCNBox2 = _interopRequireDefault(_SCNBox);
 
-var _SCNCapsule = __webpack_require__(49);
+var _SCNCapsule = __webpack_require__(50);
 
 var _SCNCapsule2 = _interopRequireDefault(_SCNCapsule);
 
-var _SCNGeometry = __webpack_require__(9);
+var _SCNGeometry = __webpack_require__(10);
 
 var _SCNGeometry2 = _interopRequireDefault(_SCNGeometry);
 
-var _SCNNode = __webpack_require__(14);
+var _SCNNode = __webpack_require__(12);
 
 var _SCNNode2 = _interopRequireDefault(_SCNNode);
 
-var _SCNSphere = __webpack_require__(53);
+var _SCNSphere = __webpack_require__(54);
 
 var _SCNSphere2 = _interopRequireDefault(_SCNSphere);
 
@@ -30070,9 +30352,8 @@ var SCNPhysicsShape = function (_NSObject) {
       } else if ((0, _InstanceOf3.default)(this._sourceGeometry, _SCNBox2.default)) {
         this._createShapeAsBox();
       } else if ((0, _InstanceOf3.default)(this._sourceGeometry, _SCNSphere2.default)) {
-        this._createShapeAsSphere
+        this._createShapeAsSphere();
         //}else if(this._options && this._options.get(_Option.type) === _ShapeType.convecHull){
-        ();
       } else if (this._options && this._options[_Option.type] === _ShapeType.concavePolyhedron) {
         // give up making a simple shape
         this._shape = this._sourceGeometry;
@@ -30216,7 +30497,7 @@ var SCNPhysicsShape = function (_NSObject) {
 exports.default = SCNPhysicsShape;
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30230,11 +30511,11 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _SCNMaterial = __webpack_require__(12);
+var _SCNMaterial = __webpack_require__(13);
 
 var _SCNMaterial2 = _interopRequireDefault(_SCNMaterial);
 
-var _SCNGeometry2 = __webpack_require__(9);
+var _SCNGeometry2 = __webpack_require__(10);
 
 var _SCNGeometry3 = _interopRequireDefault(_SCNGeometry2);
 
@@ -30242,7 +30523,7 @@ var _SCNGeometryElement = __webpack_require__(15);
 
 var _SCNGeometryElement2 = _interopRequireDefault(_SCNGeometryElement);
 
-var _SCNGeometryPrimitiveType = __webpack_require__(13);
+var _SCNGeometryPrimitiveType = __webpack_require__(14);
 
 var _SCNGeometryPrimitiveType2 = _interopRequireDefault(_SCNGeometryPrimitiveType);
 
@@ -30385,13 +30666,13 @@ var SCNSphere = function (_SCNGeometry) {
           var zNom = z * ySin[_lat];
 
           // vertex
-          sourceData.push(xNom * this.radius, yNom[_lat] * this.radius, zNom * this.radius
+          sourceData.push(xNom * this.radius, yNom[_lat] * this.radius, zNom * this.radius);
 
           // normal
-          );sourceData.push(xNom, yNom[_lat], zNom
+          sourceData.push(xNom, yNom[_lat], zNom);
 
           // texcoord
-          );sourceData.push(lng / this.segmentCount, 1.0 - _lat / this.segmentCount);
+          sourceData.push(lng / this.segmentCount, 1.0 - _lat / this.segmentCount);
         }
       }
 
@@ -30467,7 +30748,7 @@ var SCNSphere = function (_SCNGeometry) {
 exports.default = SCNSphere;
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30634,9 +30915,9 @@ var AjaxRequest = exports.AjaxRequest = function () {
         }
 
         if (user) {
-          xhr.open(method, url, async, user, password);
+          xhr.open(method, requestURL, async, user, password);
         } else {
-          xhr.open(method, url, async);
+          xhr.open(method, requestURL, async);
         }
 
         if (header) {
@@ -30670,7 +30951,7 @@ var AjaxRequest = exports.AjaxRequest = function () {
 exports.default = new AjaxRequest();
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30686,11 +30967,11 @@ var _NSObject2 = __webpack_require__(0);
 
 var _NSObject3 = _interopRequireDefault(_NSObject2);
 
-var _CGSize = __webpack_require__(8);
+var _CGSize = __webpack_require__(9);
 
 var _CGSize2 = _interopRequireDefault(_CGSize);
 
-var _SKTextureFilteringMode = __webpack_require__(119);
+var _SKTextureFilteringMode = __webpack_require__(121);
 
 var _SKTextureFilteringMode2 = _interopRequireDefault(_SKTextureFilteringMode);
 
@@ -30977,6 +31258,9 @@ var SKTexture = function (_NSObject) {
       var _this2 = this;
 
       var image = new Image();
+      // TODO: check option if it allows cross-domain.
+      image.crossOrigin = 'anonymous';
+
       this._loadingImagePromise = new Promise(function (resolve, reject) {
         if (path.indexOf('file:///') === 0) {
           var paths = path.slice(8).split('/');
@@ -31026,10 +31310,10 @@ var SKTexture = function (_NSObject) {
       canvas.height = this._image.naturalHeight;
       canvas.getContext('2d').drawImage(this._image, 0, 0);
 
-      gl.bindTexture(gl.TEXTURE_2D, texture
+      gl.bindTexture(gl.TEXTURE_2D, texture);
       // texImage2D(target, level, internalformat, width, height, border, format, type, source)
       // Safari complains that 'source' is not ArrayBufferView type, but WebGL2 should accept HTMLCanvasElement.
-      );gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, this._image.width, this._image.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, this._image.width, this._image.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
       gl.generateMipmap(gl.TEXTURE_2D);
       gl.bindTexture(gl.TEXTURE_2D, null);
 
@@ -31189,7 +31473,7 @@ var SKTexture = function (_NSObject) {
 exports.default = SKTexture;
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31201,7 +31485,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _AVAudioNode2 = __webpack_require__(57);
+var _AVAudioNode2 = __webpack_require__(58);
 
 var _AVAudioNode3 = _interopRequireDefault(_AVAudioNode2);
 
@@ -31241,7 +31525,7 @@ var AVAudioMixerNode = function (_AVAudioNode) {
 exports.default = AVAudioMixerNode;
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31531,7 +31815,7 @@ var AVAudioNode = function (_NSObject) {
 exports.default = AVAudioNode;
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31558,7 +31842,7 @@ var CGLineCap = {
 exports.default = CGLineCap;
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31585,7 +31869,7 @@ var CGLineJoin = {
 exports.default = CGLineJoin;
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31651,7 +31935,7 @@ var CGVector = function () {
 exports.default = CGVector;
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31743,7 +32027,7 @@ var DispatchObject = function () {
 exports.default = DispatchObject;
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32803,7 +33087,7 @@ var NSNotification = function (_NSObject) {
 exports.default = NSNotification;
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33128,7 +33412,7 @@ var GCGamepad = function (_NSObject) {
 exports.default = GCGamepad;
 
 /***/ }),
-/* 64 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33210,7 +33494,7 @@ var GCControllerAxisInput = function (_GCControllerElement) {
 exports.default = GCControllerAxisInput;
 
 /***/ }),
-/* 65 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33500,7 +33784,7 @@ var GCExtendedGamepad = function (_NSObject) {
 exports.default = GCExtendedGamepad;
 
 /***/ }),
-/* 66 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33664,7 +33948,7 @@ var GCMicroGamepad = function (_NSObject) {
 exports.default = GCMicroGamepad;
 
 /***/ }),
-/* 67 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33746,7 +34030,7 @@ var NSArray = function (_NSObject) {
 exports.default = NSArray;
 
 /***/ }),
-/* 68 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33841,7 +34125,7 @@ var NSDictionary = function (_NSObject) {
 exports.default = NSDictionary;
 
 /***/ }),
-/* 69 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33853,7 +34137,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _ecl = __webpack_require__(70);
+var _ecl = __webpack_require__(44);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -34235,296 +34519,7 @@ var _BinaryReader = function () {
 }();
 
 exports.default = _BinaryReader;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21).Buffer))
-
-/***/ }),
-/* 70 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-//
-// Escape Codec Library: ecl.js (Ver.041208)
-//
-// Copyright (C) http://nurucom-archives.hp.infoseek.co.jp/digital/
-//
-
-var EscapeSJIS = function EscapeSJIS(str) {
-	return str.replace(/[^*+.-9A-Z_a-z-]/g, function (s) {
-		var c = s.charCodeAt(0),
-		    m;
-		return c < 128 ? (c < 16 ? "%0" : "%") + c.toString(16).toUpperCase() : 65376 < c && c < 65440 ? "%" + (c - 65216).toString(16).toUpperCase() : (c = JCT11280.indexOf(s)) < 0 ? "%81E" : "%" + ((m = ((c < 8272 ? c : c = JCT11280.lastIndexOf(s)) - (c %= 188)) / 188) < 31 ? m + 129 : m + 193).toString(16).toUpperCase() + (64 < (c += c < 63 ? 64 : 65) && c < 91 || 95 == c || 96 < c && c < 123 ? String.fromCharCode(c) : "%" + c.toString(16).toUpperCase());
-	});
-};
-
-var UnescapeSJIS = function UnescapeSJIS(str) {
-	return str.replace(/%(8[1-9A-F]|[9E][0-9A-F]|F[0-9A-C])(%[4-689A-F][0-9A-F]|%7[0-9A-E]|[@-~])|%([0-7][0-9A-F]|A[1-9A-F]|[B-D][0-9A-F])/ig, function (s) {
-		var c = parseInt(s.substring(1, 3), 16),
-		    l = s.length;
-		return 3 == l ? String.fromCharCode(c < 160 ? c : c + 65216) : JCT11280.charAt((c < 160 ? c - 129 : c - 193) * 188 + (4 == l ? s.charCodeAt(3) - 64 : (c = parseInt(s.substring(4), 16)) < 127 ? c - 64 : c - 65));
-	});
-};
-
-var EscapeEUCJP = function EscapeEUCJP(str) {
-	return str.replace(/[^*+.-9A-Z_a-z-]/g, function (s) {
-		var c = s.charCodeAt(0);
-		return (c < 128 ? (c < 16 ? "%0" : "%") + c.toString(16) : 65376 < c && c < 65440 ? "%8E%" + (c - 65216).toString(16) : (c = JCT8836.indexOf(s)) < 0 ? "%A1%A6" : "%" + ((c - (c %= 94)) / 94 + 161).toString(16) + "%" + (c + 161).toString(16)).toUpperCase();
-	});
-};
-
-var UnescapeEUCJP = function UnescapeEUCJP(str) {
-	return str.replace(/(%A[1-9A-F]|%[B-E][0-9A-F]|%F[0-9A-E]){2}|%8E%(A[1-9A-F]|[B-D][0-9A-F])|%[0-7][0-9A-F]/ig, function (s) {
-		var c = parseInt(s.substring(1), 16);
-		return c < 161 ? String.fromCharCode(c < 128 ? c : parseInt(s.substring(4), 16) + 65216) : JCT8836.charAt((c - 161) * 94 + parseInt(s.substring(4), 16) - 161);
-	});
-};
-
-var EscapeJIS7 = function EscapeJIS7(str) {
-	var u = String.fromCharCode,
-	    ri = u(92, 120, 48, 48, 45, 92, 120, 55, 70),
-	    rj = u(65377, 45, 65439, 93, 43),
-	    H = function H(c) {
-		return 41 < c && c < 58 && 44 != c || 64 < c && c < 91 || 95 == c || 96 < c && c < 123 ? u(c) : "%" + c.toString(16).toUpperCase();
-	},
-	    I = function I(s) {
-		var c = s.charCodeAt(0);
-		return (c < 16 ? "%0" : "%") + c.toString(16).toUpperCase();
-	},
-	    rI = new RegExp();rI.compile("[^*+.-9A-Z_a-z-]", "g");
-	return ("g" + str + "g").replace(RegExp("[" + ri + "]+", "g"), function (s) {
-		return "%1B%28B" + s.replace(rI, I);
-	}).replace(RegExp("[" + rj, "g"), function (s) {
-		var c,
-		    i = 0,
-		    t = "%1B%28I";while (c = s.charCodeAt(i++)) {
-			t += H(c - 65344);
-		}return t;
-	}).replace(RegExp("[^" + ri + rj, "g"), function (s) {
-		var a,
-		    c,
-		    i = 0,
-		    t = "%1B%24B";while (a = s.charAt(i++)) {
-			t += (c = JCT8836.indexOf(a)) < 0 ? "%21%26" : H((c - (c %= 94)) / 94 + 33) + H(c + 33);
-		}return t;
-	}).slice(8, -1);
-};
-
-var UnescapeJIS7 = function UnescapeJIS7(str) {
-	var i = 0,
-	    p,
-	    q,
-	    s = "",
-	    u = String.fromCharCode,
-	    P = ("%28B" + str.replace(/%49/g, "I").replace(/%1B%24%4[02]|%1B%24@/ig, "%1B%24B")).split(/%1B/i),
-	    I = function I(s) {
-		return u(parseInt(s.substring(1), 16));
-	},
-	    J = function J(s) {
-		return u((3 == s.length ? parseInt(s.substring(1), 16) : s.charCodeAt(0)) + 65344);
-	},
-	    K = function K(s) {
-		var l = s.length;
-		return JCT8836.charAt(4 < l ? (parseInt(s.substring(1), 16) - 33) * 94 + parseInt(s.substring(4), 16) - 33 : 2 < l ? (37 == (l = s.charCodeAt(0)) ? (parseInt(s.substring(1, 3), 16) - 33) * 94 + s.charCodeAt(3) : (l - 33) * 94 + parseInt(s.substring(2), 16)) - 33 : (s.charCodeAt(0) - 33) * 94 + s.charCodeAt(1) - 33);
-	},
-	    rI = new RegExp(),
-	    rJ = new RegExp(),
-	    rK = new RegExp();
-	rI.compile("%[0-7][0-9A-F]", "ig");rJ.compile("(%2[1-9A-F]|%[3-5][0-9A-F])|[!-_]", "ig");
-	rK.compile("(%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E]){2}|(%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E])[!-~]|[!-~](%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E])|[!-~]{2}", "ig");
-	while (p = P[i++]) {
-		s += "%24B" == (q = p.substring(0, 4)) ? p.substring(4).replace(rK, K) : "%28I" == q ? p.substring(4).replace(rJ, J) : p.replace(rI, I).substring(2);
-	}return s;
-};
-
-var EscapeJIS8 = function EscapeJIS8(str) {
-	var u = String.fromCharCode,
-	    r = u(92, 120, 48, 48, 45, 92, 120, 55, 70, 65377, 45, 65439, 93, 43),
-	    H = function H(c) {
-		return 41 < c && c < 58 && 44 != c || 64 < c && c < 91 || 95 == c || 96 < c && c < 123 ? u(c) : "%" + c.toString(16).toUpperCase();
-	},
-	    I = function I(s) {
-		var c = s.charCodeAt(0);
-		return (c < 16 ? "%0" : "%") + (c < 128 ? c : c - 65216).toString(16).toUpperCase();
-	},
-	    rI = new RegExp();rI.compile("[^*+.-9A-Z_a-z-]", "g");
-	return ("g" + str + "g").replace(RegExp("[" + r, "g"), function (s) {
-		return "%1B%28B" + s.replace(rI, I);
-	}).replace(RegExp("[^" + r, "g"), function (s) {
-		var a,
-		    c,
-		    i = 0,
-		    t = "%1B%24B";while (a = s.charAt(i++)) {
-			t += (c = JCT8836.indexOf(a)) < 0 ? "%21%26" : H((c - (c %= 94)) / 94 + 33) + H(c + 33);
-		}return t;
-	}).slice(8, -1);
-};
-
-var UnescapeJIS8 = function UnescapeJIS8(str) {
-	var i = 0,
-	    p,
-	    s = "",
-	    P = ("%28B" + str.replace(/%1B%24%4[02]|%1B%24@/ig, "%1B%24B")).split(/%1B/i),
-	    I = function I(s) {
-		var c = parseInt(s.substring(1), 16);
-		return String.fromCharCode(c < 128 ? c : c + 65216);
-	},
-	    K = function K(s) {
-		var l = s.length;
-		return JCT8836.charAt(4 < l ? (parseInt(s.substring(1), 16) - 33) * 94 + parseInt(s.substring(4), 16) - 33 : 2 < l ? (37 == (l = s.charCodeAt(0)) ? (parseInt(s.substring(1, 3), 16) - 33) * 94 + s.charCodeAt(3) : (l - 33) * 94 + parseInt(s.substring(2), 16)) - 33 : (s.charCodeAt(0) - 33) * 94 + s.charCodeAt(1) - 33);
-	},
-	    rI = new RegExp(),
-	    rK = new RegExp();
-	rI.compile("%([0-7][0-9A-F]|A[1-9A-F]|[B-D][0-9A-F])", "ig");
-	rK.compile("(%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E]){2}|(%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E])[!-~]|[!-~](%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E])|[!-~]{2}", "ig");
-	while (p = P[i++]) {
-		s += "%24B" == p.substring(0, 4) ? p.substring(4).replace(rK, K) : p.replace(rI, I).substring(2);
-	}return s;
-};
-
-var EscapeUnicode = function EscapeUnicode(str) {
-	return str.replace(/[^*+.-9A-Z_a-z-]/g, function (s) {
-		var c = s.charCodeAt(0);
-		return (c < 16 ? "%0" : c < 256 ? "%" : c < 4096 ? "%u0" : "%u") + c.toString(16).toUpperCase();
-	});
-};
-
-var UnescapeUnicode = function UnescapeUnicode(str) {
-	return str.replace(/%u[0-9A-F]{4}|%[0-9A-F]{2}/ig, function (s) {
-		return String.fromCharCode("0x" + s.substring(s.length / 3));
-	});
-};
-
-var EscapeUTF7 = function EscapeUTF7(str) {
-	var B = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".split(""),
-	    E = function E(s) {
-		var c = s.charCodeAt(0);
-		return B[c >> 10] + B[c >> 4 & 63] + B[(c & 15) << 2 | (c = s.charCodeAt(1)) >> 14] + (0 <= c ? B[c >> 8 & 63] + B[c >> 2 & 63] + B[(c & 3) << 4 | (c = s.charCodeAt(2)) >> 12] + (0 <= c ? B[c >> 6 & 63] + B[c & 63] : "") : "");
-	},
-	    re = new RegExp();re.compile("[^+]{1,3}", "g");
-	return (str + "g").replace(/[^*+.-9A-Z_a-z-]+[*+.-9A-Z_a-z-]|[+]/g, function (s) {
-		if ("+" == s) return "+-";
-		var l = s.length - 1,
-		    w = s.charAt(l);
-		return "+" + s.substring(0, l).replace(re, E) + ("+" == w ? "-+-" : "*" == w || "." == w || "_" == w ? w : "-" + w);
-	}).slice(0, -1);
-};
-
-var UnescapeUTF7 = function UnescapeUTF7(str) {
-	var i = 0,
-	    B = {};
-	while (i < 64) {
-		B["ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".charAt(i)] = i++;
-	}return str.replace(RegExp("[+][+/-9A-Za-z]*-?", "g"), function (s) {
-		if ("+-" == s) return "+";
-		var b = B[s.charAt(1)],
-		    c,
-		    i = 1,
-		    t = "";
-		while (0 <= b) {
-			if ((c = i & 7) < 6) c = c < 3 ? b << 10 | B[s.charAt(++i)] << 4 | (b = B[s.charAt(++i)]) >> 2 : (b & 3) << 14 | B[s.charAt(++i)] << 8 | B[s.charAt(++i)] << 2 | (b = B[s.charAt(++i)]) >> 4;else {
-				c = (b & 15) << 12 | B[s.charAt(++i)] << 6 | B[s.charAt(++i)];b = B[s.charAt(++i)];
-			}
-			if (c) t += String.fromCharCode(c);
-		}
-		return t;
-	});
-};
-
-var EscapeUTF8 = function EscapeUTF8(str) {
-	return str.replace(/[^*+.-9A-Z_a-z-]/g, function (s) {
-		var c = s.charCodeAt(0);
-		return (c < 16 ? "%0" + c.toString(16) : c < 128 ? "%" + c.toString(16) : c < 2048 ? "%" + (c >> 6 | 192).toString(16) + "%" + (c & 63 | 128).toString(16) : "%" + (c >> 12 | 224).toString(16) + "%" + (c >> 6 & 63 | 128).toString(16) + "%" + (c & 63 | 128).toString(16)).toUpperCase();
-	});
-};
-
-var UnescapeUTF8 = function UnescapeUTF8(str) {
-	return str.replace(/%(E(0%[AB]|[1-CEF]%[89AB]|D%[89])[0-9A-F]|C[2-9A-F]|D[0-9A-F])%[89AB][0-9A-F]|%[0-7][0-9A-F]/ig, function (s) {
-		var c = parseInt(s.substring(1), 16);
-		return String.fromCharCode(c < 128 ? c : c < 224 ? (c & 31) << 6 | parseInt(s.substring(4), 16) & 63 : ((c & 15) << 6 | parseInt(s.substring(4), 16) & 63) << 6 | parseInt(s.substring(7), 16) & 63);
-	});
-};
-
-var EscapeUTF16LE = function EscapeUTF16LE(str) {
-	var H = function H(c) {
-		return 41 < c && c < 58 && 44 != c || 64 < c && c < 91 || 95 == c || 96 < c && c < 123 ? String.fromCharCode(c) : (c < 16 ? "%0" : "%") + c.toString(16).toUpperCase();
-	};
-	return str.replace(/[^ ]| /g, function (s) {
-		var c = s.charCodeAt(0);return H(c & 255) + H(c >> 8);
-	});
-};
-
-var UnescapeUTF16LE = function UnescapeUTF16LE(str) {
-	var u = String.fromCharCode,
-	    b = u(92, 120, 48, 48, 45, 92, 120, 70, 70);
-	return str.replace(/^%FF%FE/i, "").replace(RegExp("%[0-9A-F]{2}%[0-9A-F]{2}|%[0-9A-F]{2}[" + b + "]|[" + b + "]%[0-9A-F]{2}|[" + b + "]{2}", "ig"), function (s) {
-		var l = s.length;
-		return u(4 < l ? "0x" + s.substring(4, 6) + s.substring(1, 3) : 2 < l ? 37 == (l = s.charCodeAt(0)) ? parseInt(s.substring(1, 3), 16) | s.charCodeAt(3) << 8 : l | parseInt(s.substring(2), 16) << 8 : s.charCodeAt(0) | s.charCodeAt(1) << 8);
-	});
-};
-
-var GetEscapeCodeType = function GetEscapeCodeType(str) {
-	if (/%u[0-9A-F]{4}/i.test(str)) return "Unicode";
-	if (/%([0-9A-DF][0-9A-F]%[8A]0%|E0%80|[0-7][0-9A-F]|C[01])%[8A]0|%00|%[7F]F/i.test(str)) return "UTF16LE";
-	if (/%E[0-9A-F]%[8A]0%[8A]0|%[CD][0-9A-F]%[8A]0/i.test(str)) return "UTF8";
-	if (/%F[DE]/i.test(str)) return (/%8[0-9A-D]|%9[0-9A-F]|%A0/i.test(str) ? "UTF16LE" : "EUCJP"
-	);
-	if (/%1B/i.test(str)) return (/%[A-D][0-9A-F]/i.test(str) ? "JIS8" : "JIS7"
-	);
-	var S = str.substring(0, 6143).replace(/%[0-9A-F]{2}|[^ ]| /ig, function (s) {
-		return s.length < 3 ? "40" : s.substring(1);
-	}),
-	    c,
-	    C,
-	    i = 0,
-	    T;
-	while (0 <= (c = parseInt(S.substring(i, i += 2), 16)) && i < 4092) {
-		if (128 <= c) {
-			if ((C = parseInt(S.substring(i, i + 2), 16)) < 128) i += 2;else if (194 <= c && c < 240 && C < 192) {
-				if (c < 224) {
-					T = "UTF8";i += 2;continue;
-				}
-				if (2 == parseInt(S.charAt(i + 2), 16) >> 2) {
-					T = "UTF8";i += 4;continue;
-				}
-			}
-			if (142 == c && 161 <= C && C < 224) {
-				if (!T) T = "EUCJP";if ("EUCJP" == T) continue;
-			}
-			if (c < 161) return "SJIS";
-			if (c < 224 && !T) {
-				if ((164 == c && C < 244 || 165 == c && C < 247) && 161 <= C) i += 2;else T = 224 <= C ? "EUCJP" : "SJIS";
-			} else T = "EUCJP";
-		}
-	}return T ? T : "EUCJP";
-};
-
-var JCT11280 = Function('var a="zKV33~jZ4zN=~ji36XazM93y!{~k2y!o~k0ZlW6zN?3Wz3W?{EKzK[33[`y|;-~j^YOTz$!~kNy|L1$353~jV3zKk3~k-4P4zK_2+~jY4y!xYHR~jlz$_~jk4z$e3X5He<0y!wy|X3[:~l|VU[F3VZ056Hy!nz/m1XD61+1XY1E1=1y|bzKiz!H034zKj~mEz#c5ZA3-3X$1~mBz$$3~lyz#,4YN5~mEz#{ZKZ3V%7Y}!J3X-YEX_J(3~mAz =V;kE0/y|F3y!}~m>z/U~mI~j_2+~mA~jp2;~m@~k32;~m>V}2u~mEX#2x~mBy+x2242(~mBy,;2242(~may->2&XkG2;~mIy-_2&NXd2;~mGz,{4<6:.:B*B:XC4>6:.>B*BBXSA+A:X]E&E<~r#z+625z s2+zN=`HXI@YMXIAXZYUM8X4K/:Q!Z&33 3YWX[~mB`{zKt4z (zV/z 3zRw2%Wd39]S11z$PAXH5Xb;ZQWU1ZgWP%3~o@{Dgl#gd}T){Uo{y5_d{e@}C(} WU9|cB{w}bzvV|)[} H|zT}d||0~{]Q|(l{|x{iv{dw}(5}[Z|kuZ }cq{{y|ij}.I{idbof%cu^d}Rj^y|-M{ESYGYfYsZslS`?ZdYO__gLYRZ&fvb4oKfhSf^d<Yeasc1f&a=hnYG{QY{D`Bsa|u,}Dl|_Q{C%xK|Aq}C>|c#ryW=}eY{L+`)][YF_Ub^h4}[X|?r|u_ex}TL@YR]j{SrXgo*|Gv|rK}B#mu{R1}hs|dP{C7|^Qt3|@P{YVV |8&}#D}ef{e/{Rl|>Hni}R1{Z#{D[}CQlQ||E}[s{SG_+i8eplY[=[|ec[$YXn#`hcm}YR|{Ci(_[ql|?8p3]-}^t{wy}4la&pc|3e{Rp{LqiJ],] `kc(]@chYnrM`O^,ZLYhZB]ywyfGY~aex!_Qww{a!|)*lHrM{N+n&YYj~Z b c#e_[hZSon|rOt`}hBXa^i{lh|<0||r{KJ{kni)|x,|0auY{D!^Sce{w;|@S|cA}Xn{C1h${E]Z-XgZ*XPbp]^_qbH^e[`YM|a||+=]!Lc}]vdBc=j-YSZD]YmyYLYKZ9Z>Xcczc2{Yh}9Fc#Z.l{}(D{G{{mRhC|L3b#|xK[Bepj#ut`H[,{E9Yr}1b{[e]{ZFk7[ZYbZ0XL]}Ye[(`d}c!|*y`Dg=b;gR]Hm=hJho}R-[n}9;{N![7k_{UbmN]rf#pTe[x8}!Qcs_rs[m`|>N}^V})7{^r|/E}),}HH{OYe2{Skx)e<_.cj.cjoMhc^d}0uYZd!^J_@g,[[[?{i@][|3S}Yl3|!1|eZ|5IYw|1D}e7|Cv{OHbnx-`wvb[6[4} =g+k:{C:}ed{S]|2M]-}WZ|/q{LF|dYu^}Gs^c{Z=}h>|/i|{W]:|ip{N:|zt|S<{DH[p_tvD{N<[8Axo{X4a.^o^X>Yfa59`#ZBYgY~_t^9`jZHZn`>G[oajZ;X,i)Z.^~YJe ZiZF^{][[#Zt^|]Fjx]&_5dddW]P0C[-]}]d|y {C_jUql] |OpaA[Z{lp|rz}:Mu#]_Yf6{Ep?f5`$[6^D][^u[$[6^.Z8]]ePc2U/=]K^_+^M{q*|9tYuZ,s(dS{i=|bNbB{uG}0jZOa:[-]dYtu3]:]<{DJ_SZIqr_`l=Yt`gkTnXb3d@kiq0a`Z{|!B|}e}Ww{Sp,^Z|0>_Z}36|]A|-t}lt{R6pi|v8hPu#{C>YOZHYmg/Z4nicK[}hF_Bg|YRZ7c|crkzYZY}_iXcZ.|)U|L5{R~qi^Uga@Y[xb}&qdbd6h5|Btw[}c<{Ds53[Y7]?Z<|e0{L[ZK]mXKZ#Z2^tavf0`PE[OSOaP`4gi`qjdYMgys/?[nc,}EEb,eL]g[n{E_b/vcvgb.{kcwi`~v%|0:|iK{Jh_vf5lb}KL|(oi=LrzhhY_^@`zgf[~g)[J_0fk_V{T)}I_{D&_/d9W/|MU[)f$xW}?$xr4<{Lb{y4}&u{XJ|cm{Iu{jQ}CMkD{CX|7A}G~{kt)nB|d5|<-}WJ}@||d@|Iy}Ts|iL|/^|no|0;}L6{Pm]7}$zf:|r2}?C_k{R(}-w|`G{Gy[g]bVje=_0|PT{^Y^yjtT[[[l!Ye_`ZN]@[n_)j3nEgMa]YtYpZy].d-Y_cjb~Y~[nc~sCi3|zg}B0}do{O^{|$`_|D{}U&|0+{J3|8*]iayx{a{xJ_9|,c{Ee]QXlYb]$[%YMc*]w[aafe]aVYi[fZEii[xq2YQZHg]Y~h#|Y:thre^@^|_F^CbTbG_1^qf7{L-`VFx Zr|@EZ;gkZ@slgko`[e}T:{Cu^pddZ_`yav^Ea+[#ZBbSbO`elQfLui}.F|txYcbQ`XehcGe~fc^RlV{D_0ZAej[l&jShxG[ipB_=u:eU}3e8[=j|{D(}dO{Do[BYUZ0/]AYE]ALYhZcYlYP/^-^{Yt_1_-;YT`P4BZG=IOZ&]H[e]YYd[9^F[1YdZxZ?Z{Z<]Ba2[5Yb[0Z4l?]d_;_)a?YGEYiYv`_XmZs4ZjY^Zb]6gqGaX^9Y}dXZr[g|]Y}K aFZp^k^F]M`^{O1Ys]ZCgCv4|E>}8eb7}l`{L5[Z_faQ|c2}Fj}hw^#|Ng|B||w2|Sh{v+[G}aB|MY}A{|8o}X~{E8paZ:]i^Njq]new)`-Z>haounWhN}c#{DfZ|fK]KqGZ=:u|fqoqcv}2ssm}.r{]{nIfV{JW)[K|,Z{Uxc|]l_KdCb%]cfobya3`p}G^|LZiSC]U|(X|kBlVg[kNo({O:g:|-N|qT}9?{MBiL}Sq{`P|3a|u.{Uaq:{_o|^S}jX{Fob0`;|#y_@[V[K|cw[<_ }KU|0F}d3|et{Q7{LuZttsmf^kYZ`Af`}$x}U`|Ww}d]| >}K,r&|XI|*e{C/a-bmr1fId4[;b>tQ_:]hk{b-pMge]gfpo.|(w[jgV{EC1Z,YhaY^q,_G[c_g[J0YX]`[h^hYK^_Yib,` {i6vf@YM^hdOKZZn(jgZ>bzSDc^Z%[[o9[2=/YHZ(_/Gu_`*|8z{DUZxYt^vuvZjhi^lc&gUd4|<UiA`z]$b/Z?l}YI^jaHxe|;F}l${sQ}5g}hA|e4}?o{ih}Uz{C)jPe4]H^J[Eg[|AMZMlc}:,{iz}#*|gc{Iq|/:|zK{l&}#u|myd{{M&v~nV};L|(g|I]ogddb0xsd7^V})$uQ{HzazsgxtsO^l}F>ZB]r|{7{j@cU^{{CbiYoHlng]f+nQ[bkTn/}<-d9q {KXadZYo+n|l[|lc}V2{[a{S4Zam~Za^`{HH{xx_SvF|ak=c^[v^7_rYT`ld@]:_ub%[$[m](Shu}G2{E.ZU_L_R{tz`vj(f?^}hswz}GdZ}{S:h`aD|?W|`dgG|if{a8|J1{N,}-Ao3{H#{mfsP|[ bzn+}_Q{MT{u4kHcj_q`eZj[8o0jy{p7}C|[}l){MuYY{|Ff!Ykn3{rT|m,^R|,R}$~Ykgx{P!]>iXh6[l[/}Jgcg{JYZ.^qYfYIZl[gZ#Xj[Pc7YyZD^+Yt;4;`e8YyZVbQ7YzZxXja.7SYl[s]2^/Ha$[6ZGYrb%XiYdf2]H]kZkZ*ZQ[ZYS^HZXcCc%Z|[(bVZ]]:OJQ_DZCg<[,]%Zaa [g{C00HY[c%[ChyZ,Z_`PbXa+eh`^&jPi0a[ggvhlekL]w{Yp^v}[e{~;k%a&k^|nR_z_Qng}[E}*Wq:{k^{FJZpXRhmh3^p>de^=_7`|ZbaAZtdhZ?n4ZL]u`9ZNc3g%[6b=e.ZVfC[ZZ^^^hD{E(9c(kyZ=bb|Sq{k`|vmr>izlH[u|e`}49}Y%}FT{[z{Rk}Bz{TCc/lMiAqkf(m$hDc;qooi[}^o:c^|Qm}a_{mrZ(pA`,}<2sY| adf_%|}`}Y5U;}/4|D>|$X{jw{C<|F.hK|*A{MRZ8Zsm?imZm_?brYWZrYx`yVZc3a@f?aK^ojEd {bN}/3ZH]/$YZhm^&j 9|(S|b]mF}UI{q&aM]LcrZ5^.|[j`T_V_Gak}9J[ ZCZD|^h{N9{~&[6Zd{}B}2O|cv]K}3s}Uy|l,fihW{EG`j_QOp~Z$F^zexS`dcISfhZBXP|.vn|_HYQ|)9|cr]<`&Z6]m_(ZhPcSg>`Z]5`~1`0Xcb4k1{O!bz|CN_T{LR|a/gFcD|j<{Z._[f)mPc:1`WtIaT1cgYkZOaVZOYFrEe[}T$}Ch}mk{K-^@]fH{Hdi`c*Z&|Kt{if[C{Q;{xYB`dYIX:ZB[}]*[{{p9|4GYRh2ao{DS|V+[zd$`F[ZXKadb*A] Ys]Maif~a/Z2bmclb8{Jro_rz|x9cHojbZ{GzZx_)]:{wAayeDlx}<=`g{H1{l#}9i|)=|lP{Qq}.({La|!Y{i2EZfp=c*}Cc{EDvVB|;g}2t{W4av^Bn=]ri,|y?|3+}T*ckZ*{Ffr5e%|sB{lx^0]eZb]9[SgAjS_D|uHZx]dive[c.YPkcq/}db{EQh&hQ|eg}G!ljil|BO]X{Qr_GkGl~YiYWu=c3eb}29v3|D|}4i||.{Mv})V{SP1{FX}CZW6{cm|vO{pS|e#}A~|1i}81|Mw}es|5[}3w{C`h9aL]o{}p[G`>i%a1Z@`Ln2bD[$_h`}ZOjhdTrH{[j_:k~kv[Sdu]CtL}41{I |[[{]Zp$]XjxjHt_eThoa#h>sSt8|gK|TVi[Y{t=}Bs|b7Zpr%{gt|Yo{CS[/{iteva|cf^hgn}($_c^wmb^Wm+|55jrbF|{9^ q6{C&c+ZKdJkq_xOYqZYSYXYl`8]-cxZAq/b%b*_Vsa[/Ybjac/OaGZ4fza|a)gY{P?| I|Y |,pi1n7}9bm9ad|=d{aV|2@[(}B`d&|Uz}B}{`q|/H|!JkM{FU|CB|.{}Az}#P|lk}K{|2rk7{^8^?`/|k>|Ka{Sq}Gz}io{DxZh[yK_#}9<{TRdgc]`~Z>JYmYJ]|`!ZKZ]gUcx|^E[rZCd`f9oQ[NcD_$ZlZ;Zr}mX|=!|$6ZPZYtIo%fj}CpcN|B,{VDw~gb}@hZg`Q{LcmA[(bo`<|@$|o1|Ss}9Z_}tC|G`{F/|9nd}i=}V-{L8aaeST]daRbujh^xlpq8|}zs4bj[S`J|]?G{P#{rD{]I`OlH{Hm]VYuSYUbRc*6[j`8]pZ[bt_/^Jc*[<Z?YE|Xb|?_Z^Vcas]h{t9|Uwd)_(=0^6Zb{Nc} E[qZAeX[a]P^|_J>e8`W^j_Y}R{{Jp__]Ee#e:iWb9q_wKbujrbR}CY`,{mJ}gz{Q^{t~N|? gSga`V_||:#mi}3t|/I`X{N*|ct|2g{km}gi|{={jC}F;|E}{ZZjYf*frmu}8Tdroi{T[|+~}HG{cJ}DM{Lp{Ctd&}$hi3|FZ| m}Kr|38}^c|m_|Tr{Qv|36}?Up>|;S{DV{k_as}BK{P}}9p|t`jR{sAm4{D=b4pWa[}Xi{EjwEkI}3S|E?u=X0{jf} S|NM|JC{qo^3cm]-|JUx/{Cj{s>{Crt[UXuv|D~|j|d{YXZR}Aq}0r}(_{pJfi_z}0b|-vi)Z mFe,{f4|q`b{}^Z{HM{rbeHZ|^x_o|XM|L%|uFXm}@C_{{Hhp%a7|0p[Xp+^K}9U{bP}: tT}B|}+$|b2|[^|~h{FAby[`{}xgygrt~h1[li`c4vz|,7p~b(|mviN}^pg[{N/|g3|^0c,gE|f%|7N{q[|tc|TKA{LU}I@|AZp(}G-sz{F |qZ{}F|f-}RGn6{Z]_5})B}UJ{FFb2]4ZI@v=k,]t_Dg5Bj]Z-]L]vrpdvdGlk|gF}G]|IW}Y0[G| /bo|Te^,_B}#n^^{QHYI[?hxg{[`]D^IYRYTb&kJ[cri[g_9]Ud~^_]<p@_e_XdNm-^/|5)|h_{J;{kacVopf!q;asqd}n)|.m|bf{QW|U)}b+{tL|w``N|to{t ZO|T]jF}CB|0Q{e5Zw|k |We}5:{HO{tPwf_uajjBfX}-V_C_{{r~gg|Ude;s+}KNXH}! `K}eW{Upwbk%ogaW}9EYN}YY|&v|SL{C3[5s.]Y]I]u{M6{pYZ`^,`ZbCYR[1mNg>rsk0Ym[jrE]RYiZTr*YJ{Ge|%-lf|y(`=[t}E6{k!|3)}Zk} ][G{E~cF{u3U.rJ|a9p#o#ZE|?|{sYc#vv{E=|LC}cu{N8`/`3`9rt[4|He{cq|iSYxY`}V |(Q|t4{C?]k_Vlvk)BZ^r<{CL}#h}R+[<|i=}X|{KAo]|W<`K{NW|Zx}#;|fe{IMr<|K~tJ_x}AyLZ?{GvbLnRgN}X&{H7|x~}Jm{]-| GpNu0}.ok>|c4{PYisrDZ|fwh9|hfo@{H~XSbO]Odv]%`N]b1Y]]|eIZ}_-ZA]aj,>eFn+j[aQ_+]h[J_m_g]%_wf.`%k1e#Z?{CvYu_B^|gk`Xfh^M3`afGZ-Z|[m{L}|k3cp[it ^>YUi~d>{T*}YJ{Q5{Jxa$hg|%4`}|LAgvb }G}{P=|<;Ux{_skR{cV|-*|s-{Mp|XP|$G|_J}c6cM{_=_D|*9^$ec{V;|4S{qO|w_|.7}d0|/D}e}|0G{Dq]Kdp{}dfDi>}B%{Gd|nl}lf{C-{y}|ANZr}#={T~|-(}c&{pI|ft{lsVP}){|@u}!W|bcmB{d?|iW|:dxj{PSkO|Hl]Li:}VYk@|2={fnWt{M3`cZ6|)}|Xj}BYa?vo{e4|L7|B7{L7|1W|lvYO}W8nJ|$Vih|{T{d*_1|:-n2dblk``fT{Ky|-%}m!|Xy|-a{Pz}[l{kFjz|iH}9N{WE{x,|jz}R {P|{D)c=nX|Kq|si}Ge{sh|[X{RF{t`|jsr*fYf,rK|/9}$}}Nf{y!1|<Std}4Wez{W${Fd_/^O[ooqaw_z[L`Nbv[;l7V[ii3_PeM}.h^viqYjZ*j1}+3{bt{DR[;UG}3Og,rS{JO{qw{d<_zbAh<R[1_r`iZTbv^^a}c{iEgQZ<exZFg.^Rb+`Uj{a+{z<[~r!]`[[|rZYR|?F|qppp]L|-d|}K}YZUM|=Y|ktm*}F]{D;g{uI|7kg^}%?Z%ca{N[_<q4xC]i|PqZC]n}.bDrnh0Wq{tr|OMn6tM|!6|T`{O`|>!]ji+]_bTeU}Tq|ds}n|{Gm{z,f)}&s{DPYJ`%{CGd5v4tvb*hUh~bf]z`jajiFqAii]bfy^U{Or|m+{I)cS|.9k:e3`^|xN}@Dnlis`B|Qo{`W|>||kA}Y}{ERYuYx`%[exd`]|OyiHtb}HofUYbFo![5|+]gD{NIZR|Go}.T{rh^4]S|C9_}xO^i`vfQ}C)bK{TL}cQ|79iu}9a];sj{P.o!f[Y]pM``Jda^Wc9ZarteBZClxtM{LW}l9|a.mU}KX}4@{I+f1}37|8u}9c|v${xGlz}jP{Dd1}e:}31}%3X$|22i<v+r@~mf{sN{C67G97855F4YL5}8f{DT|xy{sO{DXB334@55J1)4.G9A#JDYtXTYM4, YQD9;XbXm9SX]IB^4UN=Xn<5(;(F3YW@XkH-X_VM[DYM:5XP!T&Y`6|,^{IS-*D.H>:LXjYQ0I3XhAF:9:(==.F*3F1189K/7163D,:@|e2{LS36D4hq{Lw/84443@4.933:0307::6D7}&l{Mx657;89;,K5678H&93D(H<&<>0B90X^I;}Ag1{P%3A+>><975}[S{PZE453?4|T2{Q+5187;>447:81{C=hL6{Me^:=7ii{R=.=F<81;48?|h8}Uh{SE|,VxL{ST,7?9Y_5Xk3A#:$%YSYdXeKXOD8+TXh7(@>(YdXYHXl9J6X_5IXaL0N?3YK7Xh!1?XgYz9YEXhXaYPXhC3X`-YLY_XfVf[EGXZ5L8BXL9YHX]SYTXjLXdJ: YcXbQXg1PX]Yx4|Jr{Ys4.8YU+XIY`0N,<H%-H;:0@,74/:8546I=9177154870UC]d<C3HXl7ALYzXFXWP<<?E!88E5@03YYXJ?YJ@6YxX-YdXhYG|9o{`iXjY_>YVXe>AYFX[/(I@0841?):-B=14337:8=|14{c&93788|di{cW-0>0<097/A;N{FqYpugAFT%X/Yo3Yn,#=XlCYHYNX[Xk3YN:YRT4?)-YH%A5XlYF3C1=NWyY}>:74-C673<69545v {iT85YED=64=.F4..9878/D4378?48B3:7:7/1VX[f4{D,{l<5E75{dAbRB-8-@+;DBF/$ZfW8S<4YhXA.(5@*11YV8./S95C/0R-A4AXQYI7?68167B95HA1*<M3?1/@;/=54XbYP36}lc{qzSS38:19?,/39193574/66878Yw1X-87E6=;964X`T734:>86>1/=0;(I-1::7ALYGXhF+Xk[@W%TYbX7)KXdYEXi,H-XhYMRXfYK?XgXj.9HX_SX]YL1XmYJ>Y}WwIXiI-3-GXcYyXUYJ$X`Vs[7;XnYEZ;XF! 3;%8;PXX(N3Y[)Xi1YE&/ :;74YQ6X`33C;-(>Xm0(TYF/!YGXg8 9L5P01YPXO-5%C|qd{{/K/E6,=0144:361:955;6443@?B7*7:F89&F35YaX-CYf,XiFYRXE_e{}sF 0*7XRYPYfXa5YXXY8Xf8Y~XmA[9VjYj*#YMXIYOXk,HHX40YxYMXU8OXe;YFXLYuPXP?EB[QV0CXfY{:9XV[FWE0D6X^YVP*$4%OXiYQ(|xp|%c3{}V`1>Y`XH00:8/M6XhQ1:;3414|TE|&o@1*=81G8<3}6<|(f6>>>5-5:8;093B^3U*+*^*UT30XgYU&7*O1953)5@E78--F7YF*B&0:%P68W9Zn5974J9::3}Vk|-,C)=)1AJ4+<3YGXfY[XQXmT1M-XcYTYZXCYZXEYXXMYN,17>XIG*SaS|/eYJXbI?XdNZ+WRYP<F:R PXf;0Xg`$|1GX9YdXjLYxWX!ZIXGYaXNYm6X9YMX?9EXmZ&XZ#XQ>YeXRXfAY[4 ;0X!Zz0XdN$XhYL XIY^XGNXUYS/1YFXhYk.TXn4DXjB{jg|4DEX]:XcZMW=A.+QYL<LKXc[vV$+&PX*Z3XMYIXUQ:ZvW< YSXFZ,XBYeXMM)?Xa XiZ4/EXcP3%}&-|6~:1(-+YT$@XIYRBC<}&,|7aJ6}bp|8)K1|Xg|8C}[T|8Q.89;-964I38361<=/;883651467<7:>?1:.}le|:Z=39;1Y^)?:J=?XfLXbXi=Q0YVYOXaXiLXmJXO5?.SFXiCYW}-;|=u&D-X`N0X^,YzYRXO(QX_YW9`I|>hZ:N&X)DQXP@YH#XmNXi$YWX^=!G6YbYdX>XjY|XlX^XdYkX>YnXUXPYF)FXT[EVTMYmYJXmYSXmNXi#GXmT3X8HOX[ZiXN]IU2>8YdX1YbX<YfWuZ8XSXcZU%0;1XnXkZ_WTG,XZYX5YSX Yp 05G?XcYW(IXg6K/XlYP4XnI @XnO1W4Zp-9C@%QDYX+OYeX9>--YSXkD.YR%Q/Yo YUX].Xi<HYEZ2WdCE6YMXa7F)=,D>-@9/8@5=?7164;35387?N<618=6>7D+C50<6B03J0{Hj|N9$D,9I-,.KB3}m |NzE0::/81YqXjMXl7YG; [.W=Z0X4XQY]:MXiR,XgM?9$9>:?E;YE77VS[Y564760391?14941:0=:8B:;/1DXjFA-564=0B3XlH1+D85:0Q!B#:-6&N/:9<-R3/7Xn<*3J4.H:+334B.=>30H.;3833/76464665755:/83H6633:=;.>5645}&E|Y)?1/YG-,93&N3AE@5 <L1-G/8A0D858/30>8<549=@B8] V0[uVQYlXeD(P#ID&7T&7;Xi0;7T-$YE)E=1:E1GR):--0YI7=E<}n9|aT6783A>D7&4YG7=391W;Zx<5+>F#J39}o/|cc;6=A050EQXg8A1-}D-|d^5548083563695D?-.YOXd37I$@LYLWeYlX<Yd+YR A$;3-4YQ-9XmA0!9/XLY_YT(=5XdDI>YJ5XP1ZAW{9>X_6R(XhYO65&J%DA)C-!B:97#A9;@?F;&;(9=11/=657/H,<8}bz|j^5446>.L+&Y^8Xb6?(CYOXb*YF(8X`FYR(XPYVXmPQ%&DD(XmZXW??YOXZXfCYJ79,O)XnYF7K0!QXmXi4IYFRXS,6<%-:YO(+:-3Q!1E1:W,Zo}Am|n~;3580534*?3Zc4=9334361693:30C<6/717:<1/;>59&:4}6!|rS36=1?75<8}[B|s809983579I.A.>84758=108564741H*9E{L{|u%YQ<%6XfH.YUXe4YL@,>N}Tv|ve*G0X)Z;/)3@A74(4P&A1X:YVH97;,754*A66:1 D739E3553545558E4?-?K17/770843XAYf838A7K%N!YW4.$T19Z`WJ*0XdYJXTYOXNZ 1XaN1A+I&Xi.Xk3Z3GB&5%WhZ1+5#Y[X<4YMXhQYoQXVXbYQ8XSYUX4YXBXWDMG0WxZA[8V+Z8X;D],Va$%YeX?FXfX[XeYf<X:Z[WsYz8X_Y]%XmQ(!7BXIZFX]&YE3F$(1XgYgYE& +[+W!<YMYFXc;+PXCYI9YrWxGXY9DY[!GXiI7::)OC;*$.>N*HA@{C|}&k=:<TB83X`3YL+G4XiK]i}(fYK<=5$.FYE%4*5*H*6XkCYL=*6Xi6!Yi1KXR4YHXbC8Xj,B9ZbWx/XbYON#5B}Ue}+QKXnF1&YV5XmYQ0!*3IXBYb71?1B75XmF;0B976;H/RXU:YZX;BG-NXj;XjI>A#D3B636N;,*%<D:0;YRXY973H5)-4FXOYf0:0;/7759774;7;:/855:543L43<?6=E,.A4:C=L)%4YV!1(YE/4YF+ F3%;S;&JC:%/?YEXJ4GXf/YS-EXEYW,9;E}X$}547EXiK=51-?71C%?57;5>463553Zg90;6447?<>4:9.7538XgN{|!}9K/E&3-:D+YE1)YE/3;37/:05}n<}:UX8Yj4Yt864@JYK..G=.(A Q3%6K>3(P3#AYE$-6H/456*C=.XHY[#S.<780191;057C)=6HXj?955B:K1 E>-B/9,;5.!L?:0>/.@//:;7833YZ56<4:YE=/:7Z_WGC%3I6>XkC*&NA16X=Yz2$X:Y^&J48<99k8}CyB-61<18K946YO4{|N}E)YIB9K0L>4=46<1K0+R;6-=1883:478;4,S+3YJX`GJXh.Yp+Xm6MXcYpX(>7Yo,/:X=Z;Xi0YTYHXjYmXiXj;*;I-8S6N#XgY}.3XfYGO3C/$XjL$*NYX,1 6;YH&<XkK9C#I74.>}Hd`A748X[T450[n75<4439:18A107>|ET}Rf<1;14876/Yb983E<5.YNXd4149>,S=/4E/<306443G/06}0&}UkYSXFYF=44=-5095=88;63844,9E6644{PL}WA8:>)7+>763>>0/B3A545CCnT}Xm|dv}Xq1L/YNXk/H8;;.R63351YY747@15YE4J8;46;.38.>4A369.=-83,;Ye3?:3@YE.4-+N353;/;@(X[YYD>@/05-I*@.:551741Yf5>6A443<3535;.58/86=D4753442$635D1>0359NQ @73:3:>><Xn?;43C14 ?Y|X611YG1&<+,4<*,YLXl<1/AIXjF*N89A4Z576K1XbJ5YF.ZOWN.YGXO/YQ01:4G38Xl1;KI0YFXB=R<7;D/,/4>;$I,YGXm94@O35Yz66695385.>:6A#5}W7n^4336:4157597434433<3|XA}m`>=D>:4A.337370?-6Q96{`E|4A}C`|Qs{Mk|J+~r>|o,wHv>Vw}!c{H!|Gb|*Ca5}J||,U{t+{CN[!M65YXOY_*B,Y[Z9XaX[QYJYLXPYuZ%XcZ8LY[SYPYKZM<LMYG9OYqSQYM~[e{UJXmQYyZM_)>YjN1~[f3{aXFY|Yk:48YdH^NZ0|T){jVFYTZNFY^YTYN~[h{nPYMYn3I]`EYUYsYIZEYJ7Yw)YnXPQYH+Z.ZAZY]^Z1Y`YSZFZyGYHXLYG 8Yd#4~[i|+)YH9D?Y^F~Y7|-eYxZ^WHYdYfZQ~[j|3>~[k|3oYmYqY^XYYO=Z*4[]Z/OYLXhZ1YLZIXgYIHYEYK,<Y`YEXIGZI[3YOYcB4SZ!YHZ*&Y{Xi3~[l|JSY`Zz?Z,~[m|O=Yi>??XnYWXmYS617YVYIHZ(Z4[~L4/=~[n|Yu{P)|];YOHHZ}~[o33|a>~[r|aE]DH~[s|e$Zz~[t|kZFY~XhYXZB[`Y}~[u|{SZ&OYkYQYuZ2Zf8D~[v}% ~[w3},Q[X]+YGYeYPIS~[y}4aZ!YN^!6PZ*~[z}?E~[{3}CnZ=~[}}EdDZz/9A3(3S<,YR8.D=*XgYPYcXN3Z5 4)~[~}JW=$Yu.XX~] }KDX`PXdZ4XfYpTJLY[F5]X~[2Yp}U+DZJ::<446[m@~]#3}]1~]%}^LZwZQ5Z`/OT<Yh^ -~]&}jx[ ~m<z!%2+~ly4VY-~o>}p62yz!%2+Xf2+~ly4VY-zQ`z (=] 2z~o2",C={" ":0,"!":1},c=34,i=2,p,s="",u=String.fromCharCode,t=u(12539);while(++c<127)C[u(c)]=c^39&&c^92?i++:0;i=0;while(0<=(c=C[a.charAt(i++)]))if(16==c)if((c=C[a.charAt(i++)])<87){if(86==c)c=1879;while(c--)s+=u(++p)}else s+=s.substr(8272,360);else if(c<86)s+=u(p+=c<51?c-16:(c-55)*92+C[a.charAt(i++)]);else if((c=((c-86)*92+C[a.charAt(i++)])*92+C[a.charAt(i++)])<49152)s+=u(p=c<40960?c:c|57344);else{c&=511;while(c--)s+=t;p=12539}return s')();
-
-var JCT8836 = JCT11280.substring(0, 8836);
-
-exports.EscapeSJIS = EscapeSJIS;
-exports.UnescapeSJIS = UnescapeSJIS;
-exports.EscapeEUCJP = EscapeEUCJP;
-exports.UnescapeEUCJP = UnescapeEUCJP;
-exports.EscapeJIS7 = EscapeJIS7;
-exports.UnescapeJIS7 = UnescapeJIS7;
-exports.EscapeJIS8 = EscapeJIS8;
-exports.UnescapeJIS8 = UnescapeJIS8;
-exports.EscapeUnicode = EscapeUnicode;
-exports.UnescapeUnicode = UnescapeUnicode;
-exports.EscapeUTF7 = EscapeUTF7;
-exports.UnescapeUTF7 = UnescapeUTF7;
-exports.EscapeUTF8 = EscapeUTF8;
-exports.UnescapeUTF8 = UnescapeUTF8;
-exports.EscapeUTF16LE = EscapeUTF16LE;
-exports.UnescapeUTF16LE = UnescapeUTF16LE;
-exports.GetEscapeCodeType = GetEscapeCodeType;
-exports.JCT11280 = JCT11280;
-exports.JCT8836 = JCT8836;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17).Buffer))
 
 /***/ }),
 /* 71 */
@@ -35343,7 +35338,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _GKAgent = __webpack_require__(44);
+var _GKAgent = __webpack_require__(45);
 
 var _GKAgent2 = _interopRequireDefault(_GKAgent);
 
@@ -35567,7 +35562,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _CAPropertyAnimation2 = __webpack_require__(46);
+var _CAPropertyAnimation2 = __webpack_require__(47);
 
 var _CAPropertyAnimation3 = _interopRequireDefault(_CAPropertyAnimation2);
 
@@ -35991,6 +35986,453 @@ exports.default = _SCNDefaultVertexShader;
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _CGPoint = __webpack_require__(8);
+
+var _CGPoint2 = _interopRequireDefault(_CGPoint);
+
+var _SCNNode = __webpack_require__(12);
+
+var _SCNNode2 = _interopRequireDefault(_SCNNode);
+
+var _SCNVector = __webpack_require__(1);
+
+var _SCNVector2 = _interopRequireDefault(_SCNVector);
+
+var _TextReader2 = __webpack_require__(96);
+
+var _TextReader3 = _interopRequireDefault(_TextReader2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/*global Buffer*/
+
+var _SCNObjLoader = function () {
+  function _SCNObjLoader() {
+    var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
+    _classCallCheck(this, _SCNObjLoader);
+
+    /**
+     * @access private
+     * @type {?string}
+     */
+    this._filePath = null;
+
+    /**
+     * @access private
+     * @type {?string}
+     */
+    this._mtllibName = null;
+
+    /**
+     * @access private
+     * @type {?_ObjReader}
+     */
+    this._reader = null;
+
+    if (data !== null) {
+      this._reader = new _TextReader3.default(data, 'utf-8');
+    }
+
+    this._node = null;
+  }
+
+  _createClass(_SCNObjLoader, [{
+    key: '_getTokens',
+    value: function _getTokens(line) {
+      return line.split(' ').filter(function (str) {
+        return str !== '';
+      });
+    }
+  }, {
+    key: '_loadObjFile',
+    value: function _loadObjFile() {
+      console.error('_loadObjFile');
+      this._node = new _SCNNode2.default();
+
+      var skins = [];
+      var normals = [];
+      var texcoords = [];
+      var materials = [];
+
+      var defaultGroupName = 'default';
+      var currentSmoothingGroup = -1;
+      var currentSmoothingVertices = null;
+      var smoothingVerticesHash = {};
+      var groupName = defaultGroupName;
+
+      var line = this._reader.readLine();
+      this._break = false;
+      console.log('line: ' + line);
+      while (!this._break && line !== null) {
+        var tokens = this._getTokens(line);
+
+        if (tokens.length === 0) {
+          continue;
+        }
+
+        switch (tokens[0]) {
+          case '#':
+            {
+              // comment
+              continue;
+            }
+
+          case 'v':
+            {
+              // geometric vertices
+              var pos = new _SCNVector2.default();
+              pos.x = parseFloat(tokens[1]);
+              pos.y = parseFloat(tokens[2]);
+              pos.z = parseFloat(tokens[3]);
+
+              skins.push({
+                position: pos,
+                boneIndex: [0, -1, -1, -1],
+                skinWeight: [1, 0, 0, 0],
+                normal: null,
+                textureUV: null,
+                smoothingGroup: -1
+              });
+              break;
+            }
+
+          case 'vt':
+            {
+              // texture vertices
+              var uv = new _CGPoint2.default();
+              uv.x = parseFloat(tokens[1]);
+              uv.y = parseFloat(tokens[2]);
+              texcoords.push(uv);
+            }
+
+          case 'vn':
+            {
+              // vertex normals
+              var n = new _SCNVector2.default();
+              n.x = parseFloat(tokens[1]);
+              n.y = parseFloat(tokens[2]);
+              n.z = parseFloat(tokens[3]);
+              normals.push(n);
+              break;
+            }
+
+          case 'vp':
+            {
+              // parameter space vertices
+              break;
+            }
+
+          case 'deg':
+            {
+              // degree
+              break;
+            }
+
+          case 'bmat':
+            {
+              // basis matrix
+              break;
+            }
+
+          case 'step':
+            {
+              // step size
+              break;
+            }
+
+          case 'cstype':
+            {
+              // curve or surface type
+              break;
+            }
+
+          case 'p':
+            {
+              // point
+              break;
+            }
+
+          case 'l':
+            {
+              // line
+              break;
+            }
+
+          case 'f':
+            {
+              // face
+              var num_faces = tokens.length - 4;
+              for (var i = 0; i < num_faces; i++) {
+                var data1 = tokens[i + 0].split('/');
+                var data2 = tokens[i + 1].split('/');
+                var data3 = tokens[i + 2].split('/');
+
+                var nv1 = data1[0];var nt1 = data1[1];var nn1 = data1[2];
+                var nv2 = data2[0];var nt2 = data2[1];var nn2 = data1[2];
+                var nv3 = data3[0];var nt3 = data3[1];var nn3 = data1[2];
+
+                if (nv1 === '' || nv2 === '' || nv3 === '') {
+                  // error
+                  console.error('obj format error: f: vertex index');
+                  return null;
+                }
+
+                var v1 = skins[nv1 - 1];
+                if (v1.smoothingGroup === -1) {
+                  // new
+                  v1.smoothingGroup = currentSmoothingGroup;
+                  if (nt1) {
+                    v1.textureUV = texcoords[nt1 - 1];
+                  } else {
+                    v1.textureUV = null;
+                  }
+
+                  if (nn1) {
+                    v1.normal = normals[nn1 - 1];
+                  } else {
+                    v1.normal = null;
+                  }
+                } else if (v1.smoothingGroup === smoothingGroup) {
+                  // same group
+                  var checkFace = v1;
+                  for (; checkFace; checkFace = checkFace.next) {
+                    // check texture
+                    if (nt1) {
+                      if (checkFace.texture !== texcoords[nt1 - 1]) {
+                        continue;
+                      }
+                    } else if (checkFace.texture) {
+                      continue;
+                    }
+                    // check normal
+                    if (nn1) {
+                      if (checkFace.normal !== normals[nn1 - 1]) {
+                        continue;
+                      }
+                    } else if (checkFace.normal) {
+                      continue;
+                    }
+                    break;
+                  }
+                  if (checkFace) {
+                    v1 = checkFace;
+                  } else {
+                    // create skin
+                  }
+                } else {
+                    // different group
+                  }
+
+                var v2 = skins[nv2 - 1];
+
+                var v3 = skins[nv3 - 1];
+              }
+              break;
+            }
+
+          case 'curv':
+            {
+              // curve
+              break;
+            }
+
+          case 'curv2':
+            {
+              // 2D curve
+              break;
+            }
+
+          case 'surf':
+            {
+              // surface
+              break;
+            }
+
+          case 'parm':
+            {
+              // parameter values
+              break;
+            }
+
+          case 'trim':
+            {
+              // outer trimming loop
+              break;
+            }
+
+          case 'hole':
+            {
+              // inner trimming loop
+              break;
+            }
+
+          case 'scrv':
+            {
+              // special curve
+              break;
+            }
+
+          case 'sp':
+            {
+              // special point
+              break;
+            }
+
+          case 'end':
+            {
+              // end statement
+              break;
+            }
+
+          case 'con':
+            {
+              // connect
+              break;
+            }
+
+          case 'g':
+            {
+              // group name
+              if (tokens[1] === '') {
+                groupName = defaultGroupName;
+              } else {
+                groupName = tokens[1];
+              }
+              break;
+            }
+
+          case 's':
+            {
+              // smoothing group
+              if (tokens[1] === 'off' || tokens[1] <= 0) {
+                currentSmoothingGroup = 0;
+                currentSmoothingVertices = null;
+              } else {
+                currentSmoothingGroup = tokens[1];
+                currentSmoothingVertices = smoothingVerticesHash[currentSmoothingGroup];
+                if (!currentSmoothingVertices) {
+                  currentSmoothingVertices = [];
+                  smoothingVerticesHash[currentSmoothingGroup] = currentSmoothingVertices;
+                }
+              }
+              break;
+            }
+
+          case 'mg':
+            {
+              // merging group
+              break;
+            }
+
+          case 'o':
+            {
+              // object name
+              break;
+            }
+
+          case 'bevel':
+            {
+              // bevel interpolation
+              break;
+            }
+
+          case 'c_interp':
+            {
+              // color interpolation
+              break;
+            }
+
+          case 'd_interp':
+            {
+              // dissolve interpolation
+              break;
+            }
+
+          case 'lod':
+            {
+              // level of detail
+              break;
+            }
+
+          case 'usemtl':
+            {
+              // material name
+              break;
+            }
+
+          case 'mtllib':
+            {
+              // material library
+              mtllibName = tokens[1];
+              console.log('mtllib: ' + mtllibName);
+
+              break;
+            }
+        }
+        line = this._reader.readLine();
+        console.log('line: ' + line);
+      }
+
+      return this._node;
+    }
+  }], [{
+    key: 'unarchiveObjectWithData',
+    value: function unarchiveObjectWithData(data) {
+      var path = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+      var unarchiver = new _SCNObjLoader(data);
+      unarchiver._filePath = path;
+      return unarchiver._loadObjFile();
+    }
+  }, {
+    key: 'unarchiveObjectWithFile',
+    value: function unarchiveObjectWithFile(path) {
+      var promise = _SCNObjLoader._getBufferOfFile(path).then(function (data) {
+        return _SCNObjLoader.unarchiveWithObjectWithData(data, path);
+      });
+
+      return promise;
+    }
+  }, {
+    key: '_getBufferOfFile',
+    value: function _getBufferOfFile(path) {
+      var promise = new Promise(function (resolve, reject) {
+        var file = new _File([], path);
+        var reader = new _FileReader();
+        reader.onload = function () {
+          var data = reader.result;
+          resolve(data);
+        };
+        reader.onerror = function () {
+          reject(reader.error);
+        };
+        reader.readAsText(file);
+      });
+      return promise;
+    }
+  }]);
+
+  return _SCNObjLoader;
+}();
+
+exports.default = _SCNObjLoader;
+
+/***/ }),
+/* 88 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 /**
  * Values that inform SceneKit’s rendering for movement-related effects, used by the movabilityHint property.
  * @typedef {Object} SCNMovabilityHint
@@ -36010,7 +36452,7 @@ var SCNMovabilityHint = {
 exports.default = SCNMovabilityHint;
 
 /***/ }),
-/* 88 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36043,7 +36485,7 @@ var SCNBlendMode = {
 exports.default = SCNBlendMode;
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36075,7 +36517,7 @@ var SCNColorMask = {
 exports.default = SCNColorMask;
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36100,7 +36542,7 @@ var SCNFillMode = {
 exports.default = SCNFillMode;
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36127,7 +36569,7 @@ var SCNFilterMode = {
 exports.default = SCNFilterMode;
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36156,7 +36598,7 @@ var SCNWrapMode = {
 exports.default = SCNWrapMode;
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36181,7 +36623,7 @@ var SCNTransparencyMode = {
 exports.default = SCNTransparencyMode;
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36326,7 +36768,397 @@ var SCNPhysicsContact = function (_NSObject) {
 exports.default = SCNPhysicsContact;
 
 /***/ }),
-/* 95 */
+/* 96 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(Buffer) {
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _ecl = __webpack_require__(44);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/*global Buffer*/
+
+var _integerPattern = new RegExp(/^(-|\+)?\d+;?/);
+var _floatPattern = new RegExp(/^(-|\+)?(\d)*\.(\d)*;?/);
+var _wordPattern = new RegExp(/^\w+/);
+var _linePattern = new RegExp(/^.*\n/);
+
+/**
+ * TextReader class
+ * @access public
+ */
+
+var TextReader = function () {
+  /**
+   * constructor
+   * @access public
+   * @constructor
+   * @param {Buffer|ArrayBuffer} data -
+   * @param {string} encoding -
+   */
+  function TextReader(data) {
+    var encoding = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'utf-8';
+
+    _classCallCheck(this, TextReader);
+
+    /**
+     * @access private
+     * @type {number}
+     */
+    this._pos = 0;
+
+    this._partialText = '';
+    this._partialOffset = 0;
+    this._partialStep = 200;
+    this._partialMinLength = 100;
+
+    /**
+     * @access private
+     * @type {boolean}
+     */
+    this._eof = true;
+
+    /**
+     *
+     * @access public
+     * @type {Buffer}
+     */
+    this.buffer = null;
+
+    if (data instanceof Buffer) {
+      this.buffer = data;
+    } else {
+      this.buffer = Buffer.from(data);
+    }
+
+    /**
+     *
+     * @access public
+     * @type {boolean}
+     */
+    //this.bigEndian = bigEndian
+
+    /**
+     *
+     * @access public
+     * @type {string}
+     */
+    this.encoding = encoding;
+
+    // prepare buffered text
+    this._addPartialText();
+  }
+
+  /**
+   * @access public
+   * @param {number} length - length of data to skip
+   * @param {boolean} noAssert -
+   * @returns {void}
+   */
+
+
+  _createClass(TextReader, [{
+    key: 'skip',
+    value: function skip(length) {
+      var noAssert = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+      this._moveIndex(length);
+      if (!noAssert) {
+        this._check();
+      }
+    }
+
+    /**
+     *
+     * @access public
+     * @param {number} length - length of data to read
+     * @param {?string} [encoding = null] -
+     * @returns {string} -
+     */
+
+  }, {
+    key: 'readString',
+    value: function readString(length) {
+      var encoding = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+      var str = this._partialText.substring(0, length);
+
+      this._moveIndex(str.length);
+    }
+
+    /**
+     *
+     * @access public
+     * @param {number} length - 
+     * @param {boolean} signed -
+     * @returns {number} -
+     */
+
+  }, {
+    key: 'readInteger',
+    value: function readInteger(length, signed) {
+      var str = this._getString(_integerPattern);
+      var val = parseInt(str[0], 10);
+      return val;
+    }
+
+    /**
+     *
+     * @access public
+     * @returns {number} -
+     */
+
+  }, {
+    key: 'readUnsignedByte',
+    value: function readUnsignedByte() {
+      return this.readInteger(1, false);
+    }
+
+    /**
+     *
+     * @access public
+     * @returns {number} -
+     */
+
+  }, {
+    key: 'readUnsignedShort',
+    value: function readUnsignedShort() {
+      return this.readInteger(2, false);
+    }
+
+    /**
+     *
+     * @access public
+     * @returns {number} -
+     */
+
+  }, {
+    key: 'readUnsignedInt',
+    value: function readUnsignedInt() {
+      return this.readInteger(4, false);
+    }
+
+    /**
+     *
+     * @access public
+     * @returns {number} -
+     */
+
+  }, {
+    key: 'readInt',
+    value: function readInt() {
+      return this.readInteger(4, true);
+    }
+
+    /**
+     *
+     * @access public
+     * @returns {number} -
+     */
+
+  }, {
+    key: 'readFloat',
+    value: function readFloat() {
+      var str = this._getString(_floatPattern);
+      var val = parseFloat(str[0]);
+      return val;
+    }
+
+    /**
+     *
+     * @access public
+     * @returns {number} -
+     */
+
+  }, {
+    key: 'readDouble',
+    value: function readDouble() {
+      return this.readFloat();
+    }
+
+    /**
+     *
+     * @access public
+     * @param {number} length -
+     * @returns {Buffer} -
+     */
+
+  }, {
+    key: 'readData',
+    value: function readData(length) {
+      var start = this._pos;
+      this._pos += length;
+      return this.buffer.slice(start, this._pos);
+    }
+  }, {
+    key: 'readWord',
+    value: function readWord() {
+      var str = this._getString(_wordPattern);
+      return str !== null ? str[0] : null;
+    }
+  }, {
+    key: 'readLine',
+    value: function readLine() {
+      var str = this._getString(_linePattern);
+      return str !== null ? str[0] : null;
+    }
+  }, {
+    key: 'readPattern',
+    value: function readPattern(pattern) {
+      return this._getString(pattern);
+    }
+
+    /**
+     *
+     * @access private
+     * @returns {void}
+     */
+
+  }, {
+    key: '_check',
+    value: function _check() {}
+
+    /**
+     *
+     * @access private
+     * @param {number[]} data - length of data to convert
+     * @param {?string} [encoding = null] -
+     * @returns {string} -
+     */
+
+  }, {
+    key: '_convert',
+    value: function _convert(data, encoding) {
+      var length = data.length;
+      var escapeString = '';
+      for (var i = 0; i < length; i++) {
+        var charCode = data.charCodeAt(i);
+        if (charCode === 0) {
+          break;
+        } else if (charCode < 16) {
+          escapeString += '%0' + charCode.toString(16);
+        } else {
+          escapeString += '%' + charCode.toString(16);
+        }
+      }
+
+      if (encoding === 'sjis') {
+        return (0, _ecl.UnescapeSJIS)(escapeString);
+      } else if (encoding === 'euc-jp') {
+        return (0, _ecl.UnescapeEUCJP)(escapeString);
+      } else if (encoding === 'jis-7') {
+        return (0, _ecl.UnescapeJIS7)(escapeString);
+      } else if (encoding === 'jis-8') {
+        return (0, _ecl.UnescapeJIS8)(escapeString);
+      } else if (encoding === 'unicode') {
+        return (0, _ecl.UnescapeUnicode)(escapeString);
+      } else if (encoding === 'utf7') {
+        return (0, _ecl.UnescapeUTF7)(escapeString);
+      } else if (encoding === 'utf-8') {
+        return (0, _ecl.UnescapeUTF8)(escapeString);
+      } else if (encoding === 'utf-16') {
+        return (0, _ecl.UnescapeUTF16LE)(escapeString);
+      }
+
+      throw new Error('unsupported encoding: ' + encoding);
+    }
+  }, {
+    key: 'getAvailableDataLength',
+    value: function getAvailableDataLength() {
+      return this.buffer.length - this._pos;
+    }
+
+    /**
+     *
+     * @access private
+     * @param {number} len -
+     * @returns {void}
+     */
+
+  }, {
+    key: '_moveIndex',
+    value: function _moveIndex(len) {
+      this._partialText = this._partialText.substring(len);
+      if (this._partialText.length < this._partialMinLength) {
+        this._addPartialText();
+      }
+    }
+  }, {
+    key: '_skipSpace',
+    value: function _skipSpace() {
+      var i = 0;
+      var code = this._partialText.charCodeAt(i);
+
+      //  9: Horizontal Tab
+      // 10: Line Feed
+      // 11: Vertical Tab
+      // 12: New Page
+      // 13: Carriage Return
+      // 32: Space
+      while (code === 32 || 9 <= code && code <= 13) {
+        i++;
+        code = this._partialText.charCodeAt(i);
+
+        if (i >= this._partialText.length) {
+          this._addPartialText();
+        }
+      }
+      if (i > 0) {
+        this._moveIndex(i);
+      }
+    }
+  }, {
+    key: '_addPartialText',
+    value: function _addPartialText() {
+      if (this._partialOffset >= this.buffer.length) {
+        return;
+      }
+
+      var newOffset = this._partialOffset + this._partialStep;
+      if (newOffset > this.buffer.length) {
+        newOffset = this.buffer.length;
+      }
+
+      if (Buffer.isEncoding(this.encoding)) {
+        this._partialText += this.buffer.toString(this.encoding, this._partialOffset, newOffset);
+      } else {
+        var data = this.buffer.toString('binary', this._partialOffset, newOffset);
+        this._partialText += this._convert(data, this.encoding);
+      }
+      this._partialOffset = newOffset;
+    }
+  }, {
+    key: '_getString',
+    value: function _getString(pattern) {
+      this._skipSpace();
+
+      var str = this._partialText.match(pattern);
+      if (str === null) {
+        return null;
+      }
+
+      this._moveIndex(str[0].length);
+
+      return str;
+    }
+  }]);
+
+  return TextReader;
+}();
+
+exports.default = TextReader;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17).Buffer))
+
+/***/ }),
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36556,7 +37388,7 @@ var SCNAnimation = function (_NSObject) {
 exports.default = SCNAnimation;
 
 /***/ }),
-/* 96 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36587,7 +37419,7 @@ var SCNAntialiasingMode = {
 exports.default = SCNAntialiasingMode;
 
 /***/ }),
-/* 97 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -36603,7 +37435,7 @@ var _NSObject2 = __webpack_require__(0);
 
 var _NSObject3 = _interopRequireDefault(_NSObject2);
 
-var _SCNCameraProjectionDirection = __webpack_require__(98);
+var _SCNCameraProjectionDirection = __webpack_require__(100);
 
 var _SCNCameraProjectionDirection2 = _interopRequireDefault(_SCNCameraProjectionDirection);
 
@@ -37190,7 +38022,7 @@ var SCNCamera = function (_NSObject) {
 exports.default = SCNCamera;
 
 /***/ }),
-/* 98 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37215,7 +38047,7 @@ var SCNCameraProjectionDirection = {
 exports.default = SCNCameraProjectionDirection;
 
 /***/ }),
-/* 99 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37242,7 +38074,7 @@ var SCNTessellationSmoothingMode = {
 exports.default = SCNTessellationSmoothingMode;
 
 /***/ }),
-/* 100 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37281,7 +38113,7 @@ var SCNHitTestOption = {
 exports.default = SCNHitTestOption;
 
 /***/ }),
-/* 101 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37305,7 +38137,7 @@ var _SCNMatrix = __webpack_require__(7);
 
 var _SCNMatrix2 = _interopRequireDefault(_SCNMatrix);
 
-var _CGSize = __webpack_require__(8);
+var _CGSize = __webpack_require__(9);
 
 var _CGSize2 = _interopRequireDefault(_CGSize);
 
@@ -37852,7 +38684,7 @@ var SCNLight = function (_NSObject) {
 exports.default = SCNLight;
 
 /***/ }),
-/* 102 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37884,7 +38716,7 @@ var SCNMatrix4MakeScale = function SCNMatrix4MakeScale(sx, sy, sz) {
 exports.default = SCNMatrix4MakeScale;
 
 /***/ }),
-/* 103 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37909,7 +38741,7 @@ var SCNMorpherCalculationMode = {
 exports.default = SCNMorpherCalculationMode;
 
 /***/ }),
-/* 104 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37936,7 +38768,7 @@ var SCNParticleBirthDirection = {
 exports.default = SCNParticleBirthDirection;
 
 /***/ }),
-/* 105 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37963,7 +38795,7 @@ var SCNParticleBirthLocation = {
 exports.default = SCNParticleBirthLocation;
 
 /***/ }),
-/* 106 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -37996,7 +38828,7 @@ var SCNParticleBlendMode = {
 exports.default = SCNParticleBlendMode;
 
 /***/ }),
-/* 107 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38023,7 +38855,7 @@ var SCNParticleImageSequenceAnimationMode = {
 exports.default = SCNParticleImageSequenceAnimationMode;
 
 /***/ }),
-/* 108 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38052,7 +38884,7 @@ var SCNParticleOrientationMode = {
 exports.default = SCNParticleOrientationMode;
 
 /***/ }),
-/* 109 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38083,7 +38915,7 @@ var SCNParticleSortingMode = {
 exports.default = SCNParticleSortingMode;
 
 /***/ }),
-/* 110 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38373,7 +39205,7 @@ var SCNPhysicsField = function (_NSObject) {
 exports.default = SCNPhysicsField;
 
 /***/ }),
-/* 111 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38383,7 +39215,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _SCNPhysicsField2 = __webpack_require__(110);
+var _SCNPhysicsField2 = __webpack_require__(112);
 
 var _SCNPhysicsField3 = _interopRequireDefault(_SCNPhysicsField2);
 
@@ -38425,7 +39257,7 @@ var SCNPhysicsNoiseField = function (_SCNPhysicsField) {
 exports.default = SCNPhysicsNoiseField;
 
 /***/ }),
-/* 112 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38716,10 +39548,10 @@ var SCNProgram = function (_NSObject) {
 
       this._dummyTexture = gl.createTexture();
 
-      gl.bindTexture(gl.TEXTURE_2D, this._dummyTexture
+      gl.bindTexture(gl.TEXTURE_2D, this._dummyTexture);
       // texImage2D(target, level, internalformat, width, height, border, format, type, source)
       // Safari complains that 'source' is not ArrayBufferView type, but WebGL2 should accept HTMLCanvasElement.
-      );gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
       gl.bindTexture(gl.TEXTURE_2D, null);
 
       this._dummyCubeMapTexture = gl.createTexture();
@@ -38740,7 +39572,7 @@ var SCNProgram = function (_NSObject) {
 exports.default = SCNProgram;
 
 /***/ }),
-/* 113 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38767,7 +39599,7 @@ var SCNQuaternion = _SCNVector2.default;
 exports.default = SCNQuaternion;
 
 /***/ }),
-/* 114 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38792,7 +39624,7 @@ var SCNReferenceLoadingPolicy = {
 exports.default = SCNReferenceLoadingPolicy;
 
 /***/ }),
-/* 115 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -38812,11 +39644,11 @@ var _SKColor = __webpack_require__(2);
 
 var _SKColor2 = _interopRequireDefault(_SKColor);
 
-var _SCNNode = __webpack_require__(14);
+var _SCNNode = __webpack_require__(12);
 
 var _SCNNode2 = _interopRequireDefault(_SCNNode);
 
-var _SCNMaterial = __webpack_require__(12);
+var _SCNMaterial = __webpack_require__(13);
 
 var _SCNMaterial2 = _interopRequireDefault(_SCNMaterial);
 
@@ -38828,7 +39660,7 @@ var _SCNGeometrySource = __webpack_require__(6);
 
 var _SCNGeometrySource2 = _interopRequireDefault(_SCNGeometrySource);
 
-var _SCNSceneSource = __webpack_require__(116);
+var _SCNSceneSource = __webpack_require__(118);
 
 var _SCNSceneSource2 = _interopRequireDefault(_SCNSceneSource);
 
@@ -39010,13 +39842,13 @@ var SCNScene = function (_NSObject) {
       _this._dataLoadedPromise = promise;
     }
 
-    _this._createSkyBox
+    _this._createSkyBox();
 
     /**
      * @access private
      * @type {Promise}
      */
-    ();_this._loadedPromise = null;
+    _this._loadedPromise = null;
     return _this;
   }
 
@@ -39438,7 +40270,7 @@ var SCNScene = function (_NSObject) {
 exports.default = SCNScene;
 
 /***/ }),
-/* 116 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39449,6 +40281,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _SCNObjLoader2 = __webpack_require__(87);
+
+var _SCNObjLoader3 = _interopRequireDefault(_SCNObjLoader2);
 
 var _NSKeyedUnarchiver = __webpack_require__(41);
 
@@ -39589,6 +40425,11 @@ var SCNSceneSource = function (_NSObject) {
         if (this._url) {
           url += this._url.split('/').pop();
         }
+      }
+
+      if (this._data.match(/\nv -?[0-9]+(\.[0-9]+)? -?[0-9]+(\.[0-9]+)? -?[0-9]+(\.[0-9]+)?\s*\n/)) {
+        // seems obj data
+        return _SCNObjLoader3.default.unarchiveObjectWithData(this._data, url);
       }
 
       return _NSKeyedUnarchiver2.default.unarchiveObjectWithData(this._data, url);
@@ -39806,7 +40647,7 @@ var SCNSceneSource = function (_NSObject) {
 exports.default = SCNSceneSource;
 
 /***/ }),
-/* 117 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -39818,7 +40659,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _CGPoint = __webpack_require__(10);
+var _CGPoint = __webpack_require__(8);
 
 var _CGPoint2 = _interopRequireDefault(_CGPoint);
 
@@ -39826,7 +40667,7 @@ var _CGRect = __webpack_require__(16);
 
 var _CGRect2 = _interopRequireDefault(_CGRect);
 
-var _CGSize = __webpack_require__(8);
+var _CGSize = __webpack_require__(9);
 
 var _CGSize2 = _interopRequireDefault(_CGSize);
 
@@ -39834,7 +40675,7 @@ var _NSObject2 = __webpack_require__(0);
 
 var _NSObject3 = _interopRequireDefault(_NSObject2);
 
-var _SCNMaterial = __webpack_require__(12);
+var _SCNMaterial = __webpack_require__(13);
 
 var _SCNMaterial2 = _interopRequireDefault(_SCNMaterial);
 
@@ -39850,11 +40691,11 @@ var _SCNMatrix4MakeTranslation = __webpack_require__(18);
 
 var _SCNMatrix4MakeTranslation2 = _interopRequireDefault(_SCNMatrix4MakeTranslation);
 
-var _SCNNode = __webpack_require__(14);
+var _SCNNode = __webpack_require__(12);
 
 var _SCNNode2 = _interopRequireDefault(_SCNNode);
 
-var _SCNProgram = __webpack_require__(112);
+var _SCNProgram = __webpack_require__(114);
 
 var _SCNProgram2 = _interopRequireDefault(_SCNProgram);
 
@@ -39862,11 +40703,11 @@ var _SCNPhysicsWorld = __webpack_require__(33);
 
 var _SCNPhysicsWorld2 = _interopRequireDefault(_SCNPhysicsWorld);
 
-var _SCNCamera = __webpack_require__(97);
+var _SCNCamera = __webpack_require__(99);
 
 var _SCNCamera2 = _interopRequireDefault(_SCNCamera);
 
-var _SCNLight = __webpack_require__(101);
+var _SCNLight = __webpack_require__(103);
 
 var _SCNLight2 = _interopRequireDefault(_SCNLight);
 
@@ -39878,7 +40719,7 @@ var _SCNVector3 = __webpack_require__(11);
 
 var _SCNVector4 = _interopRequireDefault(_SCNVector3);
 
-var _SCNGeometryPrimitiveType = __webpack_require__(13);
+var _SCNGeometryPrimitiveType = __webpack_require__(14);
 
 var _SCNGeometryPrimitiveType2 = _interopRequireDefault(_SCNGeometryPrimitiveType);
 
@@ -39886,11 +40727,11 @@ var _SCNGeometrySource = __webpack_require__(6);
 
 var _SCNGeometrySource2 = _interopRequireDefault(_SCNGeometrySource);
 
-var _SCNHitTestOption = __webpack_require__(100);
+var _SCNHitTestOption = __webpack_require__(102);
 
 var _SCNHitTestOption2 = _interopRequireDefault(_SCNHitTestOption);
 
-var _SCNHitTestResult = __webpack_require__(50);
+var _SCNHitTestResult = __webpack_require__(51);
 
 var _SCNHitTestResult2 = _interopRequireDefault(_SCNHitTestResult);
 
@@ -39898,11 +40739,11 @@ var _SKColor = __webpack_require__(2);
 
 var _SKColor2 = _interopRequireDefault(_SKColor);
 
-var _SKSpriteNode = __webpack_require__(118);
+var _SKSpriteNode = __webpack_require__(120);
 
 var _SKSpriteNode2 = _interopRequireDefault(_SKSpriteNode);
 
-var _SKTexture = __webpack_require__(55);
+var _SKTexture = __webpack_require__(56);
 
 var _SKTexture2 = _interopRequireDefault(_SKTexture);
 
@@ -40204,13 +41045,13 @@ var SCNRenderer = function (_NSObject) {
     light.type = _SCNLight2.default.LightType.omni;
     light.position = new _SCNVector2.default(0, 10, 10);
     _this._defaultLightNode.light = light;
-    _this._defaultLightNode._presentation = _this._defaultLightNode.copy
+    _this._defaultLightNode._presentation = _this._defaultLightNode.copy();
 
     /**
      * @access private
      * @type {CGRect}
      */
-    ();_this._viewRect = new _CGRect2.default(new _CGPoint2.default(0, 0), new _CGSize2.default(0, 0));
+    _this._viewRect = new _CGRect2.default(new _CGPoint2.default(0, 0), new _CGSize2.default(0, 0));
 
     /**
      * The background color of the view.
@@ -40369,28 +41210,28 @@ var SCNRenderer = function (_NSObject) {
         return;
       }
 
-      this._lightNodes = this._createLightNodeArray // createLightNodeArray must be called before getting program
+      this._lightNodes = this._createLightNodeArray(); // createLightNodeArray must be called before getting program
 
-      ();var p = this._defaultProgram;
+      var p = this._defaultProgram;
       var glProgram = p._getGLProgramForContext(gl);
 
       gl.clearColor(this._backgroundColor.red, this._backgroundColor.green, this._backgroundColor.blue, this._backgroundColor.alpha);
       gl.clearDepth(1.0);
       gl.clearStencil(0);
-      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
 
       //gl.useProgram(glProgram)
-      );this._useProgram(p);
+      this._useProgram(p);
 
       gl.depthFunc(gl.LEQUAL);
       gl.depthMask(true);
       gl.enable(gl.BLEND);
-      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
       //////////////////////////
       // Camera
       //////////////////////////
-      );if (this._cameraBuffer === null) {
+      if (this._cameraBuffer === null) {
         this._initializeCameraBuffer(glProgram);
       }
       var cameraData = [];
@@ -40406,7 +41247,7 @@ var SCNRenderer = function (_NSObject) {
       cameraData.push.apply(cameraData, _toConsumableArray(cameraPNode.viewProjectionTransform.floatArray()));
       gl.bindBuffer(gl.UNIFORM_BUFFER, this._cameraBuffer);
       gl.bufferData(gl.UNIFORM_BUFFER, new Float32Array(cameraData), gl.DYNAMIC_DRAW);
-      gl.bindBuffer(gl.UNIFORM_BUFFER, null
+      gl.bindBuffer(gl.UNIFORM_BUFFER, null);
 
       //console.log('cameraNode.worldPosition: ' + cameraPNode.worldTransform.getTranslation().float32Array())
       //console.log('viewTransform: ' + cameraPNode.viewTransform.float32Array())
@@ -40416,7 +41257,7 @@ var SCNRenderer = function (_NSObject) {
       //////////////////////////
       // Fog
       //////////////////////////
-      );if (this._fogBuffer === null) {
+      if (this._fogBuffer === null) {
         this._initializeFogBuffer(glProgram);
       }
       var fogData = [];
@@ -40427,12 +41268,12 @@ var SCNRenderer = function (_NSObject) {
       }
       gl.bindBuffer(gl.UNIFORM_BUFFER, this._fogBuffer);
       gl.bufferData(gl.UNIFORM_BUFFER, new Float32Array(fogData), gl.DYNAMIC_DRAW);
-      gl.bindBuffer(gl.UNIFORM_BUFFER, null
+      gl.bindBuffer(gl.UNIFORM_BUFFER, null);
 
       //////////////////////////
       // Lights
       //////////////////////////
-      );if (this._lightBuffer === null) {
+      if (this._lightBuffer === null) {
         this._initializeLightBuffer(glProgram);
       }
       var lights = this._lightNodes;
@@ -40461,10 +41302,10 @@ var SCNRenderer = function (_NSObject) {
 
       gl.bindBuffer(gl.UNIFORM_BUFFER, this._lightBuffer);
       gl.bufferData(gl.UNIFORM_BUFFER, new Float32Array(lightData), gl.DYNAMIC_DRAW);
-      gl.bindBuffer(gl.UNIFORM_BUFFER, null
+      gl.bindBuffer(gl.UNIFORM_BUFFER, null);
 
       // FIXME: set params for each light
-      );var scnLightsData = [];
+      var scnLightsData = [];
       if (lights.directionalShadow.length > 0) {
         var l = lights.directionalShadow[0].presentation;
         var direction = new _SCNVector2.default(0, 0, -1).rotateWithQuaternion(l._worldOrientation);
@@ -40472,26 +41313,26 @@ var SCNRenderer = function (_NSObject) {
         scnLightsData.push.apply(scnLightsData, _toConsumableArray(l.shadowProjectionTransform.float32Array()));
       } else {
         // direction
-        scnLightsData.push(0, 0, 0, 0
+        scnLightsData.push(0, 0, 0, 0);
         // identity matrix
-        );scnLightsData.push(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+        scnLightsData.push(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
       }
       gl.bindBuffer(gl.UNIFORM_BUFFER, this._scnLightsBuffer);
       gl.bufferData(gl.UNIFORM_BUFFER, new Float32Array(scnLightsData), gl.DYNAMIC_DRAW);
-      gl.bindBuffer(gl.UNIFORM_BUFFER, null
+      gl.bindBuffer(gl.UNIFORM_BUFFER, null);
 
       //////////////////////////
       // Background (SkyBox)
       //////////////////////////
-      );if (this.scene.background._contents !== null) {
+      if (this.scene.background._contents !== null) {
         var skyBox = this.scene._skyBox;
         skyBox.position = cameraPNode._worldTranslation;
         var scale = camera.zFar * 1.154;
         skyBox.scale = new _SCNVector2.default(scale, scale, scale);
-        skyBox._updateWorldTransform
+        skyBox._updateWorldTransform();
 
         // disable fog
-        ();var disabledFogData = fogData.slice(0);
+        var disabledFogData = fogData.slice(0);
         disabledFogData[4] = camera.zFar * 2.0; // startDistance
         disabledFogData[5] = camera.zFar * 2.1; // endDistance
         disabledFogData[6] = 1.0; // densityExponent
@@ -40499,10 +41340,10 @@ var SCNRenderer = function (_NSObject) {
         gl.bufferData(gl.UNIFORM_BUFFER, new Float32Array(disabledFogData), gl.DYNAMIC_DRAW);
         gl.bindBuffer(gl.UNIFORM_BUFFER, null);
 
-        this._renderNode(skyBox
+        this._renderNode(skyBox);
 
         // enable fog
-        );gl.bindBuffer(gl.UNIFORM_BUFFER, this._fogBuffer);
+        gl.bindBuffer(gl.UNIFORM_BUFFER, this._fogBuffer);
         gl.bufferData(gl.UNIFORM_BUFFER, new Float32Array(fogData), gl.DYNAMIC_DRAW);
         gl.bindBuffer(gl.UNIFORM_BUFFER, null);
       }
@@ -40567,20 +41408,20 @@ var SCNRenderer = function (_NSObject) {
         }
       }
 
-      this._setViewPort // reset viewport size
-      ();this._useProgram(p);
+      this._setViewPort(); // reset viewport size
+      this._useProgram(p);
       for (var i = 0; i < lights.directionalShadow.length; i++) {
         var node = lights.directionalShadow[i];
         var symbol = 'TEXTURE' + (i + _shadowTextureBaseIndex);
         gl.activeTexture(gl[symbol]);
         gl.bindTexture(gl.TEXTURE_2D, node.presentation.light._shadowDepthTexture);
       }
-      gl.enable(gl.BLEND
+      gl.enable(gl.BLEND);
 
       //////////////////////////
       // Nodes
       //////////////////////////
-      );var renderingArray = this._createRenderingNodeArray();
+      var renderingArray = this._createRenderingNodeArray();
       renderingArray.forEach(function (node) {
         _this2._renderNode(node);
       });
@@ -40592,12 +41433,12 @@ var SCNRenderer = function (_NSObject) {
       gl.enable(gl.BLEND);
       gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
       gl.uniformMatrix4fv(gl.getUniformLocation(particleProgram, 'viewTransform'), false, cameraPNode.viewTransform.float32Array());
-      gl.uniformMatrix4fv(gl.getUniformLocation(particleProgram, 'projectionTransform'), false, cameraPNode.projectionTransform.float32Array()
+      gl.uniformMatrix4fv(gl.getUniformLocation(particleProgram, 'projectionTransform'), false, cameraPNode.projectionTransform.float32Array());
 
       //////////////////////////
       // Particles
       //////////////////////////
-      );if (this.scene._particleSystems !== null) {
+      if (this.scene._particleSystems !== null) {
         var _iteratorNormalCompletion2 = true;
         var _didIteratorError2 = false;
         var _iteratorError2 = undefined;
@@ -40626,17 +41467,17 @@ var SCNRenderer = function (_NSObject) {
       var particleArray = this._createParticleNodeArray();
       particleArray.forEach(function (node) {
         _this2._renderParticle(node);
-      }
+      });
 
       //////////////////////////
       // 2D Overlay
       //////////////////////////
-      );this._renderOverlaySKScene
+      this._renderOverlaySKScene();
 
       // DEBUG: show shadow map
       //this._showShadowMapOfLight(lights.directionalShadow[0])
 
-      ();gl.flush();
+      gl.flush();
     }
   }, {
     key: '_renderOverlaySKScene',
@@ -40911,10 +41752,10 @@ var SCNRenderer = function (_NSObject) {
             var vao = geometry._shadowVAO[i];
             var element = geometry.geometryElements[i];
 
-            gl.bindVertexArray(vao
+            gl.bindVertexArray(vao);
             // FIXME: use bufferData instead of bindBufferBase
 
-            );var shape = null;
+            var shape = null;
             switch (element.primitiveType) {
               case _SCNGeometryPrimitiveType2.default.triangles:
                 shape = gl.TRIANGLES;
@@ -40998,8 +41839,7 @@ var SCNRenderer = function (_NSObject) {
 
       if (geometry._vertexArrayObjects === null) {
         this._initializeVAO(node, glProgram);
-        this._initializeUBO(node, glProgram // FIXME: program should have UBO, not node.
-        );
+        this._initializeUBO(node, glProgram); // FIXME: program should have UBO, not node.
       }
 
       if (node.morpher !== null || node.skinner && !node.skinner._useGPU) {
@@ -41027,10 +41867,10 @@ var SCNRenderer = function (_NSObject) {
         var p = glProgram;
         if (material && (material.program || material.lightingModel === _SCNMaterial2.default.LightingModel.physicallyBased)) {
           var _scnProgram = material.program ? material.program : this._defaultPBRProgram;
-          this._switchProgram(_scnProgram
+          this._switchProgram(_scnProgram);
 
           // TODO: refactoring
-          );p = _scnProgram._getGLProgramForContext(gl);
+          p = _scnProgram._getGLProgramForContext(gl);
           if (node.presentation.skinner !== null) {
             if (node.presentation.skinner._useGPU) {
               gl.uniform1i(gl.getUniformLocation(p, 'numSkinningJoints'), node.presentation.skinner.numSkinningJoints);
@@ -41056,9 +41896,9 @@ var SCNRenderer = function (_NSObject) {
         var vao = geometry._vertexArrayObjects[i];
         var element = geometry.geometryElements[i];
 
-        gl.bindVertexArray(vao
+        gl.bindVertexArray(vao);
         // FIXME: use bufferData instead of bindBufferBase
-        );gl.bindBufferBase(gl.UNIFORM_BUFFER, _materialLoc, geometry._materialBuffer);
+        gl.bindBufferBase(gl.UNIFORM_BUFFER, _materialLoc, geometry._materialBuffer);
 
         geometry._bufferMaterialData(gl, p, i, node.presentation._worldOpacity);
 
@@ -41149,9 +41989,9 @@ var SCNRenderer = function (_NSObject) {
         p = system._program;
       }
       var glProgram = p._getGLProgramForContext(gl);
-      this._useProgram(p
+      this._useProgram(p);
       //this._switchProgram(p)
-      );gl.disable(gl.CULL_FACE);
+      gl.disable(gl.CULL_FACE);
 
       if (system._vertexBuffer === null) {
         system._initializeVAO(gl, glProgram);
@@ -41559,28 +42399,28 @@ var SCNRenderer = function (_NSObject) {
       gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, width, height);
 
       this._hitObjectIDTexture = gl.createTexture();
-      gl.bindTexture(gl.TEXTURE_2D, this._hitObjectIDTexture
+      gl.bindTexture(gl.TEXTURE_2D, this._hitObjectIDTexture);
       // texImage2D(target, level, internalformat, width, height, border, format, type, source)
-      );gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
 
       this._hitFaceIDTexture = gl.createTexture();
       gl.bindTexture(gl.TEXTURE_2D, this._hitFaceIDTexture);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
 
       this._hitPositionTexture = gl.createTexture();
-      gl.bindTexture(gl.TEXTURE_2D, this._hitPositionTexture
+      gl.bindTexture(gl.TEXTURE_2D, this._hitPositionTexture);
       //gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, width, height, 0, gl.RGB, gl.UNSIGNED_BYTE, null)
-      );gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
 
       this._hitNormalTexture = gl.createTexture();
-      gl.bindTexture(gl.TEXTURE_2D, this._hitNormalTexture
+      gl.bindTexture(gl.TEXTURE_2D, this._hitNormalTexture);
       //gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, width, height, 0, gl.RGB, gl.UNSIGNED_BYTE, null)
-      );gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
 
       //gl.framebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer)
-      );gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, this._hitDepthBuffer
+      gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, this._hitDepthBuffer);
       //gl.framebufferTexture2D(target, attachment, textarget, texture, level)
-      );gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this._hitObjectIDTexture, 0);
+      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this._hitObjectIDTexture, 0);
       gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT1, gl.TEXTURE_2D, this._hitFaceIDTexture, 0);
       gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT2, gl.TEXTURE_2D, this._hitPositionTexture, 0);
       gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT3, gl.TEXTURE_2D, this._hitNormalTexture, 0);
@@ -41606,15 +42446,15 @@ var SCNRenderer = function (_NSObject) {
 
       var invVp = viewProjectionMatrix.invert();
       var rayFrom = from.transform(invVp);
-      var rayTo = to.transform(invVp
+      var rayTo = to.transform(invVp);
       //console.log(`rayFrom: ${rayFrom.float32Array()}`)
       //console.log(`rayTo  : ${rayTo.float32Array()}`)
 
       //const rayVec = rayTo.sub(rayFrom)
-      );var renderingArray = this._createRenderingNodeArray
+      var renderingArray = this._createRenderingNodeArray();
       //console.log(`renderingArray.length: ${renderingArray.length}`)
 
-      ();var categoryBitMask = options.get(_SCNHitTestOption2.default.categoryBitMask);
+      var categoryBitMask = options.get(_SCNHitTestOption2.default.categoryBitMask);
       if (typeof categoryBitMask === 'undefined') {
         categoryBitMask = -1;
       }
@@ -41701,10 +42541,10 @@ var SCNRenderer = function (_NSObject) {
       }
       var prg = this._defaultHitTestProgram;
       var hitTestProgram = prg._glProgram;
-      this._useProgram(prg
+      this._useProgram(prg);
       //gl.useProgram(hitTestProgram)
 
-      );gl.bindFramebuffer(gl.FRAMEBUFFER, this._hitFrameBuffer);
+      gl.bindFramebuffer(gl.FRAMEBUFFER, this._hitFrameBuffer);
 
       gl.depthMask(true);
       gl.depthFunc(gl.LEQUAL);
@@ -41777,10 +42617,10 @@ var SCNRenderer = function (_NSObject) {
 
       var positionBuf = new Uint8Array(4);
       gl.readBuffer(gl.COLOR_ATTACHMENT2);
-      gl.readPixels(x, y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, positionBuf, 0
+      gl.readPixels(x, y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, positionBuf, 0);
       //const screenPos = new SCNVector3(positionBuf[0] / 127.5 - 1.0, positionBuf[1] / 127.5 - 1.0, positionBuf[2] / 127.5 - 1.0)
       //const position = screenPos.transform(viewProjectionTransform.invert())
-      );var p = ((positionBuf[3] / 255.0 + positionBuf[2]) / 255.0 + positionBuf[1] / 255.0 + positionBuf[0]) / 255.0;
+      var p = ((positionBuf[3] / 255.0 + positionBuf[2]) / 255.0 + positionBuf[1] / 255.0 + positionBuf[0]) / 255.0;
       var position = from.lerp(to, p);
 
       var normalBuf = new Uint8Array(4);
@@ -41852,10 +42692,10 @@ var SCNRenderer = function (_NSObject) {
       gl.disable(gl.BLEND);
       gl.clearColor(0, 0, 0, 0);
       gl.clearDepth(1.0);
-      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
       // screen position
-      );var x = (_from.x + 1.0) * 0.5 * this._viewRect.size.width;
+      var x = (_from.x + 1.0) * 0.5 * this._viewRect.size.width;
       var y = (_from.y + 1.0) * 0.5 * this._viewRect.size.height;
       // left top of the scissor area
       var areaSize = 3;
@@ -41926,10 +42766,10 @@ var SCNRenderer = function (_NSObject) {
 
       var positionBuf = new Uint8Array(4);
       gl.readBuffer(gl.COLOR_ATTACHMENT2);
-      gl.readPixels(x, y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, positionBuf, 0
+      gl.readPixels(x, y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, positionBuf, 0);
       //const screenPos = new SCNVector3(positionBuf[0] / 127.5 - 1.0, positionBuf[1] / 127.5 - 1.0, positionBuf[2] / 127.5 - 1.0)
       //const position = screenPos.transform(viewProjectionTransform.invert())
-      );var p = ((positionBuf[3] / 255.0 + positionBuf[2]) / 255.0 + positionBuf[1] / 255.0 + positionBuf[0]) / 255.0;
+      var p = ((positionBuf[3] / 255.0 + positionBuf[2]) / 255.0 + positionBuf[1] / 255.0 + positionBuf[0]) / 255.0;
       var screenPos = _from.lerp(_to, p);
       var position = screenPos.transform(viewProjectionTransform.invert());
 
@@ -42183,10 +43023,10 @@ var SCNRenderer = function (_NSObject) {
       var glProgram = p._getGLProgramForContext(gl);
 
       var vsText = this._vertexShaderForObject(obj);
-      var fsText = this._fragmentShaderForObject(obj
+      var fsText = this._fragmentShaderForObject(obj);
 
       // initialize vertex shader
-      );var vertexShader = gl.createShader(gl.VERTEX_SHADER);
+      var vertexShader = gl.createShader(gl.VERTEX_SHADER);
       gl.shaderSource(vertexShader, vsText);
       gl.compileShader(vertexShader);
       if (!gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS)) {
@@ -42206,10 +43046,10 @@ var SCNRenderer = function (_NSObject) {
       p._glFragmentShader = fragmentShader;
 
       gl.attachShader(glProgram, vertexShader);
-      gl.attachShader(glProgram, fragmentShader
+      gl.attachShader(glProgram, fragmentShader);
 
       // link program object
-      );gl.linkProgram(glProgram);
+      gl.linkProgram(glProgram);
       if (!gl.getProgramParameter(glProgram, gl.LINK_STATUS)) {
         var _info2 = gl.getProgramInfoLog(glProgram);
         throw new Error('program link error: ' + _info2);
@@ -42254,13 +43094,13 @@ var SCNRenderer = function (_NSObject) {
 
       var gl = this.context;
       var glProgram = program._getGLProgramForContext(gl);
-      gl.useProgram(glProgram
+      gl.useProgram(glProgram);
 
       // set dummy textures
-      );program._setDummyTextureForContext(gl
+      program._setDummyTextureForContext(gl);
 
       // set shadow textures
-      );var lights = this._lightNodes;
+      var lights = this._lightNodes;
       for (var i = 0; i < lights.directionalShadow.length; i++) {
         var node = lights.directionalShadow[i];
         var symbol = 'TEXTURE' + (i + 8);
@@ -42280,10 +43120,10 @@ var SCNRenderer = function (_NSObject) {
       gl.bindBufferBase(gl.UNIFORM_BUFFER, _lightLoc, this._lightBuffer);
       var scnLightsIndex = gl.getUniformBlockIndex(glProgram, 'SCNLightsUniform');
       gl.uniformBlockBinding(glProgram, scnLightsIndex, _scnLightsLoc);
-      gl.bindBufferBase(gl.UNIFORM_BUFFER, _scnLightsLoc, this._scnLightsBuffer
+      gl.bindBufferBase(gl.UNIFORM_BUFFER, _scnLightsLoc, this._scnLightsBuffer);
 
       // set uniform variables
-      );var uniformTime = gl.getUniformLocation(glProgram, 'u_time');
+      var uniformTime = gl.getUniformLocation(glProgram, 'u_time');
       if (uniformTime) {
         // this._time might be too large.
         var time = this._time % 100000.0;
@@ -42321,18 +43161,18 @@ var SCNRenderer = function (_NSObject) {
                   canvas.width = image.naturalWidth;
                   canvas.height = image.naturalHeight;
                   canvas.getContext('2d').drawImage(image, 0, 0);
-                  gl.bindTexture(gl.TEXTURE_2D, texture
+                  gl.bindTexture(gl.TEXTURE_2D, texture);
                   // texImage2D(target, level, internalformat, width, height, border, format, type, source)
                   // Safari complains that 'source' is not ArrayBufferView type, but WebGL2 should accept HTMLCanvasElement.
-                  );gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, image.width, image.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
+                  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, image.width, image.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
                   gl.generateMipmap(gl.TEXTURE_2D);
                   val._contents = texture;
                 }
                 if (val._contents instanceof WebGLTexture) {
                   gl.uniform1i(loc, textureNo);
-                  gl.activeTexture(gl['TEXTURE' + textureNo]
+                  gl.activeTexture(gl['TEXTURE' + textureNo]);
                   // TODO: check texture type
-                  );gl.bindTexture(gl.TEXTURE_2D, val._contents);
+                  gl.bindTexture(gl.TEXTURE_2D, val._contents);
                   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, val._magnificationFilterFor(gl));
                   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, val._minificationFilterFor(gl));
                   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, val._wrapSFor(gl));
@@ -42598,23 +43438,23 @@ var SCNRenderer = function (_NSObject) {
       _text = _text.replace(/float2/g, 'vec2');
       _text = _text.replace(/float3/g, 'vec3');
       _text = _text.replace(/float4/g, 'vec4');
-      _text = _text.replace(/scn_frame\.time/g, 'u_time'
+      _text = _text.replace(/scn_frame\.time/g, 'u_time');
       //_text = _text.replace(/#pragma alpha/g, '')
-      );_text = _text.replace(/half /g, 'float ' // FIXME: check semicolon before half
+      _text = _text.replace(/half /g, 'float '); // FIXME: check semicolon before half
 
-      );_text = _text.replace(/u_modelTransform/g, 'modelTransform' // TODO: use u_modelTransform
-      );_text = _text.replace(/u_viewTransform/g, 'camera.viewTransform' // TODO: use u_viewTransform
-      );_text = _text.replace(/u_inverseViewTransform/g, 'camera.inverseViewTransform' // TODO: use u_inverseViewTransform
-      );_text = _text.replace(/u_viewProjectionTransform/g, 'caemra.viewProjectionTransform' // TODO: use u_viewTransform
-      );_text = _text.replace(/\s*uniform[^;]*;/g, ''
+      _text = _text.replace(/u_modelTransform/g, 'modelTransform'); // TODO: use u_modelTransform
+      _text = _text.replace(/u_viewTransform/g, 'camera.viewTransform'); // TODO: use u_viewTransform
+      _text = _text.replace(/u_inverseViewTransform/g, 'camera.inverseViewTransform'); // TODO: use u_inverseViewTransform
+      _text = _text.replace(/u_viewProjectionTransform/g, 'caemra.viewProjectionTransform'); // TODO: use u_viewTransform
+      _text = _text.replace(/\s*uniform[^;]*;/g, '');
 
       // workaround for Badger...
-      );_text = _text.replace('uvs.x *= 2', 'uvs.x *= 2.0');
+      _text = _text.replace('uvs.x *= 2', 'uvs.x *= 2.0');
       _text = _text.replace('tn * 2 - 1', 'tn * 2.0 - vec3(1)');
-      _text = _text.replace('tn2 * 2 - 1', 'tn2 * 2.0 - vec3(1)'
+      _text = _text.replace('tn2 * 2 - 1', 'tn2 * 2.0 - vec3(1)');
 
       // workaround for Fox2...
-      );_text = _text.replace('pow(_surface.ambientOcclusion,3)', 'pow(_surface.ambientOcclusion,3.0)');
+      _text = _text.replace('pow(_surface.ambientOcclusion,3)', 'pow(_surface.ambientOcclusion,3.0)');
       _text = _text.replace('pow(AO,5)', 'pow(AO,5.0)');
       _text = _text.replace('pow(1.-fresnelBasis , 6)', 'pow(1.-fresnelBasis , 6.0)');
       _text = _text.replace('pow(1.-fresnelBasis , 4)', 'pow(1.-fresnelBasis , 4.0)');
@@ -42640,9 +43480,9 @@ var SCNRenderer = function (_NSObject) {
       var baseGeometry = node.geometry;
 
       // prepare vertex array data
-      var vertexBuffer = geometry._createVertexBuffer(gl, node
+      var vertexBuffer = geometry._createVertexBuffer(gl, node);
       // TODO: retain attribute locations
-      );var positionLoc = gl.getAttribLocation(glProgram, 'position');
+      var positionLoc = gl.getAttribLocation(glProgram, 'position');
       var normalLoc = gl.getAttribLocation(glProgram, 'normal');
       var tangentLoc = gl.getAttribLocation(glProgram, 'tangent');
       var colorLoc = gl.getAttribLocation(glProgram, 'color');
@@ -42657,10 +43497,10 @@ var SCNRenderer = function (_NSObject) {
         var element = node.presentation.geometry.geometryElements[i];
         var material = node.presentation.geometry.materials[i];
         var vao = gl.createVertexArray();
-        gl.bindVertexArray(vao
+        gl.bindVertexArray(vao);
 
         // initialize vertex buffer
-        );gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+        gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
 
         gl.bindAttribLocation(glProgram, positionLoc, 'position');
         gl.bindAttribLocation(glProgram, normalLoc, 'normal');
@@ -42669,12 +43509,12 @@ var SCNRenderer = function (_NSObject) {
         gl.bindAttribLocation(glProgram, texcoord0Loc, 'texcoord0');
         gl.bindAttribLocation(glProgram, texcoord1Loc, 'texcoord1');
         gl.bindAttribLocation(glProgram, boneIndicesLoc, 'boneIndices');
-        gl.bindAttribLocation(glProgram, boneWeightsLoc, 'boneWeights'
+        gl.bindAttribLocation(glProgram, boneWeightsLoc, 'boneWeights');
 
         // vertexAttribPointer(ulong idx, long size, ulong type, bool norm, long stride, ulong offset)
 
         // position
-        );var posSrc = geometry.getGeometrySourcesForSemantic(_SCNGeometrySource2.default.Semantic.vertex)[0];
+        var posSrc = geometry.getGeometrySourcesForSemantic(_SCNGeometrySource2.default.Semantic.vertex)[0];
         if (posSrc) {
           gl.enableVertexAttribArray(positionLoc);
           gl.vertexAttribPointer(positionLoc, posSrc.componentsPerVector, gl.FLOAT, false, posSrc.dataStride, posSrc.dataOffset);
@@ -42749,11 +43589,11 @@ var SCNRenderer = function (_NSObject) {
         }
 
         // FIXME: use setting
-        gl.disable(gl.CULL_FACE
+        gl.disable(gl.CULL_FACE);
 
         // initialize index buffer
         // FIXME: check geometrySource semantic
-        );var indexBuffer = element._createBuffer(gl);
+        var indexBuffer = element._createBuffer(gl);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
 
         geometry._vertexArrayObjects.push(vao);
@@ -42767,9 +43607,9 @@ var SCNRenderer = function (_NSObject) {
       var baseGeometry = node.geometry;
 
       // prepare vertex array data
-      var vertexBuffer = geometry._createVertexBuffer(gl, node
+      var vertexBuffer = geometry._createVertexBuffer(gl, node);
       // TODO: retain attribute locations
-      );var positionLoc = gl.getAttribLocation(glProgram, 'position');
+      var positionLoc = gl.getAttribLocation(glProgram, 'position');
       var boneIndicesLoc = gl.getAttribLocation(glProgram, 'boneIndices');
       var boneWeightsLoc = gl.getAttribLocation(glProgram, 'boneWeights');
 
@@ -42779,19 +43619,19 @@ var SCNRenderer = function (_NSObject) {
         var element = node.presentation.geometry.geometryElements[i];
         var material = node.presentation.geometry.materials[i];
         var shadowVAO = gl.createVertexArray();
-        gl.bindVertexArray(shadowVAO
+        gl.bindVertexArray(shadowVAO);
 
         // initialize vertex buffer
-        );gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+        gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
 
         gl.bindAttribLocation(glProgram, positionLoc, 'position');
         gl.bindAttribLocation(glProgram, boneIndicesLoc, 'boneIndices');
-        gl.bindAttribLocation(glProgram, boneWeightsLoc, 'boneWeights'
+        gl.bindAttribLocation(glProgram, boneWeightsLoc, 'boneWeights');
 
         // vertexAttribPointer(ulong idx, long size, ulong type, bool norm, long stride, ulong offset)
 
         // position
-        );var posSrc = geometry.getGeometrySourcesForSemantic(_SCNGeometrySource2.default.Semantic.vertex)[0];
+        var posSrc = geometry.getGeometrySourcesForSemantic(_SCNGeometrySource2.default.Semantic.vertex)[0];
         if (posSrc) {
           gl.enableVertexAttribArray(positionLoc);
           gl.vertexAttribPointer(positionLoc, posSrc.componentsPerVector, gl.FLOAT, false, posSrc.dataStride, posSrc.dataOffset);
@@ -42818,11 +43658,11 @@ var SCNRenderer = function (_NSObject) {
         }
 
         // FIXME: use setting
-        gl.disable(gl.CULL_FACE
+        gl.disable(gl.CULL_FACE);
 
         // initialize index buffer
         // FIXME: check geometrySource semantic
-        );var indexBuffer = element._createBuffer(gl);
+        var indexBuffer = element._createBuffer(gl);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
 
         geometry._shadowVAO.push(shadowVAO);
@@ -42855,12 +43695,12 @@ var SCNRenderer = function (_NSObject) {
         gl.bindAttribLocation(glProgram, positionLoc, 'position');
         gl.bindAttribLocation(glProgram, normalLoc, 'normal');
         gl.bindAttribLocation(glProgram, boneIndicesLoc, 'boneIndices');
-        gl.bindAttribLocation(glProgram, boneWeightsLoc, 'boneWeights'
+        gl.bindAttribLocation(glProgram, boneWeightsLoc, 'boneWeights');
 
         // vertexAttribPointer(ulong idx, long size, ulong type, bool norm, long stride, ulong offset)
 
         // position
-        );var posSrc = geometry.getGeometrySourcesForSemantic(_SCNGeometrySource2.default.Semantic.vertex)[0];
+        var posSrc = geometry.getGeometrySourcesForSemantic(_SCNGeometrySource2.default.Semantic.vertex)[0];
         if (posSrc) {
           gl.enableVertexAttribArray(positionLoc);
           gl.vertexAttribPointer(positionLoc, posSrc.componentsPerVector, gl.FLOAT, false, posSrc.dataStride, posSrc.dataOffset);
@@ -42985,10 +43825,10 @@ var SCNRenderer = function (_NSObject) {
 
       this.__dummyTexture = gl.createTexture();
 
-      gl.bindTexture(gl.TEXTURE_2D, this.__dummyTexture
+      gl.bindTexture(gl.TEXTURE_2D, this.__dummyTexture);
       // texImage2D(target, level, internalformat, width, height, border, format, type, source)
       // Safari complains that 'source' is not ArrayBufferView type, but WebGL2 should accept HTMLCanvasElement.
-      );gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
       gl.bindTexture(gl.TEXTURE_2D, null);
     }
 
@@ -43179,7 +44019,7 @@ var SCNRenderer = function (_NSObject) {
         // nothing to draw...
         return result;
       }
-      var invRay = rayVec.mul(-1
+      var invRay = rayVec.mul(-1);
 
       //console.log(`rayPoint: ${rayPoint.float32Array()}`)
       //console.log(`rayVec: ${rayVec.float32Array()}`)
@@ -43190,7 +44030,7 @@ var SCNRenderer = function (_NSObject) {
 
       // TODO: test the bounding box/sphere first for performance
 
-      );var source = geometry.getGeometrySourcesForSemantic(_SCNGeometrySource2.default.Semantic.vertex)[0];
+      var source = geometry.getGeometrySourcesForSemantic(_SCNGeometrySource2.default.Semantic.vertex)[0];
       var sourceLen = source.vectorCount;
       var sourceData = [];
       var modelTransform = node.presentation._worldTransform;
@@ -43563,10 +44403,10 @@ var SCNRenderer = function (_NSObject) {
       this.__defaultProgram._glFragmentShader = fragmentShader;
 
       gl.attachShader(glProgram, vertexShader);
-      gl.attachShader(glProgram, fragmentShader
+      gl.attachShader(glProgram, fragmentShader);
 
       // link program object
-      );gl.linkProgram(glProgram);
+      gl.linkProgram(glProgram);
       if (!gl.getProgramParameter(glProgram, gl.LINK_STATUS)) {
         var _info4 = gl.getProgramInfoLog(glProgram);
         throw new Error('program link error: ' + _info4);
@@ -43579,12 +44419,12 @@ var SCNRenderer = function (_NSObject) {
       gl.enable(gl.BLEND);
       gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
       gl.enable(gl.CULL_FACE);
-      gl.cullFace(gl.BACK
+      gl.cullFace(gl.BACK);
 
       // set default textures to prevent warnings
       //this._setDummyTextureAsDefault(p)
 
-      );return this.__defaultProgram;
+      return this.__defaultProgram;
     }
 
     /**
@@ -43630,10 +44470,10 @@ var SCNRenderer = function (_NSObject) {
       this.__defaultPBRProgram._glFragmentShader = fragmentShader;
 
       gl.attachShader(glProgram, vertexShader);
-      gl.attachShader(glProgram, fragmentShader
+      gl.attachShader(glProgram, fragmentShader);
 
       // link program object
-      );gl.linkProgram(glProgram);
+      gl.linkProgram(glProgram);
       if (!gl.getProgramParameter(glProgram, gl.LINK_STATUS)) {
         var _info6 = gl.getProgramInfoLog(glProgram);
         throw new Error('program link error: ' + _info6);
@@ -43646,12 +44486,12 @@ var SCNRenderer = function (_NSObject) {
       gl.enable(gl.BLEND);
       gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
       gl.enable(gl.CULL_FACE);
-      gl.cullFace(gl.BACK
+      gl.cullFace(gl.BACK);
 
       // set default textures to prevent warnings
       //this._setDummyTextureAsDefault(p)
 
-      );return this.__defaultPBRProgram;
+      return this.__defaultPBRProgram;
     }
   }, {
     key: '_defaultVertexShader',
@@ -43713,30 +44553,30 @@ var SCNRenderer = function (_NSObject) {
       }
 
       gl.attachShader(glProgram, vertexShader);
-      gl.attachShader(glProgram, fragmentShader
+      gl.attachShader(glProgram, fragmentShader);
 
       // link program object
-      );gl.linkProgram(glProgram);
+      gl.linkProgram(glProgram);
       if (!gl.getProgramParameter(glProgram, gl.LINK_STATUS)) {
         var _info8 = gl.getProgramInfoLog(glProgram);
         throw new Error('program link error: ' + _info8);
       }
 
       //gl.useProgram(glProgram)
-      this._useProgram(p
+      this._useProgram(p);
       //gl.clearColor(1, 1, 1, 1)
       //gl.clearDepth(1.0)
       //gl.clearStencil(0)
 
-      );gl.enable(gl.DEPTH_TEST);
+      gl.enable(gl.DEPTH_TEST);
       gl.depthFunc(gl.LEQUAL);
       gl.enable(gl.BLEND);
       gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
       gl.enable(gl.CULL_FACE);
-      gl.cullFace(gl.BACK
+      gl.cullFace(gl.BACK);
 
       // set default textures to prevent warnings
-      );this._setDummyParticleTextureAsDefault();
+      this._setDummyParticleTextureAsDefault();
 
       return this.__defaultParticleProgram;
     }
@@ -43780,27 +44620,27 @@ var SCNRenderer = function (_NSObject) {
       }
 
       gl.attachShader(glProgram, vertexShader);
-      gl.attachShader(glProgram, fragmentShader
+      gl.attachShader(glProgram, fragmentShader);
 
       // link program object
-      );gl.linkProgram(glProgram);
+      gl.linkProgram(glProgram);
       if (!gl.getProgramParameter(glProgram, gl.LINK_STATUS)) {
         var _info10 = gl.getProgramInfoLog(glProgram);
         throw new Error('program link error: ' + _info10);
       }
 
       //gl.useProgram(glProgram)
-      this._useProgram(p
+      this._useProgram(p);
       //gl.clearColor(1, 1, 1, 1)
       //gl.clearDepth(1.0)
       //gl.clearStencil(0)
 
-      );gl.enable(gl.DEPTH_TEST);
-      gl.depthFunc(gl.LEQUAL
+      gl.enable(gl.DEPTH_TEST);
+      gl.depthFunc(gl.LEQUAL);
       //gl.enable(gl.BLEND)
-      );gl.disable(gl.BLEND
+      gl.disable(gl.BLEND);
       //gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
-      );gl.enable(gl.CULL_FACE);
+      gl.enable(gl.CULL_FACE);
       gl.cullFace(gl.BACK);
 
       return this.__defaultShadowProgram;
@@ -43839,31 +44679,31 @@ var SCNRenderer = function (_NSObject) {
       }
 
       gl.attachShader(glProgram, vertexShader);
-      gl.attachShader(glProgram, fragmentShader
+      gl.attachShader(glProgram, fragmentShader);
 
       // link program object
-      );gl.linkProgram(glProgram);
+      gl.linkProgram(glProgram);
       if (!gl.getProgramParameter(glProgram, gl.LINK_STATUS)) {
         var _info12 = gl.getProgramInfoLog(glProgram);
         throw new Error('program link error: ' + _info12);
       }
 
       //gl.useProgram(glProgram)
-      this._useProgram(p
+      this._useProgram(p);
       //gl.clearColor(1, 1, 1, 1)
       //gl.clearDepth(1.0)
       //gl.clearStencil(0)
 
-      );gl.enable(gl.DEPTH_TEST);
+      gl.enable(gl.DEPTH_TEST);
       gl.depthFunc(gl.LEQUAL);
       gl.enable(gl.BLEND);
       gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
       gl.enable(gl.CULL_FACE);
-      gl.cullFace(gl.BACK
+      gl.cullFace(gl.BACK);
 
       //this._setDummyHitTestTextureAsDefault()
 
-      );return this.__defaultHitTestProgram;
+      return this.__defaultHitTestProgram;
     }
   }]);
 
@@ -43873,7 +44713,7 @@ var SCNRenderer = function (_NSObject) {
 exports.default = SCNRenderer;
 
 /***/ }),
-/* 118 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -43887,7 +44727,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _CGPoint = __webpack_require__(10);
+var _CGPoint = __webpack_require__(8);
 
 var _CGPoint2 = _interopRequireDefault(_CGPoint);
 
@@ -43895,7 +44735,7 @@ var _CGRect = __webpack_require__(16);
 
 var _CGRect2 = _interopRequireDefault(_CGRect);
 
-var _CGSize = __webpack_require__(8);
+var _CGSize = __webpack_require__(9);
 
 var _CGSize2 = _interopRequireDefault(_CGSize);
 
@@ -43907,11 +44747,11 @@ var _SKColor = __webpack_require__(2);
 
 var _SKColor2 = _interopRequireDefault(_SKColor);
 
-var _SKNode2 = __webpack_require__(19);
+var _SKNode2 = __webpack_require__(20);
 
 var _SKNode3 = _interopRequireDefault(_SKNode2);
 
-var _SKTexture = __webpack_require__(55);
+var _SKTexture = __webpack_require__(56);
 
 var _SKTexture2 = _interopRequireDefault(_SKTexture);
 
@@ -44091,11 +44931,10 @@ var SKSpriteNode = function (_SKNode) {
     _this._loadingImagePromise = null;
 
     if (name !== null) {
-      _this.texture = _SKTexture2.default.textureWithImageNamed(name
+      _this.texture = _SKTexture2.default.textureWithImageNamed(name);
       //if(generateNormalMap){
       //  this.normalTexture = this.texture.generatingNormalMap()
       //}
-      );
     }
     return _this;
   }
@@ -44264,10 +45103,10 @@ var SKSpriteNode = function (_SKNode) {
       }
 
       gl.attachShader(program, vertexShader);
-      gl.attachShader(program, fragmentShader
+      gl.attachShader(program, fragmentShader);
 
       // link program object
-      );gl.linkProgram(program);
+      gl.linkProgram(program);
       if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
         var _info2 = gl.getProgramInfoLog(program);
         throw new Error('program link error: ' + _info2);
@@ -44296,15 +45135,15 @@ var SKSpriteNode = function (_SKNode) {
 
       var positionLoc = gl.getAttribLocation(program, 'position');
       gl.bindAttribLocation(program, positionLoc, 'position');
-      gl.enableVertexAttribArray(positionLoc
+      gl.enableVertexAttribArray(positionLoc);
       // idx, size, type, norm, stride, offset
-      );gl.vertexAttribPointer(positionLoc, 3, gl.FLOAT, false, 20, 0);
+      gl.vertexAttribPointer(positionLoc, 3, gl.FLOAT, false, 20, 0);
 
       var texcoordLoc = gl.getAttribLocation(program, 'texcoord');
       gl.bindAttribLocation(program, texcoordLoc, 'texcoord');
-      gl.enableVertexAttribArray(texcoordLoc
+      gl.enableVertexAttribArray(texcoordLoc);
       // idx, size, type, norm, stride, offset
-      );gl.vertexAttribPointer(texcoordLoc, 2, gl.FLOAT, false, 20, 12);
+      gl.vertexAttribPointer(texcoordLoc, 2, gl.FLOAT, false, 20, 12);
 
       this._indexBuffer = gl.createBuffer();
       var indexData = new Uint8Array([0, 3, 2, 0, 1, 3]);
@@ -44439,7 +45278,7 @@ var SKSpriteNode = function (_SKNode) {
 exports.default = SKSpriteNode;
 
 /***/ }),
-/* 119 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44464,7 +45303,7 @@ var SKTextureFilteringMode = {
 exports.default = SKTextureFilteringMode;
 
 /***/ }),
-/* 120 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44497,7 +45336,7 @@ var SCNRenderingAPI = {
 exports.default = SCNRenderingAPI;
 
 /***/ }),
-/* 121 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44507,7 +45346,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _SKNode2 = __webpack_require__(19);
+var _SKNode2 = __webpack_require__(20);
 
 var _SKNode3 = _interopRequireDefault(_SKNode2);
 
@@ -44642,7 +45481,7 @@ var SKEffectNode = function (_SKNode) {
 exports.default = SKEffectNode;
 
 /***/ }),
-/* 122 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44669,7 +45508,7 @@ var SKLabelHorizontalAlignmentMode = {
 exports.default = SKLabelHorizontalAlignmentMode;
 
 /***/ }),
-/* 123 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44698,7 +45537,7 @@ var SKLabelVerticalAlignmentMode = {
 exports.default = SKLabelVerticalAlignmentMode;
 
 /***/ }),
-/* 124 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44727,61 +45566,61 @@ var SKSceneScaleMode = {
 exports.default = SKSceneScaleMode;
 
 /***/ }),
-/* 125 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _NSColor = __webpack_require__(126);
+var _NSColor = __webpack_require__(128);
 
 var _NSColor2 = _interopRequireDefault(_NSColor);
 
-var _NSColorSpaceModel = __webpack_require__(131);
+var _NSColorSpaceModel = __webpack_require__(133);
 
 var _NSColorSpaceModel2 = _interopRequireDefault(_NSColorSpaceModel);
 
-var _AVAudioMixerNode = __webpack_require__(56);
+var _AVAudioMixerNode = __webpack_require__(57);
 
 var _AVAudioMixerNode2 = _interopRequireDefault(_AVAudioMixerNode);
 
-var _AVAudioNode = __webpack_require__(57);
+var _AVAudioNode = __webpack_require__(58);
 
 var _AVAudioNode2 = _interopRequireDefault(_AVAudioNode);
 
-var _CFAbsoluteTimeGetCurrent = __webpack_require__(132);
+var _CFAbsoluteTimeGetCurrent = __webpack_require__(134);
 
 var _CFAbsoluteTimeGetCurrent2 = _interopRequireDefault(_CFAbsoluteTimeGetCurrent);
 
-var _CGBlendMode = __webpack_require__(133);
+var _CGBlendMode = __webpack_require__(135);
 
 var _CGBlendMode2 = _interopRequireDefault(_CGBlendMode);
 
-var _CGLineCap = __webpack_require__(58);
+var _CGLineCap = __webpack_require__(59);
 
 var _CGLineCap2 = _interopRequireDefault(_CGLineCap);
 
-var _CGLineJoin = __webpack_require__(59);
+var _CGLineJoin = __webpack_require__(60);
 
 var _CGLineJoin2 = _interopRequireDefault(_CGLineJoin);
 
-var _CGMutablePath = __webpack_require__(134);
+var _CGMutablePath = __webpack_require__(136);
 
 var _CGMutablePath2 = _interopRequireDefault(_CGMutablePath);
 
-var _CGPath = __webpack_require__(135);
+var _CGPath = __webpack_require__(137);
 
 var _CGPath2 = _interopRequireDefault(_CGPath);
 
-var _CGPathApplierFunction = __webpack_require__(136);
+var _CGPathApplierFunction = __webpack_require__(138);
 
 var _CGPathApplierFunction2 = _interopRequireDefault(_CGPathApplierFunction);
 
-var _CGPathFillRule = __webpack_require__(137);
+var _CGPathFillRule = __webpack_require__(139);
 
 var _CGPathFillRule2 = _interopRequireDefault(_CGPathFillRule);
 
-var _CGPoint = __webpack_require__(10);
+var _CGPoint = __webpack_require__(8);
 
 var _CGPoint2 = _interopRequireDefault(_CGPoint);
 
@@ -44789,35 +45628,35 @@ var _CGRect = __webpack_require__(16);
 
 var _CGRect2 = _interopRequireDefault(_CGRect);
 
-var _CGSize = __webpack_require__(8);
+var _CGSize = __webpack_require__(9);
 
 var _CGSize2 = _interopRequireDefault(_CGSize);
 
-var _CGVector = __webpack_require__(60);
+var _CGVector = __webpack_require__(61);
 
 var _CGVector2 = _interopRequireDefault(_CGVector);
 
-var _DispatchObject = __webpack_require__(61);
+var _DispatchObject = __webpack_require__(62);
 
 var _DispatchObject2 = _interopRequireDefault(_DispatchObject);
 
-var _DispatchQueue = __webpack_require__(138);
+var _DispatchQueue = __webpack_require__(140);
 
 var _DispatchQueue2 = _interopRequireDefault(_DispatchQueue);
 
-var _DispatchTime = __webpack_require__(139);
+var _DispatchTime = __webpack_require__(141);
 
 var _DispatchTime2 = _interopRequireDefault(_DispatchTime);
 
-var _DispatchTimeInterval = __webpack_require__(140);
+var _DispatchTimeInterval = __webpack_require__(142);
 
 var _DispatchTimeInterval2 = _interopRequireDefault(_DispatchTimeInterval);
 
-var _NotificationCenter = __webpack_require__(141);
+var _NotificationCenter = __webpack_require__(143);
 
 var _NotificationCenter2 = _interopRequireDefault(_NotificationCenter);
 
-var _NSArray = __webpack_require__(67);
+var _NSArray = __webpack_require__(68);
 
 var _NSArray2 = _interopRequireDefault(_NSArray);
 
@@ -44825,7 +45664,7 @@ var _NSCoder = __webpack_require__(39);
 
 var _NSCoder2 = _interopRequireDefault(_NSCoder);
 
-var _NSColorSpace = __webpack_require__(142);
+var _NSColorSpace = __webpack_require__(144);
 
 var _NSColorSpace2 = _interopRequireDefault(_NSColorSpace);
 
@@ -44833,11 +45672,11 @@ var _NSData = __webpack_require__(40);
 
 var _NSData2 = _interopRequireDefault(_NSData);
 
-var _NSDictionary = __webpack_require__(68);
+var _NSDictionary = __webpack_require__(69);
 
 var _NSDictionary2 = _interopRequireDefault(_NSDictionary);
 
-var _NSKeyedArchiver = __webpack_require__(143);
+var _NSKeyedArchiver = __webpack_require__(145);
 
 var _NSKeyedArchiver2 = _interopRequireDefault(_NSKeyedArchiver);
 
@@ -44845,27 +45684,27 @@ var _NSKeyedUnarchiver = __webpack_require__(41);
 
 var _NSKeyedUnarchiver2 = _interopRequireDefault(_NSKeyedUnarchiver);
 
-var _NSMutableArray = __webpack_require__(144);
+var _NSMutableArray = __webpack_require__(146);
 
 var _NSMutableArray2 = _interopRequireDefault(_NSMutableArray);
 
-var _NSMutableData = __webpack_require__(145);
+var _NSMutableData = __webpack_require__(147);
 
 var _NSMutableData2 = _interopRequireDefault(_NSMutableData);
 
-var _NSMutableDictionary = __webpack_require__(146);
+var _NSMutableDictionary = __webpack_require__(148);
 
 var _NSMutableDictionary2 = _interopRequireDefault(_NSMutableDictionary);
 
-var _NSNotification = __webpack_require__(62);
+var _NSNotification = __webpack_require__(63);
 
 var _NSNotification2 = _interopRequireDefault(_NSNotification);
 
-var _NSURL = __webpack_require__(147);
+var _NSURL = __webpack_require__(149);
 
 var _NSURL2 = _interopRequireDefault(_NSURL);
 
-var _NSValue = __webpack_require__(148);
+var _NSValue = __webpack_require__(150);
 
 var _NSValue2 = _interopRequireDefault(_NSValue);
 
@@ -44873,7 +45712,7 @@ var _GCController = __webpack_require__(29);
 
 var _GCController2 = _interopRequireDefault(_GCController);
 
-var _GCControllerAxisInput = __webpack_require__(64);
+var _GCControllerAxisInput = __webpack_require__(65);
 
 var _GCControllerAxisInput2 = _interopRequireDefault(_GCControllerAxisInput);
 
@@ -44889,23 +45728,23 @@ var _GCControllerElement = __webpack_require__(31);
 
 var _GCControllerElement2 = _interopRequireDefault(_GCControllerElement);
 
-var _GCExtendedGamepad = __webpack_require__(65);
+var _GCExtendedGamepad = __webpack_require__(66);
 
 var _GCExtendedGamepad2 = _interopRequireDefault(_GCExtendedGamepad);
 
-var _GCGamepad = __webpack_require__(63);
+var _GCGamepad = __webpack_require__(64);
 
 var _GCGamepad2 = _interopRequireDefault(_GCGamepad);
 
-var _GCMicroGamepad = __webpack_require__(66);
+var _GCMicroGamepad = __webpack_require__(67);
 
 var _GCMicroGamepad2 = _interopRequireDefault(_GCMicroGamepad);
 
-var _GKAgent = __webpack_require__(44);
+var _GKAgent = __webpack_require__(45);
 
 var _GKAgent2 = _interopRequireDefault(_GKAgent);
 
-var _GKAgent2D = __webpack_require__(149);
+var _GKAgent2D = __webpack_require__(151);
 
 var _GKAgent2D2 = _interopRequireDefault(_GKAgent2D);
 
@@ -44929,15 +45768,15 @@ var _GKGoal = __webpack_require__(73);
 
 var _GKGoal2 = _interopRequireDefault(_GKGoal);
 
-var _GKPath = __webpack_require__(150);
+var _GKPath = __webpack_require__(152);
 
 var _GKPath2 = _interopRequireDefault(_GKPath);
 
-var _GKScene = __webpack_require__(151);
+var _GKScene = __webpack_require__(153);
 
 var _GKScene2 = _interopRequireDefault(_GKScene);
 
-var _GKSCNNodeComponent = __webpack_require__(152);
+var _GKSCNNodeComponent = __webpack_require__(154);
 
 var _GKSCNNodeComponent2 = _interopRequireDefault(_GKSCNNodeComponent);
 
@@ -44949,7 +45788,7 @@ var _NSObject = __webpack_require__(0);
 
 var _NSObject2 = _interopRequireDefault(_NSObject);
 
-var _CAAction = __webpack_require__(153);
+var _CAAction = __webpack_require__(155);
 
 var _CAAction2 = _interopRequireDefault(_CAAction);
 
@@ -44957,7 +45796,7 @@ var _CAAnimation = __webpack_require__(24);
 
 var _CAAnimation2 = _interopRequireDefault(_CAAnimation);
 
-var _CAAnimationDelegate = __webpack_require__(154);
+var _CAAnimationDelegate = __webpack_require__(156);
 
 var _CAAnimationDelegate2 = _interopRequireDefault(_CAAnimationDelegate);
 
@@ -44965,11 +45804,11 @@ var _CAAnimationGroup = __webpack_require__(76);
 
 var _CAAnimationGroup2 = _interopRequireDefault(_CAAnimationGroup);
 
-var _CABasicAnimation = __webpack_require__(45);
+var _CABasicAnimation = __webpack_require__(46);
 
 var _CABasicAnimation2 = _interopRequireDefault(_CABasicAnimation);
 
-var _CACurrentMediaTime = __webpack_require__(155);
+var _CACurrentMediaTime = __webpack_require__(157);
 
 var _CACurrentMediaTime2 = _interopRequireDefault(_CACurrentMediaTime);
 
@@ -44977,19 +45816,19 @@ var _CAKeyframeAnimation = __webpack_require__(77);
 
 var _CAKeyframeAnimation2 = _interopRequireDefault(_CAKeyframeAnimation);
 
-var _CAMediaTiming = __webpack_require__(156);
+var _CAMediaTiming = __webpack_require__(158);
 
 var _CAMediaTiming2 = _interopRequireDefault(_CAMediaTiming);
 
-var _CAMediaTimingFunction = __webpack_require__(47);
+var _CAMediaTimingFunction = __webpack_require__(48);
 
 var _CAMediaTimingFunction2 = _interopRequireDefault(_CAMediaTimingFunction);
 
-var _CAPropertyAnimation = __webpack_require__(46);
+var _CAPropertyAnimation = __webpack_require__(47);
 
 var _CAPropertyAnimation2 = _interopRequireDefault(_CAPropertyAnimation);
 
-var _CATransform3D = __webpack_require__(157);
+var _CATransform3D = __webpack_require__(159);
 
 var _CATransform3D2 = _interopRequireDefault(_CATransform3D);
 
@@ -45029,7 +45868,11 @@ var _SCNDefaultVertexShader2 = __webpack_require__(86);
 
 var _SCNDefaultVertexShader3 = _interopRequireDefault(_SCNDefaultVertexShader2);
 
-var _SCNAccelerationConstraint = __webpack_require__(158);
+var _SCNObjLoader2 = __webpack_require__(87);
+
+var _SCNObjLoader3 = _interopRequireDefault(_SCNObjLoader2);
+
+var _SCNAccelerationConstraint = __webpack_require__(160);
 
 var _SCNAccelerationConstraint2 = _interopRequireDefault(_SCNAccelerationConstraint);
 
@@ -45037,75 +45880,75 @@ var _SCNAction = __webpack_require__(4);
 
 var _SCNAction2 = _interopRequireDefault(_SCNAction);
 
-var _SCNActionable = __webpack_require__(159);
+var _SCNActionable = __webpack_require__(161);
 
 var _SCNActionable2 = _interopRequireDefault(_SCNActionable);
 
-var _SCNActionCustom = __webpack_require__(160);
+var _SCNActionCustom = __webpack_require__(162);
 
 var _SCNActionCustom2 = _interopRequireDefault(_SCNActionCustom);
 
-var _SCNActionFade = __webpack_require__(161);
+var _SCNActionFade = __webpack_require__(163);
 
 var _SCNActionFade2 = _interopRequireDefault(_SCNActionFade);
 
-var _SCNActionGroup = __webpack_require__(162);
+var _SCNActionGroup = __webpack_require__(164);
 
 var _SCNActionGroup2 = _interopRequireDefault(_SCNActionGroup);
 
-var _SCNActionHide = __webpack_require__(163);
+var _SCNActionHide = __webpack_require__(165);
 
 var _SCNActionHide2 = _interopRequireDefault(_SCNActionHide);
 
-var _SCNActionJavaScript = __webpack_require__(164);
+var _SCNActionJavaScript = __webpack_require__(166);
 
 var _SCNActionJavaScript2 = _interopRequireDefault(_SCNActionJavaScript);
 
-var _SCNActionMove = __webpack_require__(165);
+var _SCNActionMove = __webpack_require__(167);
 
 var _SCNActionMove2 = _interopRequireDefault(_SCNActionMove);
 
-var _SCNActionPerformSelector = __webpack_require__(166);
+var _SCNActionPerformSelector = __webpack_require__(168);
 
 var _SCNActionPerformSelector2 = _interopRequireDefault(_SCNActionPerformSelector);
 
-var _SCNActionPlaySound = __webpack_require__(167);
+var _SCNActionPlaySound = __webpack_require__(169);
 
 var _SCNActionPlaySound2 = _interopRequireDefault(_SCNActionPlaySound);
 
-var _SCNActionReference = __webpack_require__(168);
+var _SCNActionReference = __webpack_require__(170);
 
 var _SCNActionReference2 = _interopRequireDefault(_SCNActionReference);
 
-var _SCNActionRemove = __webpack_require__(169);
+var _SCNActionRemove = __webpack_require__(171);
 
 var _SCNActionRemove2 = _interopRequireDefault(_SCNActionRemove);
 
-var _SCNActionRepeat = __webpack_require__(170);
+var _SCNActionRepeat = __webpack_require__(172);
 
 var _SCNActionRepeat2 = _interopRequireDefault(_SCNActionRepeat);
 
-var _SCNActionRotate = __webpack_require__(171);
+var _SCNActionRotate = __webpack_require__(173);
 
 var _SCNActionRotate2 = _interopRequireDefault(_SCNActionRotate);
 
-var _SCNActionRunAction = __webpack_require__(172);
+var _SCNActionRunAction = __webpack_require__(174);
 
 var _SCNActionRunAction2 = _interopRequireDefault(_SCNActionRunAction);
 
-var _SCNActionRunBlock = __webpack_require__(173);
+var _SCNActionRunBlock = __webpack_require__(175);
 
 var _SCNActionRunBlock2 = _interopRequireDefault(_SCNActionRunBlock);
 
-var _SCNActionScale = __webpack_require__(174);
+var _SCNActionScale = __webpack_require__(176);
 
 var _SCNActionScale2 = _interopRequireDefault(_SCNActionScale);
 
-var _SCNActionSequence = __webpack_require__(175);
+var _SCNActionSequence = __webpack_require__(177);
 
 var _SCNActionSequence2 = _interopRequireDefault(_SCNActionSequence);
 
-var _SCNActionTimingFunction = __webpack_require__(176);
+var _SCNActionTimingFunction = __webpack_require__(178);
 
 var _SCNActionTimingFunction2 = _interopRequireDefault(_SCNActionTimingFunction);
 
@@ -45113,59 +45956,59 @@ var _SCNActionTimingMode = __webpack_require__(5);
 
 var _SCNActionTimingMode2 = _interopRequireDefault(_SCNActionTimingMode);
 
-var _SCNActionWait = __webpack_require__(177);
+var _SCNActionWait = __webpack_require__(179);
 
 var _SCNActionWait2 = _interopRequireDefault(_SCNActionWait);
 
-var _SCNAnimatable = __webpack_require__(178);
+var _SCNAnimatable = __webpack_require__(180);
 
 var _SCNAnimatable2 = _interopRequireDefault(_SCNAnimatable);
 
-var _SCNAnimation = __webpack_require__(95);
+var _SCNAnimation = __webpack_require__(97);
 
 var _SCNAnimation2 = _interopRequireDefault(_SCNAnimation);
 
-var _SCNAnimationEvent = __webpack_require__(179);
+var _SCNAnimationEvent = __webpack_require__(181);
 
 var _SCNAnimationEvent2 = _interopRequireDefault(_SCNAnimationEvent);
 
-var _SCNAnimationEventBlock = __webpack_require__(180);
+var _SCNAnimationEventBlock = __webpack_require__(182);
 
 var _SCNAnimationEventBlock2 = _interopRequireDefault(_SCNAnimationEventBlock);
 
-var _SCNAnimationPlayer = __webpack_require__(181);
+var _SCNAnimationPlayer = __webpack_require__(183);
 
 var _SCNAnimationPlayer2 = _interopRequireDefault(_SCNAnimationPlayer);
 
-var _SCNAntialiasingMode = __webpack_require__(96);
+var _SCNAntialiasingMode = __webpack_require__(98);
 
 var _SCNAntialiasingMode2 = _interopRequireDefault(_SCNAntialiasingMode);
 
-var _SCNAudioPlayer = __webpack_require__(182);
+var _SCNAudioPlayer = __webpack_require__(184);
 
 var _SCNAudioPlayer2 = _interopRequireDefault(_SCNAudioPlayer);
 
-var _SCNAudioSource = __webpack_require__(183);
+var _SCNAudioSource = __webpack_require__(185);
 
 var _SCNAudioSource2 = _interopRequireDefault(_SCNAudioSource);
 
-var _SCNBillboardAxis = __webpack_require__(184);
+var _SCNBillboardAxis = __webpack_require__(186);
 
 var _SCNBillboardAxis2 = _interopRequireDefault(_SCNBillboardAxis);
 
-var _SCNBillboardConstraint = __webpack_require__(185);
+var _SCNBillboardConstraint = __webpack_require__(187);
 
 var _SCNBillboardConstraint2 = _interopRequireDefault(_SCNBillboardConstraint);
 
-var _SCNBindingBlock = __webpack_require__(186);
+var _SCNBindingBlock = __webpack_require__(188);
 
 var _SCNBindingBlock2 = _interopRequireDefault(_SCNBindingBlock);
 
-var _SCNBlendMode = __webpack_require__(88);
+var _SCNBlendMode = __webpack_require__(89);
 
 var _SCNBlendMode2 = _interopRequireDefault(_SCNBlendMode);
 
-var _SCNBoundingVolume = __webpack_require__(187);
+var _SCNBoundingVolume = __webpack_require__(189);
 
 var _SCNBoundingVolume2 = _interopRequireDefault(_SCNBoundingVolume);
 
@@ -45173,79 +46016,79 @@ var _SCNBox = __webpack_require__(34);
 
 var _SCNBox2 = _interopRequireDefault(_SCNBox);
 
-var _SCNBufferBindingBlock = __webpack_require__(188);
+var _SCNBufferBindingBlock = __webpack_require__(190);
 
 var _SCNBufferBindingBlock2 = _interopRequireDefault(_SCNBufferBindingBlock);
 
-var _SCNBufferFrequency = __webpack_require__(189);
+var _SCNBufferFrequency = __webpack_require__(191);
 
 var _SCNBufferFrequency2 = _interopRequireDefault(_SCNBufferFrequency);
 
-var _SCNBufferStream = __webpack_require__(190);
+var _SCNBufferStream = __webpack_require__(192);
 
 var _SCNBufferStream2 = _interopRequireDefault(_SCNBufferStream);
 
-var _SCNCamera = __webpack_require__(97);
+var _SCNCamera = __webpack_require__(99);
 
 var _SCNCamera2 = _interopRequireDefault(_SCNCamera);
 
-var _SCNCameraProjectionDirection = __webpack_require__(98);
+var _SCNCameraProjectionDirection = __webpack_require__(100);
 
 var _SCNCameraProjectionDirection2 = _interopRequireDefault(_SCNCameraProjectionDirection);
 
-var _SCNCapsule = __webpack_require__(49);
+var _SCNCapsule = __webpack_require__(50);
 
 var _SCNCapsule2 = _interopRequireDefault(_SCNCapsule);
 
-var _SCNChamferMode = __webpack_require__(191);
+var _SCNChamferMode = __webpack_require__(193);
 
 var _SCNChamferMode2 = _interopRequireDefault(_SCNChamferMode);
 
-var _SCNColorMask = __webpack_require__(89);
+var _SCNColorMask = __webpack_require__(90);
 
 var _SCNColorMask2 = _interopRequireDefault(_SCNColorMask);
 
-var _SCNCone = __webpack_require__(192);
+var _SCNCone = __webpack_require__(194);
 
 var _SCNCone2 = _interopRequireDefault(_SCNCone);
 
-var _SCNConstraint = __webpack_require__(17);
+var _SCNConstraint = __webpack_require__(19);
 
 var _SCNConstraint2 = _interopRequireDefault(_SCNConstraint);
 
-var _SCNCullMode = __webpack_require__(48);
+var _SCNCullMode = __webpack_require__(49);
 
 var _SCNCullMode2 = _interopRequireDefault(_SCNCullMode);
 
-var _SCNCylinder = __webpack_require__(193);
+var _SCNCylinder = __webpack_require__(195);
 
 var _SCNCylinder2 = _interopRequireDefault(_SCNCylinder);
 
-var _SCNDebugOptions = __webpack_require__(194);
+var _SCNDebugOptions = __webpack_require__(196);
 
 var _SCNDebugOptions2 = _interopRequireDefault(_SCNDebugOptions);
 
-var _SCNDistanceConstraint = __webpack_require__(195);
+var _SCNDistanceConstraint = __webpack_require__(197);
 
 var _SCNDistanceConstraint2 = _interopRequireDefault(_SCNDistanceConstraint);
 
-var _SCNFieldForceEvaluator = __webpack_require__(196);
+var _SCNFieldForceEvaluator = __webpack_require__(198);
 
 var _SCNFieldForceEvaluator2 = _interopRequireDefault(_SCNFieldForceEvaluator);
 
-var _SCNFillMode = __webpack_require__(90);
+var _SCNFillMode = __webpack_require__(91);
 
 var _SCNFillMode2 = _interopRequireDefault(_SCNFillMode);
 
-var _SCNFilterMode = __webpack_require__(91);
+var _SCNFilterMode = __webpack_require__(92);
 
 var _SCNFilterMode2 = _interopRequireDefault(_SCNFilterMode);
 
-var _SCNFloor = __webpack_require__(197);
+var _SCNFloor = __webpack_require__(199);
 
 var _SCNFloor2 = _interopRequireDefault(_SCNFloor);
 
-var _SCNGeometry = __webpack_require__(9);
+var _SCNGeometry = __webpack_require__(10);
 
 var _SCNGeometry2 = _interopRequireDefault(_SCNGeometry);
 
@@ -45253,7 +46096,7 @@ var _SCNGeometryElement = __webpack_require__(15);
 
 var _SCNGeometryElement2 = _interopRequireDefault(_SCNGeometryElement);
 
-var _SCNGeometryPrimitiveType = __webpack_require__(13);
+var _SCNGeometryPrimitiveType = __webpack_require__(14);
 
 var _SCNGeometryPrimitiveType2 = _interopRequireDefault(_SCNGeometryPrimitiveType);
 
@@ -45261,39 +46104,39 @@ var _SCNGeometrySource = __webpack_require__(6);
 
 var _SCNGeometrySource2 = _interopRequireDefault(_SCNGeometrySource);
 
-var _SCNGeometryTessellator = __webpack_require__(198);
+var _SCNGeometryTessellator = __webpack_require__(200);
 
 var _SCNGeometryTessellator2 = _interopRequireDefault(_SCNGeometryTessellator);
 
-var _SCNHitTestOption = __webpack_require__(100);
+var _SCNHitTestOption = __webpack_require__(102);
 
 var _SCNHitTestOption2 = _interopRequireDefault(_SCNHitTestOption);
 
-var _SCNHitTestResult = __webpack_require__(50);
+var _SCNHitTestResult = __webpack_require__(51);
 
 var _SCNHitTestResult2 = _interopRequireDefault(_SCNHitTestResult);
 
-var _SCNIKConstraint = __webpack_require__(199);
+var _SCNIKConstraint = __webpack_require__(201);
 
 var _SCNIKConstraint2 = _interopRequireDefault(_SCNIKConstraint);
 
-var _SCNLayer = __webpack_require__(200);
+var _SCNLayer = __webpack_require__(202);
 
 var _SCNLayer2 = _interopRequireDefault(_SCNLayer);
 
-var _SCNLevelOfDetail = __webpack_require__(201);
+var _SCNLevelOfDetail = __webpack_require__(203);
 
 var _SCNLevelOfDetail2 = _interopRequireDefault(_SCNLevelOfDetail);
 
-var _SCNLight = __webpack_require__(101);
+var _SCNLight = __webpack_require__(103);
 
 var _SCNLight2 = _interopRequireDefault(_SCNLight);
 
-var _SCNLookAtConstraint = __webpack_require__(202);
+var _SCNLookAtConstraint = __webpack_require__(204);
 
 var _SCNLookAtConstraint2 = _interopRequireDefault(_SCNLookAtConstraint);
 
-var _SCNMaterial = __webpack_require__(12);
+var _SCNMaterial = __webpack_require__(13);
 
 var _SCNMaterial2 = _interopRequireDefault(_SCNMaterial);
 
@@ -45305,31 +46148,31 @@ var _SCNMatrix = __webpack_require__(7);
 
 var _SCNMatrix2 = _interopRequireDefault(_SCNMatrix);
 
-var _SCNMatrix4EqualToMatrix = __webpack_require__(203);
+var _SCNMatrix4EqualToMatrix = __webpack_require__(205);
 
 var _SCNMatrix4EqualToMatrix2 = _interopRequireDefault(_SCNMatrix4EqualToMatrix);
 
-var _SCNMatrix4FromGLKMatrix = __webpack_require__(204);
+var _SCNMatrix4FromGLKMatrix = __webpack_require__(206);
 
 var _SCNMatrix4FromGLKMatrix2 = _interopRequireDefault(_SCNMatrix4FromGLKMatrix);
 
-var _SCNMatrix4FromMat = __webpack_require__(205);
+var _SCNMatrix4FromMat = __webpack_require__(207);
 
 var _SCNMatrix4FromMat2 = _interopRequireDefault(_SCNMatrix4FromMat);
 
-var _SCNMatrix4Invert = __webpack_require__(206);
+var _SCNMatrix4Invert = __webpack_require__(208);
 
 var _SCNMatrix4Invert2 = _interopRequireDefault(_SCNMatrix4Invert);
 
-var _SCNMatrix4IsIdentity = __webpack_require__(207);
+var _SCNMatrix4IsIdentity = __webpack_require__(209);
 
 var _SCNMatrix4IsIdentity2 = _interopRequireDefault(_SCNMatrix4IsIdentity);
 
-var _SCNMatrix4MakeRotation = __webpack_require__(208);
+var _SCNMatrix4MakeRotation = __webpack_require__(210);
 
 var _SCNMatrix4MakeRotation2 = _interopRequireDefault(_SCNMatrix4MakeRotation);
 
-var _SCNMatrix4MakeScale = __webpack_require__(102);
+var _SCNMatrix4MakeScale = __webpack_require__(104);
 
 var _SCNMatrix4MakeScale2 = _interopRequireDefault(_SCNMatrix4MakeScale);
 
@@ -45337,47 +46180,47 @@ var _SCNMatrix4MakeTranslation = __webpack_require__(18);
 
 var _SCNMatrix4MakeTranslation2 = _interopRequireDefault(_SCNMatrix4MakeTranslation);
 
-var _SCNMatrix4Mult = __webpack_require__(209);
+var _SCNMatrix4Mult = __webpack_require__(211);
 
 var _SCNMatrix4Mult2 = _interopRequireDefault(_SCNMatrix4Mult);
 
-var _SCNMatrix4Rotate = __webpack_require__(210);
+var _SCNMatrix4Rotate = __webpack_require__(212);
 
 var _SCNMatrix4Rotate2 = _interopRequireDefault(_SCNMatrix4Rotate);
 
-var _SCNMatrix4Scale = __webpack_require__(211);
+var _SCNMatrix4Scale = __webpack_require__(213);
 
 var _SCNMatrix4Scale2 = _interopRequireDefault(_SCNMatrix4Scale);
 
-var _SCNMatrix4ToGLKMatrix = __webpack_require__(212);
+var _SCNMatrix4ToGLKMatrix = __webpack_require__(214);
 
 var _SCNMatrix4ToGLKMatrix2 = _interopRequireDefault(_SCNMatrix4ToGLKMatrix);
 
-var _SCNMatrix4ToMat = __webpack_require__(213);
+var _SCNMatrix4ToMat = __webpack_require__(215);
 
 var _SCNMatrix4ToMat2 = _interopRequireDefault(_SCNMatrix4ToMat);
 
-var _SCNMatrix4Translate = __webpack_require__(214);
+var _SCNMatrix4Translate = __webpack_require__(216);
 
 var _SCNMatrix4Translate2 = _interopRequireDefault(_SCNMatrix4Translate);
 
-var _SCNMorpher = __webpack_require__(215);
+var _SCNMorpher = __webpack_require__(217);
 
 var _SCNMorpher2 = _interopRequireDefault(_SCNMorpher);
 
-var _SCNMorpherCalculationMode = __webpack_require__(103);
+var _SCNMorpherCalculationMode = __webpack_require__(105);
 
 var _SCNMorpherCalculationMode2 = _interopRequireDefault(_SCNMorpherCalculationMode);
 
-var _SCNMovabilityHint = __webpack_require__(87);
+var _SCNMovabilityHint = __webpack_require__(88);
 
 var _SCNMovabilityHint2 = _interopRequireDefault(_SCNMovabilityHint);
 
-var _SCNNode = __webpack_require__(14);
+var _SCNNode = __webpack_require__(12);
 
 var _SCNNode2 = _interopRequireDefault(_SCNNode);
 
-var _SCNNodeRendererDelegate = __webpack_require__(216);
+var _SCNNodeRendererDelegate = __webpack_require__(218);
 
 var _SCNNodeRendererDelegate2 = _interopRequireDefault(_SCNNodeRendererDelegate);
 
@@ -45385,59 +46228,59 @@ var _SCNOrderedDictionary = __webpack_require__(22);
 
 var _SCNOrderedDictionary2 = _interopRequireDefault(_SCNOrderedDictionary);
 
-var _SCNParticleBirthDirection = __webpack_require__(104);
+var _SCNParticleBirthDirection = __webpack_require__(106);
 
 var _SCNParticleBirthDirection2 = _interopRequireDefault(_SCNParticleBirthDirection);
 
-var _SCNParticleBirthLocation = __webpack_require__(105);
+var _SCNParticleBirthLocation = __webpack_require__(107);
 
 var _SCNParticleBirthLocation2 = _interopRequireDefault(_SCNParticleBirthLocation);
 
-var _SCNParticleBlendMode = __webpack_require__(106);
+var _SCNParticleBlendMode = __webpack_require__(108);
 
 var _SCNParticleBlendMode2 = _interopRequireDefault(_SCNParticleBlendMode);
 
-var _SCNParticleEvent = __webpack_require__(217);
+var _SCNParticleEvent = __webpack_require__(219);
 
 var _SCNParticleEvent2 = _interopRequireDefault(_SCNParticleEvent);
 
-var _SCNParticleEventBlock = __webpack_require__(218);
+var _SCNParticleEventBlock = __webpack_require__(220);
 
 var _SCNParticleEventBlock2 = _interopRequireDefault(_SCNParticleEventBlock);
 
-var _SCNParticleImageSequenceAnimationMode = __webpack_require__(107);
+var _SCNParticleImageSequenceAnimationMode = __webpack_require__(109);
 
 var _SCNParticleImageSequenceAnimationMode2 = _interopRequireDefault(_SCNParticleImageSequenceAnimationMode);
 
-var _SCNParticleInputMode = __webpack_require__(219);
+var _SCNParticleInputMode = __webpack_require__(221);
 
 var _SCNParticleInputMode2 = _interopRequireDefault(_SCNParticleInputMode);
 
-var _SCNParticleModifierBlock = __webpack_require__(220);
+var _SCNParticleModifierBlock = __webpack_require__(222);
 
 var _SCNParticleModifierBlock2 = _interopRequireDefault(_SCNParticleModifierBlock);
 
-var _SCNParticleModifierStage = __webpack_require__(221);
+var _SCNParticleModifierStage = __webpack_require__(223);
 
 var _SCNParticleModifierStage2 = _interopRequireDefault(_SCNParticleModifierStage);
 
-var _SCNParticleOrientationMode = __webpack_require__(108);
+var _SCNParticleOrientationMode = __webpack_require__(110);
 
 var _SCNParticleOrientationMode2 = _interopRequireDefault(_SCNParticleOrientationMode);
 
-var _SCNParticlePropertyController = __webpack_require__(222);
+var _SCNParticlePropertyController = __webpack_require__(224);
 
 var _SCNParticlePropertyController2 = _interopRequireDefault(_SCNParticlePropertyController);
 
-var _SCNParticleSortingMode = __webpack_require__(109);
+var _SCNParticleSortingMode = __webpack_require__(111);
 
 var _SCNParticleSortingMode2 = _interopRequireDefault(_SCNParticleSortingMode);
 
-var _SCNParticleSystem = __webpack_require__(223);
+var _SCNParticleSystem = __webpack_require__(225);
 
 var _SCNParticleSystem2 = _interopRequireDefault(_SCNParticleSystem);
 
-var _SCNPhysicsBallSocketJoint = __webpack_require__(224);
+var _SCNPhysicsBallSocketJoint = __webpack_require__(226);
 
 var _SCNPhysicsBallSocketJoint2 = _interopRequireDefault(_SCNPhysicsBallSocketJoint);
 
@@ -45445,59 +46288,59 @@ var _SCNPhysicsBehavior = __webpack_require__(27);
 
 var _SCNPhysicsBehavior2 = _interopRequireDefault(_SCNPhysicsBehavior);
 
-var _SCNPhysicsBody = __webpack_require__(225);
+var _SCNPhysicsBody = __webpack_require__(227);
 
 var _SCNPhysicsBody2 = _interopRequireDefault(_SCNPhysicsBody);
 
-var _SCNPhysicsBodyType = __webpack_require__(51);
+var _SCNPhysicsBodyType = __webpack_require__(52);
 
 var _SCNPhysicsBodyType2 = _interopRequireDefault(_SCNPhysicsBodyType);
 
-var _SCNPhysicsCollisionCategory = __webpack_require__(226);
+var _SCNPhysicsCollisionCategory = __webpack_require__(228);
 
 var _SCNPhysicsCollisionCategory2 = _interopRequireDefault(_SCNPhysicsCollisionCategory);
 
-var _SCNPhysicsContact = __webpack_require__(94);
+var _SCNPhysicsContact = __webpack_require__(95);
 
 var _SCNPhysicsContact2 = _interopRequireDefault(_SCNPhysicsContact);
 
-var _SCNPhysicsContactDelegate = __webpack_require__(227);
+var _SCNPhysicsContactDelegate = __webpack_require__(229);
 
 var _SCNPhysicsContactDelegate2 = _interopRequireDefault(_SCNPhysicsContactDelegate);
 
-var _SCNPhysicsField = __webpack_require__(110);
+var _SCNPhysicsField = __webpack_require__(112);
 
 var _SCNPhysicsField2 = _interopRequireDefault(_SCNPhysicsField);
 
-var _SCNPhysicsFieldScope = __webpack_require__(228);
+var _SCNPhysicsFieldScope = __webpack_require__(230);
 
 var _SCNPhysicsFieldScope2 = _interopRequireDefault(_SCNPhysicsFieldScope);
 
-var _SCNPhysicsHingeJoint = __webpack_require__(229);
+var _SCNPhysicsHingeJoint = __webpack_require__(231);
 
 var _SCNPhysicsHingeJoint2 = _interopRequireDefault(_SCNPhysicsHingeJoint);
 
-var _SCNPhysicsNoiseField = __webpack_require__(111);
+var _SCNPhysicsNoiseField = __webpack_require__(113);
 
 var _SCNPhysicsNoiseField2 = _interopRequireDefault(_SCNPhysicsNoiseField);
 
-var _SCNPhysicsShape = __webpack_require__(52);
+var _SCNPhysicsShape = __webpack_require__(53);
 
 var _SCNPhysicsShape2 = _interopRequireDefault(_SCNPhysicsShape);
 
-var _SCNPhysicsSliderJoint = __webpack_require__(230);
+var _SCNPhysicsSliderJoint = __webpack_require__(232);
 
 var _SCNPhysicsSliderJoint2 = _interopRequireDefault(_SCNPhysicsSliderJoint);
 
-var _SCNPhysicsTurbulenceField = __webpack_require__(231);
+var _SCNPhysicsTurbulenceField = __webpack_require__(233);
 
 var _SCNPhysicsTurbulenceField2 = _interopRequireDefault(_SCNPhysicsTurbulenceField);
 
-var _SCNPhysicsVehicle = __webpack_require__(232);
+var _SCNPhysicsVehicle = __webpack_require__(234);
 
 var _SCNPhysicsVehicle2 = _interopRequireDefault(_SCNPhysicsVehicle);
 
-var _SCNPhysicsVehicleWheel = __webpack_require__(233);
+var _SCNPhysicsVehicleWheel = __webpack_require__(235);
 
 var _SCNPhysicsVehicleWheel2 = _interopRequireDefault(_SCNPhysicsVehicleWheel);
 
@@ -45505,123 +46348,123 @@ var _SCNPhysicsWorld = __webpack_require__(33);
 
 var _SCNPhysicsWorld2 = _interopRequireDefault(_SCNPhysicsWorld);
 
-var _SCNPlane = __webpack_require__(234);
+var _SCNPlane = __webpack_require__(236);
 
 var _SCNPlane2 = _interopRequireDefault(_SCNPlane);
 
-var _SCNProgram = __webpack_require__(112);
+var _SCNProgram = __webpack_require__(114);
 
 var _SCNProgram2 = _interopRequireDefault(_SCNProgram);
 
-var _SCNProgramDelegate = __webpack_require__(235);
+var _SCNProgramDelegate = __webpack_require__(237);
 
 var _SCNProgramDelegate2 = _interopRequireDefault(_SCNProgramDelegate);
 
-var _SCNPyramid = __webpack_require__(236);
+var _SCNPyramid = __webpack_require__(238);
 
 var _SCNPyramid2 = _interopRequireDefault(_SCNPyramid);
 
-var _SCNQuaternion = __webpack_require__(113);
+var _SCNQuaternion = __webpack_require__(115);
 
 var _SCNQuaternion2 = _interopRequireDefault(_SCNQuaternion);
 
-var _SCNReferenceLoadingPolicy = __webpack_require__(114);
+var _SCNReferenceLoadingPolicy = __webpack_require__(116);
 
 var _SCNReferenceLoadingPolicy2 = _interopRequireDefault(_SCNReferenceLoadingPolicy);
 
-var _SCNReferenceNode = __webpack_require__(237);
+var _SCNReferenceNode = __webpack_require__(239);
 
 var _SCNReferenceNode2 = _interopRequireDefault(_SCNReferenceNode);
 
-var _SCNRenderer = __webpack_require__(117);
+var _SCNRenderer = __webpack_require__(119);
 
 var _SCNRenderer2 = _interopRequireDefault(_SCNRenderer);
 
-var _SCNRenderingAPI = __webpack_require__(120);
+var _SCNRenderingAPI = __webpack_require__(122);
 
 var _SCNRenderingAPI2 = _interopRequireDefault(_SCNRenderingAPI);
 
-var _SCNScene = __webpack_require__(115);
+var _SCNScene = __webpack_require__(117);
 
 var _SCNScene2 = _interopRequireDefault(_SCNScene);
 
-var _SCNSceneExportDelegate = __webpack_require__(238);
+var _SCNSceneExportDelegate = __webpack_require__(240);
 
 var _SCNSceneExportDelegate2 = _interopRequireDefault(_SCNSceneExportDelegate);
 
-var _SCNSceneExportProgressHandler = __webpack_require__(239);
+var _SCNSceneExportProgressHandler = __webpack_require__(241);
 
 var _SCNSceneExportProgressHandler2 = _interopRequireDefault(_SCNSceneExportProgressHandler);
 
-var _SCNSceneRenderer = __webpack_require__(240);
+var _SCNSceneRenderer = __webpack_require__(242);
 
 var _SCNSceneRenderer2 = _interopRequireDefault(_SCNSceneRenderer);
 
-var _SCNSceneRendererDelegate = __webpack_require__(241);
+var _SCNSceneRendererDelegate = __webpack_require__(243);
 
 var _SCNSceneRendererDelegate2 = _interopRequireDefault(_SCNSceneRendererDelegate);
 
-var _SCNSceneSource = __webpack_require__(116);
+var _SCNSceneSource = __webpack_require__(118);
 
 var _SCNSceneSource2 = _interopRequireDefault(_SCNSceneSource);
 
-var _SCNSceneSourceStatus = __webpack_require__(242);
+var _SCNSceneSourceStatus = __webpack_require__(244);
 
 var _SCNSceneSourceStatus2 = _interopRequireDefault(_SCNSceneSourceStatus);
 
-var _SCNSceneSourceStatusHandler = __webpack_require__(243);
+var _SCNSceneSourceStatusHandler = __webpack_require__(245);
 
 var _SCNSceneSourceStatusHandler2 = _interopRequireDefault(_SCNSceneSourceStatusHandler);
 
-var _SCNShadable = __webpack_require__(244);
+var _SCNShadable = __webpack_require__(246);
 
 var _SCNShadable2 = _interopRequireDefault(_SCNShadable);
 
-var _SCNShadableHelper = __webpack_require__(245);
+var _SCNShadableHelper = __webpack_require__(247);
 
 var _SCNShadableHelper2 = _interopRequireDefault(_SCNShadableHelper);
 
-var _SCNShaderModifierEntryPoint = __webpack_require__(246);
+var _SCNShaderModifierEntryPoint = __webpack_require__(248);
 
 var _SCNShaderModifierEntryPoint2 = _interopRequireDefault(_SCNShaderModifierEntryPoint);
 
-var _SCNShadowMode = __webpack_require__(247);
+var _SCNShadowMode = __webpack_require__(249);
 
 var _SCNShadowMode2 = _interopRequireDefault(_SCNShadowMode);
 
-var _SCNShape = __webpack_require__(248);
+var _SCNShape = __webpack_require__(250);
 
 var _SCNShape2 = _interopRequireDefault(_SCNShape);
 
-var _SCNSkinner = __webpack_require__(249);
+var _SCNSkinner = __webpack_require__(251);
 
 var _SCNSkinner2 = _interopRequireDefault(_SCNSkinner);
 
-var _SCNSphere = __webpack_require__(53);
+var _SCNSphere = __webpack_require__(54);
 
 var _SCNSphere2 = _interopRequireDefault(_SCNSphere);
 
-var _SCNTechnique = __webpack_require__(250);
+var _SCNTechnique = __webpack_require__(252);
 
 var _SCNTechnique2 = _interopRequireDefault(_SCNTechnique);
 
-var _SCNTechniqueSupport = __webpack_require__(251);
+var _SCNTechniqueSupport = __webpack_require__(253);
 
 var _SCNTechniqueSupport2 = _interopRequireDefault(_SCNTechniqueSupport);
 
-var _SCNTessellationSmoothingMode = __webpack_require__(99);
+var _SCNTessellationSmoothingMode = __webpack_require__(101);
 
 var _SCNTessellationSmoothingMode2 = _interopRequireDefault(_SCNTessellationSmoothingMode);
 
-var _SCNText = __webpack_require__(252);
+var _SCNText = __webpack_require__(254);
 
 var _SCNText2 = _interopRequireDefault(_SCNText);
 
-var _SCNTimingFunction = __webpack_require__(253);
+var _SCNTimingFunction = __webpack_require__(255);
 
 var _SCNTimingFunction2 = _interopRequireDefault(_SCNTimingFunction);
 
-var _SCNTorus = __webpack_require__(254);
+var _SCNTorus = __webpack_require__(256);
 
 var _SCNTorus2 = _interopRequireDefault(_SCNTorus);
 
@@ -45629,15 +46472,15 @@ var _SCNTransaction = __webpack_require__(35);
 
 var _SCNTransaction2 = _interopRequireDefault(_SCNTransaction);
 
-var _SCNTransformConstraint = __webpack_require__(255);
+var _SCNTransformConstraint = __webpack_require__(257);
 
 var _SCNTransformConstraint2 = _interopRequireDefault(_SCNTransformConstraint);
 
-var _SCNTransparencyMode = __webpack_require__(93);
+var _SCNTransparencyMode = __webpack_require__(94);
 
 var _SCNTransparencyMode2 = _interopRequireDefault(_SCNTransparencyMode);
 
-var _SCNTube = __webpack_require__(256);
+var _SCNTube = __webpack_require__(258);
 
 var _SCNTube2 = _interopRequireDefault(_SCNTube);
 
@@ -45645,31 +46488,31 @@ var _SCNVector = __webpack_require__(1);
 
 var _SCNVector2 = _interopRequireDefault(_SCNVector);
 
-var _SCNVector3EqualToVector = __webpack_require__(257);
+var _SCNVector3EqualToVector = __webpack_require__(259);
 
 var _SCNVector3EqualToVector2 = _interopRequireDefault(_SCNVector3EqualToVector);
 
-var _SCNVector3FromFloat = __webpack_require__(258);
+var _SCNVector3FromFloat = __webpack_require__(260);
 
 var _SCNVector3FromFloat2 = _interopRequireDefault(_SCNVector3FromFloat);
 
-var _SCNVector3FromGLKVector = __webpack_require__(259);
+var _SCNVector3FromGLKVector = __webpack_require__(261);
 
 var _SCNVector3FromGLKVector2 = _interopRequireDefault(_SCNVector3FromGLKVector);
 
-var _SCNVector3Make = __webpack_require__(260);
+var _SCNVector3Make = __webpack_require__(262);
 
 var _SCNVector3Make2 = _interopRequireDefault(_SCNVector3Make);
 
-var _SCNVector3ToFloat = __webpack_require__(261);
+var _SCNVector3ToFloat = __webpack_require__(263);
 
 var _SCNVector3ToFloat2 = _interopRequireDefault(_SCNVector3ToFloat);
 
-var _SCNVector3ToGLKVector = __webpack_require__(262);
+var _SCNVector3ToGLKVector = __webpack_require__(264);
 
 var _SCNVector3ToGLKVector2 = _interopRequireDefault(_SCNVector3ToGLKVector);
 
-var _SCNVector3Zero = __webpack_require__(263);
+var _SCNVector3Zero = __webpack_require__(265);
 
 var _SCNVector3Zero2 = _interopRequireDefault(_SCNVector3Zero);
 
@@ -45677,39 +46520,39 @@ var _SCNVector3 = __webpack_require__(11);
 
 var _SCNVector4 = _interopRequireDefault(_SCNVector3);
 
-var _SCNVector4EqualToVector = __webpack_require__(264);
+var _SCNVector4EqualToVector = __webpack_require__(266);
 
 var _SCNVector4EqualToVector2 = _interopRequireDefault(_SCNVector4EqualToVector);
 
-var _SCNVector4FromFloat = __webpack_require__(265);
+var _SCNVector4FromFloat = __webpack_require__(267);
 
 var _SCNVector4FromFloat2 = _interopRequireDefault(_SCNVector4FromFloat);
 
-var _SCNVector4FromGLKVector = __webpack_require__(266);
+var _SCNVector4FromGLKVector = __webpack_require__(268);
 
 var _SCNVector4FromGLKVector2 = _interopRequireDefault(_SCNVector4FromGLKVector);
 
-var _SCNVector4Make = __webpack_require__(267);
+var _SCNVector4Make = __webpack_require__(269);
 
 var _SCNVector4Make2 = _interopRequireDefault(_SCNVector4Make);
 
-var _SCNVector4ToFloat = __webpack_require__(268);
+var _SCNVector4ToFloat = __webpack_require__(270);
 
 var _SCNVector4ToFloat2 = _interopRequireDefault(_SCNVector4ToFloat);
 
-var _SCNVector4ToGLKVector = __webpack_require__(269);
+var _SCNVector4ToGLKVector = __webpack_require__(271);
 
 var _SCNVector4ToGLKVector2 = _interopRequireDefault(_SCNVector4ToGLKVector);
 
-var _SCNView = __webpack_require__(270);
+var _SCNView = __webpack_require__(272);
 
 var _SCNView2 = _interopRequireDefault(_SCNView);
 
-var _SCNWrapMode = __webpack_require__(92);
+var _SCNWrapMode = __webpack_require__(93);
 
 var _SCNWrapMode2 = _interopRequireDefault(_SCNWrapMode);
 
-var _SKAction = __webpack_require__(20);
+var _SKAction = __webpack_require__(21);
 
 var _SKAction2 = _interopRequireDefault(_SKAction);
 
@@ -45725,79 +46568,79 @@ var _SKColor = __webpack_require__(2);
 
 var _SKColor2 = _interopRequireDefault(_SKColor);
 
-var _SKEffectNode = __webpack_require__(121);
+var _SKEffectNode = __webpack_require__(123);
 
 var _SKEffectNode2 = _interopRequireDefault(_SKEffectNode);
 
-var _SKFade = __webpack_require__(271);
+var _SKFade = __webpack_require__(273);
 
 var _SKFade2 = _interopRequireDefault(_SKFade);
 
-var _SKGroup = __webpack_require__(272);
+var _SKGroup = __webpack_require__(274);
 
 var _SKGroup2 = _interopRequireDefault(_SKGroup);
 
-var _SKLabelHorizontalAlignmentMode = __webpack_require__(122);
+var _SKLabelHorizontalAlignmentMode = __webpack_require__(124);
 
 var _SKLabelHorizontalAlignmentMode2 = _interopRequireDefault(_SKLabelHorizontalAlignmentMode);
 
-var _SKLabelNode = __webpack_require__(273);
+var _SKLabelNode = __webpack_require__(275);
 
 var _SKLabelNode2 = _interopRequireDefault(_SKLabelNode);
 
-var _SKLabelVerticalAlignmentMode = __webpack_require__(123);
+var _SKLabelVerticalAlignmentMode = __webpack_require__(125);
 
 var _SKLabelVerticalAlignmentMode2 = _interopRequireDefault(_SKLabelVerticalAlignmentMode);
 
-var _SKNode = __webpack_require__(19);
+var _SKNode = __webpack_require__(20);
 
 var _SKNode2 = _interopRequireDefault(_SKNode);
 
-var _SKRepeat = __webpack_require__(274);
+var _SKRepeat = __webpack_require__(276);
 
 var _SKRepeat2 = _interopRequireDefault(_SKRepeat);
 
-var _SKScale = __webpack_require__(275);
+var _SKScale = __webpack_require__(277);
 
 var _SKScale2 = _interopRequireDefault(_SKScale);
 
-var _SKScene = __webpack_require__(276);
+var _SKScene = __webpack_require__(278);
 
 var _SKScene2 = _interopRequireDefault(_SKScene);
 
-var _SKSceneScaleMode = __webpack_require__(124);
+var _SKSceneScaleMode = __webpack_require__(126);
 
 var _SKSceneScaleMode2 = _interopRequireDefault(_SKSceneScaleMode);
 
-var _SKSequence = __webpack_require__(277);
+var _SKSequence = __webpack_require__(279);
 
 var _SKSequence2 = _interopRequireDefault(_SKSequence);
 
-var _SKShapeNode = __webpack_require__(278);
+var _SKShapeNode = __webpack_require__(280);
 
 var _SKShapeNode2 = _interopRequireDefault(_SKShapeNode);
 
-var _SKSpriteNode = __webpack_require__(118);
+var _SKSpriteNode = __webpack_require__(120);
 
 var _SKSpriteNode2 = _interopRequireDefault(_SKSpriteNode);
 
-var _SKTexture = __webpack_require__(55);
+var _SKTexture = __webpack_require__(56);
 
 var _SKTexture2 = _interopRequireDefault(_SKTexture);
 
-var _SKTextureFilteringMode = __webpack_require__(119);
+var _SKTextureFilteringMode = __webpack_require__(121);
 
 var _SKTextureFilteringMode2 = _interopRequireDefault(_SKTextureFilteringMode);
 
-var _SKWait = __webpack_require__(279);
+var _SKWait = __webpack_require__(281);
 
 var _SKWait2 = _interopRequireDefault(_SKWait);
 
-var _AjaxRequest2 = __webpack_require__(54);
+var _AjaxRequest2 = __webpack_require__(55);
 
 var _AjaxRequest3 = _interopRequireDefault(_AjaxRequest2);
 
-var _BinaryReader2 = __webpack_require__(69);
+var _BinaryReader2 = __webpack_require__(70);
 
 var _BinaryReader3 = _interopRequireDefault(_BinaryReader2);
 
@@ -45805,7 +46648,7 @@ var _BinaryRequest2 = __webpack_require__(36);
 
 var _BinaryRequest3 = _interopRequireDefault(_BinaryRequest2);
 
-var _Buffer2 = __webpack_require__(280);
+var _Buffer2 = __webpack_require__(282);
 
 var _Buffer3 = _interopRequireDefault(_Buffer2);
 
@@ -45821,13 +46664,17 @@ var _FileReader2 = __webpack_require__(43);
 
 var _FileReader3 = _interopRequireDefault(_FileReader2);
 
-var _HTMLCanvasElement2 = __webpack_require__(282);
+var _HTMLCanvasElement2 = __webpack_require__(284);
 
 var _HTMLCanvasElement3 = _interopRequireDefault(_HTMLCanvasElement2);
 
 var _InstanceOf2 = __webpack_require__(3);
 
 var _InstanceOf3 = _interopRequireDefault(_InstanceOf2);
+
+var _TextReader2 = __webpack_require__(96);
+
+var _TextReader3 = _interopRequireDefault(_TextReader2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -45905,6 +46752,7 @@ _ClassList3.default.registerClass(_SCNDefaultPBRFragmentShader3.default, '_SCNDe
 _ClassList3.default.registerClass(_SCNDefaultShadowFragmentShader3.default, '_SCNDefaultShadowFragmentShader');
 _ClassList3.default.registerClass(_SCNDefaultShadowVertexShader3.default, '_SCNDefaultShadowVertexShader');
 _ClassList3.default.registerClass(_SCNDefaultVertexShader3.default, '_SCNDefaultVertexShader');
+_ClassList3.default.registerClass(_SCNObjLoader3.default, '_SCNObjLoader');
 _ClassList3.default.registerClass(_SCNAccelerationConstraint2.default, 'SCNAccelerationConstraint');
 _ClassList3.default.registerClass(_SCNAction2.default, 'SCNAction');
 _ClassList3.default.registerClass(_SCNActionable2.default, 'SCNActionable');
@@ -46095,10 +46943,10 @@ _ClassList3.default.registerClass(_SKShapeNode2.default, 'SKShapeNode');
 _ClassList3.default.registerClass(_SKSpriteNode2.default, 'SKSpriteNode');
 _ClassList3.default.registerClass(_SKTexture2.default, 'SKTexture');
 _ClassList3.default.registerClass(_SKTextureFilteringMode2.default, 'SKTextureFilteringMode');
-_ClassList3.default.registerClass(_SKWait2.default, 'SKWait'
+_ClassList3.default.registerClass(_SKWait2.default, 'SKWait');
 
 /*global exports*/
-);exports.NSColor = _NSColor2.default;
+exports.NSColor = _NSColor2.default;
 exports.NSColorSpaceModel = _NSColorSpaceModel2.default;
 exports.AVAudioMixerNode = _AVAudioMixerNode2.default;
 exports.AVAudioNode = _AVAudioNode2.default;
@@ -46172,6 +47020,7 @@ exports._SCNDefaultPBRFragmentShader = _SCNDefaultPBRFragmentShader3.default;
 exports._SCNDefaultShadowFragmentShader = _SCNDefaultShadowFragmentShader3.default;
 exports._SCNDefaultShadowVertexShader = _SCNDefaultShadowVertexShader3.default;
 exports._SCNDefaultVertexShader = _SCNDefaultVertexShader3.default;
+exports._SCNObjLoader = _SCNObjLoader3.default;
 exports.SCNAccelerationConstraint = _SCNAccelerationConstraint2.default;
 exports.SCNAction = _SCNAction2.default;
 exports.SCNActionable = _SCNActionable2.default;
@@ -46372,6 +47221,7 @@ exports._File = _File3.default;
 exports._FileReader = _FileReader3.default;
 exports._HTMLCanvasElement = _HTMLCanvasElement3.default;
 exports._InstanceOf = _InstanceOf3.default;
+exports._TextReader = _TextReader3.default;
 
 // constants
 /*global exports*/
@@ -46401,7 +47251,7 @@ exports.kCAAnimationRotateAuto = 'auto';
 exports.kCAAnimationRotateAutoReverse = 'autoReverse';
 
 /***/ }),
-/* 126 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46462,7 +47312,7 @@ var NSColor = function (_NSObject) {
 exports.default = NSColor;
 
 /***/ }),
-/* 127 */
+/* 129 */
 /***/ (function(module, exports) {
 
 var g;
@@ -46489,7 +47339,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 128 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46610,7 +47460,7 @@ function fromByteArray (uint8) {
 
 
 /***/ }),
-/* 129 */
+/* 131 */
 /***/ (function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -46700,7 +47550,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 
 /***/ }),
-/* 130 */
+/* 132 */
 /***/ (function(module, exports) {
 
 var toString = {}.toString;
@@ -46711,7 +47561,7 @@ module.exports = Array.isArray || function (arr) {
 
 
 /***/ }),
-/* 131 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46748,7 +47598,7 @@ var NSColorSpaceModel = {
 exports.default = NSColorSpaceModel;
 
 /***/ }),
-/* 132 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46757,7 +47607,7 @@ exports.default = NSColorSpaceModel;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var baseTime = Date.UTC(2001, 0, 1, 0, 0, 0, 0
+var baseTime = Date.UTC(2001, 0, 1, 0, 0, 0, 0);
 
 /**
  * Returns the current system absolute time.
@@ -46766,14 +47616,14 @@ var baseTime = Date.UTC(2001, 0, 1, 0, 0, 0, 0
  * @desc Absolute time is measured in seconds relative to the absolute reference date of Jan 1 2001 00:00:00 GMT. A positive value represents a date after the reference date, a negative value represents a date before it. For example, the absolute time -32940326 is equivalent to December 16th, 1999 at 17:54:34. Repeated calls to this function do not guarantee monotonically increasing results. The system time may decrease due to synchronization with external time references or due to an explicit user change of the clock.
  * @see https://developer.apple.com/documentation/corefoundation/1543542-cfabsolutetimegetcurrent
  */
-);function CFAbsoluteTimeGetCurrent() {
+function CFAbsoluteTimeGetCurrent() {
   return (Date.now() - baseTime) * 0.001;
 }
 
 exports.default = CFAbsoluteTimeGetCurrent;
 
 /***/ }),
-/* 133 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -46850,7 +47700,7 @@ var CGBlendMode = {
 exports.default = CGBlendMode;
 
 /***/ }),
-/* 134 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47116,7 +47966,7 @@ var CGMutablePath = function () {
 exports.default = CGMutablePath;
 
 /***/ }),
-/* 135 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47481,7 +48331,7 @@ var CGPath = function () {
 exports.default = CGPath;
 
 /***/ }),
-/* 136 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47502,7 +48352,7 @@ var CGPathApplierFunction = function CGPathApplierFunction() {};
 exports.default = CGPathApplierFunction;
 
 /***/ }),
-/* 137 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47527,7 +48377,7 @@ var CGPathFillRule = {
 exports.default = CGPathFillRule;
 
 /***/ }),
-/* 138 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47539,7 +48389,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _DispatchObject2 = __webpack_require__(61);
+var _DispatchObject2 = __webpack_require__(62);
 
 var _DispatchObject3 = _interopRequireDefault(_DispatchObject2);
 
@@ -47852,7 +48702,7 @@ exports.default = DispatchQueue;
 _main = new DispatchQueue('com.apple.main-thread', null);
 
 /***/ }),
-/* 139 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47944,7 +48794,7 @@ var DispatchTime = function () {
 exports.default = DispatchTime;
 
 /***/ }),
-/* 140 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47981,7 +48831,7 @@ var DispatchTimeInterval = {
 exports.default = DispatchTimeInterval;
 
 /***/ }),
-/* 141 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47997,7 +48847,7 @@ var _NSObject2 = __webpack_require__(0);
 
 var _NSObject3 = _interopRequireDefault(_NSObject2);
 
-var _NSNotification = __webpack_require__(62);
+var _NSNotification = __webpack_require__(63);
 
 var _NSNotification2 = _interopRequireDefault(_NSNotification);
 
@@ -48220,7 +49070,7 @@ var NotificationCenter = function (_NSObject) {
 exports.default = NotificationCenter;
 
 /***/ }),
-/* 142 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48280,7 +49130,7 @@ var NSColorSpace = function (_NSObject) {
 exports.default = NSColorSpace;
 
 /***/ }),
-/* 143 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48521,7 +49371,7 @@ var NSKeyedArchiver = function (_NSCoder) {
 exports.default = NSKeyedArchiver;
 
 /***/ }),
-/* 144 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48531,7 +49381,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _NSArray2 = __webpack_require__(67);
+var _NSArray2 = __webpack_require__(68);
 
 var _NSArray3 = _interopRequireDefault(_NSArray2);
 
@@ -48563,7 +49413,7 @@ var NSMutableArray = function (_NSArray) {
 exports.default = NSMutableArray;
 
 /***/ }),
-/* 145 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48605,7 +49455,7 @@ var NSMutableData = function (_NSData) {
 exports.default = NSMutableData;
 
 /***/ }),
-/* 146 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48615,7 +49465,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _NSDictionary2 = __webpack_require__(68);
+var _NSDictionary2 = __webpack_require__(69);
 
 var _NSDictionary3 = _interopRequireDefault(_NSDictionary2);
 
@@ -48647,7 +49497,7 @@ var NSMutableDictionary = function (_NSDictionary) {
 exports.default = NSMutableDictionary;
 
 /***/ }),
-/* 147 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48712,7 +49562,7 @@ var NSURL = function (_NSObject) {
 exports.default = NSURL;
 
 /***/ }),
-/* 148 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48728,7 +49578,7 @@ var _NSObject2 = __webpack_require__(0);
 
 var _NSObject3 = _interopRequireDefault(_NSObject2);
 
-var _CGSize = __webpack_require__(8);
+var _CGSize = __webpack_require__(9);
 
 var _CGSize2 = _interopRequireDefault(_CGSize);
 
@@ -49442,7 +50292,7 @@ var NSValue = function (_NSObject) {
 exports.default = NSValue;
 
 /***/ }),
-/* 149 */
+/* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49454,11 +50304,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _CGPoint = __webpack_require__(10);
+var _CGPoint = __webpack_require__(8);
 
 var _CGPoint2 = _interopRequireDefault(_CGPoint);
 
-var _GKAgent2 = __webpack_require__(44);
+var _GKAgent2 = __webpack_require__(45);
 
 var _GKAgent3 = _interopRequireDefault(_GKAgent2);
 
@@ -49551,7 +50401,7 @@ var GKAgent2D = function (_GKAgent) {
 exports.default = GKAgent2D;
 
 /***/ }),
-/* 150 */
+/* 152 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49571,7 +50421,7 @@ var _SCNVector = __webpack_require__(1);
 
 var _SCNVector2 = _interopRequireDefault(_SCNVector);
 
-var _CGPoint = __webpack_require__(10);
+var _CGPoint = __webpack_require__(8);
 
 var _CGPoint2 = _interopRequireDefault(_CGPoint);
 
@@ -49797,7 +50647,7 @@ var GKPath = function (_NSObject) {
 exports.default = GKPath;
 
 /***/ }),
-/* 151 */
+/* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49984,7 +50834,7 @@ var GKScene = function (_NSObject) {
 exports.default = GKScene;
 
 /***/ }),
-/* 152 */
+/* 154 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50060,7 +50910,7 @@ var GKSCNNodeComponent = function (_GKComponent) {
 exports.default = GKSCNNodeComponent;
 
 /***/ }),
-/* 153 */
+/* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50117,7 +50967,7 @@ var CAAction = function () {
 exports.default = CAAction;
 
 /***/ }),
-/* 154 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50191,7 +51041,7 @@ var CAAnimationDelegate = function () {
 exports.default = CAAnimationDelegate;
 
 /***/ }),
-/* 155 */
+/* 157 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50214,7 +51064,7 @@ var CACurrentMediaTime = function CACurrentMediaTime() {
 exports.default = CACurrentMediaTime;
 
 /***/ }),
-/* 156 */
+/* 158 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50310,7 +51160,7 @@ function CAMediaTiming() {
 exports.default = CAMediaTiming;
 
 /***/ }),
-/* 157 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50368,7 +51218,7 @@ function CATransform3D(m) {
 exports.default = CATransform3D;
 
 /***/ }),
-/* 158 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50378,7 +51228,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _SCNConstraint2 = __webpack_require__(17);
+var _SCNConstraint2 = __webpack_require__(19);
 
 var _SCNConstraint3 = _interopRequireDefault(_SCNConstraint2);
 
@@ -50448,7 +51298,7 @@ var SCNAccelerationConstraint = function (_SCNConstraint) {
 exports.default = SCNAccelerationConstraint;
 
 /***/ }),
-/* 159 */
+/* 161 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50624,7 +51474,7 @@ var SCNActionable = function () {
 exports.default = SCNActionable;
 
 /***/ }),
-/* 160 */
+/* 162 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50698,7 +51548,7 @@ var SCNActionCustom = function (_SCNAction) {
 exports.default = SCNActionCustom;
 
 /***/ }),
-/* 161 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50720,7 +51570,7 @@ var _SCNActionTimingMode = __webpack_require__(5);
 
 var _SCNActionTimingMode2 = _interopRequireDefault(_SCNActionTimingMode);
 
-var _SCNNode = __webpack_require__(14);
+var _SCNNode = __webpack_require__(12);
 
 var _SCNNode2 = _interopRequireDefault(_SCNNode);
 
@@ -50839,9 +51689,9 @@ var SCNActionFade = function (_SCNAction) {
         throw new Error('both toValue and byValue are null');
       }
 
-      var value = this._lerp(baseValue, toValue, t
+      var value = this._lerp(baseValue, toValue, t);
       //console.warn(`opacity time: ${time}, t: ${t}, base: ${baseValue}, to: ${toValue}, val: ${value}`)
-      );obj.presentation._opacity = value;
+      obj.presentation._opacity = value;
 
       if (this._finished) {
         obj._opacity = toValue;
@@ -50927,7 +51777,7 @@ _SCNAction3.default.fadeOpacityByDuration = SCNActionFade.fadeOpacityByDuration;
 _SCNAction3.default.fadeOpacityToDuration = SCNActionFade.fadeOpacityToDuration;
 
 /***/ }),
-/* 162 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51090,7 +51940,7 @@ exports.default = SCNActionGroup;
 _SCNAction3.default.group = SCNActionGroup.group;
 
 /***/ }),
-/* 163 */
+/* 165 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51166,7 +52016,7 @@ var SCNActionHide = function (_SCNAction) {
 exports.default = SCNActionHide;
 
 /***/ }),
-/* 164 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51240,7 +52090,7 @@ var SCNActionJavaScript = function (_SCNAction) {
 exports.default = SCNActionJavaScript;
 
 /***/ }),
-/* 165 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51262,7 +52112,7 @@ var _SCNActionTimingMode = __webpack_require__(5);
 
 var _SCNActionTimingMode2 = _interopRequireDefault(_SCNActionTimingMode);
 
-var _SCNNode = __webpack_require__(14);
+var _SCNNode = __webpack_require__(12);
 
 var _SCNNode2 = _interopRequireDefault(_SCNNode);
 
@@ -51477,7 +52327,7 @@ _SCNAction3.default.moveBy = SCNActionMove.moveBy;
 _SCNAction3.default.moveTo = SCNActionMove.moveTo;
 
 /***/ }),
-/* 166 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51551,7 +52401,7 @@ var SCNActionPerformSelector = function (_SCNAction) {
 exports.default = SCNActionPerformSelector;
 
 /***/ }),
-/* 167 */
+/* 169 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51704,7 +52554,7 @@ exports.default = SCNActionPlaySound;
 _SCNAction3.default.playAudioWaitForCompletion = SCNActionPlaySound.playAudioWaitForCompletion;
 
 /***/ }),
-/* 168 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51778,7 +52628,7 @@ var SCNActionReference = function (_SCNAction) {
 exports.default = SCNActionReference;
 
 /***/ }),
-/* 169 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -51800,7 +52650,7 @@ var _SCNActionTimingMode = __webpack_require__(5);
 
 var _SCNActionTimingMode2 = _interopRequireDefault(_SCNActionTimingMode);
 
-var _SCNNode = __webpack_require__(14);
+var _SCNNode = __webpack_require__(12);
 
 var _SCNNode2 = _interopRequireDefault(_SCNNode);
 
@@ -51915,7 +52765,7 @@ exports.default = SCNActionRemove;
 _SCNAction3.default.removeFromParentNode = SCNActionRemove.removeFromParentNode;
 
 /***/ }),
-/* 170 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52120,7 +52970,7 @@ _SCNAction3.default.repeat = SCNActionRepeat.repeat;
 _SCNAction3.default.repeatForever = SCNActionRepeat.repeatForever;
 
 /***/ }),
-/* 171 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52142,7 +52992,7 @@ var _SCNActionTimingMode = __webpack_require__(5);
 
 var _SCNActionTimingMode2 = _interopRequireDefault(_SCNActionTimingMode);
 
-var _SCNNode = __webpack_require__(14);
+var _SCNNode = __webpack_require__(12);
 
 var _SCNNode2 = _interopRequireDefault(_SCNNode);
 
@@ -52290,10 +53140,10 @@ var SCNActionRotate = function (_SCNAction) {
       if (!(0, _InstanceOf3.default)(obj, _SCNNode2.default)) {
         throw new Error('unsupported class for SCNActionRotate: ' + obj.constructor.name);
       }
-      var t = this._getTime(time, needTimeConversion
+      var t = this._getTime(time, needTimeConversion);
       //console.warn(`SCNActionRotate._applyAction t: ${t}`)
 
-      );if (this._isAxisAngle) {
+      if (this._isAxisAngle) {
         // rotation
         var baseValue = obj.rotation;
         var toValue = this._axisRot;
@@ -52462,7 +53312,7 @@ _SCNAction3.default.rotateByAround = SCNActionRotate.rotateByAround;
 _SCNAction3.default.rotateToAxisAngle = SCNActionRotate.rotateToAxisAngle;
 
 /***/ }),
-/* 172 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52536,7 +53386,7 @@ var SCNActionRunAction = function (_SCNAction) {
 exports.default = SCNActionRunAction;
 
 /***/ }),
-/* 173 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52669,7 +53519,7 @@ exports.default = SCNActionRunBlock;
 _SCNAction3.default.run = SCNActionRunBlock.run;
 
 /***/ }),
-/* 174 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52743,7 +53593,7 @@ var SCNActionScale = function (_SCNAction) {
 exports.default = SCNActionScale;
 
 /***/ }),
-/* 175 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52942,7 +53792,7 @@ exports.default = SCNActionSequence;
 _SCNAction3.default.sequence = SCNActionSequence.sequence;
 
 /***/ }),
-/* 176 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52965,7 +53815,7 @@ var SCNActionTimingFunction = function SCNActionTimingFunction(time) {};
 exports.default = SCNActionTimingFunction;
 
 /***/ }),
-/* 177 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53083,7 +53933,7 @@ _SCNAction3.default.waitDuration = SCNActionWait.waitDuration;
 _SCNAction3.default.waitDurationWithRange = SCNActionWait.waitDurationWithRange;
 
 /***/ }),
-/* 178 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53273,7 +54123,7 @@ var SCNAnimatable = function () {
 exports.default = SCNAnimatable;
 
 /***/ }),
-/* 179 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53342,7 +54192,7 @@ var SCNAnimationEvent = function (_NSObject) {
 exports.default = SCNAnimationEvent;
 
 /***/ }),
-/* 180 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53368,7 +54218,7 @@ var SCNAnimationEventBlock = function SCNAnimationEventBlock(animation, animated
 exports.default = SCNAnimationEventBlock;
 
 /***/ }),
-/* 181 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53384,7 +54234,7 @@ var _NSObject2 = __webpack_require__(0);
 
 var _NSObject3 = _interopRequireDefault(_NSObject2);
 
-var _SCNAnimation = __webpack_require__(95);
+var _SCNAnimation = __webpack_require__(97);
 
 var _SCNAnimation2 = _interopRequireDefault(_SCNAnimation);
 
@@ -53528,7 +54378,7 @@ var SCNAnimationPlayer = function (_NSObject) {
 exports.default = SCNAnimationPlayer;
 
 /***/ }),
-/* 182 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53544,7 +54394,7 @@ var _NSObject2 = __webpack_require__(0);
 
 var _NSObject3 = _interopRequireDefault(_NSObject2);
 
-var _AVAudioMixerNode = __webpack_require__(56);
+var _AVAudioMixerNode = __webpack_require__(57);
 
 var _AVAudioMixerNode2 = _interopRequireDefault(_AVAudioMixerNode);
 
@@ -53713,7 +54563,7 @@ var SCNAudioPlayer = function (_NSObject) {
 exports.default = SCNAudioPlayer;
 
 /***/ }),
-/* 183 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -53725,7 +54575,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _AjaxRequest2 = __webpack_require__(54);
+var _AjaxRequest2 = __webpack_require__(55);
 
 var _AjaxRequest3 = _interopRequireDefault(_AjaxRequest2);
 
@@ -54000,7 +54850,7 @@ var SCNAudioSource = function (_NSObject) {
 exports.default = SCNAudioSource;
 
 /***/ }),
-/* 184 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54105,7 +54955,7 @@ var SCNBillboardAxis = function () {
 exports.default = SCNBillboardAxis;
 
 /***/ }),
-/* 185 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54115,7 +54965,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _SCNConstraint2 = __webpack_require__(17);
+var _SCNConstraint2 = __webpack_require__(19);
 
 var _SCNConstraint3 = _interopRequireDefault(_SCNConstraint2);
 
@@ -54166,7 +55016,7 @@ var SCNBillboardConstraint = function (_SCNConstraint) {
 exports.default = SCNBillboardConstraint;
 
 /***/ }),
-/* 186 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54195,7 +55045,7 @@ var SCNBindingBlock = function SCNBindingBlock(programID, location, renderedNode
 exports.default = SCNBindingBlock;
 
 /***/ }),
-/* 187 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54262,7 +55112,7 @@ var SCNBoundingVolume = function () {
 exports.default = SCNBoundingVolume;
 
 /***/ }),
-/* 188 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54292,7 +55142,7 @@ var SCNBufferBindingBlock = function SCNBufferBindingBlock(buffer, node, shadabl
 exports.default = SCNBufferBindingBlock;
 
 /***/ }),
-/* 189 */
+/* 191 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54319,7 +55169,7 @@ var SCNBufferFrequency = {
 exports.default = SCNBufferFrequency;
 
 /***/ }),
-/* 190 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54375,7 +55225,7 @@ var SCNBufferStream = function () {
 exports.default = SCNBufferStream;
 
 /***/ }),
-/* 191 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54402,7 +55252,7 @@ var SCNChamferMode = {
 exports.default = SCNChamferMode;
 
 /***/ }),
-/* 192 */
+/* 194 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54414,7 +55264,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _SCNGeometry2 = __webpack_require__(9);
+var _SCNGeometry2 = __webpack_require__(10);
 
 var _SCNGeometry3 = _interopRequireDefault(_SCNGeometry2);
 
@@ -54422,7 +55272,7 @@ var _SCNGeometryElement = __webpack_require__(15);
 
 var _SCNGeometryElement2 = _interopRequireDefault(_SCNGeometryElement);
 
-var _SCNGeometryPrimitiveType = __webpack_require__(13);
+var _SCNGeometryPrimitiveType = __webpack_require__(14);
 
 var _SCNGeometryPrimitiveType2 = _interopRequireDefault(_SCNGeometryPrimitiveType);
 
@@ -54430,7 +55280,7 @@ var _SCNGeometrySource = __webpack_require__(6);
 
 var _SCNGeometrySource2 = _interopRequireDefault(_SCNGeometrySource);
 
-var _SCNMaterial = __webpack_require__(12);
+var _SCNMaterial = __webpack_require__(13);
 
 var _SCNMaterial2 = _interopRequireDefault(_SCNMaterial);
 
@@ -54544,30 +55394,30 @@ var SCNCone = function (_SCNGeometry) {
 
         // vertex
         sideData.push(bvx, bottom, bvz);
-        bottomData.push(-bvx, bottom, bvz
+        bottomData.push(-bvx, bottom, bvz);
 
         // normal
-        );sideData.push(x, 0, z);
-        bottomData.push(0, -1, 0
+        sideData.push(x, 0, z);
+        bottomData.push(0, -1, 0);
 
         // texcoord
-        );var tx = tStep * i;
+        var tx = tStep * i;
         sideData.push(tx, 1.0);
 
         var ttx = (1 + Math.cos(i * rStep)) * 0.5;
         var tty = (1 + Math.sin(i * rStep)) * 0.5;
-        bottomData.push(ttx, tty
+        bottomData.push(ttx, tty);
 
         // vertex
-        );sideData.push(tvx, top, tvz);
-        bottomData.push(0, bottom, 0
+        sideData.push(tvx, top, tvz);
+        bottomData.push(0, bottom, 0);
 
         // normal
-        );sideData.push(x, 0, z);
-        bottomData.push(0, -1, 0
+        sideData.push(x, 0, z);
+        bottomData.push(0, -1, 0);
 
         // texcoord
-        );sideData.push(tx, 0.0);
+        sideData.push(tx, 0.0);
         bottomData.push(0.5, 0.5);
       }
       sourceData.push.apply(sourceData, sideData.concat(bottomData));
@@ -54631,7 +55481,7 @@ var SCNCone = function (_SCNGeometry) {
 exports.default = SCNCone;
 
 /***/ }),
-/* 193 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -54645,7 +55495,7 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _SCNGeometry2 = __webpack_require__(9);
+var _SCNGeometry2 = __webpack_require__(10);
 
 var _SCNGeometry3 = _interopRequireDefault(_SCNGeometry2);
 
@@ -54653,7 +55503,7 @@ var _SCNGeometryElement = __webpack_require__(15);
 
 var _SCNGeometryElement2 = _interopRequireDefault(_SCNGeometryElement);
 
-var _SCNGeometryPrimitiveType = __webpack_require__(13);
+var _SCNGeometryPrimitiveType = __webpack_require__(14);
 
 var _SCNGeometryPrimitiveType2 = _interopRequireDefault(_SCNGeometryPrimitiveType);
 
@@ -54661,7 +55511,7 @@ var _SCNGeometrySource = __webpack_require__(6);
 
 var _SCNGeometrySource2 = _interopRequireDefault(_SCNGeometrySource);
 
-var _SCNMaterial = __webpack_require__(12);
+var _SCNMaterial = __webpack_require__(13);
 
 var _SCNMaterial2 = _interopRequireDefault(_SCNMaterial);
 
@@ -54799,34 +55649,34 @@ var SCNCylinder = function (_SCNGeometry) {
         // vertex
         sideData.push(vx, bottom, vz);
         topData.push(vx, top, vz);
-        bottomData.push(-vx, bottom, vz
+        bottomData.push(-vx, bottom, vz);
 
         // normal
-        );sideData.push(x, 0, z);
+        sideData.push(x, 0, z);
         topData.push(0, 1, 0);
-        bottomData.push(0, -1, 0
+        bottomData.push(0, -1, 0);
 
         // texcoord
-        );var tx = tStep * i;
+        var tx = tStep * i;
         sideData.push(tx, 1.0);
 
         var ttx = (1 + Math.cos(i * rStep)) * 0.5;
         var tty = (1 + Math.sin(i * rStep)) * 0.5;
         topData.push(ttx, tty);
-        bottomData.push(ttx, tty
+        bottomData.push(ttx, tty);
 
         // vertex
-        );sideData.push(vx, top, vz);
+        sideData.push(vx, top, vz);
         topData.push(0, top, 0);
-        bottomData.push(0, bottom, 0
+        bottomData.push(0, bottom, 0);
 
         // normal
-        );sideData.push(x, 0, z);
+        sideData.push(x, 0, z);
         topData.push(0, 1, 0);
-        bottomData.push(0, -1, 0
+        bottomData.push(0, -1, 0);
 
         // texcoord
-        );sideData.push(tx, 0.0);
+        sideData.push(tx, 0.0);
         topData.push(0.5, 0.5);
         bottomData.push(0.5, 0.5);
       }
@@ -54909,7 +55759,7 @@ var SCNCylinder = function (_SCNGeometry) {
 exports.default = SCNCylinder;
 
 /***/ }),
-/* 194 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -55040,7 +55890,7 @@ var SCNDebugOptions = function () {
 exports.default = SCNDebugOptions;
 
 /***/ }),
-/* 195 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -55052,11 +55902,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _SCNConstraint2 = __webpack_require__(17);
+var _SCNConstraint2 = __webpack_require__(19);
 
 var _SCNConstraint3 = _interopRequireDefault(_SCNConstraint2);
 
-var _SCNNode = __webpack_require__(14);
+var _SCNNode = __webpack_require__(12);
 
 var _SCNNode2 = _interopRequireDefault(_SCNNode);
 
@@ -55139,7 +55989,7 @@ var SCNDistanceConstraint = function (_SCNConstraint) {
 exports.default = SCNDistanceConstraint;
 
 /***/ }),
-/* 196 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -55168,7 +56018,7 @@ var SCNFieldForceEvaluator = function SCNFieldForceEvaluator(position, velocity,
 exports.default = SCNFieldForceEvaluator;
 
 /***/ }),
-/* 197 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -55180,7 +56030,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _SCNGeometry2 = __webpack_require__(9);
+var _SCNGeometry2 = __webpack_require__(10);
 
 var _SCNGeometry3 = _interopRequireDefault(_SCNGeometry2);
 
@@ -55188,7 +56038,7 @@ var _SCNGeometryElement = __webpack_require__(15);
 
 var _SCNGeometryElement2 = _interopRequireDefault(_SCNGeometryElement);
 
-var _SCNGeometryPrimitiveType = __webpack_require__(13);
+var _SCNGeometryPrimitiveType = __webpack_require__(14);
 
 var _SCNGeometryPrimitiveType2 = _interopRequireDefault(_SCNGeometryPrimitiveType);
 
@@ -55196,7 +56046,7 @@ var _SCNGeometrySource = __webpack_require__(6);
 
 var _SCNGeometrySource2 = _interopRequireDefault(_SCNGeometrySource);
 
-var _SCNMaterial = __webpack_require__(12);
+var _SCNMaterial = __webpack_require__(13);
 
 var _SCNMaterial2 = _interopRequireDefault(_SCNMaterial);
 
@@ -55307,13 +56157,13 @@ var SCNFloor = function (_SCNGeometry) {
         var tx = 0.0;
         for (var w = 0; w <= segmentCount; w++) {
           // vector
-          sourceData.push(x, y, 0
+          sourceData.push(x, y, 0);
 
           // normal
-          );sourceData.push(0, 0, 1
+          sourceData.push(0, 0, 1);
 
           // texcoord
-          );sourceData.push(tx, ty);
+          sourceData.push(tx, ty);
 
           x += xStep;
           tx += txStep;
@@ -55381,7 +56231,7 @@ var SCNFloor = function (_SCNGeometry) {
 exports.default = SCNFloor;
 
 /***/ }),
-/* 198 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -55395,7 +56245,7 @@ var _NSObject2 = __webpack_require__(0);
 
 var _NSObject3 = _interopRequireDefault(_NSObject2);
 
-var _SCNTessellationSmoothingMode = __webpack_require__(99);
+var _SCNTessellationSmoothingMode = __webpack_require__(101);
 
 var _SCNTessellationSmoothingMode2 = _interopRequireDefault(_SCNTessellationSmoothingMode);
 
@@ -55497,7 +56347,7 @@ var SCNGeometryTessellator = function (_NSObject) {
 exports.default = SCNGeometryTessellator;
 
 /***/ }),
-/* 199 */
+/* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -55509,7 +56359,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _SCNConstraint2 = __webpack_require__(17);
+var _SCNConstraint2 = __webpack_require__(19);
 
 var _SCNConstraint3 = _interopRequireDefault(_SCNConstraint2);
 
@@ -55635,7 +56485,7 @@ var SCNIKConstraint = function (_SCNConstraint) {
 exports.default = SCNIKConstraint;
 
 /***/ }),
-/* 200 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -55678,7 +56528,7 @@ function SCNLayer() {
 exports.default = SCNLayer;
 
 /***/ }),
-/* 201 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -55694,7 +56544,7 @@ var _NSObject2 = __webpack_require__(0);
 
 var _NSObject3 = _interopRequireDefault(_NSObject2);
 
-var _SCNGeometry = __webpack_require__(9);
+var _SCNGeometry = __webpack_require__(10);
 
 var _SCNGeometry2 = _interopRequireDefault(_SCNGeometry);
 
@@ -55823,7 +56673,7 @@ var SCNLevelOfDetail = function (_NSObject) {
 exports.default = SCNLevelOfDetail;
 
 /***/ }),
-/* 202 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -55835,11 +56685,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _SCNConstraint2 = __webpack_require__(17);
+var _SCNConstraint2 = __webpack_require__(19);
 
 var _SCNConstraint3 = _interopRequireDefault(_SCNConstraint2);
 
-var _SCNNode = __webpack_require__(14);
+var _SCNNode = __webpack_require__(12);
 
 var _SCNNode2 = _interopRequireDefault(_SCNNode);
 
@@ -55943,7 +56793,7 @@ var SCNLookAtConstraint = function (_SCNConstraint) {
 exports.default = SCNLookAtConstraint;
 
 /***/ }),
-/* 203 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -55982,7 +56832,7 @@ var SCNMatrix4EqualToMatrix4 = function SCNMatrix4EqualToMatrix4(a, b) {
 exports.default = SCNMatrix4EqualToMatrix4;
 
 /***/ }),
-/* 204 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56009,7 +56859,7 @@ var SCNMatrix4FromGLKMatrix4 = function SCNMatrix4FromGLKMatrix4(mat) {
 exports.default = SCNMatrix4FromGLKMatrix4;
 
 /***/ }),
-/* 205 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56039,7 +56889,7 @@ var SCNMatrix4FromMat4 = function SCNMatrix4FromMat4(m) {
 exports.default = SCNMatrix4FromMat4;
 
 /***/ }),
-/* 206 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56065,7 +56915,7 @@ var SCNMatrix4Invert = function SCNMatrix4Invert(m) {
 exports.default = SCNMatrix4Invert;
 
 /***/ }),
-/* 207 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56099,7 +56949,7 @@ var SCNMatrix4IsIdentity = function SCNMatrix4IsIdentity(m) {
 exports.default = SCNMatrix4IsIdentity;
 
 /***/ }),
-/* 208 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56162,7 +57012,7 @@ var SCNMatrix4MakeRotation = function SCNMatrix4MakeRotation(angle, x, y, z) {
 exports.default = SCNMatrix4MakeRotation;
 
 /***/ }),
-/* 209 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56190,7 +57040,7 @@ var SCNMatrix4Mult = function SCNMatrix4Mult(a, b) {
 exports.default = SCNMatrix4Mult;
 
 /***/ }),
-/* 210 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56221,7 +57071,7 @@ var SCNMatrix4Rotate = function SCNMatrix4Rotate(m, angle, x, y, z) {
 exports.default = SCNMatrix4Rotate;
 
 /***/ }),
-/* 211 */
+/* 213 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56233,7 +57083,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _SCNMatrix4MakeScale = __webpack_require__(102);
+var _SCNMatrix4MakeScale = __webpack_require__(104);
 
 var _SCNMatrix4MakeScale2 = _interopRequireDefault(_SCNMatrix4MakeScale);
 
@@ -56255,7 +57105,7 @@ var SCNMatrix4Scale = function SCNMatrix4Scale(m, sx, sy, sz) {
 };exports.default = SCNMatrix4Scale;
 
 /***/ }),
-/* 212 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56282,7 +57132,7 @@ var SCNMatrix4ToGLKMatrix4 = function SCNMatrix4ToGLKMatrix4(mat) {
 exports.default = SCNMatrix4ToGLKMatrix4;
 
 /***/ }),
-/* 213 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56308,7 +57158,7 @@ var SCNMatrix4ToMat4 = function SCNMatrix4ToMat4(m) {
 exports.default = SCNMatrix4ToMat4;
 
 /***/ }),
-/* 214 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56342,7 +57192,7 @@ var SCNMatrix4Translate = function SCNMatrix4Translate(m, tx, ty, tz) {
 };exports.default = SCNMatrix4Translate;
 
 /***/ }),
-/* 215 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56360,7 +57210,7 @@ var _NSObject2 = __webpack_require__(0);
 
 var _NSObject3 = _interopRequireDefault(_NSObject2);
 
-var _SCNMorpherCalculationMode = __webpack_require__(103);
+var _SCNMorpherCalculationMode = __webpack_require__(105);
 
 var _SCNMorpherCalculationMode2 = _interopRequireDefault(_SCNMorpherCalculationMode);
 
@@ -56522,16 +57372,16 @@ var SCNMorpher = function (_NSObject) {
       node.geometry.geometrySources.forEach(function (source) {
         // FIXME: copy more than 1 source.
         var pSource = pg.getGeometrySourcesForSemantic(source.semantic)[0];
-        pSource.fill(0
+        pSource.fill(0);
         //newData.set(source.semantic, Array(source._data.length).fill(0))
-        );totalWeightForSemantic.set(source.semantic, 0.0);
-      }
+        totalWeightForSemantic.set(source.semantic, 0.0);
+      });
 
       // should I morph elements?
       //node.geometry.geometryElements().forEach((element) => {
       //})
 
-      );var targetCount = pm.targets.length;
+      var targetCount = pm.targets.length;
       //console.log(`targetCount: ${targetCount}`)
 
       var _loop = function _loop(i) {
@@ -56546,10 +57396,10 @@ var SCNMorpher = function (_NSObject) {
           if (typeof pSource === 'undefined') {
             return;
           }
-          totalWeightForSemantic.set(source.semantic, totalWeightForSemantic.get(source.semantic) + weight
+          totalWeightForSemantic.set(source.semantic, totalWeightForSemantic.get(source.semantic) + weight);
 
           // FIXME: don't access private properties
-          );var srcIndex = source._dataOffset / source._bytesPerComponent;
+          var srcIndex = source._dataOffset / source._bytesPerComponent;
           var srcStride = source._dataStride / source._bytesPerComponent;
           var dstIndex = pSource._dataOffset / pSource._bytesPerComponent;
           var dstStride = pSource._dataStride / pSource._bytesPerComponent;
@@ -56610,9 +57460,9 @@ var SCNMorpher = function (_NSObject) {
         var vectorCount = source._vectorCount;
 
         if (p.calculationMode === _SCNMorpherCalculationMode2.default.normalized) {
-          var _weight = 1.0 - totalWeightForSemantic.get(source.semantic
+          var _weight = 1.0 - totalWeightForSemantic.get(source.semantic);
           // FIXME: don't access private properties
-          );for (var i = 0; i < vectorCount; i++) {
+          for (var i = 0; i < vectorCount; i++) {
             for (var j = 0; j < componentCount; j++) {
               pSource._data[dstIndex + j] += source._data[srcIndex + j] * _weight;
             }
@@ -56631,12 +57481,11 @@ var SCNMorpher = function (_NSObject) {
             dstIndex += dstStride;
           }
         }
-      }
+      });
 
       // TODO: needs to update normal vector?
 
       //console.log(`_morph done`)
-      );
     }
 
     /**
@@ -56661,7 +57510,7 @@ var SCNMorpher = function (_NSObject) {
 exports.default = SCNMorpher;
 
 /***/ }),
-/* 216 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56722,7 +57571,7 @@ var SCNNodeRendererDelegate = function () {
 exports.default = SCNNodeRendererDelegate;
 
 /***/ }),
-/* 217 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56749,7 +57598,7 @@ var SCNParticleEvent = {
 exports.default = SCNParticleEvent;
 
 /***/ }),
-/* 218 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56798,7 +57647,7 @@ var SCNParticleEventBlock = function SCNParticleEventBlock(data, dataStride, ind
 exports.default = SCNParticleEventBlock;
 
 /***/ }),
-/* 219 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56825,7 +57674,7 @@ var SCNParticleInputMode = {
 exports.default = SCNParticleInputMode;
 
 /***/ }),
-/* 220 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56870,7 +57719,7 @@ var SCNParticleModifierBlock = function SCNParticleModifierBlock(data, dataStrid
 exports.default = SCNParticleModifierBlock;
 
 /***/ }),
-/* 221 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56899,7 +57748,7 @@ var SCNParticleModifierStage = {
 exports.default = SCNParticleModifierStage;
 
 /***/ }),
-/* 222 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56915,7 +57764,7 @@ var _NSObject2 = __webpack_require__(0);
 
 var _NSObject3 = _interopRequireDefault(_NSObject2);
 
-var _SCNNode = __webpack_require__(14);
+var _SCNNode = __webpack_require__(12);
 
 var _SCNNode2 = _interopRequireDefault(_SCNNode);
 
@@ -57039,7 +57888,7 @@ var SCNParticlePropertyController = function (_NSObject) {
 exports.default = SCNParticlePropertyController;
 
 /***/ }),
-/* 223 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -57073,11 +57922,11 @@ var _SCNMatrix = __webpack_require__(7);
 
 var _SCNMatrix2 = _interopRequireDefault(_SCNMatrix);
 
-var _SCNParticleBirthLocation = __webpack_require__(105);
+var _SCNParticleBirthLocation = __webpack_require__(107);
 
 var _SCNParticleBirthLocation2 = _interopRequireDefault(_SCNParticleBirthLocation);
 
-var _SCNParticleBirthDirection = __webpack_require__(104);
+var _SCNParticleBirthDirection = __webpack_require__(106);
 
 var _SCNParticleBirthDirection2 = _interopRequireDefault(_SCNParticleBirthDirection);
 
@@ -57093,19 +57942,19 @@ var _SCNOrderedDictionary = __webpack_require__(22);
 
 var _SCNOrderedDictionary2 = _interopRequireDefault(_SCNOrderedDictionary);
 
-var _SCNParticleImageSequenceAnimationMode = __webpack_require__(107);
+var _SCNParticleImageSequenceAnimationMode = __webpack_require__(109);
 
 var _SCNParticleImageSequenceAnimationMode2 = _interopRequireDefault(_SCNParticleImageSequenceAnimationMode);
 
-var _SCNParticleBlendMode = __webpack_require__(106);
+var _SCNParticleBlendMode = __webpack_require__(108);
 
 var _SCNParticleBlendMode2 = _interopRequireDefault(_SCNParticleBlendMode);
 
-var _SCNParticleOrientationMode = __webpack_require__(108);
+var _SCNParticleOrientationMode = __webpack_require__(110);
 
 var _SCNParticleOrientationMode2 = _interopRequireDefault(_SCNParticleOrientationMode);
 
-var _SCNParticleSortingMode = __webpack_require__(109);
+var _SCNParticleSortingMode = __webpack_require__(111);
 
 var _SCNParticleSortingMode2 = _interopRequireDefault(_SCNParticleSortingMode);
 
@@ -58050,6 +58899,9 @@ var SCNParticleSystem = function (_NSObject2) {
       var _this3 = this;
 
       var image = new Image();
+      // TODO: check option if it allows cross-domain.
+      image.crossOrigin = 'anonymous';
+
       var __path = path;
       if (__path.indexOf('file:///') === 0) {
         __path = __path.slice(8);
@@ -58094,21 +58946,21 @@ var SCNParticleSystem = function (_NSObject2) {
       gl.bindVertexArray(this._vertexArray);
 
       this._vertexBuffer = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, this._vertexBuffer
+      gl.bindBuffer(gl.ARRAY_BUFFER, this._vertexBuffer);
 
       // prepare vertex array data
       // TODO: retain attribute locations
-      );var positionLoc = gl.getAttribLocation(program, 'position');
+      var positionLoc = gl.getAttribLocation(program, 'position');
       var velocityLoc = gl.getAttribLocation(program, 'velocity');
       var rotationLoc = gl.getAttribLocation(program, 'rotation');
       var colorLoc = gl.getAttribLocation(program, 'color');
-      var sizeLoc = gl.getAttribLocation(program, 'size'
+      var sizeLoc = gl.getAttribLocation(program, 'size');
       //const lifeLoc = gl.getAttribLocation(program, 'life')
-      );var cornerLoc = gl.getAttribLocation(program, 'corner');
-      var texcoordLoc = gl.getAttribLocation(program, 'texcoord'
+      var cornerLoc = gl.getAttribLocation(program, 'corner');
+      var texcoordLoc = gl.getAttribLocation(program, 'texcoord');
 
       // vertexAttribPointer(ulong idx, long size, ulong type, bool norm, long stride, ulong offset)
-      );var stride = 76;
+      var stride = 76;
       gl.enableVertexAttribArray(positionLoc);
       gl.vertexAttribPointer(positionLoc, 3, gl.FLOAT, false, stride, 0);
       gl.enableVertexAttribArray(velocityLoc);
@@ -58122,7 +58974,7 @@ var SCNParticleSystem = function (_NSObject2) {
       gl.enableVertexAttribArray(cornerLoc);
       gl.vertexAttribPointer(cornerLoc, 2, gl.FLOAT, false, stride, 60);
       gl.enableVertexAttribArray(texcoordLoc);
-      gl.vertexAttribPointer(texcoordLoc, 2, gl.FLOAT, false, stride, 68
+      gl.vertexAttribPointer(texcoordLoc, 2, gl.FLOAT, false, stride, 68);
 
       /*
       const arr = []
@@ -58133,11 +58985,11 @@ var SCNParticleSystem = function (_NSObject2) {
       gl.bufferData(gl.ARRAY_BUFFER, particleData, gl.DYNAMIC_DRAW)
       */
 
-      );var len = this._maxParticles + 5;
-      this._updateIndexBuffer(gl, len
+      var len = this._maxParticles + 5;
+      this._updateIndexBuffer(gl, len);
 
       // initialize parameters
-      );this._numImages = this.imageSequenceRowCount * this.imageSequenceColumnCount;
+      this._numImages = this.imageSequenceRowCount * this.imageSequenceColumnCount;
       this._imageWidth = 1.0 / this.imageSequenceColumnCount;
       this._imageHeight = 1.0 / this.imageSequenceRowCount;
     }
@@ -58196,10 +59048,10 @@ var SCNParticleSystem = function (_NSObject2) {
       var spreadingAngle = this.spreadingAngle / 180.0 * Math.PI * Math.random();
       var spreadingAngleRot = 2.0 * Math.PI * Math.random();
       var angleMat = _SCNMatrix2.default.matrixWithRotation(this._normal.x, this._normal.y, this._normal.z, spreadingAngle);
-      var rotMat = _SCNMatrix2.default.matrixWithRotation(this._direction.x, this._direction.y, this._direction.z, spreadingAngleRot
+      var rotMat = _SCNMatrix2.default.matrixWithRotation(this._direction.x, this._direction.y, this._direction.z, spreadingAngleRot);
 
       // emitterShape, birthLocation, emittingDirection, spreadingAngle, particleAngle/Variation, particleVelocity
-      );if (this.emitterShape === null) {
+      if (this.emitterShape === null) {
         p.position = position;
         p.velocity = new _SCNVector2.default(0, 0, velocity); // TODO: use spreadingAngle
       } else if (this.birthLocation === _SCNParticleBirthLocation2.default.surface) {
@@ -58473,8 +59325,7 @@ var SCNParticleSystem = function (_NSObject2) {
         p.position.z += p.velocity.z * _dt;
         if (_this4.propertyControllers !== null) {
           Object.keys(_this4.propertyControllers).forEach(function (key) {
-            _this4.propertyControllers[key].animation._applyAnimation(p, t, false // should I use p.life instead of t?
-            );
+            _this4.propertyControllers[key].animation._applyAnimation(p, t, false); // should I use p.life instead of t?
           });
         }
 
@@ -58562,10 +59413,10 @@ var SCNParticleSystem = function (_NSObject2) {
       }
 
       gl.uniform1i(gl.getUniformLocation(program, 'orientationMode'), this.orientationMode);
-      gl.uniform1f(gl.getUniformLocation(program, 'stretchFactor'), this.stretchFactor
+      gl.uniform1f(gl.getUniformLocation(program, 'stretchFactor'), this.stretchFactor);
 
       // buffer particle data
-      );gl.bindBuffer(gl.ARRAY_BUFFER, this._vertexBuffer);
+      gl.bindBuffer(gl.ARRAY_BUFFER, this._vertexBuffer);
       gl.bufferData(gl.ARRAY_BUFFER, this._particleData, gl.DYNAMIC_DRAW);
 
       if (this._particles.length > this._maxParticleIndex) {
@@ -58599,10 +59450,10 @@ var SCNParticleSystem = function (_NSObject2) {
       //console.warn(`image size: ${image.naturalWidth} ${image.naturalHeight}`)
       canvas.getContext('2d').drawImage(image, 0, 0);
 
-      gl.bindTexture(gl.TEXTURE_2D, texture
+      gl.bindTexture(gl.TEXTURE_2D, texture);
       // texImage2D(target, level, internalformat, width, height, border, format, type, source)
       // Safari complains that 'source' is not ArrayBufferView type, but WebGL2 should accept HTMLCanvasElement.
-      );gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, image.width, image.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, image.width, image.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
       gl.generateMipmap(gl.TEXTURE_2D);
       gl.bindTexture(gl.TEXTURE_2D, null);
 
@@ -58617,23 +59468,23 @@ var SCNParticleSystem = function (_NSObject2) {
   }, {
     key: '_createColor',
     value: function _createColor() {
-      var hsb = this._rgb2hsb(this.particleColor
+      var hsb = this._rgb2hsb(this.particleColor);
 
       // Hue
       //hsb.x = (hsb.x + this.particleColorVariation.x * (Math.random() - 0.5)) % 360.0
-      );hsb.x = (hsb.x + this.particleColorVariation.x * (Math.random() * 2.0 - 1.0)) % 360.0;
+      hsb.x = (hsb.x + this.particleColorVariation.x * (Math.random() * 2.0 - 1.0)) % 360.0;
       if (hsb.x < 0) {
         hsb.x += 360.0;
       }
 
       // Saturation
-      hsb.y = Math.max(0, Math.min(1.0, hsb.y + this.particleColorVariation.y * (Math.random() - 0.5))
+      hsb.y = Math.max(0, Math.min(1.0, hsb.y + this.particleColorVariation.y * (Math.random() - 0.5)));
 
       // Brightness
-      );hsb.z = Math.max(0, Math.min(1.0, hsb.z + this.particleColorVariation.z * (Math.random() - 0.5))
+      hsb.z = Math.max(0, Math.min(1.0, hsb.z + this.particleColorVariation.z * (Math.random() - 0.5)));
 
       // Alpha
-      );hsb.w = Math.max(0, Math.min(1.0, hsb.w + this.particleColorVariation.w * (Math.random() - 0.5)));
+      hsb.w = Math.max(0, Math.min(1.0, hsb.w + this.particleColorVariation.w * (Math.random() - 0.5)));
 
       return this._hsb2rgb(hsb);
     }
@@ -58695,7 +59546,7 @@ var SCNParticleSystem = function (_NSObject2) {
         return new _SKColor2.default(hsb.z, hsb.z, hsb.z, hsb.w);
       }
 
-      var region = Math.floor(hsb.x / 60.0
+      var region = Math.floor(hsb.x / 60.0);
       /*
       const c = hsb.z * hsb.y
       const x = c * (region % 2)
@@ -58735,7 +59586,7 @@ var SCNParticleSystem = function (_NSObject2) {
       
       return rgb
       */
-      );var v = hsb.z;
+      var v = hsb.z;
       var f = hsb.x / 60.0 - region;
       var m = v * (1.0 - hsb.y);
       var n = v * (1.0 - hsb.y * f);
@@ -58831,9 +59682,9 @@ var SCNParticleSystem = function (_NSObject2) {
       if (typeof key === 'undefined' || key === null) {
         key = Symbol();
       }
-      var anim = animation.copy
+      var anim = animation.copy();
       // FIXME: use current frame time
-      ();anim._animationStartTime = Date.now() * 0.001;
+      anim._animationStartTime = Date.now() * 0.001;
 
       this._animations.set(key, anim);
     }
@@ -59117,7 +59968,7 @@ var SCNParticleSystem = function (_NSObject2) {
 exports.default = SCNParticleSystem;
 
 /***/ }),
-/* 224 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59228,7 +60079,7 @@ var SCNPhysicsBallSocketJoint = function (_SCNPhysicsBehavior) {
 exports.default = SCNPhysicsBallSocketJoint;
 
 /***/ }),
-/* 225 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59244,11 +60095,11 @@ var _NSObject2 = __webpack_require__(0);
 
 var _NSObject3 = _interopRequireDefault(_NSObject2);
 
-var _SCNPhysicsBodyType = __webpack_require__(51);
+var _SCNPhysicsBodyType = __webpack_require__(52);
 
 var _SCNPhysicsBodyType2 = _interopRequireDefault(_SCNPhysicsBodyType);
 
-var _SCNPhysicsShape = __webpack_require__(52);
+var _SCNPhysicsShape = __webpack_require__(53);
 
 var _SCNPhysicsShape2 = _interopRequireDefault(_SCNPhysicsShape);
 
@@ -59755,7 +60606,7 @@ var SCNPhysicsBody = function (_NSObject) {
 exports.default = SCNPhysicsBody;
 
 /***/ }),
-/* 226 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59847,7 +60698,7 @@ var SCNPhysicsCollisionCategory = function () {
 exports.default = SCNPhysicsCollisionCategory;
 
 /***/ }),
-/* 227 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59933,7 +60784,7 @@ var SCNPhysicsContactDelegate = function () {
 exports.default = SCNPhysicsContactDelegate;
 
 /***/ }),
-/* 228 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -59958,7 +60809,7 @@ var SCNPhysicsFieldScope = {
 exports.default = SCNPhysicsFieldScope;
 
 /***/ }),
-/* 229 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60085,7 +60936,7 @@ var SCNPhysicsHingeJoint = function (_SCNPhysicsBehavior) {
 exports.default = SCNPhysicsHingeJoint;
 
 /***/ }),
-/* 230 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60273,7 +61124,7 @@ var SCNPhysicsSliderJoint = function (_SCNPhysicsBehavior) {
 exports.default = SCNPhysicsSliderJoint;
 
 /***/ }),
-/* 231 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60285,7 +61136,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _SCNPhysicsNoiseField2 = __webpack_require__(111);
+var _SCNPhysicsNoiseField2 = __webpack_require__(113);
 
 var _SCNPhysicsNoiseField3 = _interopRequireDefault(_SCNPhysicsNoiseField2);
 
@@ -60349,7 +61200,7 @@ var SCNPhysicsTurbulenceField = function (_SCNPhysicsNoiseField) {
 exports.default = SCNPhysicsTurbulenceField;
 
 /***/ }),
-/* 232 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60508,7 +61359,7 @@ var SCNPhysicsVehicle = function (_SCNPhysicsBehavior) {
 exports.default = SCNPhysicsVehicle;
 
 /***/ }),
-/* 233 */
+/* 235 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60673,7 +61524,7 @@ var SCNPhysicsVehicleWheel = function (_NSObject) {
 exports.default = SCNPhysicsVehicleWheel;
 
 /***/ }),
-/* 234 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -60685,7 +61536,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _SCNGeometry2 = __webpack_require__(9);
+var _SCNGeometry2 = __webpack_require__(10);
 
 var _SCNGeometry3 = _interopRequireDefault(_SCNGeometry2);
 
@@ -60697,11 +61548,11 @@ var _SCNGeometryElement = __webpack_require__(15);
 
 var _SCNGeometryElement2 = _interopRequireDefault(_SCNGeometryElement);
 
-var _SCNGeometryPrimitiveType = __webpack_require__(13);
+var _SCNGeometryPrimitiveType = __webpack_require__(14);
 
 var _SCNGeometryPrimitiveType2 = _interopRequireDefault(_SCNGeometryPrimitiveType);
 
-var _SCNMaterial = __webpack_require__(12);
+var _SCNMaterial = __webpack_require__(13);
 
 var _SCNMaterial2 = _interopRequireDefault(_SCNMaterial);
 
@@ -60837,10 +61688,9 @@ var SCNPlane = function (_SCNGeometry) {
           var tx = j / this.widthSegmentCount;
           var x = (-0.5 + tx) * this.width;
 
-          sourceData.push(x, y, 0.0 // position
-          );sourceData.push(0.0, 0.0, 1.0 // normal
-          );sourceData.push(tx, 1.0 - ty // texcoord
-          );
+          sourceData.push(x, y, 0.0); // position
+          sourceData.push(0.0, 0.0, 1.0); // normal
+          sourceData.push(tx, 1.0 - ty); // texcoord
         }
       }
 
@@ -60900,7 +61750,7 @@ var SCNPlane = function (_SCNGeometry) {
 exports.default = SCNPlane;
 
 /***/ }),
-/* 235 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61017,7 +61867,7 @@ var SCNProgramDelegate = function () {
 exports.default = SCNProgramDelegate;
 
 /***/ }),
-/* 236 */
+/* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61029,7 +61879,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _SCNGeometry2 = __webpack_require__(9);
+var _SCNGeometry2 = __webpack_require__(10);
 
 var _SCNGeometry3 = _interopRequireDefault(_SCNGeometry2);
 
@@ -61037,7 +61887,7 @@ var _SCNGeometryElement = __webpack_require__(15);
 
 var _SCNGeometryElement2 = _interopRequireDefault(_SCNGeometryElement);
 
-var _SCNGeometryPrimitiveType = __webpack_require__(13);
+var _SCNGeometryPrimitiveType = __webpack_require__(14);
 
 var _SCNGeometryPrimitiveType2 = _interopRequireDefault(_SCNGeometryPrimitiveType);
 
@@ -61045,7 +61895,7 @@ var _SCNGeometrySource = __webpack_require__(6);
 
 var _SCNGeometrySource2 = _interopRequireDefault(_SCNGeometrySource);
 
-var _SCNMaterial = __webpack_require__(12);
+var _SCNMaterial = __webpack_require__(13);
 
 var _SCNMaterial2 = _interopRequireDefault(_SCNMaterial);
 
@@ -61269,25 +62119,25 @@ var SCNPyramid = function (_SCNGeometry) {
       } else {
         throw new Error('position inconsistent');
       }
-      normal = normal.normalize
+      normal = normal.normalize();
 
       // left bottom
-      ();data.push(x0, 0, z0);
+      data.push(x0, 0, z0);
       data.push(normal.x, normal.y, normal.z);
-      data.push(0.0, 1.0
+      data.push(0.0, 1.0);
 
       // top
-      );data.push(0, this.height, 0);
+      data.push(0, this.height, 0);
       data.push(normal.x, normal.y, normal.z);
-      data.push(0.0, 0.0
+      data.push(0.0, 0.0);
 
       // right bottom
-      );data.push(x1, 0, z1);
+      data.push(x1, 0, z1);
       data.push(normal.x, normal.y, normal.z);
-      data.push(1.0, 1.0
+      data.push(1.0, 1.0);
 
       // top again
-      );data.push(0, this.height, 0);
+      data.push(0, this.height, 0);
       data.push(normal.x, normal.y, normal.z);
       data.push(1.0, 0.0);
 
@@ -61301,7 +62151,7 @@ var SCNPyramid = function (_SCNGeometry) {
 exports.default = SCNPyramid;
 
 /***/ }),
-/* 237 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61315,15 +62165,15 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _SCNNode2 = __webpack_require__(14);
+var _SCNNode2 = __webpack_require__(12);
 
 var _SCNNode3 = _interopRequireDefault(_SCNNode2);
 
-var _SCNReferenceLoadingPolicy = __webpack_require__(114);
+var _SCNReferenceLoadingPolicy = __webpack_require__(116);
 
 var _SCNReferenceLoadingPolicy2 = _interopRequireDefault(_SCNReferenceLoadingPolicy);
 
-var _SCNScene = __webpack_require__(115);
+var _SCNScene = __webpack_require__(117);
 
 var _SCNScene2 = _interopRequireDefault(_SCNScene);
 
@@ -61593,7 +62443,7 @@ var SCNReferenceNode = function (_SCNNode) {
 exports.default = SCNReferenceNode;
 
 /***/ }),
-/* 238 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61653,7 +62503,7 @@ var SCNSceneExportDelegate = function () {
 exports.default = SCNSceneExportDelegate;
 
 /***/ }),
-/* 239 */
+/* 241 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -61678,7 +62528,7 @@ var SCNSceneExportProgressHandler = function SCNSceneExportProgressHandler(total
 exports.default = SCNSceneExportProgressHandler;
 
 /***/ }),
-/* 240 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62121,7 +62971,7 @@ var SCNSceneRenderer = function () {
 exports.default = SCNSceneRenderer;
 
 /***/ }),
-/* 241 */
+/* 243 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62242,7 +63092,7 @@ var SCNSceneRendererDelegate = function () {
 exports.default = SCNSceneRendererDelegate;
 
 /***/ }),
-/* 242 */
+/* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62273,7 +63123,7 @@ var SCNSceneSourceStatus = {
 exports.default = SCNSceneSourceStatus;
 
 /***/ }),
-/* 243 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62300,7 +63150,7 @@ var SCNSceneSourceStatusHandler = function SCNSceneSourceStatusHandler(totalProg
 exports.default = SCNSceneSourceStatusHandler;
 
 /***/ }),
-/* 244 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62410,7 +63260,7 @@ var SCNShadable = function () {
 exports.default = SCNShadable;
 
 /***/ }),
-/* 245 */
+/* 247 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62463,7 +63313,7 @@ var SCNShadableHelper = function (_NSObject) {
 exports.default = SCNShadableHelper;
 
 /***/ }),
-/* 246 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62492,7 +63342,7 @@ var SCNShaderModifierEntryPoint = {
 exports.default = SCNShaderModifierEntryPoint;
 
 /***/ }),
-/* 247 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62519,7 +63369,7 @@ var SCNShadowMode = {
 exports.default = SCNShadowMode;
 
 /***/ }),
-/* 248 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62529,7 +63379,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _SCNGeometry2 = __webpack_require__(9);
+var _SCNGeometry2 = __webpack_require__(10);
 
 var _SCNGeometry3 = _interopRequireDefault(_SCNGeometry2);
 
@@ -62615,7 +63465,7 @@ var SCNShape = function (_SCNGeometry) {
 exports.default = SCNShape;
 
 /***/ }),
-/* 249 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -62758,7 +63608,7 @@ var SCNSkinner = function (_NSObject) {
      * @type {SCNMatrix4}
      * @see https://developer.apple.com/documentation/scenekit/scnskinner/1523160-basegeometrybindtransform
      */
-    _this.baseGeometryBindTransform = (0, _SCNMatrix4MakeTranslation2.default)(0, 0, 0
+    _this.baseGeometryBindTransform = (0, _SCNMatrix4MakeTranslation2.default)(0, 0, 0);
 
     // Working with an Animation Skeleton
 
@@ -62767,7 +63617,7 @@ var SCNSkinner = function (_NSObject) {
      * @type {?SCNNode}
      * @see https://developer.apple.com/documentation/scenekit/scnskinner/1523048-skeleton
      */
-    );_this.skeleton = null;
+    _this.skeleton = null;
 
     /**
      * @access private
@@ -62838,7 +63688,7 @@ var SCNSkinner = function (_NSObject) {
         //       it doesn't consider the rotation of initial pose so far.
         //const mat = this._boneInverseBindTransforms[i].mult(bone._presentation._worldTransform)
         //const mat = this.baseGeometryBindTransform.mult(this._boneInverseBindTransforms[i]).mult(bone._presentation._worldTransform)
-        var mat = this.baseGeometryBindTransform.mult(this._boneInverseBindTransforms[i]).mult(bone.presentation._worldTransform
+        var mat = this.baseGeometryBindTransform.mult(this._boneInverseBindTransforms[i]).mult(bone.presentation._worldTransform);
         //const mat = bone._presentation._worldTransform.mult(this._boneInverseBindTransforms[i])
         //mat = bone.presentation.transform.mult(mat)
         //if(bone._parent !== null){
@@ -62847,7 +63697,7 @@ var SCNSkinner = function (_NSObject) {
         //}
         //mat = bone.presentation.transform.mult(mat)
         //mat = mat.mult(bone.presentation.transform)
-        );arr.push.apply(arr, _toConsumableArray(mat.floatArray3x4f()));
+        arr.push.apply(arr, _toConsumableArray(mat.floatArray3x4f()));
 
         /*
         if(!mat.isIdentity()){
@@ -63019,7 +63869,7 @@ var SCNSkinner = function (_NSObject) {
 exports.default = SCNSkinner;
 
 /***/ }),
-/* 250 */
+/* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63151,7 +64001,7 @@ var SCNTechnique = function (_NSObject) {
 exports.default = SCNTechnique;
 
 /***/ }),
-/* 251 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63194,7 +64044,7 @@ function SCNTechniqueSupport() {
 exports.default = SCNTechniqueSupport;
 
 /***/ }),
-/* 252 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63206,7 +64056,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _SCNGeometry2 = __webpack_require__(9);
+var _SCNGeometry2 = __webpack_require__(10);
 
 var _SCNGeometry3 = _interopRequireDefault(_SCNGeometry2);
 
@@ -63349,7 +64199,7 @@ var SCNText = function (_SCNGeometry) {
 exports.default = SCNText;
 
 /***/ }),
-/* 253 */
+/* 255 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63422,7 +64272,7 @@ var SCNTimingFunction = function (_NSObject) {
 exports.default = SCNTimingFunction;
 
 /***/ }),
-/* 254 */
+/* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63434,7 +64284,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _SCNGeometry2 = __webpack_require__(9);
+var _SCNGeometry2 = __webpack_require__(10);
 
 var _SCNGeometry3 = _interopRequireDefault(_SCNGeometry2);
 
@@ -63442,7 +64292,7 @@ var _SCNGeometryElement = __webpack_require__(15);
 
 var _SCNGeometryElement2 = _interopRequireDefault(_SCNGeometryElement);
 
-var _SCNGeometryPrimitiveType = __webpack_require__(13);
+var _SCNGeometryPrimitiveType = __webpack_require__(14);
 
 var _SCNGeometryPrimitiveType2 = _interopRequireDefault(_SCNGeometryPrimitiveType);
 
@@ -63450,7 +64300,7 @@ var _SCNGeometrySource = __webpack_require__(6);
 
 var _SCNGeometrySource2 = _interopRequireDefault(_SCNGeometrySource);
 
-var _SCNMaterial = __webpack_require__(12);
+var _SCNMaterial = __webpack_require__(13);
 
 var _SCNMaterial2 = _interopRequireDefault(_SCNMaterial);
 
@@ -63555,13 +64405,13 @@ var SCNTorus = function (_SCNGeometry) {
           var z = cz + this.pipeRadius * cosr * cosp;
 
           // vertex
-          sourceData.push(x, y, z
+          sourceData.push(x, y, z);
 
           // normal
-          );sourceData.push(sinr * cosp, -sinp, cosr * cosp
+          sourceData.push(sinr * cosp, -sinp, cosr * cosp);
 
           // texcoord
-          );var tz = 1.0 - pi / this.pipeSegmentCount;
+          var tz = 1.0 - pi / this.pipeSegmentCount;
           sourceData.push(tx, tz);
         }
       }
@@ -63625,7 +64475,7 @@ var SCNTorus = function (_SCNGeometry) {
 exports.default = SCNTorus;
 
 /***/ }),
-/* 255 */
+/* 257 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63637,11 +64487,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _SCNConstraint2 = __webpack_require__(17);
+var _SCNConstraint2 = __webpack_require__(19);
 
 var _SCNConstraint3 = _interopRequireDefault(_SCNConstraint2);
 
-var _SCNNode = __webpack_require__(14);
+var _SCNNode = __webpack_require__(12);
 
 var _SCNNode2 = _interopRequireDefault(_SCNNode);
 
@@ -63649,7 +64499,7 @@ var _SCNMatrix = __webpack_require__(7);
 
 var _SCNMatrix2 = _interopRequireDefault(_SCNMatrix);
 
-var _SCNQuaternion = __webpack_require__(113);
+var _SCNQuaternion = __webpack_require__(115);
 
 var _SCNQuaternion2 = _interopRequireDefault(_SCNQuaternion);
 
@@ -63753,7 +64603,7 @@ var SCNTransformConstraint = function (_SCNConstraint) {
 exports.default = SCNTransformConstraint;
 
 /***/ }),
-/* 256 */
+/* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -63767,7 +64617,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _SCNGeometry2 = __webpack_require__(9);
+var _SCNGeometry2 = __webpack_require__(10);
 
 var _SCNGeometry3 = _interopRequireDefault(_SCNGeometry2);
 
@@ -63775,7 +64625,7 @@ var _SCNGeometryElement = __webpack_require__(15);
 
 var _SCNGeometryElement2 = _interopRequireDefault(_SCNGeometryElement);
 
-var _SCNGeometryPrimitiveType = __webpack_require__(13);
+var _SCNGeometryPrimitiveType = __webpack_require__(14);
 
 var _SCNGeometryPrimitiveType2 = _interopRequireDefault(_SCNGeometryPrimitiveType);
 
@@ -63783,7 +64633,7 @@ var _SCNGeometrySource = __webpack_require__(6);
 
 var _SCNGeometrySource2 = _interopRequireDefault(_SCNGeometrySource);
 
-var _SCNMaterial = __webpack_require__(12);
+var _SCNMaterial = __webpack_require__(13);
 
 var _SCNMaterial2 = _interopRequireDefault(_SCNMaterial);
 
@@ -63900,38 +64750,38 @@ var SCNTube = function (_SCNGeometry) {
         outerData.push(ovx, bottom, ovz);
         innerData.push(ivx, top, ivz);
         topData.push(ovx, top, ovz);
-        bottomData.push(-ovx, bottom, ovz
+        bottomData.push(-ovx, bottom, ovz);
 
         // normal
-        );outerData.push(x, 0, z);
+        outerData.push(x, 0, z);
         innerData.push(-x, 0, -z);
         topData.push(0, 1, 0);
-        bottomData.push(0, -1, 0
+        bottomData.push(0, -1, 0);
 
         // texcoord
-        );var tx = tStep * i;
+        var tx = tStep * i;
         outerData.push(tx, 1.0);
         innerData.push(1.0 - tx, 0.0);
 
         var ttx = 0.5 + Math.cos(rStep * i) * 0.5;
         var tty = 0.5 + Math.sin(rStep * i) * 0.5;
         topData.push(ttx, tty);
-        bottomData.push(ttx, tty
+        bottomData.push(ttx, tty);
 
         // vertex
-        );outerData.push(ovx, top, ovz);
+        outerData.push(ovx, top, ovz);
         innerData.push(ivx, bottom, ivz);
         topData.push(ivx, top, ivz);
-        bottomData.push(-ivx, bottom, ivz
+        bottomData.push(-ivx, bottom, ivz);
 
         // normal
-        );outerData.push(x, 0, z);
+        outerData.push(x, 0, z);
         innerData.push(-x, 0, -z);
         topData.push(0, 1, 0);
-        bottomData.push(0, -1, 0
+        bottomData.push(0, -1, 0);
 
         // texcoord
-        );outerData.push(tx, 0.0);
+        outerData.push(tx, 0.0);
         innerData.push(1.0 - tx, 1.0);
 
         var ttx2 = 0.5 + Math.cos(rStep * i) * 0.25;
@@ -64009,7 +64859,7 @@ var SCNTube = function (_SCNGeometry) {
 exports.default = SCNTube;
 
 /***/ }),
-/* 257 */
+/* 259 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64038,7 +64888,7 @@ var SCNVector3EqualToVector3 = function SCNVector3EqualToVector3(a, b) {
 exports.default = SCNVector3EqualToVector3;
 
 /***/ }),
-/* 258 */
+/* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64068,7 +64918,7 @@ var SCNVector3FromFloat3 = function SCNVector3FromFloat3(v) {
 exports.default = SCNVector3FromFloat3;
 
 /***/ }),
-/* 259 */
+/* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64095,7 +64945,7 @@ var SCNVector3FromGLKVector3 = function SCNVector3FromGLKVector3(vector) {
 exports.default = SCNVector3FromGLKVector3;
 
 /***/ }),
-/* 260 */
+/* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64127,7 +64977,7 @@ var SCNVector3Make = function SCNVector3Make(x, y, z) {
 exports.default = SCNVector3Make;
 
 /***/ }),
-/* 261 */
+/* 263 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64153,7 +65003,7 @@ var SCNVector3ToFloat3 = function SCNVector3ToFloat3(v) {
 exports.default = SCNVector3ToFloat3;
 
 /***/ }),
-/* 262 */
+/* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64183,7 +65033,7 @@ var SCNVector3ToGLKVector3 = function SCNVector3ToGLKVector3(vector) {
 };exports.default = SCNVector3ToGLKVector3;
 
 /***/ }),
-/* 263 */
+/* 265 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64204,7 +65054,7 @@ var SCNVector3Zero = new _SCNVector2.default(0, 0, 0);
 exports.default = SCNVector3Zero;
 
 /***/ }),
-/* 264 */
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64233,7 +65083,7 @@ var SCNVector4EqualToVector4 = function SCNVector4EqualToVector4(a, b) {
 exports.default = SCNVector4EqualToVector4;
 
 /***/ }),
-/* 265 */
+/* 267 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64263,7 +65113,7 @@ var SCNVector4FromFloat4 = function SCNVector4FromFloat4(v) {
 exports.default = SCNVector4FromFloat4;
 
 /***/ }),
-/* 266 */
+/* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64290,7 +65140,7 @@ var SCNVector4FromGLKVector4 = function SCNVector4FromGLKVector4(vector) {
 exports.default = SCNVector4FromGLKVector4;
 
 /***/ }),
-/* 267 */
+/* 269 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64319,7 +65169,7 @@ var SCNVector4Make = function SCNVector4Make(x, y, z, w) {
 exports.default = SCNVector4Make;
 
 /***/ }),
-/* 268 */
+/* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64345,7 +65195,7 @@ var SCNVector4ToFloat4 = function SCNVector4ToFloat4(v) {
 exports.default = SCNVector4ToFloat4;
 
 /***/ }),
-/* 269 */
+/* 271 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64372,7 +65222,7 @@ var SCNVector4ToGLKVector4 = function SCNVector4ToGLKVector4(vector) {
 exports.default = SCNVector4ToGLKVector4;
 
 /***/ }),
-/* 270 */
+/* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -64394,7 +65244,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 //import SCNMatrix4MakeTranslation from './SCNMatrix4MakeTranslation'
 
 
-var _CGPoint = __webpack_require__(10);
+var _CGPoint = __webpack_require__(8);
 
 var _CGPoint2 = _interopRequireDefault(_CGPoint);
 
@@ -64402,7 +65252,7 @@ var _CGRect = __webpack_require__(16);
 
 var _CGRect2 = _interopRequireDefault(_CGRect);
 
-var _CGSize = __webpack_require__(8);
+var _CGSize = __webpack_require__(9);
 
 var _CGSize2 = _interopRequireDefault(_CGSize);
 
@@ -64410,15 +65260,15 @@ var _GCController = __webpack_require__(29);
 
 var _GCController2 = _interopRequireDefault(_GCController);
 
-var _SCNRenderer = __webpack_require__(117);
+var _SCNRenderer = __webpack_require__(119);
 
 var _SCNRenderer2 = _interopRequireDefault(_SCNRenderer);
 
-var _SCNRenderingAPI = __webpack_require__(120);
+var _SCNRenderingAPI = __webpack_require__(122);
 
 var _SCNRenderingAPI2 = _interopRequireDefault(_SCNRenderingAPI);
 
-var _SCNAntialiasingMode = __webpack_require__(96);
+var _SCNAntialiasingMode = __webpack_require__(98);
 
 var _SCNAntialiasingMode2 = _interopRequireDefault(_SCNAntialiasingMode);
 
@@ -64859,9 +65709,9 @@ var SCNView = function () {
       var ev = _this._createEvent(e);
       _this.scrollWheelWith(ev);
       _this._preventDefault(ev);
-    }
+    });
     // For Firefox
-    );this._canvas.addEventListener('DOMMouseScroll', function (e) {
+    this._canvas.addEventListener('DOMMouseScroll', function (e) {
       var ev = _this._createEvent(e);
       _this.scrollWheelWith(ev);
       _this._preventDefault(ev);
@@ -64926,10 +65776,10 @@ var SCNView = function () {
     value: function appendTo(element) {
       var _this2 = this;
 
-      element.appendChild(this._canvas
+      element.appendChild(this._canvas);
 
       // update canvas size
-      );if (typeof this._frame === 'undefined') {
+      if (typeof this._frame === 'undefined') {
         this._canvas.style.width = '100%';
         this._canvas.style.height = '100%';
         if (this._canvas.clientHeight <= 0) {
@@ -65237,12 +66087,12 @@ var SCNView = function () {
         this._delegate.rendererDidApplyAnimationsAtTime(this._renderer, time);
       }
 
-      this._updateTransform
+      this._updateTransform();
 
       ///////////////////////
       // simulates physics //
       ///////////////////////
-      ();if (this._scene && this._scene._physicsWorld !== null) {
+      if (this._scene && this._scene._physicsWorld !== null) {
         this._scene._physicsWorld._simulate(time);
       }
 
@@ -65532,11 +66382,11 @@ var SCNView = function () {
       node.childNodes.forEach(function (child) {
         return _this10._runAnimationForNode(child);
       });
-      this._runAnimationForObject(node
+      this._runAnimationForObject(node);
       // TODO: implement animations for all animatable objects:
       //         SCNCamera, SCNConstraint, SCNGeometry, SCNLight, SCNMaterial, 
       //         SCNMaterialProperty, SCNMorpher, SCNParticleSystem, SCNTechnique
-      );if (node.geometry) {
+      if (node.geometry) {
         this._runAnimationForObject(node.geometry);
         node.geometry.materials.forEach(function (material) {
           _this10._runAnimationForObject(material);
@@ -66398,7 +67248,7 @@ var SCNView = function () {
 exports.default = SCNView;
 
 /***/ }),
-/* 271 */
+/* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66412,7 +67262,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _SKAction2 = __webpack_require__(20);
+var _SKAction2 = __webpack_require__(21);
 
 var _SKAction3 = _interopRequireDefault(_SKAction2);
 
@@ -66420,7 +67270,7 @@ var _SKActionTimingMode = __webpack_require__(23);
 
 var _SKActionTimingMode2 = _interopRequireDefault(_SKActionTimingMode);
 
-var _SKNode = __webpack_require__(19);
+var _SKNode = __webpack_require__(20);
 
 var _SKNode2 = _interopRequireDefault(_SKNode);
 
@@ -66603,7 +67453,7 @@ _SKAction3.default.fadeAlphaByDuration = SKFade.fadeAlphaByDuration;
 _SKAction3.default.fadeAlphaToDuration = SKFade.fadeAlphaToDuration;
 
 /***/ }),
-/* 272 */
+/* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66617,7 +67467,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _SKAction2 = __webpack_require__(20);
+var _SKAction2 = __webpack_require__(21);
 
 var _SKAction3 = _interopRequireDefault(_SKAction2);
 
@@ -66742,7 +67592,7 @@ exports.default = SKGroup;
 _SKAction3.default.group = SKGroup.group;
 
 /***/ }),
-/* 273 */
+/* 275 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -66760,15 +67610,15 @@ var _SKColor = __webpack_require__(2);
 
 var _SKColor2 = _interopRequireDefault(_SKColor);
 
-var _SKNode2 = __webpack_require__(19);
+var _SKNode2 = __webpack_require__(20);
 
 var _SKNode3 = _interopRequireDefault(_SKNode2);
 
-var _SKLabelVerticalAlignmentMode = __webpack_require__(123);
+var _SKLabelVerticalAlignmentMode = __webpack_require__(125);
 
 var _SKLabelVerticalAlignmentMode2 = _interopRequireDefault(_SKLabelVerticalAlignmentMode);
 
-var _SKLabelHorizontalAlignmentMode = __webpack_require__(122);
+var _SKLabelHorizontalAlignmentMode = __webpack_require__(124);
 
 var _SKLabelHorizontalAlignmentMode2 = _interopRequireDefault(_SKLabelHorizontalAlignmentMode);
 
@@ -66994,9 +67844,9 @@ var SKLabelNode = function (_SKNode) {
         this._textureUpToDate = false;
       }
       if (!this._textureUpToDate) {
-        gl.bindTexture(gl.TEXTURE_2D, this._texture
+        gl.bindTexture(gl.TEXTURE_2D, this._texture);
         // texImage2D(target, level, internalformat, width, height, border, format, type, source)
-        );gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, this._canvas.width, this._canvas.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, this._canvas);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, this._canvas.width, this._canvas.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, this._canvas);
         gl.generateMipmap(gl.TEXTURE_2D);
         gl.bindTexture(gl.TEXTURE_2D, null);
 
@@ -67057,10 +67907,10 @@ var SKLabelNode = function (_SKNode) {
       }
 
       gl.attachShader(program, vertexShader);
-      gl.attachShader(program, fragmentShader
+      gl.attachShader(program, fragmentShader);
 
       // link program object
-      );gl.linkProgram(program);
+      gl.linkProgram(program);
       if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
         var _info2 = gl.getProgramInfoLog(program);
         throw new Error('program link error: ' + _info2);
@@ -67089,15 +67939,15 @@ var SKLabelNode = function (_SKNode) {
 
       var positionLoc = gl.getAttribLocation(program, 'position');
       gl.bindAttribLocation(program, positionLoc, 'position');
-      gl.enableVertexAttribArray(positionLoc
+      gl.enableVertexAttribArray(positionLoc);
       // idx, size, type, norm, stride, offset
-      );gl.vertexAttribPointer(positionLoc, 3, gl.FLOAT, false, 20, 0);
+      gl.vertexAttribPointer(positionLoc, 3, gl.FLOAT, false, 20, 0);
 
       var texcoordLoc = gl.getAttribLocation(program, 'texcoord');
       gl.bindAttribLocation(program, texcoordLoc, 'texcoord');
-      gl.enableVertexAttribArray(texcoordLoc
+      gl.enableVertexAttribArray(texcoordLoc);
       // idx, size, type, norm, stride, offset
-      );gl.vertexAttribPointer(texcoordLoc, 2, gl.FLOAT, false, 20, 12);
+      gl.vertexAttribPointer(texcoordLoc, 2, gl.FLOAT, false, 20, 12);
 
       this._indexBuffer = gl.createBuffer();
       var indexData = new Uint8Array([0, 3, 2, 0, 1, 3]);
@@ -67246,7 +68096,7 @@ var SKLabelNode = function (_SKNode) {
 exports.default = SKLabelNode;
 
 /***/ }),
-/* 274 */
+/* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67260,7 +68110,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _SKAction2 = __webpack_require__(20);
+var _SKAction2 = __webpack_require__(21);
 
 var _SKAction3 = _interopRequireDefault(_SKAction2);
 
@@ -67422,7 +68272,7 @@ _SKAction3.default.repeat = SKRepeat.repeat;
 _SKAction3.default.repeatForever = SKRepeat.repeatForever;
 
 /***/ }),
-/* 275 */
+/* 277 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67436,7 +68286,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _SKAction2 = __webpack_require__(20);
+var _SKAction2 = __webpack_require__(21);
 
 var _SKAction3 = _interopRequireDefault(_SKAction2);
 
@@ -67444,11 +68294,11 @@ var _SKActionTimingMode = __webpack_require__(23);
 
 var _SKActionTimingMode2 = _interopRequireDefault(_SKActionTimingMode);
 
-var _SKNode = __webpack_require__(19);
+var _SKNode = __webpack_require__(20);
 
 var _SKNode2 = _interopRequireDefault(_SKNode);
 
-var _CGSize = __webpack_require__(8);
+var _CGSize = __webpack_require__(9);
 
 var _CGSize2 = _interopRequireDefault(_CGSize);
 
@@ -67717,7 +68567,7 @@ _SKAction3.default.scaleXToDuration = SKScale.scaleXToDuration;
 _SKAction3.default.scaleYToDuration = SKScale.scaleYToDuration;
 
 /***/ }),
-/* 276 */
+/* 278 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -67729,11 +68579,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _CGPoint = __webpack_require__(10);
+var _CGPoint = __webpack_require__(8);
 
 var _CGPoint2 = _interopRequireDefault(_CGPoint);
 
-var _CGSize = __webpack_require__(8);
+var _CGSize = __webpack_require__(9);
 
 var _CGSize2 = _interopRequireDefault(_CGSize);
 
@@ -67741,11 +68591,11 @@ var _SKColor = __webpack_require__(2);
 
 var _SKColor2 = _interopRequireDefault(_SKColor);
 
-var _SKEffectNode2 = __webpack_require__(121);
+var _SKEffectNode2 = __webpack_require__(123);
 
 var _SKEffectNode3 = _interopRequireDefault(_SKEffectNode2);
 
-var _SKSceneScaleMode = __webpack_require__(124);
+var _SKSceneScaleMode = __webpack_require__(126);
 
 var _SKSceneScaleMode2 = _interopRequireDefault(_SKSceneScaleMode);
 
@@ -68072,7 +68922,7 @@ var SKScene = function (_SKEffectNode) {
 exports.default = SKScene;
 
 /***/ }),
-/* 277 */
+/* 279 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68086,7 +68936,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
 
-var _SKAction2 = __webpack_require__(20);
+var _SKAction2 = __webpack_require__(21);
 
 var _SKAction3 = _interopRequireDefault(_SKAction2);
 
@@ -68232,7 +69082,7 @@ exports.default = SKSequence;
 _SKAction3.default.sequence = SKSequence.sequence;
 
 /***/ }),
-/* 278 */
+/* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68244,11 +69094,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _CGLineCap = __webpack_require__(58);
+var _CGLineCap = __webpack_require__(59);
 
 var _CGLineCap2 = _interopRequireDefault(_CGLineCap);
 
-var _CGLineJoin = __webpack_require__(59);
+var _CGLineJoin = __webpack_require__(60);
 
 var _CGLineJoin2 = _interopRequireDefault(_CGLineJoin);
 
@@ -68260,7 +69110,7 @@ var _SKColor = __webpack_require__(2);
 
 var _SKColor2 = _interopRequireDefault(_SKColor);
 
-var _SKNode2 = __webpack_require__(19);
+var _SKNode2 = __webpack_require__(20);
 
 var _SKNode3 = _interopRequireDefault(_SKNode2);
 
@@ -68593,7 +69443,7 @@ var SKShapeNode = function (_SKNode) {
 exports.default = SKShapeNode;
 
 /***/ }),
-/* 279 */
+/* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68605,7 +69455,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _SKAction2 = __webpack_require__(20);
+var _SKAction2 = __webpack_require__(21);
 
 var _SKAction3 = _interopRequireDefault(_SKAction2);
 
@@ -68694,7 +69544,7 @@ _SKAction3.default.waitForDuration = SKWait.waitForDuration;
 _SKAction3.default.waitForDurationWithRange = SKWait.waitForDurationWithRange;
 
 /***/ }),
-/* 280 */
+/* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -68706,11 +69556,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _BinaryParser = __webpack_require__(281);
+var _BinaryParser = __webpack_require__(283);
 
 var _BinaryParser2 = _interopRequireDefault(_BinaryParser);
 
-var _ecl = __webpack_require__(70);
+var _ecl = __webpack_require__(44);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -68988,10 +69838,10 @@ if (typeof Buffer !== 'undefined') {
 }
 
 exports.default = _Buffer;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21).Buffer))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17).Buffer))
 
 /***/ }),
-/* 281 */
+/* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69160,7 +70010,7 @@ p.fromDouble = function (number) {
 };
 
 /***/ }),
-/* 282 */
+/* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -69780,7 +70630,8 @@ var MMDNode = function (_SCNNode) {
                 if (faceIndex >= 0) {
                   newAnim.keyPath = '/Geometry.morpher.weights[' + faceIndex + ']';
                 } else {
-                  newAnim.keyPath = '//';
+                  // newAnim.keyPath = '//'
+                  return;
                 }
               }
             } else if (bone !== null) {
@@ -70252,13 +71103,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _jscenekit = __webpack_require__(0);
 
-var _TGAImage = __webpack_require__(20);
+var _TGAImage = __webpack_require__(18);
 
 var _TGAImage2 = _interopRequireDefault(_TGAImage);
-
-var _TextReader2 = __webpack_require__(10);
-
-var _TextReader3 = _interopRequireDefault(_TextReader2);
 
 var _ToonImages2 = __webpack_require__(7);
 
@@ -70290,11 +71137,13 @@ var MMDReader = function () {
    * @param {boolean} [isBinary = true] -
    * @param {boolean} [isBigEndian = false] -
    * @param {string} [encoding = ''] -
+   * @param {boolean} [crossDomain = false] - 
    */
   function MMDReader(data, directoryPath) {
     var isBinary = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
     var isBigEndian = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
     var encoding = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : '';
+    var crossDomain = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : false;
 
     _classCallCheck(this, MMDReader);
 
@@ -70317,12 +71166,18 @@ var MMDReader = function () {
     //this.length = data.byteLength
     this.length = data.length;
 
+    /**
+     *
+     * @type {boolean}
+     */
+    this.crossDomain = crossDomain;
+
     this._reader = null;
 
     if (isBinary) {
       this._reader = new _jscenekit._BinaryReader(data, isBigEndian, encoding);
     } else {
-      this._reader = new _TextReader3.default(data, encoding);
+      this._reader = new _jscenekit._TextReader(data, encoding);
     }
   }
 
@@ -70392,6 +71247,10 @@ var MMDReader = function () {
           });
         } else {
           var image = new Image();
+          // TODO: check option if it allows cross-domain.
+          // if(this.crossDomain){
+          image.crossOrigin = "anonymous";
+          // }
           image.onload = function () {
             resolve(image);
           };
@@ -70487,27 +71346,27 @@ var _MMDPMDReader = __webpack_require__(9);
 
 var _MMDPMDReader2 = _interopRequireDefault(_MMDPMDReader);
 
-var _MMDPMMReader = __webpack_require__(12);
+var _MMDPMMReader = __webpack_require__(10);
 
 var _MMDPMMReader2 = _interopRequireDefault(_MMDPMMReader);
 
-var _MMDPMXReader = __webpack_require__(13);
+var _MMDPMXReader = __webpack_require__(11);
 
 var _MMDPMXReader2 = _interopRequireDefault(_MMDPMXReader);
 
-var _MMDVACReader = __webpack_require__(14);
+var _MMDVACReader = __webpack_require__(12);
 
 var _MMDVACReader2 = _interopRequireDefault(_MMDVACReader);
 
-var _MMDVMDReader = __webpack_require__(15);
+var _MMDVMDReader = __webpack_require__(13);
 
 var _MMDVMDReader2 = _interopRequireDefault(_MMDVMDReader);
 
-var _MMDVPDReader = __webpack_require__(16);
+var _MMDVPDReader = __webpack_require__(14);
 
 var _MMDVPDReader2 = _interopRequireDefault(_MMDVPDReader);
 
-var _MMDXReader = __webpack_require__(17);
+var _MMDXReader = __webpack_require__(15);
 
 var _MMDXReader2 = _interopRequireDefault(_MMDXReader);
 
@@ -72120,680 +72979,6 @@ exports.default = MMDPMDReader;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(Buffer) {
-
-// import {_Buffer} from 'jscenekit'
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _ecl = __webpack_require__(11);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/*global Buffer*/
-
-var _integerPattern = new RegExp(/^(-|\+)?\d+;?/);
-var _floatPattern = new RegExp(/^(-|\+)?(\d)*\.(\d)*;?/);
-var _wordPattern = new RegExp(/^\w+/);
-
-/**
- * TextReader class
- * @access public
- */
-
-var TextReader = function () {
-  /**
-   * constructor
-   * @access public
-   * @constructor
-   * @param {Buffer|ArrayBuffer} data -
-   * @param {string} encoding -
-   */
-  function TextReader(data) {
-    var encoding = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'utf-8';
-
-    _classCallCheck(this, TextReader);
-
-    /**
-     * @access private
-     * @type {number}
-     */
-    this._pos = 0;
-
-    this._partialText = '';
-    this._partialOffset = 0;
-    this._partialStep = 200;
-    this._partialMinLength = 100;
-
-    /**
-     * @access private
-     * @type {boolean}
-     */
-    this._eof = true;
-
-    /**
-     *
-     * @access public
-     * @type {Buffer}
-     */
-    this.buffer = null;
-
-    if (data instanceof Buffer) {
-      this.buffer = data;
-    } else {
-      this.buffer = Buffer.from(data);
-    }
-
-    /**
-     *
-     * @access public
-     * @type {boolean}
-     */
-    //this.bigEndian = bigEndian
-
-    /**
-     *
-     * @access public
-     * @type {string}
-     */
-    this.encoding = encoding;
-
-    // prepare buffered text
-    this._addPartialText();
-  }
-
-  /**
-   * @access public
-   * @param {number} length - length of data to skip
-   * @param {boolean} noAssert -
-   * @returns {void}
-   */
-
-
-  _createClass(TextReader, [{
-    key: 'skip',
-    value: function skip(length) {
-      var noAssert = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
-
-      this._moveIndex(length);
-      if (!noAssert) {
-        this._check();
-      }
-    }
-
-    /**
-     *
-     * @access public
-     * @param {number} length - length of data to read
-     * @param {?string} [encoding = null] -
-     * @returns {string} -
-     */
-
-  }, {
-    key: 'readString',
-    value: function readString(length) {
-      var encoding = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-
-      var str = this._partialText.substring(0, length);
-
-      this._moveIndex(str.length);
-    }
-
-    /**
-     *
-     * @access public
-     * @param {number} length - 
-     * @param {boolean} signed -
-     * @returns {number} -
-     */
-
-  }, {
-    key: 'readInteger',
-    value: function readInteger(length, signed) {
-      var str = this._getString(_integerPattern);
-      var val = parseInt(str[0], 10);
-      return val;
-    }
-
-    /**
-     *
-     * @access public
-     * @returns {number} -
-     */
-
-  }, {
-    key: 'readUnsignedByte',
-    value: function readUnsignedByte() {
-      return this.readInteger(1, false);
-    }
-
-    /**
-     *
-     * @access public
-     * @returns {number} -
-     */
-
-  }, {
-    key: 'readUnsignedShort',
-    value: function readUnsignedShort() {
-      return this.readInteger(2, false);
-    }
-
-    /**
-     *
-     * @access public
-     * @returns {number} -
-     */
-
-  }, {
-    key: 'readUnsignedInt',
-    value: function readUnsignedInt() {
-      return this.readInteger(4, false);
-    }
-
-    /**
-     *
-     * @access public
-     * @returns {number} -
-     */
-
-  }, {
-    key: 'readInt',
-    value: function readInt() {
-      return this.readInteger(4, true);
-    }
-
-    /**
-     *
-     * @access public
-     * @returns {number} -
-     */
-
-  }, {
-    key: 'readFloat',
-    value: function readFloat() {
-      var str = this._getString(_floatPattern);
-      var val = parseFloat(str[0]);
-      return val;
-    }
-
-    /**
-     *
-     * @access public
-     * @returns {number} -
-     */
-
-  }, {
-    key: 'readDouble',
-    value: function readDouble() {
-      return this.readFloat();
-    }
-
-    /**
-     *
-     * @access public
-     * @param {number} length -
-     * @returns {Buffer} -
-     */
-
-  }, {
-    key: 'readData',
-    value: function readData(length) {
-      var start = this._pos;
-      this._pos += length;
-      return this.buffer.slice(start, this._pos);
-    }
-  }, {
-    key: 'readWord',
-    value: function readWord() {
-      var str = this._getString(_wordPattern);
-      return str !== null ? str[0] : null;
-    }
-  }, {
-    key: 'readPattern',
-    value: function readPattern(pattern) {
-      return this._getString(pattern);
-    }
-
-    /**
-     *
-     * @access private
-     * @returns {void}
-     */
-
-  }, {
-    key: '_check',
-    value: function _check() {}
-
-    /**
-     *
-     * @access private
-     * @param {number[]} data - length of data to convert
-     * @param {?string} [encoding = null] -
-     * @returns {string} -
-     */
-
-  }, {
-    key: '_convert',
-    value: function _convert(data, encoding) {
-      var length = data.length;
-      var escapeString = '';
-      for (var i = 0; i < length; i++) {
-        var charCode = data.charCodeAt(i);
-        if (charCode === 0) {
-          break;
-        } else if (charCode < 16) {
-          escapeString += '%0' + charCode.toString(16);
-        } else {
-          escapeString += '%' + charCode.toString(16);
-        }
-      }
-
-      if (encoding === 'sjis') {
-        return (0, _ecl.UnescapeSJIS)(escapeString);
-      } else if (encoding === 'euc-jp') {
-        return (0, _ecl.UnescapeEUCJP)(escapeString);
-      } else if (encoding === 'jis-7') {
-        return (0, _ecl.UnescapeJIS7)(escapeString);
-      } else if (encoding === 'jis-8') {
-        return (0, _ecl.UnescapeJIS8)(escapeString);
-      } else if (encoding === 'unicode') {
-        return (0, _ecl.UnescapeUnicode)(escapeString);
-      } else if (encoding === 'utf7') {
-        return (0, _ecl.UnescapeUTF7)(escapeString);
-      } else if (encoding === 'utf-8') {
-        return (0, _ecl.UnescapeUTF8)(escapeString);
-      } else if (encoding === 'utf-16') {
-        return (0, _ecl.UnescapeUTF16LE)(escapeString);
-      }
-
-      throw new Error('unsupported encoding: ' + encoding);
-    }
-  }, {
-    key: 'getAvailableDataLength',
-    value: function getAvailableDataLength() {
-      return this.buffer.length - this._pos;
-    }
-
-    /**
-     *
-     * @access private
-     * @param {number} len -
-     * @returns {void}
-     */
-
-  }, {
-    key: '_moveIndex',
-    value: function _moveIndex(len) {
-      this._partialText = this._partialText.substring(len);
-      if (this._partialText.length < this._partialMinLength) {
-        this._addPartialText();
-      }
-    }
-  }, {
-    key: '_skipSpace',
-    value: function _skipSpace() {
-      var i = 0;
-      var code = this._partialText.charCodeAt(i);
-
-      //  9: Horizontal Tab
-      // 10: Line Feed
-      // 11: Vertical Tab
-      // 12: New Page
-      // 13: Carriage Return
-      // 32: Space
-      while (code === 32 || 9 <= code && code <= 13) {
-        i++;
-        code = this._partialText.charCodeAt(i);
-
-        if (i >= this._partialText.length) {
-          this._addPartialText();
-        }
-      }
-      if (i > 0) {
-        this._moveIndex(i);
-      }
-    }
-  }, {
-    key: '_addPartialText',
-    value: function _addPartialText() {
-      if (this._partialOffset >= this.buffer.length) {
-        return;
-      }
-
-      var newOffset = this._partialOffset + this._partialStep;
-      if (newOffset > this.buffer.length) {
-        newOffset = this.buffer.length;
-      }
-
-      if (Buffer.isEncoding(this.encoding)) {
-        this._partialText += this.buffer.toString(this.encoding, this._partialOffset, newOffset);
-      } else {
-        var data = this.buffer.toString('binary', this._partialOffset, newOffset);
-        this._partialText += this._convert(data, this.encoding);
-      }
-      this._partialOffset = newOffset;
-    }
-  }, {
-    key: '_getString',
-    value: function _getString(pattern) {
-      this._skipSpace();
-
-      var str = this._partialText.match(pattern);
-      if (str === null) {
-        return null;
-      }
-
-      this._moveIndex(str[0].length);
-
-      return str;
-    }
-  }]);
-
-  return TextReader;
-}();
-
-exports.default = TextReader;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(21).Buffer))
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-//
-// Escape Codec Library: ecl.js (Ver.041208)
-//
-// Copyright (C) http://nurucom-archives.hp.infoseek.co.jp/digital/
-//
-
-var EscapeSJIS = function EscapeSJIS(str) {
-	return str.replace(/[^*+.-9A-Z_a-z-]/g, function (s) {
-		var c = s.charCodeAt(0),
-		    m;
-		return c < 128 ? (c < 16 ? "%0" : "%") + c.toString(16).toUpperCase() : 65376 < c && c < 65440 ? "%" + (c - 65216).toString(16).toUpperCase() : (c = JCT11280.indexOf(s)) < 0 ? "%81E" : "%" + ((m = ((c < 8272 ? c : c = JCT11280.lastIndexOf(s)) - (c %= 188)) / 188) < 31 ? m + 129 : m + 193).toString(16).toUpperCase() + (64 < (c += c < 63 ? 64 : 65) && c < 91 || 95 == c || 96 < c && c < 123 ? String.fromCharCode(c) : "%" + c.toString(16).toUpperCase());
-	});
-};
-
-var UnescapeSJIS = function UnescapeSJIS(str) {
-	return str.replace(/%(8[1-9A-F]|[9E][0-9A-F]|F[0-9A-C])(%[4-689A-F][0-9A-F]|%7[0-9A-E]|[@-~])|%([0-7][0-9A-F]|A[1-9A-F]|[B-D][0-9A-F])/ig, function (s) {
-		var c = parseInt(s.substring(1, 3), 16),
-		    l = s.length;
-		return 3 == l ? String.fromCharCode(c < 160 ? c : c + 65216) : JCT11280.charAt((c < 160 ? c - 129 : c - 193) * 188 + (4 == l ? s.charCodeAt(3) - 64 : (c = parseInt(s.substring(4), 16)) < 127 ? c - 64 : c - 65));
-	});
-};
-
-var EscapeEUCJP = function EscapeEUCJP(str) {
-	return str.replace(/[^*+.-9A-Z_a-z-]/g, function (s) {
-		var c = s.charCodeAt(0);
-		return (c < 128 ? (c < 16 ? "%0" : "%") + c.toString(16) : 65376 < c && c < 65440 ? "%8E%" + (c - 65216).toString(16) : (c = JCT8836.indexOf(s)) < 0 ? "%A1%A6" : "%" + ((c - (c %= 94)) / 94 + 161).toString(16) + "%" + (c + 161).toString(16)).toUpperCase();
-	});
-};
-
-var UnescapeEUCJP = function UnescapeEUCJP(str) {
-	return str.replace(/(%A[1-9A-F]|%[B-E][0-9A-F]|%F[0-9A-E]){2}|%8E%(A[1-9A-F]|[B-D][0-9A-F])|%[0-7][0-9A-F]/ig, function (s) {
-		var c = parseInt(s.substring(1), 16);
-		return c < 161 ? String.fromCharCode(c < 128 ? c : parseInt(s.substring(4), 16) + 65216) : JCT8836.charAt((c - 161) * 94 + parseInt(s.substring(4), 16) - 161);
-	});
-};
-
-var EscapeJIS7 = function EscapeJIS7(str) {
-	var u = String.fromCharCode,
-	    ri = u(92, 120, 48, 48, 45, 92, 120, 55, 70),
-	    rj = u(65377, 45, 65439, 93, 43),
-	    H = function H(c) {
-		return 41 < c && c < 58 && 44 != c || 64 < c && c < 91 || 95 == c || 96 < c && c < 123 ? u(c) : "%" + c.toString(16).toUpperCase();
-	},
-	    I = function I(s) {
-		var c = s.charCodeAt(0);
-		return (c < 16 ? "%0" : "%") + c.toString(16).toUpperCase();
-	},
-	    rI = new RegExp();rI.compile("[^*+.-9A-Z_a-z-]", "g");
-	return ("g" + str + "g").replace(RegExp("[" + ri + "]+", "g"), function (s) {
-		return "%1B%28B" + s.replace(rI, I);
-	}).replace(RegExp("[" + rj, "g"), function (s) {
-		var c,
-		    i = 0,
-		    t = "%1B%28I";while (c = s.charCodeAt(i++)) {
-			t += H(c - 65344);
-		}return t;
-	}).replace(RegExp("[^" + ri + rj, "g"), function (s) {
-		var a,
-		    c,
-		    i = 0,
-		    t = "%1B%24B";while (a = s.charAt(i++)) {
-			t += (c = JCT8836.indexOf(a)) < 0 ? "%21%26" : H((c - (c %= 94)) / 94 + 33) + H(c + 33);
-		}return t;
-	}).slice(8, -1);
-};
-
-var UnescapeJIS7 = function UnescapeJIS7(str) {
-	var i = 0,
-	    p,
-	    q,
-	    s = "",
-	    u = String.fromCharCode,
-	    P = ("%28B" + str.replace(/%49/g, "I").replace(/%1B%24%4[02]|%1B%24@/ig, "%1B%24B")).split(/%1B/i),
-	    I = function I(s) {
-		return u(parseInt(s.substring(1), 16));
-	},
-	    J = function J(s) {
-		return u((3 == s.length ? parseInt(s.substring(1), 16) : s.charCodeAt(0)) + 65344);
-	},
-	    K = function K(s) {
-		var l = s.length;
-		return JCT8836.charAt(4 < l ? (parseInt(s.substring(1), 16) - 33) * 94 + parseInt(s.substring(4), 16) - 33 : 2 < l ? (37 == (l = s.charCodeAt(0)) ? (parseInt(s.substring(1, 3), 16) - 33) * 94 + s.charCodeAt(3) : (l - 33) * 94 + parseInt(s.substring(2), 16)) - 33 : (s.charCodeAt(0) - 33) * 94 + s.charCodeAt(1) - 33);
-	},
-	    rI = new RegExp(),
-	    rJ = new RegExp(),
-	    rK = new RegExp();
-	rI.compile("%[0-7][0-9A-F]", "ig");rJ.compile("(%2[1-9A-F]|%[3-5][0-9A-F])|[!-_]", "ig");
-	rK.compile("(%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E]){2}|(%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E])[!-~]|[!-~](%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E])|[!-~]{2}", "ig");
-	while (p = P[i++]) {
-		s += "%24B" == (q = p.substring(0, 4)) ? p.substring(4).replace(rK, K) : "%28I" == q ? p.substring(4).replace(rJ, J) : p.replace(rI, I).substring(2);
-	}return s;
-};
-
-var EscapeJIS8 = function EscapeJIS8(str) {
-	var u = String.fromCharCode,
-	    r = u(92, 120, 48, 48, 45, 92, 120, 55, 70, 65377, 45, 65439, 93, 43),
-	    H = function H(c) {
-		return 41 < c && c < 58 && 44 != c || 64 < c && c < 91 || 95 == c || 96 < c && c < 123 ? u(c) : "%" + c.toString(16).toUpperCase();
-	},
-	    I = function I(s) {
-		var c = s.charCodeAt(0);
-		return (c < 16 ? "%0" : "%") + (c < 128 ? c : c - 65216).toString(16).toUpperCase();
-	},
-	    rI = new RegExp();rI.compile("[^*+.-9A-Z_a-z-]", "g");
-	return ("g" + str + "g").replace(RegExp("[" + r, "g"), function (s) {
-		return "%1B%28B" + s.replace(rI, I);
-	}).replace(RegExp("[^" + r, "g"), function (s) {
-		var a,
-		    c,
-		    i = 0,
-		    t = "%1B%24B";while (a = s.charAt(i++)) {
-			t += (c = JCT8836.indexOf(a)) < 0 ? "%21%26" : H((c - (c %= 94)) / 94 + 33) + H(c + 33);
-		}return t;
-	}).slice(8, -1);
-};
-
-var UnescapeJIS8 = function UnescapeJIS8(str) {
-	var i = 0,
-	    p,
-	    s = "",
-	    P = ("%28B" + str.replace(/%1B%24%4[02]|%1B%24@/ig, "%1B%24B")).split(/%1B/i),
-	    I = function I(s) {
-		var c = parseInt(s.substring(1), 16);
-		return String.fromCharCode(c < 128 ? c : c + 65216);
-	},
-	    K = function K(s) {
-		var l = s.length;
-		return JCT8836.charAt(4 < l ? (parseInt(s.substring(1), 16) - 33) * 94 + parseInt(s.substring(4), 16) - 33 : 2 < l ? (37 == (l = s.charCodeAt(0)) ? (parseInt(s.substring(1, 3), 16) - 33) * 94 + s.charCodeAt(3) : (l - 33) * 94 + parseInt(s.substring(2), 16)) - 33 : (s.charCodeAt(0) - 33) * 94 + s.charCodeAt(1) - 33);
-	},
-	    rI = new RegExp(),
-	    rK = new RegExp();
-	rI.compile("%([0-7][0-9A-F]|A[1-9A-F]|[B-D][0-9A-F])", "ig");
-	rK.compile("(%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E]){2}|(%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E])[!-~]|[!-~](%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E])|[!-~]{2}", "ig");
-	while (p = P[i++]) {
-		s += "%24B" == p.substring(0, 4) ? p.substring(4).replace(rK, K) : p.replace(rI, I).substring(2);
-	}return s;
-};
-
-var EscapeUnicode = function EscapeUnicode(str) {
-	return str.replace(/[^*+.-9A-Z_a-z-]/g, function (s) {
-		var c = s.charCodeAt(0);
-		return (c < 16 ? "%0" : c < 256 ? "%" : c < 4096 ? "%u0" : "%u") + c.toString(16).toUpperCase();
-	});
-};
-
-var UnescapeUnicode = function UnescapeUnicode(str) {
-	return str.replace(/%u[0-9A-F]{4}|%[0-9A-F]{2}/ig, function (s) {
-		return String.fromCharCode("0x" + s.substring(s.length / 3));
-	});
-};
-
-var EscapeUTF7 = function EscapeUTF7(str) {
-	var B = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".split(""),
-	    E = function E(s) {
-		var c = s.charCodeAt(0);
-		return B[c >> 10] + B[c >> 4 & 63] + B[(c & 15) << 2 | (c = s.charCodeAt(1)) >> 14] + (0 <= c ? B[c >> 8 & 63] + B[c >> 2 & 63] + B[(c & 3) << 4 | (c = s.charCodeAt(2)) >> 12] + (0 <= c ? B[c >> 6 & 63] + B[c & 63] : "") : "");
-	},
-	    re = new RegExp();re.compile("[^+]{1,3}", "g");
-	return (str + "g").replace(/[^*+.-9A-Z_a-z-]+[*+.-9A-Z_a-z-]|[+]/g, function (s) {
-		if ("+" == s) return "+-";
-		var l = s.length - 1,
-		    w = s.charAt(l);
-		return "+" + s.substring(0, l).replace(re, E) + ("+" == w ? "-+-" : "*" == w || "." == w || "_" == w ? w : "-" + w);
-	}).slice(0, -1);
-};
-
-var UnescapeUTF7 = function UnescapeUTF7(str) {
-	var i = 0,
-	    B = {};
-	while (i < 64) {
-		B["ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".charAt(i)] = i++;
-	}return str.replace(RegExp("[+][+/-9A-Za-z]*-?", "g"), function (s) {
-		if ("+-" == s) return "+";
-		var b = B[s.charAt(1)],
-		    c,
-		    i = 1,
-		    t = "";
-		while (0 <= b) {
-			if ((c = i & 7) < 6) c = c < 3 ? b << 10 | B[s.charAt(++i)] << 4 | (b = B[s.charAt(++i)]) >> 2 : (b & 3) << 14 | B[s.charAt(++i)] << 8 | B[s.charAt(++i)] << 2 | (b = B[s.charAt(++i)]) >> 4;else {
-				c = (b & 15) << 12 | B[s.charAt(++i)] << 6 | B[s.charAt(++i)];b = B[s.charAt(++i)];
-			}
-			if (c) t += String.fromCharCode(c);
-		}
-		return t;
-	});
-};
-
-var EscapeUTF8 = function EscapeUTF8(str) {
-	return str.replace(/[^*+.-9A-Z_a-z-]/g, function (s) {
-		var c = s.charCodeAt(0);
-		return (c < 16 ? "%0" + c.toString(16) : c < 128 ? "%" + c.toString(16) : c < 2048 ? "%" + (c >> 6 | 192).toString(16) + "%" + (c & 63 | 128).toString(16) : "%" + (c >> 12 | 224).toString(16) + "%" + (c >> 6 & 63 | 128).toString(16) + "%" + (c & 63 | 128).toString(16)).toUpperCase();
-	});
-};
-
-var UnescapeUTF8 = function UnescapeUTF8(str) {
-	return str.replace(/%(E(0%[AB]|[1-CEF]%[89AB]|D%[89])[0-9A-F]|C[2-9A-F]|D[0-9A-F])%[89AB][0-9A-F]|%[0-7][0-9A-F]/ig, function (s) {
-		var c = parseInt(s.substring(1), 16);
-		return String.fromCharCode(c < 128 ? c : c < 224 ? (c & 31) << 6 | parseInt(s.substring(4), 16) & 63 : ((c & 15) << 6 | parseInt(s.substring(4), 16) & 63) << 6 | parseInt(s.substring(7), 16) & 63);
-	});
-};
-
-var EscapeUTF16LE = function EscapeUTF16LE(str) {
-	var H = function H(c) {
-		return 41 < c && c < 58 && 44 != c || 64 < c && c < 91 || 95 == c || 96 < c && c < 123 ? String.fromCharCode(c) : (c < 16 ? "%0" : "%") + c.toString(16).toUpperCase();
-	};
-	return str.replace(/[^ ]| /g, function (s) {
-		var c = s.charCodeAt(0);return H(c & 255) + H(c >> 8);
-	});
-};
-
-var UnescapeUTF16LE = function UnescapeUTF16LE(str) {
-	var u = String.fromCharCode,
-	    b = u(92, 120, 48, 48, 45, 92, 120, 70, 70);
-	return str.replace(/^%FF%FE/i, "").replace(RegExp("%[0-9A-F]{2}%[0-9A-F]{2}|%[0-9A-F]{2}[" + b + "]|[" + b + "]%[0-9A-F]{2}|[" + b + "]{2}", "ig"), function (s) {
-		var l = s.length;
-		return u(4 < l ? "0x" + s.substring(4, 6) + s.substring(1, 3) : 2 < l ? 37 == (l = s.charCodeAt(0)) ? parseInt(s.substring(1, 3), 16) | s.charCodeAt(3) << 8 : l | parseInt(s.substring(2), 16) << 8 : s.charCodeAt(0) | s.charCodeAt(1) << 8);
-	});
-};
-
-var GetEscapeCodeType = function GetEscapeCodeType(str) {
-	if (/%u[0-9A-F]{4}/i.test(str)) return "Unicode";
-	if (/%([0-9A-DF][0-9A-F]%[8A]0%|E0%80|[0-7][0-9A-F]|C[01])%[8A]0|%00|%[7F]F/i.test(str)) return "UTF16LE";
-	if (/%E[0-9A-F]%[8A]0%[8A]0|%[CD][0-9A-F]%[8A]0/i.test(str)) return "UTF8";
-	if (/%F[DE]/i.test(str)) return (/%8[0-9A-D]|%9[0-9A-F]|%A0/i.test(str) ? "UTF16LE" : "EUCJP"
-	);
-	if (/%1B/i.test(str)) return (/%[A-D][0-9A-F]/i.test(str) ? "JIS8" : "JIS7"
-	);
-	var S = str.substring(0, 6143).replace(/%[0-9A-F]{2}|[^ ]| /ig, function (s) {
-		return s.length < 3 ? "40" : s.substring(1);
-	}),
-	    c,
-	    C,
-	    i = 0,
-	    T;
-	while (0 <= (c = parseInt(S.substring(i, i += 2), 16)) && i < 4092) {
-		if (128 <= c) {
-			if ((C = parseInt(S.substring(i, i + 2), 16)) < 128) i += 2;else if (194 <= c && c < 240 && C < 192) {
-				if (c < 224) {
-					T = "UTF8";i += 2;continue;
-				}
-				if (2 == parseInt(S.charAt(i + 2), 16) >> 2) {
-					T = "UTF8";i += 4;continue;
-				}
-			}
-			if (142 == c && 161 <= C && C < 224) {
-				if (!T) T = "EUCJP";if ("EUCJP" == T) continue;
-			}
-			if (c < 161) return "SJIS";
-			if (c < 224 && !T) {
-				if ((164 == c && C < 244 || 165 == c && C < 247) && 161 <= C) i += 2;else T = 224 <= C ? "EUCJP" : "SJIS";
-			} else T = "EUCJP";
-		}
-	}return T ? T : "EUCJP";
-};
-
-var JCT11280 = Function('var a="zKV33~jZ4zN=~ji36XazM93y!{~k2y!o~k0ZlW6zN?3Wz3W?{EKzK[33[`y|;-~j^YOTz$!~kNy|L1$353~jV3zKk3~k-4P4zK_2+~jY4y!xYHR~jlz$_~jk4z$e3X5He<0y!wy|X3[:~l|VU[F3VZ056Hy!nz/m1XD61+1XY1E1=1y|bzKiz!H034zKj~mEz#c5ZA3-3X$1~mBz$$3~lyz#,4YN5~mEz#{ZKZ3V%7Y}!J3X-YEX_J(3~mAz =V;kE0/y|F3y!}~m>z/U~mI~j_2+~mA~jp2;~m@~k32;~m>V}2u~mEX#2x~mBy+x2242(~mBy,;2242(~may->2&XkG2;~mIy-_2&NXd2;~mGz,{4<6:.:B*B:XC4>6:.>B*BBXSA+A:X]E&E<~r#z+625z s2+zN=`HXI@YMXIAXZYUM8X4K/:Q!Z&33 3YWX[~mB`{zKt4z (zV/z 3zRw2%Wd39]S11z$PAXH5Xb;ZQWU1ZgWP%3~o@{Dgl#gd}T){Uo{y5_d{e@}C(} WU9|cB{w}bzvV|)[} H|zT}d||0~{]Q|(l{|x{iv{dw}(5}[Z|kuZ }cq{{y|ij}.I{idbof%cu^d}Rj^y|-M{ESYGYfYsZslS`?ZdYO__gLYRZ&fvb4oKfhSf^d<Yeasc1f&a=hnYG{QY{D`Bsa|u,}Dl|_Q{C%xK|Aq}C>|c#ryW=}eY{L+`)][YF_Ub^h4}[X|?r|u_ex}TL@YR]j{SrXgo*|Gv|rK}B#mu{R1}hs|dP{C7|^Qt3|@P{YVV |8&}#D}ef{e/{Rl|>Hni}R1{Z#{D[}CQlQ||E}[s{SG_+i8eplY[=[|ec[$YXn#`hcm}YR|{Ci(_[ql|?8p3]-}^t{wy}4la&pc|3e{Rp{LqiJ],] `kc(]@chYnrM`O^,ZLYhZB]ywyfGY~aex!_Qww{a!|)*lHrM{N+n&YYj~Z b c#e_[hZSon|rOt`}hBXa^i{lh|<0||r{KJ{kni)|x,|0auY{D!^Sce{w;|@S|cA}Xn{C1h${E]Z-XgZ*XPbp]^_qbH^e[`YM|a||+=]!Lc}]vdBc=j-YSZD]YmyYLYKZ9Z>Xcczc2{Yh}9Fc#Z.l{}(D{G{{mRhC|L3b#|xK[Bepj#ut`H[,{E9Yr}1b{[e]{ZFk7[ZYbZ0XL]}Ye[(`d}c!|*y`Dg=b;gR]Hm=hJho}R-[n}9;{N![7k_{UbmN]rf#pTe[x8}!Qcs_rs[m`|>N}^V})7{^r|/E}),}HH{OYe2{Skx)e<_.cj.cjoMhc^d}0uYZd!^J_@g,[[[?{i@][|3S}Yl3|!1|eZ|5IYw|1D}e7|Cv{OHbnx-`wvb[6[4} =g+k:{C:}ed{S]|2M]-}WZ|/q{LF|dYu^}Gs^c{Z=}h>|/i|{W]:|ip{N:|zt|S<{DH[p_tvD{N<[8Axo{X4a.^o^X>Yfa59`#ZBYgY~_t^9`jZHZn`>G[oajZ;X,i)Z.^~YJe ZiZF^{][[#Zt^|]Fjx]&_5dddW]P0C[-]}]d|y {C_jUql] |OpaA[Z{lp|rz}:Mu#]_Yf6{Ep?f5`$[6^D][^u[$[6^.Z8]]ePc2U/=]K^_+^M{q*|9tYuZ,s(dS{i=|bNbB{uG}0jZOa:[-]dYtu3]:]<{DJ_SZIqr_`l=Yt`gkTnXb3d@kiq0a`Z{|!B|}e}Ww{Sp,^Z|0>_Z}36|]A|-t}lt{R6pi|v8hPu#{C>YOZHYmg/Z4nicK[}hF_Bg|YRZ7c|crkzYZY}_iXcZ.|)U|L5{R~qi^Uga@Y[xb}&qdbd6h5|Btw[}c<{Ds53[Y7]?Z<|e0{L[ZK]mXKZ#Z2^tavf0`PE[OSOaP`4gi`qjdYMgys/?[nc,}EEb,eL]g[n{E_b/vcvgb.{kcwi`~v%|0:|iK{Jh_vf5lb}KL|(oi=LrzhhY_^@`zgf[~g)[J_0fk_V{T)}I_{D&_/d9W/|MU[)f$xW}?$xr4<{Lb{y4}&u{XJ|cm{Iu{jQ}CMkD{CX|7A}G~{kt)nB|d5|<-}WJ}@||d@|Iy}Ts|iL|/^|no|0;}L6{Pm]7}$zf:|r2}?C_k{R(}-w|`G{Gy[g]bVje=_0|PT{^Y^yjtT[[[l!Ye_`ZN]@[n_)j3nEgMa]YtYpZy].d-Y_cjb~Y~[nc~sCi3|zg}B0}do{O^{|$`_|D{}U&|0+{J3|8*]iayx{a{xJ_9|,c{Ee]QXlYb]$[%YMc*]w[aafe]aVYi[fZEii[xq2YQZHg]Y~h#|Y:thre^@^|_F^CbTbG_1^qf7{L-`VFx Zr|@EZ;gkZ@slgko`[e}T:{Cu^pddZ_`yav^Ea+[#ZBbSbO`elQfLui}.F|txYcbQ`XehcGe~fc^RlV{D_0ZAej[l&jShxG[ipB_=u:eU}3e8[=j|{D(}dO{Do[BYUZ0/]AYE]ALYhZcYlYP/^-^{Yt_1_-;YT`P4BZG=IOZ&]H[e]YYd[9^F[1YdZxZ?Z{Z<]Ba2[5Yb[0Z4l?]d_;_)a?YGEYiYv`_XmZs4ZjY^Zb]6gqGaX^9Y}dXZr[g|]Y}K aFZp^k^F]M`^{O1Ys]ZCgCv4|E>}8eb7}l`{L5[Z_faQ|c2}Fj}hw^#|Ng|B||w2|Sh{v+[G}aB|MY}A{|8o}X~{E8paZ:]i^Njq]new)`-Z>haounWhN}c#{DfZ|fK]KqGZ=:u|fqoqcv}2ssm}.r{]{nIfV{JW)[K|,Z{Uxc|]l_KdCb%]cfobya3`p}G^|LZiSC]U|(X|kBlVg[kNo({O:g:|-N|qT}9?{MBiL}Sq{`P|3a|u.{Uaq:{_o|^S}jX{Fob0`;|#y_@[V[K|cw[<_ }KU|0F}d3|et{Q7{LuZttsmf^kYZ`Af`}$x}U`|Ww}d]| >}K,r&|XI|*e{C/a-bmr1fId4[;b>tQ_:]hk{b-pMge]gfpo.|(w[jgV{EC1Z,YhaY^q,_G[c_g[J0YX]`[h^hYK^_Yib,` {i6vf@YM^hdOKZZn(jgZ>bzSDc^Z%[[o9[2=/YHZ(_/Gu_`*|8z{DUZxYt^vuvZjhi^lc&gUd4|<UiA`z]$b/Z?l}YI^jaHxe|;F}l${sQ}5g}hA|e4}?o{ih}Uz{C)jPe4]H^J[Eg[|AMZMlc}:,{iz}#*|gc{Iq|/:|zK{l&}#u|myd{{M&v~nV};L|(g|I]ogddb0xsd7^V})$uQ{HzazsgxtsO^l}F>ZB]r|{7{j@cU^{{CbiYoHlng]f+nQ[bkTn/}<-d9q {KXadZYo+n|l[|lc}V2{[a{S4Zam~Za^`{HH{xx_SvF|ak=c^[v^7_rYT`ld@]:_ub%[$[m](Shu}G2{E.ZU_L_R{tz`vj(f?^}hswz}GdZ}{S:h`aD|?W|`dgG|if{a8|J1{N,}-Ao3{H#{mfsP|[ bzn+}_Q{MT{u4kHcj_q`eZj[8o0jy{p7}C|[}l){MuYY{|Ff!Ykn3{rT|m,^R|,R}$~Ykgx{P!]>iXh6[l[/}Jgcg{JYZ.^qYfYIZl[gZ#Xj[Pc7YyZD^+Yt;4;`e8YyZVbQ7YzZxXja.7SYl[s]2^/Ha$[6ZGYrb%XiYdf2]H]kZkZ*ZQ[ZYS^HZXcCc%Z|[(bVZ]]:OJQ_DZCg<[,]%Zaa [g{C00HY[c%[ChyZ,Z_`PbXa+eh`^&jPi0a[ggvhlekL]w{Yp^v}[e{~;k%a&k^|nR_z_Qng}[E}*Wq:{k^{FJZpXRhmh3^p>de^=_7`|ZbaAZtdhZ?n4ZL]u`9ZNc3g%[6b=e.ZVfC[ZZ^^^hD{E(9c(kyZ=bb|Sq{k`|vmr>izlH[u|e`}49}Y%}FT{[z{Rk}Bz{TCc/lMiAqkf(m$hDc;qooi[}^o:c^|Qm}a_{mrZ(pA`,}<2sY| adf_%|}`}Y5U;}/4|D>|$X{jw{C<|F.hK|*A{MRZ8Zsm?imZm_?brYWZrYx`yVZc3a@f?aK^ojEd {bN}/3ZH]/$YZhm^&j 9|(S|b]mF}UI{q&aM]LcrZ5^.|[j`T_V_Gak}9J[ ZCZD|^h{N9{~&[6Zd{}B}2O|cv]K}3s}Uy|l,fihW{EG`j_QOp~Z$F^zexS`dcISfhZBXP|.vn|_HYQ|)9|cr]<`&Z6]m_(ZhPcSg>`Z]5`~1`0Xcb4k1{O!bz|CN_T{LR|a/gFcD|j<{Z._[f)mPc:1`WtIaT1cgYkZOaVZOYFrEe[}T$}Ch}mk{K-^@]fH{Hdi`c*Z&|Kt{if[C{Q;{xYB`dYIX:ZB[}]*[{{p9|4GYRh2ao{DS|V+[zd$`F[ZXKadb*A] Ys]Maif~a/Z2bmclb8{Jro_rz|x9cHojbZ{GzZx_)]:{wAayeDlx}<=`g{H1{l#}9i|)=|lP{Qq}.({La|!Y{i2EZfp=c*}Cc{EDvVB|;g}2t{W4av^Bn=]ri,|y?|3+}T*ckZ*{Ffr5e%|sB{lx^0]eZb]9[SgAjS_D|uHZx]dive[c.YPkcq/}db{EQh&hQ|eg}G!ljil|BO]X{Qr_GkGl~YiYWu=c3eb}29v3|D|}4i||.{Mv})V{SP1{FX}CZW6{cm|vO{pS|e#}A~|1i}81|Mw}es|5[}3w{C`h9aL]o{}p[G`>i%a1Z@`Ln2bD[$_h`}ZOjhdTrH{[j_:k~kv[Sdu]CtL}41{I |[[{]Zp$]XjxjHt_eThoa#h>sSt8|gK|TVi[Y{t=}Bs|b7Zpr%{gt|Yo{CS[/{iteva|cf^hgn}($_c^wmb^Wm+|55jrbF|{9^ q6{C&c+ZKdJkq_xOYqZYSYXYl`8]-cxZAq/b%b*_Vsa[/Ybjac/OaGZ4fza|a)gY{P?| I|Y |,pi1n7}9bm9ad|=d{aV|2@[(}B`d&|Uz}B}{`q|/H|!JkM{FU|CB|.{}Az}#P|lk}K{|2rk7{^8^?`/|k>|Ka{Sq}Gz}io{DxZh[yK_#}9<{TRdgc]`~Z>JYmYJ]|`!ZKZ]gUcx|^E[rZCd`f9oQ[NcD_$ZlZ;Zr}mX|=!|$6ZPZYtIo%fj}CpcN|B,{VDw~gb}@hZg`Q{LcmA[(bo`<|@$|o1|Ss}9Z_}tC|G`{F/|9nd}i=}V-{L8aaeST]daRbujh^xlpq8|}zs4bj[S`J|]?G{P#{rD{]I`OlH{Hm]VYuSYUbRc*6[j`8]pZ[bt_/^Jc*[<Z?YE|Xb|?_Z^Vcas]h{t9|Uwd)_(=0^6Zb{Nc} E[qZAeX[a]P^|_J>e8`W^j_Y}R{{Jp__]Ee#e:iWb9q_wKbujrbR}CY`,{mJ}gz{Q^{t~N|? gSga`V_||:#mi}3t|/I`X{N*|ct|2g{km}gi|{={jC}F;|E}{ZZjYf*frmu}8Tdroi{T[|+~}HG{cJ}DM{Lp{Ctd&}$hi3|FZ| m}Kr|38}^c|m_|Tr{Qv|36}?Up>|;S{DV{k_as}BK{P}}9p|t`jR{sAm4{D=b4pWa[}Xi{EjwEkI}3S|E?u=X0{jf} S|NM|JC{qo^3cm]-|JUx/{Cj{s>{Crt[UXuv|D~|j|d{YXZR}Aq}0r}(_{pJfi_z}0b|-vi)Z mFe,{f4|q`b{}^Z{HM{rbeHZ|^x_o|XM|L%|uFXm}@C_{{Hhp%a7|0p[Xp+^K}9U{bP}: tT}B|}+$|b2|[^|~h{FAby[`{}xgygrt~h1[li`c4vz|,7p~b(|mviN}^pg[{N/|g3|^0c,gE|f%|7N{q[|tc|TKA{LU}I@|AZp(}G-sz{F |qZ{}F|f-}RGn6{Z]_5})B}UJ{FFb2]4ZI@v=k,]t_Dg5Bj]Z-]L]vrpdvdGlk|gF}G]|IW}Y0[G| /bo|Te^,_B}#n^^{QHYI[?hxg{[`]D^IYRYTb&kJ[cri[g_9]Ud~^_]<p@_e_XdNm-^/|5)|h_{J;{kacVopf!q;asqd}n)|.m|bf{QW|U)}b+{tL|w``N|to{t ZO|T]jF}CB|0Q{e5Zw|k |We}5:{HO{tPwf_uajjBfX}-V_C_{{r~gg|Ude;s+}KNXH}! `K}eW{Upwbk%ogaW}9EYN}YY|&v|SL{C3[5s.]Y]I]u{M6{pYZ`^,`ZbCYR[1mNg>rsk0Ym[jrE]RYiZTr*YJ{Ge|%-lf|y(`=[t}E6{k!|3)}Zk} ][G{E~cF{u3U.rJ|a9p#o#ZE|?|{sYc#vv{E=|LC}cu{N8`/`3`9rt[4|He{cq|iSYxY`}V |(Q|t4{C?]k_Vlvk)BZ^r<{CL}#h}R+[<|i=}X|{KAo]|W<`K{NW|Zx}#;|fe{IMr<|K~tJ_x}AyLZ?{GvbLnRgN}X&{H7|x~}Jm{]-| GpNu0}.ok>|c4{PYisrDZ|fwh9|hfo@{H~XSbO]Odv]%`N]b1Y]]|eIZ}_-ZA]aj,>eFn+j[aQ_+]h[J_m_g]%_wf.`%k1e#Z?{CvYu_B^|gk`Xfh^M3`afGZ-Z|[m{L}|k3cp[it ^>YUi~d>{T*}YJ{Q5{Jxa$hg|%4`}|LAgvb }G}{P=|<;Ux{_skR{cV|-*|s-{Mp|XP|$G|_J}c6cM{_=_D|*9^$ec{V;|4S{qO|w_|.7}d0|/D}e}|0G{Dq]Kdp{}dfDi>}B%{Gd|nl}lf{C-{y}|ANZr}#={T~|-(}c&{pI|ft{lsVP}){|@u}!W|bcmB{d?|iW|:dxj{PSkO|Hl]Li:}VYk@|2={fnWt{M3`cZ6|)}|Xj}BYa?vo{e4|L7|B7{L7|1W|lvYO}W8nJ|$Vih|{T{d*_1|:-n2dblk``fT{Ky|-%}m!|Xy|-a{Pz}[l{kFjz|iH}9N{WE{x,|jz}R {P|{D)c=nX|Kq|si}Ge{sh|[X{RF{t`|jsr*fYf,rK|/9}$}}Nf{y!1|<Std}4Wez{W${Fd_/^O[ooqaw_z[L`Nbv[;l7V[ii3_PeM}.h^viqYjZ*j1}+3{bt{DR[;UG}3Og,rS{JO{qw{d<_zbAh<R[1_r`iZTbv^^a}c{iEgQZ<exZFg.^Rb+`Uj{a+{z<[~r!]`[[|rZYR|?F|qppp]L|-d|}K}YZUM|=Y|ktm*}F]{D;g{uI|7kg^}%?Z%ca{N[_<q4xC]i|PqZC]n}.bDrnh0Wq{tr|OMn6tM|!6|T`{O`|>!]ji+]_bTeU}Tq|ds}n|{Gm{z,f)}&s{DPYJ`%{CGd5v4tvb*hUh~bf]z`jajiFqAii]bfy^U{Or|m+{I)cS|.9k:e3`^|xN}@Dnlis`B|Qo{`W|>||kA}Y}{ERYuYx`%[exd`]|OyiHtb}HofUYbFo![5|+]gD{NIZR|Go}.T{rh^4]S|C9_}xO^i`vfQ}C)bK{TL}cQ|79iu}9a];sj{P.o!f[Y]pM``Jda^Wc9ZarteBZClxtM{LW}l9|a.mU}KX}4@{I+f1}37|8u}9c|v${xGlz}jP{Dd1}e:}31}%3X$|22i<v+r@~mf{sN{C67G97855F4YL5}8f{DT|xy{sO{DXB334@55J1)4.G9A#JDYtXTYM4, YQD9;XbXm9SX]IB^4UN=Xn<5(;(F3YW@XkH-X_VM[DYM:5XP!T&Y`6|,^{IS-*D.H>:LXjYQ0I3XhAF:9:(==.F*3F1189K/7163D,:@|e2{LS36D4hq{Lw/84443@4.933:0307::6D7}&l{Mx657;89;,K5678H&93D(H<&<>0B90X^I;}Ag1{P%3A+>><975}[S{PZE453?4|T2{Q+5187;>447:81{C=hL6{Me^:=7ii{R=.=F<81;48?|h8}Uh{SE|,VxL{ST,7?9Y_5Xk3A#:$%YSYdXeKXOD8+TXh7(@>(YdXYHXl9J6X_5IXaL0N?3YK7Xh!1?XgYz9YEXhXaYPXhC3X`-YLY_XfVf[EGXZ5L8BXL9YHX]SYTXjLXdJ: YcXbQXg1PX]Yx4|Jr{Ys4.8YU+XIY`0N,<H%-H;:0@,74/:8546I=9177154870UC]d<C3HXl7ALYzXFXWP<<?E!88E5@03YYXJ?YJ@6YxX-YdXhYG|9o{`iXjY_>YVXe>AYFX[/(I@0841?):-B=14337:8=|14{c&93788|di{cW-0>0<097/A;N{FqYpugAFT%X/Yo3Yn,#=XlCYHYNX[Xk3YN:YRT4?)-YH%A5XlYF3C1=NWyY}>:74-C673<69545v {iT85YED=64=.F4..9878/D4378?48B3:7:7/1VX[f4{D,{l<5E75{dAbRB-8-@+;DBF/$ZfW8S<4YhXA.(5@*11YV8./S95C/0R-A4AXQYI7?68167B95HA1*<M3?1/@;/=54XbYP36}lc{qzSS38:19?,/39193574/66878Yw1X-87E6=;964X`T734:>86>1/=0;(I-1::7ALYGXhF+Xk[@W%TYbX7)KXdYEXi,H-XhYMRXfYK?XgXj.9HX_SX]YL1XmYJ>Y}WwIXiI-3-GXcYyXUYJ$X`Vs[7;XnYEZ;XF! 3;%8;PXX(N3Y[)Xi1YE&/ :;74YQ6X`33C;-(>Xm0(TYF/!YGXg8 9L5P01YPXO-5%C|qd{{/K/E6,=0144:361:955;6443@?B7*7:F89&F35YaX-CYf,XiFYRXE_e{}sF 0*7XRYPYfXa5YXXY8Xf8Y~XmA[9VjYj*#YMXIYOXk,HHX40YxYMXU8OXe;YFXLYuPXP?EB[QV0CXfY{:9XV[FWE0D6X^YVP*$4%OXiYQ(|xp|%c3{}V`1>Y`XH00:8/M6XhQ1:;3414|TE|&o@1*=81G8<3}6<|(f6>>>5-5:8;093B^3U*+*^*UT30XgYU&7*O1953)5@E78--F7YF*B&0:%P68W9Zn5974J9::3}Vk|-,C)=)1AJ4+<3YGXfY[XQXmT1M-XcYTYZXCYZXEYXXMYN,17>XIG*SaS|/eYJXbI?XdNZ+WRYP<F:R PXf;0Xg`$|1GX9YdXjLYxWX!ZIXGYaXNYm6X9YMX?9EXmZ&XZ#XQ>YeXRXfAY[4 ;0X!Zz0XdN$XhYL XIY^XGNXUYS/1YFXhYk.TXn4DXjB{jg|4DEX]:XcZMW=A.+QYL<LKXc[vV$+&PX*Z3XMYIXUQ:ZvW< YSXFZ,XBYeXMM)?Xa XiZ4/EXcP3%}&-|6~:1(-+YT$@XIYRBC<}&,|7aJ6}bp|8)K1|Xg|8C}[T|8Q.89;-964I38361<=/;883651467<7:>?1:.}le|:Z=39;1Y^)?:J=?XfLXbXi=Q0YVYOXaXiLXmJXO5?.SFXiCYW}-;|=u&D-X`N0X^,YzYRXO(QX_YW9`I|>hZ:N&X)DQXP@YH#XmNXi$YWX^=!G6YbYdX>XjY|XlX^XdYkX>YnXUXPYF)FXT[EVTMYmYJXmYSXmNXi#GXmT3X8HOX[ZiXN]IU2>8YdX1YbX<YfWuZ8XSXcZU%0;1XnXkZ_WTG,XZYX5YSX Yp 05G?XcYW(IXg6K/XlYP4XnI @XnO1W4Zp-9C@%QDYX+OYeX9>--YSXkD.YR%Q/Yo YUX].Xi<HYEZ2WdCE6YMXa7F)=,D>-@9/8@5=?7164;35387?N<618=6>7D+C50<6B03J0{Hj|N9$D,9I-,.KB3}m |NzE0::/81YqXjMXl7YG; [.W=Z0X4XQY]:MXiR,XgM?9$9>:?E;YE77VS[Y564760391?14941:0=:8B:;/1DXjFA-564=0B3XlH1+D85:0Q!B#:-6&N/:9<-R3/7Xn<*3J4.H:+334B.=>30H.;3833/76464665755:/83H6633:=;.>5645}&E|Y)?1/YG-,93&N3AE@5 <L1-G/8A0D858/30>8<549=@B8] V0[uVQYlXeD(P#ID&7T&7;Xi0;7T-$YE)E=1:E1GR):--0YI7=E<}n9|aT6783A>D7&4YG7=391W;Zx<5+>F#J39}o/|cc;6=A050EQXg8A1-}D-|d^5548083563695D?-.YOXd37I$@LYLWeYlX<Yd+YR A$;3-4YQ-9XmA0!9/XLY_YT(=5XdDI>YJ5XP1ZAW{9>X_6R(XhYO65&J%DA)C-!B:97#A9;@?F;&;(9=11/=657/H,<8}bz|j^5446>.L+&Y^8Xb6?(CYOXb*YF(8X`FYR(XPYVXmPQ%&DD(XmZXW??YOXZXfCYJ79,O)XnYF7K0!QXmXi4IYFRXS,6<%-:YO(+:-3Q!1E1:W,Zo}Am|n~;3580534*?3Zc4=9334361693:30C<6/717:<1/;>59&:4}6!|rS36=1?75<8}[B|s809983579I.A.>84758=108564741H*9E{L{|u%YQ<%6XfH.YUXe4YL@,>N}Tv|ve*G0X)Z;/)3@A74(4P&A1X:YVH97;,754*A66:1 D739E3553545558E4?-?K17/770843XAYf838A7K%N!YW4.$T19Z`WJ*0XdYJXTYOXNZ 1XaN1A+I&Xi.Xk3Z3GB&5%WhZ1+5#Y[X<4YMXhQYoQXVXbYQ8XSYUX4YXBXWDMG0WxZA[8V+Z8X;D],Va$%YeX?FXfX[XeYf<X:Z[WsYz8X_Y]%XmQ(!7BXIZFX]&YE3F$(1XgYgYE& +[+W!<YMYFXc;+PXCYI9YrWxGXY9DY[!GXiI7::)OC;*$.>N*HA@{C|}&k=:<TB83X`3YL+G4XiK]i}(fYK<=5$.FYE%4*5*H*6XkCYL=*6Xi6!Yi1KXR4YHXbC8Xj,B9ZbWx/XbYON#5B}Ue}+QKXnF1&YV5XmYQ0!*3IXBYb71?1B75XmF;0B976;H/RXU:YZX;BG-NXj;XjI>A#D3B636N;,*%<D:0;YRXY973H5)-4FXOYf0:0;/7759774;7;:/855:543L43<?6=E,.A4:C=L)%4YV!1(YE/4YF+ F3%;S;&JC:%/?YEXJ4GXf/YS-EXEYW,9;E}X$}547EXiK=51-?71C%?57;5>463553Zg90;6447?<>4:9.7538XgN{|!}9K/E&3-:D+YE1)YE/3;37/:05}n<}:UX8Yj4Yt864@JYK..G=.(A Q3%6K>3(P3#AYE$-6H/456*C=.XHY[#S.<780191;057C)=6HXj?955B:K1 E>-B/9,;5.!L?:0>/.@//:;7833YZ56<4:YE=/:7Z_WGC%3I6>XkC*&NA16X=Yz2$X:Y^&J48<99k8}CyB-61<18K946YO4{|N}E)YIB9K0L>4=46<1K0+R;6-=1883:478;4,S+3YJX`GJXh.Yp+Xm6MXcYpX(>7Yo,/:X=Z;Xi0YTYHXjYmXiXj;*;I-8S6N#XgY}.3XfYGO3C/$XjL$*NYX,1 6;YH&<XkK9C#I74.>}Hd`A748X[T450[n75<4439:18A107>|ET}Rf<1;14876/Yb983E<5.YNXd4149>,S=/4E/<306443G/06}0&}UkYSXFYF=44=-5095=88;63844,9E6644{PL}WA8:>)7+>763>>0/B3A545CCnT}Xm|dv}Xq1L/YNXk/H8;;.R63351YY747@15YE4J8;46;.38.>4A369.=-83,;Ye3?:3@YE.4-+N353;/;@(X[YYD>@/05-I*@.:551741Yf5>6A443<3535;.58/86=D4753442$635D1>0359NQ @73:3:>><Xn?;43C14 ?Y|X611YG1&<+,4<*,YLXl<1/AIXjF*N89A4Z576K1XbJ5YF.ZOWN.YGXO/YQ01:4G38Xl1;KI0YFXB=R<7;D/,/4>;$I,YGXm94@O35Yz66695385.>:6A#5}W7n^4336:4157597434433<3|XA}m`>=D>:4A.337370?-6Q96{`E|4A}C`|Qs{Mk|J+~r>|o,wHv>Vw}!c{H!|Gb|*Ca5}J||,U{t+{CN[!M65YXOY_*B,Y[Z9XaX[QYJYLXPYuZ%XcZ8LY[SYPYKZM<LMYG9OYqSQYM~[e{UJXmQYyZM_)>YjN1~[f3{aXFY|Yk:48YdH^NZ0|T){jVFYTZNFY^YTYN~[h{nPYMYn3I]`EYUYsYIZEYJ7Yw)YnXPQYH+Z.ZAZY]^Z1Y`YSZFZyGYHXLYG 8Yd#4~[i|+)YH9D?Y^F~Y7|-eYxZ^WHYdYfZQ~[j|3>~[k|3oYmYqY^XYYO=Z*4[]Z/OYLXhZ1YLZIXgYIHYEYK,<Y`YEXIGZI[3YOYcB4SZ!YHZ*&Y{Xi3~[l|JSY`Zz?Z,~[m|O=Yi>??XnYWXmYS617YVYIHZ(Z4[~L4/=~[n|Yu{P)|];YOHHZ}~[o33|a>~[r|aE]DH~[s|e$Zz~[t|kZFY~XhYXZB[`Y}~[u|{SZ&OYkYQYuZ2Zf8D~[v}% ~[w3},Q[X]+YGYeYPIS~[y}4aZ!YN^!6PZ*~[z}?E~[{3}CnZ=~[}}EdDZz/9A3(3S<,YR8.D=*XgYPYcXN3Z5 4)~[~}JW=$Yu.XX~] }KDX`PXdZ4XfYpTJLY[F5]X~[2Yp}U+DZJ::<446[m@~]#3}]1~]%}^LZwZQ5Z`/OT<Yh^ -~]&}jx[ ~m<z!%2+~ly4VY-~o>}p62yz!%2+Xf2+~ly4VY-zQ`z (=] 2z~o2",C={" ":0,"!":1},c=34,i=2,p,s="",u=String.fromCharCode,t=u(12539);while(++c<127)C[u(c)]=c^39&&c^92?i++:0;i=0;while(0<=(c=C[a.charAt(i++)]))if(16==c)if((c=C[a.charAt(i++)])<87){if(86==c)c=1879;while(c--)s+=u(++p)}else s+=s.substr(8272,360);else if(c<86)s+=u(p+=c<51?c-16:(c-55)*92+C[a.charAt(i++)]);else if((c=((c-86)*92+C[a.charAt(i++)])*92+C[a.charAt(i++)])<49152)s+=u(p=c<40960?c:c|57344);else{c&=511;while(c--)s+=t;p=12539}return s')();
-
-var JCT8836 = JCT11280.substring(0, 8836);
-
-exports.EscapeSJIS = EscapeSJIS;
-exports.UnescapeSJIS = UnescapeSJIS;
-exports.EscapeEUCJP = EscapeEUCJP;
-exports.UnescapeEUCJP = UnescapeEUCJP;
-exports.EscapeJIS7 = EscapeJIS7;
-exports.UnescapeJIS7 = UnescapeJIS7;
-exports.EscapeJIS8 = EscapeJIS8;
-exports.UnescapeJIS8 = UnescapeJIS8;
-exports.EscapeUnicode = EscapeUnicode;
-exports.UnescapeUnicode = UnescapeUnicode;
-exports.EscapeUTF7 = EscapeUTF7;
-exports.UnescapeUTF7 = UnescapeUTF7;
-exports.EscapeUTF8 = EscapeUTF8;
-exports.UnescapeUTF8 = UnescapeUTF8;
-exports.EscapeUTF16LE = EscapeUTF16LE;
-exports.UnescapeUTF16LE = UnescapeUTF16LE;
-exports.GetEscapeCodeType = GetEscapeCodeType;
-exports.JCT11280 = JCT11280;
-exports.JCT8836 = JCT8836;
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
@@ -73885,20 +74070,20 @@ var MMDPMMReader = function (_MMDReader) {
         for (var _iterator6 = Object.keys(this._faceAnimationHash)[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
           var _name = _step6.value;
 
-          var _motion2 = this._faceAnimationHash[_name];
-          var _motionLength = _motion2.keyTimes[_motion2.keyTimes.length - 1];
+          var motion = this._faceAnimationHash[_name];
+          var motionLength = motion.keyTimes[motion.keyTimes.length - 1];
 
-          for (var _num = 0; _num < _motion2.keyTimes.length; _num++) {
-            var _keyTime = _motion2.keyTimes[_num] / _motionLength;
-            _motion2.keyTimes[_num] = _keyTime;
+          for (var _num = 0; _num < motion.keyTimes.length; _num++) {
+            var _keyTime = motion.keyTimes[_num] / motionLength;
+            motion.keyTimes[_num] = _keyTime;
           }
 
-          _motion2.duration = _motionLength / this.fps;
-          _motion2.usesSceneTimeBase = false;
-          _motion2.isRemovedOnCompletion = false;
-          _motion2.fillMode = _jscenekit.kCAFillModeForwards;
+          motion.duration = motionLength / this.fps;
+          motion.usesSceneTimeBase = false;
+          motion.isRemovedOnCompletion = false;
+          motion.fillMode = _jscenekit.kCAFillModeForwards;
 
-          this._workingAnimationGroup.animations.push(_motion2);
+          this._workingAnimationGroup.animations.push(motion);
         }
       } catch (err) {
         _didIteratorError6 = true;
@@ -74759,9 +74944,9 @@ var MMDPMMReader = function (_MMDReader) {
       // accessory
       for (var _index2 = 0; _index2 < this._accessories.length; _index2++) {
         var accessory = this._accessories[_index2];
-        var _motion3 = this._accessoryMotions[_index2];
+        var _motion2 = this._accessoryMotions[_index2];
 
-        accessory.prepareAnimationForKey(_motion3, 'motion');
+        accessory.prepareAnimationForKey(_motion2, 'motion');
         accessory.playPreparedAnimationForKey('motion');
 
         this._workingScene.rootNode.addChildNode(accessory);
@@ -74802,7 +74987,7 @@ var MMDPMMReader = function (_MMDReader) {
 exports.default = MMDPMMReader;
 
 /***/ }),
-/* 13 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -76442,7 +76627,7 @@ var MMDPMXReader = function (_MMDReader) {
 exports.default = MMDPMXReader;
 
 /***/ }),
-/* 14 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -76602,7 +76787,7 @@ var MMDVACReader = function (_MMDReader) {
 exports.default = MMDVACReader;
 
 /***/ }),
-/* 15 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -76622,7 +76807,7 @@ var _MMDReader2 = __webpack_require__(2);
 
 var _MMDReader3 = _interopRequireDefault(_MMDReader2);
 
-var _constants = __webpack_require__(26);
+var _constants = __webpack_require__(19);
 
 var _jscenekit = __webpack_require__(0);
 
@@ -77379,7 +77564,7 @@ var MMDVMDReader = function (_MMDReader) {
 exports.default = MMDVMDReader;
 
 /***/ }),
-/* 16 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -77545,7 +77730,7 @@ var MMDVPDReader = function (_MMDReader) {
 exports.default = MMDVPDReader;
 
 /***/ }),
-/* 17 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78115,20 +78300,6 @@ var MMDXReader = function (_MMDReader) {
       if (name === 'TextureFilename') {
         var textureFilePath = this._TextureFilename();
         if (textureFilePath !== null) {
-          /*
-          const texture = this._loadTexture(textureFilePath)
-          if(texture !== null){
-            // FIXME: use mmd shader
-            material.emission.contents = texture
-            material.emission.wrapS = SCNWrapMode.repeat
-            material.emission.wrapT = SCNWrapMode.repeat
-            material.diffuse.contents = texture
-            material.diffuse.wrapS = SCNWrapMode.repeat
-            material.diffuse.wrapT = SCNWrapMode.repeat
-             // DEBUG
-            //material.diffuse.contents = new SKColor(0, 0.5, 0, 1.0)
-          }
-          */
           this.loadTexture(textureFilePath).then(function (texture) {
             material.emission.contents = texture;
             material.emission.wrapS = _jscenekit.SCNWrapMode.repeat;
@@ -78275,22 +78446,6 @@ var MMDXReader = function (_MMDReader) {
 
       return filePath;
     }
-
-    /*
-      _loadTexture(path) {
-        const promise = new Promise((resolve, reject) => {
-          console.error('TODO: implement _loadTexture')
-          const fileName = this.directoryPath + path
-          const image = new Image()
-          image.onload = () => {
-            resolve(image)
-          }
-          image.src = fileName
-        })
-        return promise
-      }
-    */
-
   }], [{
     key: 'getNode',
     value: function getNode(data, directoryPath) {
@@ -78305,7 +78460,7 @@ var MMDXReader = function (_MMDReader) {
 exports.default = MMDXReader;
 
 /***/ }),
-/* 18 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78327,7 +78482,7 @@ var _MMDIKConstraint = __webpack_require__(4);
 
 var _MMDIKConstraint2 = _interopRequireDefault(_MMDIKConstraint);
 
-var _MMDIKController = __webpack_require__(19);
+var _MMDIKController = __webpack_require__(17);
 
 var _MMDIKController2 = _interopRequireDefault(_MMDIKController);
 
@@ -78339,11 +78494,11 @@ var _MMDPMDReader = __webpack_require__(9);
 
 var _MMDPMDReader2 = _interopRequireDefault(_MMDPMDReader);
 
-var _MMDPMMReader = __webpack_require__(12);
+var _MMDPMMReader = __webpack_require__(10);
 
 var _MMDPMMReader2 = _interopRequireDefault(_MMDPMMReader);
 
-var _MMDPMXReader = __webpack_require__(13);
+var _MMDPMXReader = __webpack_require__(11);
 
 var _MMDPMXReader2 = _interopRequireDefault(_MMDPMXReader);
 
@@ -78355,7 +78510,7 @@ var _MMDReader = __webpack_require__(2);
 
 var _MMDReader2 = _interopRequireDefault(_MMDReader);
 
-var _MMDScene = __webpack_require__(27);
+var _MMDScene = __webpack_require__(20);
 
 var _MMDScene2 = _interopRequireDefault(_MMDScene);
 
@@ -78363,37 +78518,29 @@ var _MMDSceneSource = __webpack_require__(3);
 
 var _MMDSceneSource2 = _interopRequireDefault(_MMDSceneSource);
 
-var _MMDVACReader = __webpack_require__(14);
+var _MMDVACReader = __webpack_require__(12);
 
 var _MMDVACReader2 = _interopRequireDefault(_MMDVACReader);
 
-var _MMDVMDReader = __webpack_require__(15);
+var _MMDVMDReader = __webpack_require__(13);
 
 var _MMDVMDReader2 = _interopRequireDefault(_MMDVMDReader);
 
-var _MMDVPDReader = __webpack_require__(16);
+var _MMDVPDReader = __webpack_require__(14);
 
 var _MMDVPDReader2 = _interopRequireDefault(_MMDVPDReader);
 
-var _MMDXReader = __webpack_require__(17);
+var _MMDXReader = __webpack_require__(15);
 
 var _MMDXReader2 = _interopRequireDefault(_MMDXReader);
 
-var _BinaryParser = __webpack_require__(28);
+var _BinaryParser = __webpack_require__(21);
 
 var _BinaryParser2 = _interopRequireDefault(_BinaryParser);
 
-var _ecl = __webpack_require__(11);
+var _ecl = __webpack_require__(22);
 
 var _ecl2 = _interopRequireDefault(_ecl);
-
-var _TextReader2 = __webpack_require__(10);
-
-var _TextReader3 = _interopRequireDefault(_TextReader2);
-
-var _TextRequest2 = __webpack_require__(29);
-
-var _TextRequest3 = _interopRequireDefault(_TextRequest2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -78417,11 +78564,9 @@ exports.MMDVPDReader = _MMDVPDReader2.default;
 exports.MMDXReader = _MMDXReader2.default;
 exports.BinaryParser = _BinaryParser2.default;
 exports.ecl = _ecl2.default;
-exports._TextReader = _TextReader3.default;
-exports._TextRequest = _TextRequest3.default;
 
 /***/ }),
-/* 19 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78528,7 +78673,7 @@ var MMDIKController = function () {
 exports.default = MMDIKController;
 
 /***/ }),
-/* 20 */
+/* 18 */
 /***/ (function(module, exports) {
 
 module.exports =
@@ -81214,2053 +81359,7 @@ module.exports = Array.isArray || function (arr) {
 /******/ ]);
 
 /***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(global) {/*!
- * The buffer module from node.js, for the browser.
- *
- * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
- * @license  MIT
- */
-/* eslint-disable no-proto */
-
-
-
-var base64 = __webpack_require__(23)
-var ieee754 = __webpack_require__(24)
-var isArray = __webpack_require__(25)
-
-exports.Buffer = Buffer
-exports.SlowBuffer = SlowBuffer
-exports.INSPECT_MAX_BYTES = 50
-
-/**
- * If `Buffer.TYPED_ARRAY_SUPPORT`:
- *   === true    Use Uint8Array implementation (fastest)
- *   === false   Use Object implementation (most compatible, even IE6)
- *
- * Browsers that support typed arrays are IE 10+, Firefox 4+, Chrome 7+, Safari 5.1+,
- * Opera 11.6+, iOS 4.2+.
- *
- * Due to various browser bugs, sometimes the Object implementation will be used even
- * when the browser supports typed arrays.
- *
- * Note:
- *
- *   - Firefox 4-29 lacks support for adding new properties to `Uint8Array` instances,
- *     See: https://bugzilla.mozilla.org/show_bug.cgi?id=695438.
- *
- *   - Chrome 9-10 is missing the `TypedArray.prototype.subarray` function.
- *
- *   - IE10 has a broken `TypedArray.prototype.subarray` function which returns arrays of
- *     incorrect length in some situations.
-
- * We detect these buggy browsers and set `Buffer.TYPED_ARRAY_SUPPORT` to `false` so they
- * get the Object implementation, which is slower but behaves correctly.
- */
-Buffer.TYPED_ARRAY_SUPPORT = global.TYPED_ARRAY_SUPPORT !== undefined
-  ? global.TYPED_ARRAY_SUPPORT
-  : typedArraySupport()
-
-/*
- * Export kMaxLength after typed array support is determined.
- */
-exports.kMaxLength = kMaxLength()
-
-function typedArraySupport () {
-  try {
-    var arr = new Uint8Array(1)
-    arr.__proto__ = {__proto__: Uint8Array.prototype, foo: function () { return 42 }}
-    return arr.foo() === 42 && // typed array instances can be augmented
-        typeof arr.subarray === 'function' && // chrome 9-10 lack `subarray`
-        arr.subarray(1, 1).byteLength === 0 // ie10 has broken `subarray`
-  } catch (e) {
-    return false
-  }
-}
-
-function kMaxLength () {
-  return Buffer.TYPED_ARRAY_SUPPORT
-    ? 0x7fffffff
-    : 0x3fffffff
-}
-
-function createBuffer (that, length) {
-  if (kMaxLength() < length) {
-    throw new RangeError('Invalid typed array length')
-  }
-  if (Buffer.TYPED_ARRAY_SUPPORT) {
-    // Return an augmented `Uint8Array` instance, for best performance
-    that = new Uint8Array(length)
-    that.__proto__ = Buffer.prototype
-  } else {
-    // Fallback: Return an object instance of the Buffer class
-    if (that === null) {
-      that = new Buffer(length)
-    }
-    that.length = length
-  }
-
-  return that
-}
-
-/**
- * The Buffer constructor returns instances of `Uint8Array` that have their
- * prototype changed to `Buffer.prototype`. Furthermore, `Buffer` is a subclass of
- * `Uint8Array`, so the returned instances will have all the node `Buffer` methods
- * and the `Uint8Array` methods. Square bracket notation works as expected -- it
- * returns a single octet.
- *
- * The `Uint8Array` prototype remains unmodified.
- */
-
-function Buffer (arg, encodingOrOffset, length) {
-  if (!Buffer.TYPED_ARRAY_SUPPORT && !(this instanceof Buffer)) {
-    return new Buffer(arg, encodingOrOffset, length)
-  }
-
-  // Common case.
-  if (typeof arg === 'number') {
-    if (typeof encodingOrOffset === 'string') {
-      throw new Error(
-        'If encoding is specified then the first argument must be a string'
-      )
-    }
-    return allocUnsafe(this, arg)
-  }
-  return from(this, arg, encodingOrOffset, length)
-}
-
-Buffer.poolSize = 8192 // not used by this implementation
-
-// TODO: Legacy, not needed anymore. Remove in next major version.
-Buffer._augment = function (arr) {
-  arr.__proto__ = Buffer.prototype
-  return arr
-}
-
-function from (that, value, encodingOrOffset, length) {
-  if (typeof value === 'number') {
-    throw new TypeError('"value" argument must not be a number')
-  }
-
-  if (typeof ArrayBuffer !== 'undefined' && value instanceof ArrayBuffer) {
-    return fromArrayBuffer(that, value, encodingOrOffset, length)
-  }
-
-  if (typeof value === 'string') {
-    return fromString(that, value, encodingOrOffset)
-  }
-
-  return fromObject(that, value)
-}
-
-/**
- * Functionally equivalent to Buffer(arg, encoding) but throws a TypeError
- * if value is a number.
- * Buffer.from(str[, encoding])
- * Buffer.from(array)
- * Buffer.from(buffer)
- * Buffer.from(arrayBuffer[, byteOffset[, length]])
- **/
-Buffer.from = function (value, encodingOrOffset, length) {
-  return from(null, value, encodingOrOffset, length)
-}
-
-if (Buffer.TYPED_ARRAY_SUPPORT) {
-  Buffer.prototype.__proto__ = Uint8Array.prototype
-  Buffer.__proto__ = Uint8Array
-  if (typeof Symbol !== 'undefined' && Symbol.species &&
-      Buffer[Symbol.species] === Buffer) {
-    // Fix subarray() in ES2016. See: https://github.com/feross/buffer/pull/97
-    Object.defineProperty(Buffer, Symbol.species, {
-      value: null,
-      configurable: true
-    })
-  }
-}
-
-function assertSize (size) {
-  if (typeof size !== 'number') {
-    throw new TypeError('"size" argument must be a number')
-  } else if (size < 0) {
-    throw new RangeError('"size" argument must not be negative')
-  }
-}
-
-function alloc (that, size, fill, encoding) {
-  assertSize(size)
-  if (size <= 0) {
-    return createBuffer(that, size)
-  }
-  if (fill !== undefined) {
-    // Only pay attention to encoding if it's a string. This
-    // prevents accidentally sending in a number that would
-    // be interpretted as a start offset.
-    return typeof encoding === 'string'
-      ? createBuffer(that, size).fill(fill, encoding)
-      : createBuffer(that, size).fill(fill)
-  }
-  return createBuffer(that, size)
-}
-
-/**
- * Creates a new filled Buffer instance.
- * alloc(size[, fill[, encoding]])
- **/
-Buffer.alloc = function (size, fill, encoding) {
-  return alloc(null, size, fill, encoding)
-}
-
-function allocUnsafe (that, size) {
-  assertSize(size)
-  that = createBuffer(that, size < 0 ? 0 : checked(size) | 0)
-  if (!Buffer.TYPED_ARRAY_SUPPORT) {
-    for (var i = 0; i < size; ++i) {
-      that[i] = 0
-    }
-  }
-  return that
-}
-
-/**
- * Equivalent to Buffer(num), by default creates a non-zero-filled Buffer instance.
- * */
-Buffer.allocUnsafe = function (size) {
-  return allocUnsafe(null, size)
-}
-/**
- * Equivalent to SlowBuffer(num), by default creates a non-zero-filled Buffer instance.
- */
-Buffer.allocUnsafeSlow = function (size) {
-  return allocUnsafe(null, size)
-}
-
-function fromString (that, string, encoding) {
-  if (typeof encoding !== 'string' || encoding === '') {
-    encoding = 'utf8'
-  }
-
-  if (!Buffer.isEncoding(encoding)) {
-    throw new TypeError('"encoding" must be a valid string encoding')
-  }
-
-  var length = byteLength(string, encoding) | 0
-  that = createBuffer(that, length)
-
-  var actual = that.write(string, encoding)
-
-  if (actual !== length) {
-    // Writing a hex string, for example, that contains invalid characters will
-    // cause everything after the first invalid character to be ignored. (e.g.
-    // 'abxxcd' will be treated as 'ab')
-    that = that.slice(0, actual)
-  }
-
-  return that
-}
-
-function fromArrayLike (that, array) {
-  var length = array.length < 0 ? 0 : checked(array.length) | 0
-  that = createBuffer(that, length)
-  for (var i = 0; i < length; i += 1) {
-    that[i] = array[i] & 255
-  }
-  return that
-}
-
-function fromArrayBuffer (that, array, byteOffset, length) {
-  array.byteLength // this throws if `array` is not a valid ArrayBuffer
-
-  if (byteOffset < 0 || array.byteLength < byteOffset) {
-    throw new RangeError('\'offset\' is out of bounds')
-  }
-
-  if (array.byteLength < byteOffset + (length || 0)) {
-    throw new RangeError('\'length\' is out of bounds')
-  }
-
-  if (byteOffset === undefined && length === undefined) {
-    array = new Uint8Array(array)
-  } else if (length === undefined) {
-    array = new Uint8Array(array, byteOffset)
-  } else {
-    array = new Uint8Array(array, byteOffset, length)
-  }
-
-  if (Buffer.TYPED_ARRAY_SUPPORT) {
-    // Return an augmented `Uint8Array` instance, for best performance
-    that = array
-    that.__proto__ = Buffer.prototype
-  } else {
-    // Fallback: Return an object instance of the Buffer class
-    that = fromArrayLike(that, array)
-  }
-  return that
-}
-
-function fromObject (that, obj) {
-  if (Buffer.isBuffer(obj)) {
-    var len = checked(obj.length) | 0
-    that = createBuffer(that, len)
-
-    if (that.length === 0) {
-      return that
-    }
-
-    obj.copy(that, 0, 0, len)
-    return that
-  }
-
-  if (obj) {
-    if ((typeof ArrayBuffer !== 'undefined' &&
-        obj.buffer instanceof ArrayBuffer) || 'length' in obj) {
-      if (typeof obj.length !== 'number' || isnan(obj.length)) {
-        return createBuffer(that, 0)
-      }
-      return fromArrayLike(that, obj)
-    }
-
-    if (obj.type === 'Buffer' && isArray(obj.data)) {
-      return fromArrayLike(that, obj.data)
-    }
-  }
-
-  throw new TypeError('First argument must be a string, Buffer, ArrayBuffer, Array, or array-like object.')
-}
-
-function checked (length) {
-  // Note: cannot use `length < kMaxLength()` here because that fails when
-  // length is NaN (which is otherwise coerced to zero.)
-  if (length >= kMaxLength()) {
-    throw new RangeError('Attempt to allocate Buffer larger than maximum ' +
-                         'size: 0x' + kMaxLength().toString(16) + ' bytes')
-  }
-  return length | 0
-}
-
-function SlowBuffer (length) {
-  if (+length != length) { // eslint-disable-line eqeqeq
-    length = 0
-  }
-  return Buffer.alloc(+length)
-}
-
-Buffer.isBuffer = function isBuffer (b) {
-  return !!(b != null && b._isBuffer)
-}
-
-Buffer.compare = function compare (a, b) {
-  if (!Buffer.isBuffer(a) || !Buffer.isBuffer(b)) {
-    throw new TypeError('Arguments must be Buffers')
-  }
-
-  if (a === b) return 0
-
-  var x = a.length
-  var y = b.length
-
-  for (var i = 0, len = Math.min(x, y); i < len; ++i) {
-    if (a[i] !== b[i]) {
-      x = a[i]
-      y = b[i]
-      break
-    }
-  }
-
-  if (x < y) return -1
-  if (y < x) return 1
-  return 0
-}
-
-Buffer.isEncoding = function isEncoding (encoding) {
-  switch (String(encoding).toLowerCase()) {
-    case 'hex':
-    case 'utf8':
-    case 'utf-8':
-    case 'ascii':
-    case 'latin1':
-    case 'binary':
-    case 'base64':
-    case 'ucs2':
-    case 'ucs-2':
-    case 'utf16le':
-    case 'utf-16le':
-      return true
-    default:
-      return false
-  }
-}
-
-Buffer.concat = function concat (list, length) {
-  if (!isArray(list)) {
-    throw new TypeError('"list" argument must be an Array of Buffers')
-  }
-
-  if (list.length === 0) {
-    return Buffer.alloc(0)
-  }
-
-  var i
-  if (length === undefined) {
-    length = 0
-    for (i = 0; i < list.length; ++i) {
-      length += list[i].length
-    }
-  }
-
-  var buffer = Buffer.allocUnsafe(length)
-  var pos = 0
-  for (i = 0; i < list.length; ++i) {
-    var buf = list[i]
-    if (!Buffer.isBuffer(buf)) {
-      throw new TypeError('"list" argument must be an Array of Buffers')
-    }
-    buf.copy(buffer, pos)
-    pos += buf.length
-  }
-  return buffer
-}
-
-function byteLength (string, encoding) {
-  if (Buffer.isBuffer(string)) {
-    return string.length
-  }
-  if (typeof ArrayBuffer !== 'undefined' && typeof ArrayBuffer.isView === 'function' &&
-      (ArrayBuffer.isView(string) || string instanceof ArrayBuffer)) {
-    return string.byteLength
-  }
-  if (typeof string !== 'string') {
-    string = '' + string
-  }
-
-  var len = string.length
-  if (len === 0) return 0
-
-  // Use a for loop to avoid recursion
-  var loweredCase = false
-  for (;;) {
-    switch (encoding) {
-      case 'ascii':
-      case 'latin1':
-      case 'binary':
-        return len
-      case 'utf8':
-      case 'utf-8':
-      case undefined:
-        return utf8ToBytes(string).length
-      case 'ucs2':
-      case 'ucs-2':
-      case 'utf16le':
-      case 'utf-16le':
-        return len * 2
-      case 'hex':
-        return len >>> 1
-      case 'base64':
-        return base64ToBytes(string).length
-      default:
-        if (loweredCase) return utf8ToBytes(string).length // assume utf8
-        encoding = ('' + encoding).toLowerCase()
-        loweredCase = true
-    }
-  }
-}
-Buffer.byteLength = byteLength
-
-function slowToString (encoding, start, end) {
-  var loweredCase = false
-
-  // No need to verify that "this.length <= MAX_UINT32" since it's a read-only
-  // property of a typed array.
-
-  // This behaves neither like String nor Uint8Array in that we set start/end
-  // to their upper/lower bounds if the value passed is out of range.
-  // undefined is handled specially as per ECMA-262 6th Edition,
-  // Section 13.3.3.7 Runtime Semantics: KeyedBindingInitialization.
-  if (start === undefined || start < 0) {
-    start = 0
-  }
-  // Return early if start > this.length. Done here to prevent potential uint32
-  // coercion fail below.
-  if (start > this.length) {
-    return ''
-  }
-
-  if (end === undefined || end > this.length) {
-    end = this.length
-  }
-
-  if (end <= 0) {
-    return ''
-  }
-
-  // Force coersion to uint32. This will also coerce falsey/NaN values to 0.
-  end >>>= 0
-  start >>>= 0
-
-  if (end <= start) {
-    return ''
-  }
-
-  if (!encoding) encoding = 'utf8'
-
-  while (true) {
-    switch (encoding) {
-      case 'hex':
-        return hexSlice(this, start, end)
-
-      case 'utf8':
-      case 'utf-8':
-        return utf8Slice(this, start, end)
-
-      case 'ascii':
-        return asciiSlice(this, start, end)
-
-      case 'latin1':
-      case 'binary':
-        return latin1Slice(this, start, end)
-
-      case 'base64':
-        return base64Slice(this, start, end)
-
-      case 'ucs2':
-      case 'ucs-2':
-      case 'utf16le':
-      case 'utf-16le':
-        return utf16leSlice(this, start, end)
-
-      default:
-        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
-        encoding = (encoding + '').toLowerCase()
-        loweredCase = true
-    }
-  }
-}
-
-// The property is used by `Buffer.isBuffer` and `is-buffer` (in Safari 5-7) to detect
-// Buffer instances.
-Buffer.prototype._isBuffer = true
-
-function swap (b, n, m) {
-  var i = b[n]
-  b[n] = b[m]
-  b[m] = i
-}
-
-Buffer.prototype.swap16 = function swap16 () {
-  var len = this.length
-  if (len % 2 !== 0) {
-    throw new RangeError('Buffer size must be a multiple of 16-bits')
-  }
-  for (var i = 0; i < len; i += 2) {
-    swap(this, i, i + 1)
-  }
-  return this
-}
-
-Buffer.prototype.swap32 = function swap32 () {
-  var len = this.length
-  if (len % 4 !== 0) {
-    throw new RangeError('Buffer size must be a multiple of 32-bits')
-  }
-  for (var i = 0; i < len; i += 4) {
-    swap(this, i, i + 3)
-    swap(this, i + 1, i + 2)
-  }
-  return this
-}
-
-Buffer.prototype.swap64 = function swap64 () {
-  var len = this.length
-  if (len % 8 !== 0) {
-    throw new RangeError('Buffer size must be a multiple of 64-bits')
-  }
-  for (var i = 0; i < len; i += 8) {
-    swap(this, i, i + 7)
-    swap(this, i + 1, i + 6)
-    swap(this, i + 2, i + 5)
-    swap(this, i + 3, i + 4)
-  }
-  return this
-}
-
-Buffer.prototype.toString = function toString () {
-  var length = this.length | 0
-  if (length === 0) return ''
-  if (arguments.length === 0) return utf8Slice(this, 0, length)
-  return slowToString.apply(this, arguments)
-}
-
-Buffer.prototype.equals = function equals (b) {
-  if (!Buffer.isBuffer(b)) throw new TypeError('Argument must be a Buffer')
-  if (this === b) return true
-  return Buffer.compare(this, b) === 0
-}
-
-Buffer.prototype.inspect = function inspect () {
-  var str = ''
-  var max = exports.INSPECT_MAX_BYTES
-  if (this.length > 0) {
-    str = this.toString('hex', 0, max).match(/.{2}/g).join(' ')
-    if (this.length > max) str += ' ... '
-  }
-  return '<Buffer ' + str + '>'
-}
-
-Buffer.prototype.compare = function compare (target, start, end, thisStart, thisEnd) {
-  if (!Buffer.isBuffer(target)) {
-    throw new TypeError('Argument must be a Buffer')
-  }
-
-  if (start === undefined) {
-    start = 0
-  }
-  if (end === undefined) {
-    end = target ? target.length : 0
-  }
-  if (thisStart === undefined) {
-    thisStart = 0
-  }
-  if (thisEnd === undefined) {
-    thisEnd = this.length
-  }
-
-  if (start < 0 || end > target.length || thisStart < 0 || thisEnd > this.length) {
-    throw new RangeError('out of range index')
-  }
-
-  if (thisStart >= thisEnd && start >= end) {
-    return 0
-  }
-  if (thisStart >= thisEnd) {
-    return -1
-  }
-  if (start >= end) {
-    return 1
-  }
-
-  start >>>= 0
-  end >>>= 0
-  thisStart >>>= 0
-  thisEnd >>>= 0
-
-  if (this === target) return 0
-
-  var x = thisEnd - thisStart
-  var y = end - start
-  var len = Math.min(x, y)
-
-  var thisCopy = this.slice(thisStart, thisEnd)
-  var targetCopy = target.slice(start, end)
-
-  for (var i = 0; i < len; ++i) {
-    if (thisCopy[i] !== targetCopy[i]) {
-      x = thisCopy[i]
-      y = targetCopy[i]
-      break
-    }
-  }
-
-  if (x < y) return -1
-  if (y < x) return 1
-  return 0
-}
-
-// Finds either the first index of `val` in `buffer` at offset >= `byteOffset`,
-// OR the last index of `val` in `buffer` at offset <= `byteOffset`.
-//
-// Arguments:
-// - buffer - a Buffer to search
-// - val - a string, Buffer, or number
-// - byteOffset - an index into `buffer`; will be clamped to an int32
-// - encoding - an optional encoding, relevant is val is a string
-// - dir - true for indexOf, false for lastIndexOf
-function bidirectionalIndexOf (buffer, val, byteOffset, encoding, dir) {
-  // Empty buffer means no match
-  if (buffer.length === 0) return -1
-
-  // Normalize byteOffset
-  if (typeof byteOffset === 'string') {
-    encoding = byteOffset
-    byteOffset = 0
-  } else if (byteOffset > 0x7fffffff) {
-    byteOffset = 0x7fffffff
-  } else if (byteOffset < -0x80000000) {
-    byteOffset = -0x80000000
-  }
-  byteOffset = +byteOffset  // Coerce to Number.
-  if (isNaN(byteOffset)) {
-    // byteOffset: it it's undefined, null, NaN, "foo", etc, search whole buffer
-    byteOffset = dir ? 0 : (buffer.length - 1)
-  }
-
-  // Normalize byteOffset: negative offsets start from the end of the buffer
-  if (byteOffset < 0) byteOffset = buffer.length + byteOffset
-  if (byteOffset >= buffer.length) {
-    if (dir) return -1
-    else byteOffset = buffer.length - 1
-  } else if (byteOffset < 0) {
-    if (dir) byteOffset = 0
-    else return -1
-  }
-
-  // Normalize val
-  if (typeof val === 'string') {
-    val = Buffer.from(val, encoding)
-  }
-
-  // Finally, search either indexOf (if dir is true) or lastIndexOf
-  if (Buffer.isBuffer(val)) {
-    // Special case: looking for empty string/buffer always fails
-    if (val.length === 0) {
-      return -1
-    }
-    return arrayIndexOf(buffer, val, byteOffset, encoding, dir)
-  } else if (typeof val === 'number') {
-    val = val & 0xFF // Search for a byte value [0-255]
-    if (Buffer.TYPED_ARRAY_SUPPORT &&
-        typeof Uint8Array.prototype.indexOf === 'function') {
-      if (dir) {
-        return Uint8Array.prototype.indexOf.call(buffer, val, byteOffset)
-      } else {
-        return Uint8Array.prototype.lastIndexOf.call(buffer, val, byteOffset)
-      }
-    }
-    return arrayIndexOf(buffer, [ val ], byteOffset, encoding, dir)
-  }
-
-  throw new TypeError('val must be string, number or Buffer')
-}
-
-function arrayIndexOf (arr, val, byteOffset, encoding, dir) {
-  var indexSize = 1
-  var arrLength = arr.length
-  var valLength = val.length
-
-  if (encoding !== undefined) {
-    encoding = String(encoding).toLowerCase()
-    if (encoding === 'ucs2' || encoding === 'ucs-2' ||
-        encoding === 'utf16le' || encoding === 'utf-16le') {
-      if (arr.length < 2 || val.length < 2) {
-        return -1
-      }
-      indexSize = 2
-      arrLength /= 2
-      valLength /= 2
-      byteOffset /= 2
-    }
-  }
-
-  function read (buf, i) {
-    if (indexSize === 1) {
-      return buf[i]
-    } else {
-      return buf.readUInt16BE(i * indexSize)
-    }
-  }
-
-  var i
-  if (dir) {
-    var foundIndex = -1
-    for (i = byteOffset; i < arrLength; i++) {
-      if (read(arr, i) === read(val, foundIndex === -1 ? 0 : i - foundIndex)) {
-        if (foundIndex === -1) foundIndex = i
-        if (i - foundIndex + 1 === valLength) return foundIndex * indexSize
-      } else {
-        if (foundIndex !== -1) i -= i - foundIndex
-        foundIndex = -1
-      }
-    }
-  } else {
-    if (byteOffset + valLength > arrLength) byteOffset = arrLength - valLength
-    for (i = byteOffset; i >= 0; i--) {
-      var found = true
-      for (var j = 0; j < valLength; j++) {
-        if (read(arr, i + j) !== read(val, j)) {
-          found = false
-          break
-        }
-      }
-      if (found) return i
-    }
-  }
-
-  return -1
-}
-
-Buffer.prototype.includes = function includes (val, byteOffset, encoding) {
-  return this.indexOf(val, byteOffset, encoding) !== -1
-}
-
-Buffer.prototype.indexOf = function indexOf (val, byteOffset, encoding) {
-  return bidirectionalIndexOf(this, val, byteOffset, encoding, true)
-}
-
-Buffer.prototype.lastIndexOf = function lastIndexOf (val, byteOffset, encoding) {
-  return bidirectionalIndexOf(this, val, byteOffset, encoding, false)
-}
-
-function hexWrite (buf, string, offset, length) {
-  offset = Number(offset) || 0
-  var remaining = buf.length - offset
-  if (!length) {
-    length = remaining
-  } else {
-    length = Number(length)
-    if (length > remaining) {
-      length = remaining
-    }
-  }
-
-  // must be an even number of digits
-  var strLen = string.length
-  if (strLen % 2 !== 0) throw new TypeError('Invalid hex string')
-
-  if (length > strLen / 2) {
-    length = strLen / 2
-  }
-  for (var i = 0; i < length; ++i) {
-    var parsed = parseInt(string.substr(i * 2, 2), 16)
-    if (isNaN(parsed)) return i
-    buf[offset + i] = parsed
-  }
-  return i
-}
-
-function utf8Write (buf, string, offset, length) {
-  return blitBuffer(utf8ToBytes(string, buf.length - offset), buf, offset, length)
-}
-
-function asciiWrite (buf, string, offset, length) {
-  return blitBuffer(asciiToBytes(string), buf, offset, length)
-}
-
-function latin1Write (buf, string, offset, length) {
-  return asciiWrite(buf, string, offset, length)
-}
-
-function base64Write (buf, string, offset, length) {
-  return blitBuffer(base64ToBytes(string), buf, offset, length)
-}
-
-function ucs2Write (buf, string, offset, length) {
-  return blitBuffer(utf16leToBytes(string, buf.length - offset), buf, offset, length)
-}
-
-Buffer.prototype.write = function write (string, offset, length, encoding) {
-  // Buffer#write(string)
-  if (offset === undefined) {
-    encoding = 'utf8'
-    length = this.length
-    offset = 0
-  // Buffer#write(string, encoding)
-  } else if (length === undefined && typeof offset === 'string') {
-    encoding = offset
-    length = this.length
-    offset = 0
-  // Buffer#write(string, offset[, length][, encoding])
-  } else if (isFinite(offset)) {
-    offset = offset | 0
-    if (isFinite(length)) {
-      length = length | 0
-      if (encoding === undefined) encoding = 'utf8'
-    } else {
-      encoding = length
-      length = undefined
-    }
-  // legacy write(string, encoding, offset, length) - remove in v0.13
-  } else {
-    throw new Error(
-      'Buffer.write(string, encoding, offset[, length]) is no longer supported'
-    )
-  }
-
-  var remaining = this.length - offset
-  if (length === undefined || length > remaining) length = remaining
-
-  if ((string.length > 0 && (length < 0 || offset < 0)) || offset > this.length) {
-    throw new RangeError('Attempt to write outside buffer bounds')
-  }
-
-  if (!encoding) encoding = 'utf8'
-
-  var loweredCase = false
-  for (;;) {
-    switch (encoding) {
-      case 'hex':
-        return hexWrite(this, string, offset, length)
-
-      case 'utf8':
-      case 'utf-8':
-        return utf8Write(this, string, offset, length)
-
-      case 'ascii':
-        return asciiWrite(this, string, offset, length)
-
-      case 'latin1':
-      case 'binary':
-        return latin1Write(this, string, offset, length)
-
-      case 'base64':
-        // Warning: maxLength not taken into account in base64Write
-        return base64Write(this, string, offset, length)
-
-      case 'ucs2':
-      case 'ucs-2':
-      case 'utf16le':
-      case 'utf-16le':
-        return ucs2Write(this, string, offset, length)
-
-      default:
-        if (loweredCase) throw new TypeError('Unknown encoding: ' + encoding)
-        encoding = ('' + encoding).toLowerCase()
-        loweredCase = true
-    }
-  }
-}
-
-Buffer.prototype.toJSON = function toJSON () {
-  return {
-    type: 'Buffer',
-    data: Array.prototype.slice.call(this._arr || this, 0)
-  }
-}
-
-function base64Slice (buf, start, end) {
-  if (start === 0 && end === buf.length) {
-    return base64.fromByteArray(buf)
-  } else {
-    return base64.fromByteArray(buf.slice(start, end))
-  }
-}
-
-function utf8Slice (buf, start, end) {
-  end = Math.min(buf.length, end)
-  var res = []
-
-  var i = start
-  while (i < end) {
-    var firstByte = buf[i]
-    var codePoint = null
-    var bytesPerSequence = (firstByte > 0xEF) ? 4
-      : (firstByte > 0xDF) ? 3
-      : (firstByte > 0xBF) ? 2
-      : 1
-
-    if (i + bytesPerSequence <= end) {
-      var secondByte, thirdByte, fourthByte, tempCodePoint
-
-      switch (bytesPerSequence) {
-        case 1:
-          if (firstByte < 0x80) {
-            codePoint = firstByte
-          }
-          break
-        case 2:
-          secondByte = buf[i + 1]
-          if ((secondByte & 0xC0) === 0x80) {
-            tempCodePoint = (firstByte & 0x1F) << 0x6 | (secondByte & 0x3F)
-            if (tempCodePoint > 0x7F) {
-              codePoint = tempCodePoint
-            }
-          }
-          break
-        case 3:
-          secondByte = buf[i + 1]
-          thirdByte = buf[i + 2]
-          if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80) {
-            tempCodePoint = (firstByte & 0xF) << 0xC | (secondByte & 0x3F) << 0x6 | (thirdByte & 0x3F)
-            if (tempCodePoint > 0x7FF && (tempCodePoint < 0xD800 || tempCodePoint > 0xDFFF)) {
-              codePoint = tempCodePoint
-            }
-          }
-          break
-        case 4:
-          secondByte = buf[i + 1]
-          thirdByte = buf[i + 2]
-          fourthByte = buf[i + 3]
-          if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80 && (fourthByte & 0xC0) === 0x80) {
-            tempCodePoint = (firstByte & 0xF) << 0x12 | (secondByte & 0x3F) << 0xC | (thirdByte & 0x3F) << 0x6 | (fourthByte & 0x3F)
-            if (tempCodePoint > 0xFFFF && tempCodePoint < 0x110000) {
-              codePoint = tempCodePoint
-            }
-          }
-      }
-    }
-
-    if (codePoint === null) {
-      // we did not generate a valid codePoint so insert a
-      // replacement char (U+FFFD) and advance only 1 byte
-      codePoint = 0xFFFD
-      bytesPerSequence = 1
-    } else if (codePoint > 0xFFFF) {
-      // encode to utf16 (surrogate pair dance)
-      codePoint -= 0x10000
-      res.push(codePoint >>> 10 & 0x3FF | 0xD800)
-      codePoint = 0xDC00 | codePoint & 0x3FF
-    }
-
-    res.push(codePoint)
-    i += bytesPerSequence
-  }
-
-  return decodeCodePointsArray(res)
-}
-
-// Based on http://stackoverflow.com/a/22747272/680742, the browser with
-// the lowest limit is Chrome, with 0x10000 args.
-// We go 1 magnitude less, for safety
-var MAX_ARGUMENTS_LENGTH = 0x1000
-
-function decodeCodePointsArray (codePoints) {
-  var len = codePoints.length
-  if (len <= MAX_ARGUMENTS_LENGTH) {
-    return String.fromCharCode.apply(String, codePoints) // avoid extra slice()
-  }
-
-  // Decode in chunks to avoid "call stack size exceeded".
-  var res = ''
-  var i = 0
-  while (i < len) {
-    res += String.fromCharCode.apply(
-      String,
-      codePoints.slice(i, i += MAX_ARGUMENTS_LENGTH)
-    )
-  }
-  return res
-}
-
-function asciiSlice (buf, start, end) {
-  var ret = ''
-  end = Math.min(buf.length, end)
-
-  for (var i = start; i < end; ++i) {
-    ret += String.fromCharCode(buf[i] & 0x7F)
-  }
-  return ret
-}
-
-function latin1Slice (buf, start, end) {
-  var ret = ''
-  end = Math.min(buf.length, end)
-
-  for (var i = start; i < end; ++i) {
-    ret += String.fromCharCode(buf[i])
-  }
-  return ret
-}
-
-function hexSlice (buf, start, end) {
-  var len = buf.length
-
-  if (!start || start < 0) start = 0
-  if (!end || end < 0 || end > len) end = len
-
-  var out = ''
-  for (var i = start; i < end; ++i) {
-    out += toHex(buf[i])
-  }
-  return out
-}
-
-function utf16leSlice (buf, start, end) {
-  var bytes = buf.slice(start, end)
-  var res = ''
-  for (var i = 0; i < bytes.length; i += 2) {
-    res += String.fromCharCode(bytes[i] + bytes[i + 1] * 256)
-  }
-  return res
-}
-
-Buffer.prototype.slice = function slice (start, end) {
-  var len = this.length
-  start = ~~start
-  end = end === undefined ? len : ~~end
-
-  if (start < 0) {
-    start += len
-    if (start < 0) start = 0
-  } else if (start > len) {
-    start = len
-  }
-
-  if (end < 0) {
-    end += len
-    if (end < 0) end = 0
-  } else if (end > len) {
-    end = len
-  }
-
-  if (end < start) end = start
-
-  var newBuf
-  if (Buffer.TYPED_ARRAY_SUPPORT) {
-    newBuf = this.subarray(start, end)
-    newBuf.__proto__ = Buffer.prototype
-  } else {
-    var sliceLen = end - start
-    newBuf = new Buffer(sliceLen, undefined)
-    for (var i = 0; i < sliceLen; ++i) {
-      newBuf[i] = this[i + start]
-    }
-  }
-
-  return newBuf
-}
-
-/*
- * Need to make sure that buffer isn't trying to write out of bounds.
- */
-function checkOffset (offset, ext, length) {
-  if ((offset % 1) !== 0 || offset < 0) throw new RangeError('offset is not uint')
-  if (offset + ext > length) throw new RangeError('Trying to access beyond buffer length')
-}
-
-Buffer.prototype.readUIntLE = function readUIntLE (offset, byteLength, noAssert) {
-  offset = offset | 0
-  byteLength = byteLength | 0
-  if (!noAssert) checkOffset(offset, byteLength, this.length)
-
-  var val = this[offset]
-  var mul = 1
-  var i = 0
-  while (++i < byteLength && (mul *= 0x100)) {
-    val += this[offset + i] * mul
-  }
-
-  return val
-}
-
-Buffer.prototype.readUIntBE = function readUIntBE (offset, byteLength, noAssert) {
-  offset = offset | 0
-  byteLength = byteLength | 0
-  if (!noAssert) {
-    checkOffset(offset, byteLength, this.length)
-  }
-
-  var val = this[offset + --byteLength]
-  var mul = 1
-  while (byteLength > 0 && (mul *= 0x100)) {
-    val += this[offset + --byteLength] * mul
-  }
-
-  return val
-}
-
-Buffer.prototype.readUInt8 = function readUInt8 (offset, noAssert) {
-  if (!noAssert) checkOffset(offset, 1, this.length)
-  return this[offset]
-}
-
-Buffer.prototype.readUInt16LE = function readUInt16LE (offset, noAssert) {
-  if (!noAssert) checkOffset(offset, 2, this.length)
-  return this[offset] | (this[offset + 1] << 8)
-}
-
-Buffer.prototype.readUInt16BE = function readUInt16BE (offset, noAssert) {
-  if (!noAssert) checkOffset(offset, 2, this.length)
-  return (this[offset] << 8) | this[offset + 1]
-}
-
-Buffer.prototype.readUInt32LE = function readUInt32LE (offset, noAssert) {
-  if (!noAssert) checkOffset(offset, 4, this.length)
-
-  return ((this[offset]) |
-      (this[offset + 1] << 8) |
-      (this[offset + 2] << 16)) +
-      (this[offset + 3] * 0x1000000)
-}
-
-Buffer.prototype.readUInt32BE = function readUInt32BE (offset, noAssert) {
-  if (!noAssert) checkOffset(offset, 4, this.length)
-
-  return (this[offset] * 0x1000000) +
-    ((this[offset + 1] << 16) |
-    (this[offset + 2] << 8) |
-    this[offset + 3])
-}
-
-Buffer.prototype.readIntLE = function readIntLE (offset, byteLength, noAssert) {
-  offset = offset | 0
-  byteLength = byteLength | 0
-  if (!noAssert) checkOffset(offset, byteLength, this.length)
-
-  var val = this[offset]
-  var mul = 1
-  var i = 0
-  while (++i < byteLength && (mul *= 0x100)) {
-    val += this[offset + i] * mul
-  }
-  mul *= 0x80
-
-  if (val >= mul) val -= Math.pow(2, 8 * byteLength)
-
-  return val
-}
-
-Buffer.prototype.readIntBE = function readIntBE (offset, byteLength, noAssert) {
-  offset = offset | 0
-  byteLength = byteLength | 0
-  if (!noAssert) checkOffset(offset, byteLength, this.length)
-
-  var i = byteLength
-  var mul = 1
-  var val = this[offset + --i]
-  while (i > 0 && (mul *= 0x100)) {
-    val += this[offset + --i] * mul
-  }
-  mul *= 0x80
-
-  if (val >= mul) val -= Math.pow(2, 8 * byteLength)
-
-  return val
-}
-
-Buffer.prototype.readInt8 = function readInt8 (offset, noAssert) {
-  if (!noAssert) checkOffset(offset, 1, this.length)
-  if (!(this[offset] & 0x80)) return (this[offset])
-  return ((0xff - this[offset] + 1) * -1)
-}
-
-Buffer.prototype.readInt16LE = function readInt16LE (offset, noAssert) {
-  if (!noAssert) checkOffset(offset, 2, this.length)
-  var val = this[offset] | (this[offset + 1] << 8)
-  return (val & 0x8000) ? val | 0xFFFF0000 : val
-}
-
-Buffer.prototype.readInt16BE = function readInt16BE (offset, noAssert) {
-  if (!noAssert) checkOffset(offset, 2, this.length)
-  var val = this[offset + 1] | (this[offset] << 8)
-  return (val & 0x8000) ? val | 0xFFFF0000 : val
-}
-
-Buffer.prototype.readInt32LE = function readInt32LE (offset, noAssert) {
-  if (!noAssert) checkOffset(offset, 4, this.length)
-
-  return (this[offset]) |
-    (this[offset + 1] << 8) |
-    (this[offset + 2] << 16) |
-    (this[offset + 3] << 24)
-}
-
-Buffer.prototype.readInt32BE = function readInt32BE (offset, noAssert) {
-  if (!noAssert) checkOffset(offset, 4, this.length)
-
-  return (this[offset] << 24) |
-    (this[offset + 1] << 16) |
-    (this[offset + 2] << 8) |
-    (this[offset + 3])
-}
-
-Buffer.prototype.readFloatLE = function readFloatLE (offset, noAssert) {
-  if (!noAssert) checkOffset(offset, 4, this.length)
-  return ieee754.read(this, offset, true, 23, 4)
-}
-
-Buffer.prototype.readFloatBE = function readFloatBE (offset, noAssert) {
-  if (!noAssert) checkOffset(offset, 4, this.length)
-  return ieee754.read(this, offset, false, 23, 4)
-}
-
-Buffer.prototype.readDoubleLE = function readDoubleLE (offset, noAssert) {
-  if (!noAssert) checkOffset(offset, 8, this.length)
-  return ieee754.read(this, offset, true, 52, 8)
-}
-
-Buffer.prototype.readDoubleBE = function readDoubleBE (offset, noAssert) {
-  if (!noAssert) checkOffset(offset, 8, this.length)
-  return ieee754.read(this, offset, false, 52, 8)
-}
-
-function checkInt (buf, value, offset, ext, max, min) {
-  if (!Buffer.isBuffer(buf)) throw new TypeError('"buffer" argument must be a Buffer instance')
-  if (value > max || value < min) throw new RangeError('"value" argument is out of bounds')
-  if (offset + ext > buf.length) throw new RangeError('Index out of range')
-}
-
-Buffer.prototype.writeUIntLE = function writeUIntLE (value, offset, byteLength, noAssert) {
-  value = +value
-  offset = offset | 0
-  byteLength = byteLength | 0
-  if (!noAssert) {
-    var maxBytes = Math.pow(2, 8 * byteLength) - 1
-    checkInt(this, value, offset, byteLength, maxBytes, 0)
-  }
-
-  var mul = 1
-  var i = 0
-  this[offset] = value & 0xFF
-  while (++i < byteLength && (mul *= 0x100)) {
-    this[offset + i] = (value / mul) & 0xFF
-  }
-
-  return offset + byteLength
-}
-
-Buffer.prototype.writeUIntBE = function writeUIntBE (value, offset, byteLength, noAssert) {
-  value = +value
-  offset = offset | 0
-  byteLength = byteLength | 0
-  if (!noAssert) {
-    var maxBytes = Math.pow(2, 8 * byteLength) - 1
-    checkInt(this, value, offset, byteLength, maxBytes, 0)
-  }
-
-  var i = byteLength - 1
-  var mul = 1
-  this[offset + i] = value & 0xFF
-  while (--i >= 0 && (mul *= 0x100)) {
-    this[offset + i] = (value / mul) & 0xFF
-  }
-
-  return offset + byteLength
-}
-
-Buffer.prototype.writeUInt8 = function writeUInt8 (value, offset, noAssert) {
-  value = +value
-  offset = offset | 0
-  if (!noAssert) checkInt(this, value, offset, 1, 0xff, 0)
-  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
-  this[offset] = (value & 0xff)
-  return offset + 1
-}
-
-function objectWriteUInt16 (buf, value, offset, littleEndian) {
-  if (value < 0) value = 0xffff + value + 1
-  for (var i = 0, j = Math.min(buf.length - offset, 2); i < j; ++i) {
-    buf[offset + i] = (value & (0xff << (8 * (littleEndian ? i : 1 - i)))) >>>
-      (littleEndian ? i : 1 - i) * 8
-  }
-}
-
-Buffer.prototype.writeUInt16LE = function writeUInt16LE (value, offset, noAssert) {
-  value = +value
-  offset = offset | 0
-  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
-  if (Buffer.TYPED_ARRAY_SUPPORT) {
-    this[offset] = (value & 0xff)
-    this[offset + 1] = (value >>> 8)
-  } else {
-    objectWriteUInt16(this, value, offset, true)
-  }
-  return offset + 2
-}
-
-Buffer.prototype.writeUInt16BE = function writeUInt16BE (value, offset, noAssert) {
-  value = +value
-  offset = offset | 0
-  if (!noAssert) checkInt(this, value, offset, 2, 0xffff, 0)
-  if (Buffer.TYPED_ARRAY_SUPPORT) {
-    this[offset] = (value >>> 8)
-    this[offset + 1] = (value & 0xff)
-  } else {
-    objectWriteUInt16(this, value, offset, false)
-  }
-  return offset + 2
-}
-
-function objectWriteUInt32 (buf, value, offset, littleEndian) {
-  if (value < 0) value = 0xffffffff + value + 1
-  for (var i = 0, j = Math.min(buf.length - offset, 4); i < j; ++i) {
-    buf[offset + i] = (value >>> (littleEndian ? i : 3 - i) * 8) & 0xff
-  }
-}
-
-Buffer.prototype.writeUInt32LE = function writeUInt32LE (value, offset, noAssert) {
-  value = +value
-  offset = offset | 0
-  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)
-  if (Buffer.TYPED_ARRAY_SUPPORT) {
-    this[offset + 3] = (value >>> 24)
-    this[offset + 2] = (value >>> 16)
-    this[offset + 1] = (value >>> 8)
-    this[offset] = (value & 0xff)
-  } else {
-    objectWriteUInt32(this, value, offset, true)
-  }
-  return offset + 4
-}
-
-Buffer.prototype.writeUInt32BE = function writeUInt32BE (value, offset, noAssert) {
-  value = +value
-  offset = offset | 0
-  if (!noAssert) checkInt(this, value, offset, 4, 0xffffffff, 0)
-  if (Buffer.TYPED_ARRAY_SUPPORT) {
-    this[offset] = (value >>> 24)
-    this[offset + 1] = (value >>> 16)
-    this[offset + 2] = (value >>> 8)
-    this[offset + 3] = (value & 0xff)
-  } else {
-    objectWriteUInt32(this, value, offset, false)
-  }
-  return offset + 4
-}
-
-Buffer.prototype.writeIntLE = function writeIntLE (value, offset, byteLength, noAssert) {
-  value = +value
-  offset = offset | 0
-  if (!noAssert) {
-    var limit = Math.pow(2, 8 * byteLength - 1)
-
-    checkInt(this, value, offset, byteLength, limit - 1, -limit)
-  }
-
-  var i = 0
-  var mul = 1
-  var sub = 0
-  this[offset] = value & 0xFF
-  while (++i < byteLength && (mul *= 0x100)) {
-    if (value < 0 && sub === 0 && this[offset + i - 1] !== 0) {
-      sub = 1
-    }
-    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF
-  }
-
-  return offset + byteLength
-}
-
-Buffer.prototype.writeIntBE = function writeIntBE (value, offset, byteLength, noAssert) {
-  value = +value
-  offset = offset | 0
-  if (!noAssert) {
-    var limit = Math.pow(2, 8 * byteLength - 1)
-
-    checkInt(this, value, offset, byteLength, limit - 1, -limit)
-  }
-
-  var i = byteLength - 1
-  var mul = 1
-  var sub = 0
-  this[offset + i] = value & 0xFF
-  while (--i >= 0 && (mul *= 0x100)) {
-    if (value < 0 && sub === 0 && this[offset + i + 1] !== 0) {
-      sub = 1
-    }
-    this[offset + i] = ((value / mul) >> 0) - sub & 0xFF
-  }
-
-  return offset + byteLength
-}
-
-Buffer.prototype.writeInt8 = function writeInt8 (value, offset, noAssert) {
-  value = +value
-  offset = offset | 0
-  if (!noAssert) checkInt(this, value, offset, 1, 0x7f, -0x80)
-  if (!Buffer.TYPED_ARRAY_SUPPORT) value = Math.floor(value)
-  if (value < 0) value = 0xff + value + 1
-  this[offset] = (value & 0xff)
-  return offset + 1
-}
-
-Buffer.prototype.writeInt16LE = function writeInt16LE (value, offset, noAssert) {
-  value = +value
-  offset = offset | 0
-  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
-  if (Buffer.TYPED_ARRAY_SUPPORT) {
-    this[offset] = (value & 0xff)
-    this[offset + 1] = (value >>> 8)
-  } else {
-    objectWriteUInt16(this, value, offset, true)
-  }
-  return offset + 2
-}
-
-Buffer.prototype.writeInt16BE = function writeInt16BE (value, offset, noAssert) {
-  value = +value
-  offset = offset | 0
-  if (!noAssert) checkInt(this, value, offset, 2, 0x7fff, -0x8000)
-  if (Buffer.TYPED_ARRAY_SUPPORT) {
-    this[offset] = (value >>> 8)
-    this[offset + 1] = (value & 0xff)
-  } else {
-    objectWriteUInt16(this, value, offset, false)
-  }
-  return offset + 2
-}
-
-Buffer.prototype.writeInt32LE = function writeInt32LE (value, offset, noAssert) {
-  value = +value
-  offset = offset | 0
-  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
-  if (Buffer.TYPED_ARRAY_SUPPORT) {
-    this[offset] = (value & 0xff)
-    this[offset + 1] = (value >>> 8)
-    this[offset + 2] = (value >>> 16)
-    this[offset + 3] = (value >>> 24)
-  } else {
-    objectWriteUInt32(this, value, offset, true)
-  }
-  return offset + 4
-}
-
-Buffer.prototype.writeInt32BE = function writeInt32BE (value, offset, noAssert) {
-  value = +value
-  offset = offset | 0
-  if (!noAssert) checkInt(this, value, offset, 4, 0x7fffffff, -0x80000000)
-  if (value < 0) value = 0xffffffff + value + 1
-  if (Buffer.TYPED_ARRAY_SUPPORT) {
-    this[offset] = (value >>> 24)
-    this[offset + 1] = (value >>> 16)
-    this[offset + 2] = (value >>> 8)
-    this[offset + 3] = (value & 0xff)
-  } else {
-    objectWriteUInt32(this, value, offset, false)
-  }
-  return offset + 4
-}
-
-function checkIEEE754 (buf, value, offset, ext, max, min) {
-  if (offset + ext > buf.length) throw new RangeError('Index out of range')
-  if (offset < 0) throw new RangeError('Index out of range')
-}
-
-function writeFloat (buf, value, offset, littleEndian, noAssert) {
-  if (!noAssert) {
-    checkIEEE754(buf, value, offset, 4, 3.4028234663852886e+38, -3.4028234663852886e+38)
-  }
-  ieee754.write(buf, value, offset, littleEndian, 23, 4)
-  return offset + 4
-}
-
-Buffer.prototype.writeFloatLE = function writeFloatLE (value, offset, noAssert) {
-  return writeFloat(this, value, offset, true, noAssert)
-}
-
-Buffer.prototype.writeFloatBE = function writeFloatBE (value, offset, noAssert) {
-  return writeFloat(this, value, offset, false, noAssert)
-}
-
-function writeDouble (buf, value, offset, littleEndian, noAssert) {
-  if (!noAssert) {
-    checkIEEE754(buf, value, offset, 8, 1.7976931348623157E+308, -1.7976931348623157E+308)
-  }
-  ieee754.write(buf, value, offset, littleEndian, 52, 8)
-  return offset + 8
-}
-
-Buffer.prototype.writeDoubleLE = function writeDoubleLE (value, offset, noAssert) {
-  return writeDouble(this, value, offset, true, noAssert)
-}
-
-Buffer.prototype.writeDoubleBE = function writeDoubleBE (value, offset, noAssert) {
-  return writeDouble(this, value, offset, false, noAssert)
-}
-
-// copy(targetBuffer, targetStart=0, sourceStart=0, sourceEnd=buffer.length)
-Buffer.prototype.copy = function copy (target, targetStart, start, end) {
-  if (!start) start = 0
-  if (!end && end !== 0) end = this.length
-  if (targetStart >= target.length) targetStart = target.length
-  if (!targetStart) targetStart = 0
-  if (end > 0 && end < start) end = start
-
-  // Copy 0 bytes; we're done
-  if (end === start) return 0
-  if (target.length === 0 || this.length === 0) return 0
-
-  // Fatal error conditions
-  if (targetStart < 0) {
-    throw new RangeError('targetStart out of bounds')
-  }
-  if (start < 0 || start >= this.length) throw new RangeError('sourceStart out of bounds')
-  if (end < 0) throw new RangeError('sourceEnd out of bounds')
-
-  // Are we oob?
-  if (end > this.length) end = this.length
-  if (target.length - targetStart < end - start) {
-    end = target.length - targetStart + start
-  }
-
-  var len = end - start
-  var i
-
-  if (this === target && start < targetStart && targetStart < end) {
-    // descending copy from end
-    for (i = len - 1; i >= 0; --i) {
-      target[i + targetStart] = this[i + start]
-    }
-  } else if (len < 1000 || !Buffer.TYPED_ARRAY_SUPPORT) {
-    // ascending copy from start
-    for (i = 0; i < len; ++i) {
-      target[i + targetStart] = this[i + start]
-    }
-  } else {
-    Uint8Array.prototype.set.call(
-      target,
-      this.subarray(start, start + len),
-      targetStart
-    )
-  }
-
-  return len
-}
-
-// Usage:
-//    buffer.fill(number[, offset[, end]])
-//    buffer.fill(buffer[, offset[, end]])
-//    buffer.fill(string[, offset[, end]][, encoding])
-Buffer.prototype.fill = function fill (val, start, end, encoding) {
-  // Handle string cases:
-  if (typeof val === 'string') {
-    if (typeof start === 'string') {
-      encoding = start
-      start = 0
-      end = this.length
-    } else if (typeof end === 'string') {
-      encoding = end
-      end = this.length
-    }
-    if (val.length === 1) {
-      var code = val.charCodeAt(0)
-      if (code < 256) {
-        val = code
-      }
-    }
-    if (encoding !== undefined && typeof encoding !== 'string') {
-      throw new TypeError('encoding must be a string')
-    }
-    if (typeof encoding === 'string' && !Buffer.isEncoding(encoding)) {
-      throw new TypeError('Unknown encoding: ' + encoding)
-    }
-  } else if (typeof val === 'number') {
-    val = val & 255
-  }
-
-  // Invalid ranges are not set to a default, so can range check early.
-  if (start < 0 || this.length < start || this.length < end) {
-    throw new RangeError('Out of range index')
-  }
-
-  if (end <= start) {
-    return this
-  }
-
-  start = start >>> 0
-  end = end === undefined ? this.length : end >>> 0
-
-  if (!val) val = 0
-
-  var i
-  if (typeof val === 'number') {
-    for (i = start; i < end; ++i) {
-      this[i] = val
-    }
-  } else {
-    var bytes = Buffer.isBuffer(val)
-      ? val
-      : utf8ToBytes(new Buffer(val, encoding).toString())
-    var len = bytes.length
-    for (i = 0; i < end - start; ++i) {
-      this[i + start] = bytes[i % len]
-    }
-  }
-
-  return this
-}
-
-// HELPER FUNCTIONS
-// ================
-
-var INVALID_BASE64_RE = /[^+\/0-9A-Za-z-_]/g
-
-function base64clean (str) {
-  // Node strips out invalid characters like \n and \t from the string, base64-js does not
-  str = stringtrim(str).replace(INVALID_BASE64_RE, '')
-  // Node converts strings with length < 2 to ''
-  if (str.length < 2) return ''
-  // Node allows for non-padded base64 strings (missing trailing ===), base64-js does not
-  while (str.length % 4 !== 0) {
-    str = str + '='
-  }
-  return str
-}
-
-function stringtrim (str) {
-  if (str.trim) return str.trim()
-  return str.replace(/^\s+|\s+$/g, '')
-}
-
-function toHex (n) {
-  if (n < 16) return '0' + n.toString(16)
-  return n.toString(16)
-}
-
-function utf8ToBytes (string, units) {
-  units = units || Infinity
-  var codePoint
-  var length = string.length
-  var leadSurrogate = null
-  var bytes = []
-
-  for (var i = 0; i < length; ++i) {
-    codePoint = string.charCodeAt(i)
-
-    // is surrogate component
-    if (codePoint > 0xD7FF && codePoint < 0xE000) {
-      // last char was a lead
-      if (!leadSurrogate) {
-        // no lead yet
-        if (codePoint > 0xDBFF) {
-          // unexpected trail
-          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
-          continue
-        } else if (i + 1 === length) {
-          // unpaired lead
-          if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
-          continue
-        }
-
-        // valid lead
-        leadSurrogate = codePoint
-
-        continue
-      }
-
-      // 2 leads in a row
-      if (codePoint < 0xDC00) {
-        if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
-        leadSurrogate = codePoint
-        continue
-      }
-
-      // valid surrogate pair
-      codePoint = (leadSurrogate - 0xD800 << 10 | codePoint - 0xDC00) + 0x10000
-    } else if (leadSurrogate) {
-      // valid bmp char, but last char was a lead
-      if ((units -= 3) > -1) bytes.push(0xEF, 0xBF, 0xBD)
-    }
-
-    leadSurrogate = null
-
-    // encode utf8
-    if (codePoint < 0x80) {
-      if ((units -= 1) < 0) break
-      bytes.push(codePoint)
-    } else if (codePoint < 0x800) {
-      if ((units -= 2) < 0) break
-      bytes.push(
-        codePoint >> 0x6 | 0xC0,
-        codePoint & 0x3F | 0x80
-      )
-    } else if (codePoint < 0x10000) {
-      if ((units -= 3) < 0) break
-      bytes.push(
-        codePoint >> 0xC | 0xE0,
-        codePoint >> 0x6 & 0x3F | 0x80,
-        codePoint & 0x3F | 0x80
-      )
-    } else if (codePoint < 0x110000) {
-      if ((units -= 4) < 0) break
-      bytes.push(
-        codePoint >> 0x12 | 0xF0,
-        codePoint >> 0xC & 0x3F | 0x80,
-        codePoint >> 0x6 & 0x3F | 0x80,
-        codePoint & 0x3F | 0x80
-      )
-    } else {
-      throw new Error('Invalid code point')
-    }
-  }
-
-  return bytes
-}
-
-function asciiToBytes (str) {
-  var byteArray = []
-  for (var i = 0; i < str.length; ++i) {
-    // Node's code seems to be doing this and not & 0x7F..
-    byteArray.push(str.charCodeAt(i) & 0xFF)
-  }
-  return byteArray
-}
-
-function utf16leToBytes (str, units) {
-  var c, hi, lo
-  var byteArray = []
-  for (var i = 0; i < str.length; ++i) {
-    if ((units -= 2) < 0) break
-
-    c = str.charCodeAt(i)
-    hi = c >> 8
-    lo = c % 256
-    byteArray.push(lo)
-    byteArray.push(hi)
-  }
-
-  return byteArray
-}
-
-function base64ToBytes (str) {
-  return base64.toByteArray(base64clean(str))
-}
-
-function blitBuffer (src, dst, offset, length) {
-  for (var i = 0; i < length; ++i) {
-    if ((i + offset >= dst.length) || (i >= src.length)) break
-    dst[i + offset] = src[i]
-  }
-  return i
-}
-
-function isnan (val) {
-  return val !== val // eslint-disable-line no-self-compare
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(22)))
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports.byteLength = byteLength
-exports.toByteArray = toByteArray
-exports.fromByteArray = fromByteArray
-
-var lookup = []
-var revLookup = []
-var Arr = typeof Uint8Array !== 'undefined' ? Uint8Array : Array
-
-var code = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
-for (var i = 0, len = code.length; i < len; ++i) {
-  lookup[i] = code[i]
-  revLookup[code.charCodeAt(i)] = i
-}
-
-revLookup['-'.charCodeAt(0)] = 62
-revLookup['_'.charCodeAt(0)] = 63
-
-function placeHoldersCount (b64) {
-  var len = b64.length
-  if (len % 4 > 0) {
-    throw new Error('Invalid string. Length must be a multiple of 4')
-  }
-
-  // the number of equal signs (place holders)
-  // if there are two placeholders, than the two characters before it
-  // represent one byte
-  // if there is only one, then the three characters before it represent 2 bytes
-  // this is just a cheap hack to not do indexOf twice
-  return b64[len - 2] === '=' ? 2 : b64[len - 1] === '=' ? 1 : 0
-}
-
-function byteLength (b64) {
-  // base64 is 4/3 + up to two characters of the original data
-  return (b64.length * 3 / 4) - placeHoldersCount(b64)
-}
-
-function toByteArray (b64) {
-  var i, l, tmp, placeHolders, arr
-  var len = b64.length
-  placeHolders = placeHoldersCount(b64)
-
-  arr = new Arr((len * 3 / 4) - placeHolders)
-
-  // if there are placeholders, only get up to the last complete 4 chars
-  l = placeHolders > 0 ? len - 4 : len
-
-  var L = 0
-
-  for (i = 0; i < l; i += 4) {
-    tmp = (revLookup[b64.charCodeAt(i)] << 18) | (revLookup[b64.charCodeAt(i + 1)] << 12) | (revLookup[b64.charCodeAt(i + 2)] << 6) | revLookup[b64.charCodeAt(i + 3)]
-    arr[L++] = (tmp >> 16) & 0xFF
-    arr[L++] = (tmp >> 8) & 0xFF
-    arr[L++] = tmp & 0xFF
-  }
-
-  if (placeHolders === 2) {
-    tmp = (revLookup[b64.charCodeAt(i)] << 2) | (revLookup[b64.charCodeAt(i + 1)] >> 4)
-    arr[L++] = tmp & 0xFF
-  } else if (placeHolders === 1) {
-    tmp = (revLookup[b64.charCodeAt(i)] << 10) | (revLookup[b64.charCodeAt(i + 1)] << 4) | (revLookup[b64.charCodeAt(i + 2)] >> 2)
-    arr[L++] = (tmp >> 8) & 0xFF
-    arr[L++] = tmp & 0xFF
-  }
-
-  return arr
-}
-
-function tripletToBase64 (num) {
-  return lookup[num >> 18 & 0x3F] + lookup[num >> 12 & 0x3F] + lookup[num >> 6 & 0x3F] + lookup[num & 0x3F]
-}
-
-function encodeChunk (uint8, start, end) {
-  var tmp
-  var output = []
-  for (var i = start; i < end; i += 3) {
-    tmp = (uint8[i] << 16) + (uint8[i + 1] << 8) + (uint8[i + 2])
-    output.push(tripletToBase64(tmp))
-  }
-  return output.join('')
-}
-
-function fromByteArray (uint8) {
-  var tmp
-  var len = uint8.length
-  var extraBytes = len % 3 // if we have 1 byte left, pad 2 bytes
-  var output = ''
-  var parts = []
-  var maxChunkLength = 16383 // must be multiple of 3
-
-  // go through the array every three bytes, we'll deal with trailing stuff later
-  for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
-    parts.push(encodeChunk(uint8, i, (i + maxChunkLength) > len2 ? len2 : (i + maxChunkLength)))
-  }
-
-  // pad the end with zeros, but make sure to not forget the extra bytes
-  if (extraBytes === 1) {
-    tmp = uint8[len - 1]
-    output += lookup[tmp >> 2]
-    output += lookup[(tmp << 4) & 0x3F]
-    output += '=='
-  } else if (extraBytes === 2) {
-    tmp = (uint8[len - 2] << 8) + (uint8[len - 1])
-    output += lookup[tmp >> 10]
-    output += lookup[(tmp >> 4) & 0x3F]
-    output += lookup[(tmp << 2) & 0x3F]
-    output += '='
-  }
-
-  parts.push(output)
-
-  return parts.join('')
-}
-
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports) {
-
-exports.read = function (buffer, offset, isLE, mLen, nBytes) {
-  var e, m
-  var eLen = nBytes * 8 - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var nBits = -7
-  var i = isLE ? (nBytes - 1) : 0
-  var d = isLE ? -1 : 1
-  var s = buffer[offset + i]
-
-  i += d
-
-  e = s & ((1 << (-nBits)) - 1)
-  s >>= (-nBits)
-  nBits += eLen
-  for (; nBits > 0; e = e * 256 + buffer[offset + i], i += d, nBits -= 8) {}
-
-  m = e & ((1 << (-nBits)) - 1)
-  e >>= (-nBits)
-  nBits += mLen
-  for (; nBits > 0; m = m * 256 + buffer[offset + i], i += d, nBits -= 8) {}
-
-  if (e === 0) {
-    e = 1 - eBias
-  } else if (e === eMax) {
-    return m ? NaN : ((s ? -1 : 1) * Infinity)
-  } else {
-    m = m + Math.pow(2, mLen)
-    e = e - eBias
-  }
-  return (s ? -1 : 1) * m * Math.pow(2, e - mLen)
-}
-
-exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
-  var e, m, c
-  var eLen = nBytes * 8 - mLen - 1
-  var eMax = (1 << eLen) - 1
-  var eBias = eMax >> 1
-  var rt = (mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0)
-  var i = isLE ? 0 : (nBytes - 1)
-  var d = isLE ? 1 : -1
-  var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0
-
-  value = Math.abs(value)
-
-  if (isNaN(value) || value === Infinity) {
-    m = isNaN(value) ? 1 : 0
-    e = eMax
-  } else {
-    e = Math.floor(Math.log(value) / Math.LN2)
-    if (value * (c = Math.pow(2, -e)) < 1) {
-      e--
-      c *= 2
-    }
-    if (e + eBias >= 1) {
-      value += rt / c
-    } else {
-      value += rt * Math.pow(2, 1 - eBias)
-    }
-    if (value * c >= 2) {
-      e++
-      c /= 2
-    }
-
-    if (e + eBias >= eMax) {
-      m = 0
-      e = eMax
-    } else if (e + eBias >= 1) {
-      m = (value * c - 1) * Math.pow(2, mLen)
-      e = e + eBias
-    } else {
-      m = value * Math.pow(2, eBias - 1) * Math.pow(2, mLen)
-      e = 0
-    }
-  }
-
-  for (; mLen >= 8; buffer[offset + i] = m & 0xff, i += d, m /= 256, mLen -= 8) {}
-
-  e = (e << mLen) | m
-  eLen += mLen
-  for (; eLen > 0; buffer[offset + i] = e & 0xff, i += d, e /= 256, eLen -= 8) {}
-
-  buffer[offset + i - d] |= s * 128
-}
-
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports) {
-
-var toString = {}.toString;
-
-module.exports = Array.isArray || function (arr) {
-  return toString.call(arr) == '[object Array]';
-};
-
-
-/***/ }),
-/* 26 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -83273,7 +81372,7 @@ exports.MMD_CAMERA_ROTY_NODE_NAME = 'MMD_CAMERA_ROTY_NODE';
 exports.MMD_CAMERA_ROTZ_NODE_NAME = 'MMD_CAMERA_ROTZ_NODE';
 
 /***/ }),
-/* 27 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -83369,7 +81468,7 @@ var MMDScene = function (_SCNScene) {
 exports.default = MMDScene;
 
 /***/ }),
-/* 28 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -83538,70 +81637,293 @@ p.fromDouble = function (number) {
 };
 
 /***/ }),
-/* 29 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+	value: true
 });
-exports.TextRequest = undefined;
+//
+// Escape Codec Library: ecl.js (Ver.041208)
+//
+// Copyright (C) http://nurucom-archives.hp.infoseek.co.jp/digital/
+//
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var EscapeSJIS = function EscapeSJIS(str) {
+	return str.replace(/[^*+.-9A-Z_a-z-]/g, function (s) {
+		var c = s.charCodeAt(0),
+		    m;
+		return c < 128 ? (c < 16 ? "%0" : "%") + c.toString(16).toUpperCase() : 65376 < c && c < 65440 ? "%" + (c - 65216).toString(16).toUpperCase() : (c = JCT11280.indexOf(s)) < 0 ? "%81E" : "%" + ((m = ((c < 8272 ? c : c = JCT11280.lastIndexOf(s)) - (c %= 188)) / 188) < 31 ? m + 129 : m + 193).toString(16).toUpperCase() + (64 < (c += c < 63 ? 64 : 65) && c < 91 || 95 == c || 96 < c && c < 123 ? String.fromCharCode(c) : "%" + c.toString(16).toUpperCase());
+	});
+};
 
-var _jscenekit = __webpack_require__(0);
+var UnescapeSJIS = function UnescapeSJIS(str) {
+	return str.replace(/%(8[1-9A-F]|[9E][0-9A-F]|F[0-9A-C])(%[4-689A-F][0-9A-F]|%7[0-9A-E]|[@-~])|%([0-7][0-9A-F]|A[1-9A-F]|[B-D][0-9A-F])/ig, function (s) {
+		var c = parseInt(s.substring(1, 3), 16),
+		    l = s.length;
+		return 3 == l ? String.fromCharCode(c < 160 ? c : c + 65216) : JCT11280.charAt((c < 160 ? c - 129 : c - 193) * 188 + (4 == l ? s.charCodeAt(3) - 64 : (c = parseInt(s.substring(4), 16)) < 127 ? c - 64 : c - 65));
+	});
+};
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var EscapeEUCJP = function EscapeEUCJP(str) {
+	return str.replace(/[^*+.-9A-Z_a-z-]/g, function (s) {
+		var c = s.charCodeAt(0);
+		return (c < 128 ? (c < 16 ? "%0" : "%") + c.toString(16) : 65376 < c && c < 65440 ? "%8E%" + (c - 65216).toString(16) : (c = JCT8836.indexOf(s)) < 0 ? "%A1%A6" : "%" + ((c - (c %= 94)) / 94 + 161).toString(16) + "%" + (c + 161).toString(16)).toUpperCase();
+	});
+};
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+var UnescapeEUCJP = function UnescapeEUCJP(str) {
+	return str.replace(/(%A[1-9A-F]|%[B-E][0-9A-F]|%F[0-9A-E]){2}|%8E%(A[1-9A-F]|[B-D][0-9A-F])|%[0-7][0-9A-F]/ig, function (s) {
+		var c = parseInt(s.substring(1), 16);
+		return c < 161 ? String.fromCharCode(c < 128 ? c : parseInt(s.substring(4), 16) + 65216) : JCT8836.charAt((c - 161) * 94 + parseInt(s.substring(4), 16) - 161);
+	});
+};
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+var EscapeJIS7 = function EscapeJIS7(str) {
+	var u = String.fromCharCode,
+	    ri = u(92, 120, 48, 48, 45, 92, 120, 55, 70),
+	    rj = u(65377, 45, 65439, 93, 43),
+	    H = function H(c) {
+		return 41 < c && c < 58 && 44 != c || 64 < c && c < 91 || 95 == c || 96 < c && c < 123 ? u(c) : "%" + c.toString(16).toUpperCase();
+	},
+	    I = function I(s) {
+		var c = s.charCodeAt(0);
+		return (c < 16 ? "%0" : "%") + c.toString(16).toUpperCase();
+	},
+	    rI = new RegExp();rI.compile("[^*+.-9A-Z_a-z-]", "g");
+	return ("g" + str + "g").replace(RegExp("[" + ri + "]+", "g"), function (s) {
+		return "%1B%28B" + s.replace(rI, I);
+	}).replace(RegExp("[" + rj, "g"), function (s) {
+		var c,
+		    i = 0,
+		    t = "%1B%28I";while (c = s.charCodeAt(i++)) {
+			t += H(c - 65344);
+		}return t;
+	}).replace(RegExp("[^" + ri + rj, "g"), function (s) {
+		var a,
+		    c,
+		    i = 0,
+		    t = "%1B%24B";while (a = s.charAt(i++)) {
+			t += (c = JCT8836.indexOf(a)) < 0 ? "%21%26" : H((c - (c %= 94)) / 94 + 33) + H(c + 33);
+		}return t;
+	}).slice(8, -1);
+};
 
-/**
- * TextRequest class
- * @access public
- */
-var TextRequest = exports.TextRequest = function (_AjaxRequest$construc) {
-  _inherits(TextRequest, _AjaxRequest$construc);
+var UnescapeJIS7 = function UnescapeJIS7(str) {
+	var i = 0,
+	    p,
+	    q,
+	    s = "",
+	    u = String.fromCharCode,
+	    P = ("%28B" + str.replace(/%49/g, "I").replace(/%1B%24%4[02]|%1B%24@/ig, "%1B%24B")).split(/%1B/i),
+	    I = function I(s) {
+		return u(parseInt(s.substring(1), 16));
+	},
+	    J = function J(s) {
+		return u((3 == s.length ? parseInt(s.substring(1), 16) : s.charCodeAt(0)) + 65344);
+	},
+	    K = function K(s) {
+		var l = s.length;
+		return JCT8836.charAt(4 < l ? (parseInt(s.substring(1), 16) - 33) * 94 + parseInt(s.substring(4), 16) - 33 : 2 < l ? (37 == (l = s.charCodeAt(0)) ? (parseInt(s.substring(1, 3), 16) - 33) * 94 + s.charCodeAt(3) : (l - 33) * 94 + parseInt(s.substring(2), 16)) - 33 : (s.charCodeAt(0) - 33) * 94 + s.charCodeAt(1) - 33);
+	},
+	    rI = new RegExp(),
+	    rJ = new RegExp(),
+	    rK = new RegExp();
+	rI.compile("%[0-7][0-9A-F]", "ig");rJ.compile("(%2[1-9A-F]|%[3-5][0-9A-F])|[!-_]", "ig");
+	rK.compile("(%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E]){2}|(%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E])[!-~]|[!-~](%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E])|[!-~]{2}", "ig");
+	while (p = P[i++]) {
+		s += "%24B" == (q = p.substring(0, 4)) ? p.substring(4).replace(rK, K) : "%28I" == q ? p.substring(4).replace(rJ, J) : p.replace(rI, I).substring(2);
+	}return s;
+};
 
-  /**
-   * constructor
-   * @access public
-   * @constructor
-   */
-  function TextRequest() {
-    _classCallCheck(this, TextRequest);
+var EscapeJIS8 = function EscapeJIS8(str) {
+	var u = String.fromCharCode,
+	    r = u(92, 120, 48, 48, 45, 92, 120, 55, 70, 65377, 45, 65439, 93, 43),
+	    H = function H(c) {
+		return 41 < c && c < 58 && 44 != c || 64 < c && c < 91 || 95 == c || 96 < c && c < 123 ? u(c) : "%" + c.toString(16).toUpperCase();
+	},
+	    I = function I(s) {
+		var c = s.charCodeAt(0);
+		return (c < 16 ? "%0" : "%") + (c < 128 ? c : c - 65216).toString(16).toUpperCase();
+	},
+	    rI = new RegExp();rI.compile("[^*+.-9A-Z_a-z-]", "g");
+	return ("g" + str + "g").replace(RegExp("[" + r, "g"), function (s) {
+		return "%1B%28B" + s.replace(rI, I);
+	}).replace(RegExp("[^" + r, "g"), function (s) {
+		var a,
+		    c,
+		    i = 0,
+		    t = "%1B%24B";while (a = s.charAt(i++)) {
+			t += (c = JCT8836.indexOf(a)) < 0 ? "%21%26" : H((c - (c %= 94)) / 94 + 33) + H(c + 33);
+		}return t;
+	}).slice(8, -1);
+};
 
-    var _this = _possibleConstructorReturn(this, (TextRequest.__proto__ || Object.getPrototypeOf(TextRequest)).call(this));
+var UnescapeJIS8 = function UnescapeJIS8(str) {
+	var i = 0,
+	    p,
+	    s = "",
+	    P = ("%28B" + str.replace(/%1B%24%4[02]|%1B%24@/ig, "%1B%24B")).split(/%1B/i),
+	    I = function I(s) {
+		var c = parseInt(s.substring(1), 16);
+		return String.fromCharCode(c < 128 ? c : c + 65216);
+	},
+	    K = function K(s) {
+		var l = s.length;
+		return JCT8836.charAt(4 < l ? (parseInt(s.substring(1), 16) - 33) * 94 + parseInt(s.substring(4), 16) - 33 : 2 < l ? (37 == (l = s.charCodeAt(0)) ? (parseInt(s.substring(1, 3), 16) - 33) * 94 + s.charCodeAt(3) : (l - 33) * 94 + parseInt(s.substring(2), 16)) - 33 : (s.charCodeAt(0) - 33) * 94 + s.charCodeAt(1) - 33);
+	},
+	    rI = new RegExp(),
+	    rK = new RegExp();
+	rI.compile("%([0-7][0-9A-F]|A[1-9A-F]|[B-D][0-9A-F])", "ig");
+	rK.compile("(%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E]){2}|(%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E])[!-~]|[!-~](%2[1-9A-F]|%[3-6][0-9A-F]|%7[0-9A-E])|[!-~]{2}", "ig");
+	while (p = P[i++]) {
+		s += "%24B" == p.substring(0, 4) ? p.substring(4).replace(rK, K) : p.replace(rI, I).substring(2);
+	}return s;
+};
 
-    _this.defaultOptions.mimeType = 'text/plain; charset=utf-8';
-    return _this;
-  }
+var EscapeUnicode = function EscapeUnicode(str) {
+	return str.replace(/[^*+.-9A-Z_a-z-]/g, function (s) {
+		var c = s.charCodeAt(0);
+		return (c < 16 ? "%0" : c < 256 ? "%" : c < 4096 ? "%u0" : "%u") + c.toString(16).toUpperCase();
+	});
+};
 
-  _createClass(TextRequest, [{
-    key: 'getWithCharset',
-    value: function getWithCharset(url, charset) {
-      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+var UnescapeUnicode = function UnescapeUnicode(str) {
+	return str.replace(/%u[0-9A-F]{4}|%[0-9A-F]{2}/ig, function (s) {
+		return String.fromCharCode("0x" + s.substring(s.length / 3));
+	});
+};
 
-      options.mimeType = 'text/plain; charset=' + charset;
-      return this.get(url, options);
-    }
-  }, {
-    key: 'postWithCharset',
-    value: function postWithCharset(url, charset) {
-      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+var EscapeUTF7 = function EscapeUTF7(str) {
+	var B = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".split(""),
+	    E = function E(s) {
+		var c = s.charCodeAt(0);
+		return B[c >> 10] + B[c >> 4 & 63] + B[(c & 15) << 2 | (c = s.charCodeAt(1)) >> 14] + (0 <= c ? B[c >> 8 & 63] + B[c >> 2 & 63] + B[(c & 3) << 4 | (c = s.charCodeAt(2)) >> 12] + (0 <= c ? B[c >> 6 & 63] + B[c & 63] : "") : "");
+	},
+	    re = new RegExp();re.compile("[^+]{1,3}", "g");
+	return (str + "g").replace(/[^*+.-9A-Z_a-z-]+[*+.-9A-Z_a-z-]|[+]/g, function (s) {
+		if ("+" == s) return "+-";
+		var l = s.length - 1,
+		    w = s.charAt(l);
+		return "+" + s.substring(0, l).replace(re, E) + ("+" == w ? "-+-" : "*" == w || "." == w || "_" == w ? w : "-" + w);
+	}).slice(0, -1);
+};
 
-      options.mimeType = 'text/plain; charset=' + charset;
-      return this.post(url, options);
-    }
-  }]);
+var UnescapeUTF7 = function UnescapeUTF7(str) {
+	var i = 0,
+	    B = {};
+	while (i < 64) {
+		B["ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".charAt(i)] = i++;
+	}return str.replace(RegExp("[+][+/-9A-Za-z]*-?", "g"), function (s) {
+		if ("+-" == s) return "+";
+		var b = B[s.charAt(1)],
+		    c,
+		    i = 1,
+		    t = "";
+		while (0 <= b) {
+			if ((c = i & 7) < 6) c = c < 3 ? b << 10 | B[s.charAt(++i)] << 4 | (b = B[s.charAt(++i)]) >> 2 : (b & 3) << 14 | B[s.charAt(++i)] << 8 | B[s.charAt(++i)] << 2 | (b = B[s.charAt(++i)]) >> 4;else {
+				c = (b & 15) << 12 | B[s.charAt(++i)] << 6 | B[s.charAt(++i)];b = B[s.charAt(++i)];
+			}
+			if (c) t += String.fromCharCode(c);
+		}
+		return t;
+	});
+};
 
-  return TextRequest;
-}(_jscenekit._AjaxRequest.constructor);
+var EscapeUTF8 = function EscapeUTF8(str) {
+	return str.replace(/[^*+.-9A-Z_a-z-]/g, function (s) {
+		var c = s.charCodeAt(0);
+		return (c < 16 ? "%0" + c.toString(16) : c < 128 ? "%" + c.toString(16) : c < 2048 ? "%" + (c >> 6 | 192).toString(16) + "%" + (c & 63 | 128).toString(16) : "%" + (c >> 12 | 224).toString(16) + "%" + (c >> 6 & 63 | 128).toString(16) + "%" + (c & 63 | 128).toString(16)).toUpperCase();
+	});
+};
 
-exports.default = new TextRequest();
+var UnescapeUTF8 = function UnescapeUTF8(str) {
+	return str.replace(/%(E(0%[AB]|[1-CEF]%[89AB]|D%[89])[0-9A-F]|C[2-9A-F]|D[0-9A-F])%[89AB][0-9A-F]|%[0-7][0-9A-F]/ig, function (s) {
+		var c = parseInt(s.substring(1), 16);
+		return String.fromCharCode(c < 128 ? c : c < 224 ? (c & 31) << 6 | parseInt(s.substring(4), 16) & 63 : ((c & 15) << 6 | parseInt(s.substring(4), 16) & 63) << 6 | parseInt(s.substring(7), 16) & 63);
+	});
+};
+
+var EscapeUTF16LE = function EscapeUTF16LE(str) {
+	var H = function H(c) {
+		return 41 < c && c < 58 && 44 != c || 64 < c && c < 91 || 95 == c || 96 < c && c < 123 ? String.fromCharCode(c) : (c < 16 ? "%0" : "%") + c.toString(16).toUpperCase();
+	};
+	return str.replace(/[^ ]| /g, function (s) {
+		var c = s.charCodeAt(0);return H(c & 255) + H(c >> 8);
+	});
+};
+
+var UnescapeUTF16LE = function UnescapeUTF16LE(str) {
+	var u = String.fromCharCode,
+	    b = u(92, 120, 48, 48, 45, 92, 120, 70, 70);
+	return str.replace(/^%FF%FE/i, "").replace(RegExp("%[0-9A-F]{2}%[0-9A-F]{2}|%[0-9A-F]{2}[" + b + "]|[" + b + "]%[0-9A-F]{2}|[" + b + "]{2}", "ig"), function (s) {
+		var l = s.length;
+		return u(4 < l ? "0x" + s.substring(4, 6) + s.substring(1, 3) : 2 < l ? 37 == (l = s.charCodeAt(0)) ? parseInt(s.substring(1, 3), 16) | s.charCodeAt(3) << 8 : l | parseInt(s.substring(2), 16) << 8 : s.charCodeAt(0) | s.charCodeAt(1) << 8);
+	});
+};
+
+var GetEscapeCodeType = function GetEscapeCodeType(str) {
+	if (/%u[0-9A-F]{4}/i.test(str)) return "Unicode";
+	if (/%([0-9A-DF][0-9A-F]%[8A]0%|E0%80|[0-7][0-9A-F]|C[01])%[8A]0|%00|%[7F]F/i.test(str)) return "UTF16LE";
+	if (/%E[0-9A-F]%[8A]0%[8A]0|%[CD][0-9A-F]%[8A]0/i.test(str)) return "UTF8";
+	if (/%F[DE]/i.test(str)) return (/%8[0-9A-D]|%9[0-9A-F]|%A0/i.test(str) ? "UTF16LE" : "EUCJP"
+	);
+	if (/%1B/i.test(str)) return (/%[A-D][0-9A-F]/i.test(str) ? "JIS8" : "JIS7"
+	);
+	var S = str.substring(0, 6143).replace(/%[0-9A-F]{2}|[^ ]| /ig, function (s) {
+		return s.length < 3 ? "40" : s.substring(1);
+	}),
+	    c,
+	    C,
+	    i = 0,
+	    T;
+	while (0 <= (c = parseInt(S.substring(i, i += 2), 16)) && i < 4092) {
+		if (128 <= c) {
+			if ((C = parseInt(S.substring(i, i + 2), 16)) < 128) i += 2;else if (194 <= c && c < 240 && C < 192) {
+				if (c < 224) {
+					T = "UTF8";i += 2;continue;
+				}
+				if (2 == parseInt(S.charAt(i + 2), 16) >> 2) {
+					T = "UTF8";i += 4;continue;
+				}
+			}
+			if (142 == c && 161 <= C && C < 224) {
+				if (!T) T = "EUCJP";if ("EUCJP" == T) continue;
+			}
+			if (c < 161) return "SJIS";
+			if (c < 224 && !T) {
+				if ((164 == c && C < 244 || 165 == c && C < 247) && 161 <= C) i += 2;else T = 224 <= C ? "EUCJP" : "SJIS";
+			} else T = "EUCJP";
+		}
+	}return T ? T : "EUCJP";
+};
+
+var JCT11280 = Function('var a="zKV33~jZ4zN=~ji36XazM93y!{~k2y!o~k0ZlW6zN?3Wz3W?{EKzK[33[`y|;-~j^YOTz$!~kNy|L1$353~jV3zKk3~k-4P4zK_2+~jY4y!xYHR~jlz$_~jk4z$e3X5He<0y!wy|X3[:~l|VU[F3VZ056Hy!nz/m1XD61+1XY1E1=1y|bzKiz!H034zKj~mEz#c5ZA3-3X$1~mBz$$3~lyz#,4YN5~mEz#{ZKZ3V%7Y}!J3X-YEX_J(3~mAz =V;kE0/y|F3y!}~m>z/U~mI~j_2+~mA~jp2;~m@~k32;~m>V}2u~mEX#2x~mBy+x2242(~mBy,;2242(~may->2&XkG2;~mIy-_2&NXd2;~mGz,{4<6:.:B*B:XC4>6:.>B*BBXSA+A:X]E&E<~r#z+625z s2+zN=`HXI@YMXIAXZYUM8X4K/:Q!Z&33 3YWX[~mB`{zKt4z (zV/z 3zRw2%Wd39]S11z$PAXH5Xb;ZQWU1ZgWP%3~o@{Dgl#gd}T){Uo{y5_d{e@}C(} WU9|cB{w}bzvV|)[} H|zT}d||0~{]Q|(l{|x{iv{dw}(5}[Z|kuZ }cq{{y|ij}.I{idbof%cu^d}Rj^y|-M{ESYGYfYsZslS`?ZdYO__gLYRZ&fvb4oKfhSf^d<Yeasc1f&a=hnYG{QY{D`Bsa|u,}Dl|_Q{C%xK|Aq}C>|c#ryW=}eY{L+`)][YF_Ub^h4}[X|?r|u_ex}TL@YR]j{SrXgo*|Gv|rK}B#mu{R1}hs|dP{C7|^Qt3|@P{YVV |8&}#D}ef{e/{Rl|>Hni}R1{Z#{D[}CQlQ||E}[s{SG_+i8eplY[=[|ec[$YXn#`hcm}YR|{Ci(_[ql|?8p3]-}^t{wy}4la&pc|3e{Rp{LqiJ],] `kc(]@chYnrM`O^,ZLYhZB]ywyfGY~aex!_Qww{a!|)*lHrM{N+n&YYj~Z b c#e_[hZSon|rOt`}hBXa^i{lh|<0||r{KJ{kni)|x,|0auY{D!^Sce{w;|@S|cA}Xn{C1h${E]Z-XgZ*XPbp]^_qbH^e[`YM|a||+=]!Lc}]vdBc=j-YSZD]YmyYLYKZ9Z>Xcczc2{Yh}9Fc#Z.l{}(D{G{{mRhC|L3b#|xK[Bepj#ut`H[,{E9Yr}1b{[e]{ZFk7[ZYbZ0XL]}Ye[(`d}c!|*y`Dg=b;gR]Hm=hJho}R-[n}9;{N![7k_{UbmN]rf#pTe[x8}!Qcs_rs[m`|>N}^V})7{^r|/E}),}HH{OYe2{Skx)e<_.cj.cjoMhc^d}0uYZd!^J_@g,[[[?{i@][|3S}Yl3|!1|eZ|5IYw|1D}e7|Cv{OHbnx-`wvb[6[4} =g+k:{C:}ed{S]|2M]-}WZ|/q{LF|dYu^}Gs^c{Z=}h>|/i|{W]:|ip{N:|zt|S<{DH[p_tvD{N<[8Axo{X4a.^o^X>Yfa59`#ZBYgY~_t^9`jZHZn`>G[oajZ;X,i)Z.^~YJe ZiZF^{][[#Zt^|]Fjx]&_5dddW]P0C[-]}]d|y {C_jUql] |OpaA[Z{lp|rz}:Mu#]_Yf6{Ep?f5`$[6^D][^u[$[6^.Z8]]ePc2U/=]K^_+^M{q*|9tYuZ,s(dS{i=|bNbB{uG}0jZOa:[-]dYtu3]:]<{DJ_SZIqr_`l=Yt`gkTnXb3d@kiq0a`Z{|!B|}e}Ww{Sp,^Z|0>_Z}36|]A|-t}lt{R6pi|v8hPu#{C>YOZHYmg/Z4nicK[}hF_Bg|YRZ7c|crkzYZY}_iXcZ.|)U|L5{R~qi^Uga@Y[xb}&qdbd6h5|Btw[}c<{Ds53[Y7]?Z<|e0{L[ZK]mXKZ#Z2^tavf0`PE[OSOaP`4gi`qjdYMgys/?[nc,}EEb,eL]g[n{E_b/vcvgb.{kcwi`~v%|0:|iK{Jh_vf5lb}KL|(oi=LrzhhY_^@`zgf[~g)[J_0fk_V{T)}I_{D&_/d9W/|MU[)f$xW}?$xr4<{Lb{y4}&u{XJ|cm{Iu{jQ}CMkD{CX|7A}G~{kt)nB|d5|<-}WJ}@||d@|Iy}Ts|iL|/^|no|0;}L6{Pm]7}$zf:|r2}?C_k{R(}-w|`G{Gy[g]bVje=_0|PT{^Y^yjtT[[[l!Ye_`ZN]@[n_)j3nEgMa]YtYpZy].d-Y_cjb~Y~[nc~sCi3|zg}B0}do{O^{|$`_|D{}U&|0+{J3|8*]iayx{a{xJ_9|,c{Ee]QXlYb]$[%YMc*]w[aafe]aVYi[fZEii[xq2YQZHg]Y~h#|Y:thre^@^|_F^CbTbG_1^qf7{L-`VFx Zr|@EZ;gkZ@slgko`[e}T:{Cu^pddZ_`yav^Ea+[#ZBbSbO`elQfLui}.F|txYcbQ`XehcGe~fc^RlV{D_0ZAej[l&jShxG[ipB_=u:eU}3e8[=j|{D(}dO{Do[BYUZ0/]AYE]ALYhZcYlYP/^-^{Yt_1_-;YT`P4BZG=IOZ&]H[e]YYd[9^F[1YdZxZ?Z{Z<]Ba2[5Yb[0Z4l?]d_;_)a?YGEYiYv`_XmZs4ZjY^Zb]6gqGaX^9Y}dXZr[g|]Y}K aFZp^k^F]M`^{O1Ys]ZCgCv4|E>}8eb7}l`{L5[Z_faQ|c2}Fj}hw^#|Ng|B||w2|Sh{v+[G}aB|MY}A{|8o}X~{E8paZ:]i^Njq]new)`-Z>haounWhN}c#{DfZ|fK]KqGZ=:u|fqoqcv}2ssm}.r{]{nIfV{JW)[K|,Z{Uxc|]l_KdCb%]cfobya3`p}G^|LZiSC]U|(X|kBlVg[kNo({O:g:|-N|qT}9?{MBiL}Sq{`P|3a|u.{Uaq:{_o|^S}jX{Fob0`;|#y_@[V[K|cw[<_ }KU|0F}d3|et{Q7{LuZttsmf^kYZ`Af`}$x}U`|Ww}d]| >}K,r&|XI|*e{C/a-bmr1fId4[;b>tQ_:]hk{b-pMge]gfpo.|(w[jgV{EC1Z,YhaY^q,_G[c_g[J0YX]`[h^hYK^_Yib,` {i6vf@YM^hdOKZZn(jgZ>bzSDc^Z%[[o9[2=/YHZ(_/Gu_`*|8z{DUZxYt^vuvZjhi^lc&gUd4|<UiA`z]$b/Z?l}YI^jaHxe|;F}l${sQ}5g}hA|e4}?o{ih}Uz{C)jPe4]H^J[Eg[|AMZMlc}:,{iz}#*|gc{Iq|/:|zK{l&}#u|myd{{M&v~nV};L|(g|I]ogddb0xsd7^V})$uQ{HzazsgxtsO^l}F>ZB]r|{7{j@cU^{{CbiYoHlng]f+nQ[bkTn/}<-d9q {KXadZYo+n|l[|lc}V2{[a{S4Zam~Za^`{HH{xx_SvF|ak=c^[v^7_rYT`ld@]:_ub%[$[m](Shu}G2{E.ZU_L_R{tz`vj(f?^}hswz}GdZ}{S:h`aD|?W|`dgG|if{a8|J1{N,}-Ao3{H#{mfsP|[ bzn+}_Q{MT{u4kHcj_q`eZj[8o0jy{p7}C|[}l){MuYY{|Ff!Ykn3{rT|m,^R|,R}$~Ykgx{P!]>iXh6[l[/}Jgcg{JYZ.^qYfYIZl[gZ#Xj[Pc7YyZD^+Yt;4;`e8YyZVbQ7YzZxXja.7SYl[s]2^/Ha$[6ZGYrb%XiYdf2]H]kZkZ*ZQ[ZYS^HZXcCc%Z|[(bVZ]]:OJQ_DZCg<[,]%Zaa [g{C00HY[c%[ChyZ,Z_`PbXa+eh`^&jPi0a[ggvhlekL]w{Yp^v}[e{~;k%a&k^|nR_z_Qng}[E}*Wq:{k^{FJZpXRhmh3^p>de^=_7`|ZbaAZtdhZ?n4ZL]u`9ZNc3g%[6b=e.ZVfC[ZZ^^^hD{E(9c(kyZ=bb|Sq{k`|vmr>izlH[u|e`}49}Y%}FT{[z{Rk}Bz{TCc/lMiAqkf(m$hDc;qooi[}^o:c^|Qm}a_{mrZ(pA`,}<2sY| adf_%|}`}Y5U;}/4|D>|$X{jw{C<|F.hK|*A{MRZ8Zsm?imZm_?brYWZrYx`yVZc3a@f?aK^ojEd {bN}/3ZH]/$YZhm^&j 9|(S|b]mF}UI{q&aM]LcrZ5^.|[j`T_V_Gak}9J[ ZCZD|^h{N9{~&[6Zd{}B}2O|cv]K}3s}Uy|l,fihW{EG`j_QOp~Z$F^zexS`dcISfhZBXP|.vn|_HYQ|)9|cr]<`&Z6]m_(ZhPcSg>`Z]5`~1`0Xcb4k1{O!bz|CN_T{LR|a/gFcD|j<{Z._[f)mPc:1`WtIaT1cgYkZOaVZOYFrEe[}T$}Ch}mk{K-^@]fH{Hdi`c*Z&|Kt{if[C{Q;{xYB`dYIX:ZB[}]*[{{p9|4GYRh2ao{DS|V+[zd$`F[ZXKadb*A] Ys]Maif~a/Z2bmclb8{Jro_rz|x9cHojbZ{GzZx_)]:{wAayeDlx}<=`g{H1{l#}9i|)=|lP{Qq}.({La|!Y{i2EZfp=c*}Cc{EDvVB|;g}2t{W4av^Bn=]ri,|y?|3+}T*ckZ*{Ffr5e%|sB{lx^0]eZb]9[SgAjS_D|uHZx]dive[c.YPkcq/}db{EQh&hQ|eg}G!ljil|BO]X{Qr_GkGl~YiYWu=c3eb}29v3|D|}4i||.{Mv})V{SP1{FX}CZW6{cm|vO{pS|e#}A~|1i}81|Mw}es|5[}3w{C`h9aL]o{}p[G`>i%a1Z@`Ln2bD[$_h`}ZOjhdTrH{[j_:k~kv[Sdu]CtL}41{I |[[{]Zp$]XjxjHt_eThoa#h>sSt8|gK|TVi[Y{t=}Bs|b7Zpr%{gt|Yo{CS[/{iteva|cf^hgn}($_c^wmb^Wm+|55jrbF|{9^ q6{C&c+ZKdJkq_xOYqZYSYXYl`8]-cxZAq/b%b*_Vsa[/Ybjac/OaGZ4fza|a)gY{P?| I|Y |,pi1n7}9bm9ad|=d{aV|2@[(}B`d&|Uz}B}{`q|/H|!JkM{FU|CB|.{}Az}#P|lk}K{|2rk7{^8^?`/|k>|Ka{Sq}Gz}io{DxZh[yK_#}9<{TRdgc]`~Z>JYmYJ]|`!ZKZ]gUcx|^E[rZCd`f9oQ[NcD_$ZlZ;Zr}mX|=!|$6ZPZYtIo%fj}CpcN|B,{VDw~gb}@hZg`Q{LcmA[(bo`<|@$|o1|Ss}9Z_}tC|G`{F/|9nd}i=}V-{L8aaeST]daRbujh^xlpq8|}zs4bj[S`J|]?G{P#{rD{]I`OlH{Hm]VYuSYUbRc*6[j`8]pZ[bt_/^Jc*[<Z?YE|Xb|?_Z^Vcas]h{t9|Uwd)_(=0^6Zb{Nc} E[qZAeX[a]P^|_J>e8`W^j_Y}R{{Jp__]Ee#e:iWb9q_wKbujrbR}CY`,{mJ}gz{Q^{t~N|? gSga`V_||:#mi}3t|/I`X{N*|ct|2g{km}gi|{={jC}F;|E}{ZZjYf*frmu}8Tdroi{T[|+~}HG{cJ}DM{Lp{Ctd&}$hi3|FZ| m}Kr|38}^c|m_|Tr{Qv|36}?Up>|;S{DV{k_as}BK{P}}9p|t`jR{sAm4{D=b4pWa[}Xi{EjwEkI}3S|E?u=X0{jf} S|NM|JC{qo^3cm]-|JUx/{Cj{s>{Crt[UXuv|D~|j|d{YXZR}Aq}0r}(_{pJfi_z}0b|-vi)Z mFe,{f4|q`b{}^Z{HM{rbeHZ|^x_o|XM|L%|uFXm}@C_{{Hhp%a7|0p[Xp+^K}9U{bP}: tT}B|}+$|b2|[^|~h{FAby[`{}xgygrt~h1[li`c4vz|,7p~b(|mviN}^pg[{N/|g3|^0c,gE|f%|7N{q[|tc|TKA{LU}I@|AZp(}G-sz{F |qZ{}F|f-}RGn6{Z]_5})B}UJ{FFb2]4ZI@v=k,]t_Dg5Bj]Z-]L]vrpdvdGlk|gF}G]|IW}Y0[G| /bo|Te^,_B}#n^^{QHYI[?hxg{[`]D^IYRYTb&kJ[cri[g_9]Ud~^_]<p@_e_XdNm-^/|5)|h_{J;{kacVopf!q;asqd}n)|.m|bf{QW|U)}b+{tL|w``N|to{t ZO|T]jF}CB|0Q{e5Zw|k |We}5:{HO{tPwf_uajjBfX}-V_C_{{r~gg|Ude;s+}KNXH}! `K}eW{Upwbk%ogaW}9EYN}YY|&v|SL{C3[5s.]Y]I]u{M6{pYZ`^,`ZbCYR[1mNg>rsk0Ym[jrE]RYiZTr*YJ{Ge|%-lf|y(`=[t}E6{k!|3)}Zk} ][G{E~cF{u3U.rJ|a9p#o#ZE|?|{sYc#vv{E=|LC}cu{N8`/`3`9rt[4|He{cq|iSYxY`}V |(Q|t4{C?]k_Vlvk)BZ^r<{CL}#h}R+[<|i=}X|{KAo]|W<`K{NW|Zx}#;|fe{IMr<|K~tJ_x}AyLZ?{GvbLnRgN}X&{H7|x~}Jm{]-| GpNu0}.ok>|c4{PYisrDZ|fwh9|hfo@{H~XSbO]Odv]%`N]b1Y]]|eIZ}_-ZA]aj,>eFn+j[aQ_+]h[J_m_g]%_wf.`%k1e#Z?{CvYu_B^|gk`Xfh^M3`afGZ-Z|[m{L}|k3cp[it ^>YUi~d>{T*}YJ{Q5{Jxa$hg|%4`}|LAgvb }G}{P=|<;Ux{_skR{cV|-*|s-{Mp|XP|$G|_J}c6cM{_=_D|*9^$ec{V;|4S{qO|w_|.7}d0|/D}e}|0G{Dq]Kdp{}dfDi>}B%{Gd|nl}lf{C-{y}|ANZr}#={T~|-(}c&{pI|ft{lsVP}){|@u}!W|bcmB{d?|iW|:dxj{PSkO|Hl]Li:}VYk@|2={fnWt{M3`cZ6|)}|Xj}BYa?vo{e4|L7|B7{L7|1W|lvYO}W8nJ|$Vih|{T{d*_1|:-n2dblk``fT{Ky|-%}m!|Xy|-a{Pz}[l{kFjz|iH}9N{WE{x,|jz}R {P|{D)c=nX|Kq|si}Ge{sh|[X{RF{t`|jsr*fYf,rK|/9}$}}Nf{y!1|<Std}4Wez{W${Fd_/^O[ooqaw_z[L`Nbv[;l7V[ii3_PeM}.h^viqYjZ*j1}+3{bt{DR[;UG}3Og,rS{JO{qw{d<_zbAh<R[1_r`iZTbv^^a}c{iEgQZ<exZFg.^Rb+`Uj{a+{z<[~r!]`[[|rZYR|?F|qppp]L|-d|}K}YZUM|=Y|ktm*}F]{D;g{uI|7kg^}%?Z%ca{N[_<q4xC]i|PqZC]n}.bDrnh0Wq{tr|OMn6tM|!6|T`{O`|>!]ji+]_bTeU}Tq|ds}n|{Gm{z,f)}&s{DPYJ`%{CGd5v4tvb*hUh~bf]z`jajiFqAii]bfy^U{Or|m+{I)cS|.9k:e3`^|xN}@Dnlis`B|Qo{`W|>||kA}Y}{ERYuYx`%[exd`]|OyiHtb}HofUYbFo![5|+]gD{NIZR|Go}.T{rh^4]S|C9_}xO^i`vfQ}C)bK{TL}cQ|79iu}9a];sj{P.o!f[Y]pM``Jda^Wc9ZarteBZClxtM{LW}l9|a.mU}KX}4@{I+f1}37|8u}9c|v${xGlz}jP{Dd1}e:}31}%3X$|22i<v+r@~mf{sN{C67G97855F4YL5}8f{DT|xy{sO{DXB334@55J1)4.G9A#JDYtXTYM4, YQD9;XbXm9SX]IB^4UN=Xn<5(;(F3YW@XkH-X_VM[DYM:5XP!T&Y`6|,^{IS-*D.H>:LXjYQ0I3XhAF:9:(==.F*3F1189K/7163D,:@|e2{LS36D4hq{Lw/84443@4.933:0307::6D7}&l{Mx657;89;,K5678H&93D(H<&<>0B90X^I;}Ag1{P%3A+>><975}[S{PZE453?4|T2{Q+5187;>447:81{C=hL6{Me^:=7ii{R=.=F<81;48?|h8}Uh{SE|,VxL{ST,7?9Y_5Xk3A#:$%YSYdXeKXOD8+TXh7(@>(YdXYHXl9J6X_5IXaL0N?3YK7Xh!1?XgYz9YEXhXaYPXhC3X`-YLY_XfVf[EGXZ5L8BXL9YHX]SYTXjLXdJ: YcXbQXg1PX]Yx4|Jr{Ys4.8YU+XIY`0N,<H%-H;:0@,74/:8546I=9177154870UC]d<C3HXl7ALYzXFXWP<<?E!88E5@03YYXJ?YJ@6YxX-YdXhYG|9o{`iXjY_>YVXe>AYFX[/(I@0841?):-B=14337:8=|14{c&93788|di{cW-0>0<097/A;N{FqYpugAFT%X/Yo3Yn,#=XlCYHYNX[Xk3YN:YRT4?)-YH%A5XlYF3C1=NWyY}>:74-C673<69545v {iT85YED=64=.F4..9878/D4378?48B3:7:7/1VX[f4{D,{l<5E75{dAbRB-8-@+;DBF/$ZfW8S<4YhXA.(5@*11YV8./S95C/0R-A4AXQYI7?68167B95HA1*<M3?1/@;/=54XbYP36}lc{qzSS38:19?,/39193574/66878Yw1X-87E6=;964X`T734:>86>1/=0;(I-1::7ALYGXhF+Xk[@W%TYbX7)KXdYEXi,H-XhYMRXfYK?XgXj.9HX_SX]YL1XmYJ>Y}WwIXiI-3-GXcYyXUYJ$X`Vs[7;XnYEZ;XF! 3;%8;PXX(N3Y[)Xi1YE&/ :;74YQ6X`33C;-(>Xm0(TYF/!YGXg8 9L5P01YPXO-5%C|qd{{/K/E6,=0144:361:955;6443@?B7*7:F89&F35YaX-CYf,XiFYRXE_e{}sF 0*7XRYPYfXa5YXXY8Xf8Y~XmA[9VjYj*#YMXIYOXk,HHX40YxYMXU8OXe;YFXLYuPXP?EB[QV0CXfY{:9XV[FWE0D6X^YVP*$4%OXiYQ(|xp|%c3{}V`1>Y`XH00:8/M6XhQ1:;3414|TE|&o@1*=81G8<3}6<|(f6>>>5-5:8;093B^3U*+*^*UT30XgYU&7*O1953)5@E78--F7YF*B&0:%P68W9Zn5974J9::3}Vk|-,C)=)1AJ4+<3YGXfY[XQXmT1M-XcYTYZXCYZXEYXXMYN,17>XIG*SaS|/eYJXbI?XdNZ+WRYP<F:R PXf;0Xg`$|1GX9YdXjLYxWX!ZIXGYaXNYm6X9YMX?9EXmZ&XZ#XQ>YeXRXfAY[4 ;0X!Zz0XdN$XhYL XIY^XGNXUYS/1YFXhYk.TXn4DXjB{jg|4DEX]:XcZMW=A.+QYL<LKXc[vV$+&PX*Z3XMYIXUQ:ZvW< YSXFZ,XBYeXMM)?Xa XiZ4/EXcP3%}&-|6~:1(-+YT$@XIYRBC<}&,|7aJ6}bp|8)K1|Xg|8C}[T|8Q.89;-964I38361<=/;883651467<7:>?1:.}le|:Z=39;1Y^)?:J=?XfLXbXi=Q0YVYOXaXiLXmJXO5?.SFXiCYW}-;|=u&D-X`N0X^,YzYRXO(QX_YW9`I|>hZ:N&X)DQXP@YH#XmNXi$YWX^=!G6YbYdX>XjY|XlX^XdYkX>YnXUXPYF)FXT[EVTMYmYJXmYSXmNXi#GXmT3X8HOX[ZiXN]IU2>8YdX1YbX<YfWuZ8XSXcZU%0;1XnXkZ_WTG,XZYX5YSX Yp 05G?XcYW(IXg6K/XlYP4XnI @XnO1W4Zp-9C@%QDYX+OYeX9>--YSXkD.YR%Q/Yo YUX].Xi<HYEZ2WdCE6YMXa7F)=,D>-@9/8@5=?7164;35387?N<618=6>7D+C50<6B03J0{Hj|N9$D,9I-,.KB3}m |NzE0::/81YqXjMXl7YG; [.W=Z0X4XQY]:MXiR,XgM?9$9>:?E;YE77VS[Y564760391?14941:0=:8B:;/1DXjFA-564=0B3XlH1+D85:0Q!B#:-6&N/:9<-R3/7Xn<*3J4.H:+334B.=>30H.;3833/76464665755:/83H6633:=;.>5645}&E|Y)?1/YG-,93&N3AE@5 <L1-G/8A0D858/30>8<549=@B8] V0[uVQYlXeD(P#ID&7T&7;Xi0;7T-$YE)E=1:E1GR):--0YI7=E<}n9|aT6783A>D7&4YG7=391W;Zx<5+>F#J39}o/|cc;6=A050EQXg8A1-}D-|d^5548083563695D?-.YOXd37I$@LYLWeYlX<Yd+YR A$;3-4YQ-9XmA0!9/XLY_YT(=5XdDI>YJ5XP1ZAW{9>X_6R(XhYO65&J%DA)C-!B:97#A9;@?F;&;(9=11/=657/H,<8}bz|j^5446>.L+&Y^8Xb6?(CYOXb*YF(8X`FYR(XPYVXmPQ%&DD(XmZXW??YOXZXfCYJ79,O)XnYF7K0!QXmXi4IYFRXS,6<%-:YO(+:-3Q!1E1:W,Zo}Am|n~;3580534*?3Zc4=9334361693:30C<6/717:<1/;>59&:4}6!|rS36=1?75<8}[B|s809983579I.A.>84758=108564741H*9E{L{|u%YQ<%6XfH.YUXe4YL@,>N}Tv|ve*G0X)Z;/)3@A74(4P&A1X:YVH97;,754*A66:1 D739E3553545558E4?-?K17/770843XAYf838A7K%N!YW4.$T19Z`WJ*0XdYJXTYOXNZ 1XaN1A+I&Xi.Xk3Z3GB&5%WhZ1+5#Y[X<4YMXhQYoQXVXbYQ8XSYUX4YXBXWDMG0WxZA[8V+Z8X;D],Va$%YeX?FXfX[XeYf<X:Z[WsYz8X_Y]%XmQ(!7BXIZFX]&YE3F$(1XgYgYE& +[+W!<YMYFXc;+PXCYI9YrWxGXY9DY[!GXiI7::)OC;*$.>N*HA@{C|}&k=:<TB83X`3YL+G4XiK]i}(fYK<=5$.FYE%4*5*H*6XkCYL=*6Xi6!Yi1KXR4YHXbC8Xj,B9ZbWx/XbYON#5B}Ue}+QKXnF1&YV5XmYQ0!*3IXBYb71?1B75XmF;0B976;H/RXU:YZX;BG-NXj;XjI>A#D3B636N;,*%<D:0;YRXY973H5)-4FXOYf0:0;/7759774;7;:/855:543L43<?6=E,.A4:C=L)%4YV!1(YE/4YF+ F3%;S;&JC:%/?YEXJ4GXf/YS-EXEYW,9;E}X$}547EXiK=51-?71C%?57;5>463553Zg90;6447?<>4:9.7538XgN{|!}9K/E&3-:D+YE1)YE/3;37/:05}n<}:UX8Yj4Yt864@JYK..G=.(A Q3%6K>3(P3#AYE$-6H/456*C=.XHY[#S.<780191;057C)=6HXj?955B:K1 E>-B/9,;5.!L?:0>/.@//:;7833YZ56<4:YE=/:7Z_WGC%3I6>XkC*&NA16X=Yz2$X:Y^&J48<99k8}CyB-61<18K946YO4{|N}E)YIB9K0L>4=46<1K0+R;6-=1883:478;4,S+3YJX`GJXh.Yp+Xm6MXcYpX(>7Yo,/:X=Z;Xi0YTYHXjYmXiXj;*;I-8S6N#XgY}.3XfYGO3C/$XjL$*NYX,1 6;YH&<XkK9C#I74.>}Hd`A748X[T450[n75<4439:18A107>|ET}Rf<1;14876/Yb983E<5.YNXd4149>,S=/4E/<306443G/06}0&}UkYSXFYF=44=-5095=88;63844,9E6644{PL}WA8:>)7+>763>>0/B3A545CCnT}Xm|dv}Xq1L/YNXk/H8;;.R63351YY747@15YE4J8;46;.38.>4A369.=-83,;Ye3?:3@YE.4-+N353;/;@(X[YYD>@/05-I*@.:551741Yf5>6A443<3535;.58/86=D4753442$635D1>0359NQ @73:3:>><Xn?;43C14 ?Y|X611YG1&<+,4<*,YLXl<1/AIXjF*N89A4Z576K1XbJ5YF.ZOWN.YGXO/YQ01:4G38Xl1;KI0YFXB=R<7;D/,/4>;$I,YGXm94@O35Yz66695385.>:6A#5}W7n^4336:4157597434433<3|XA}m`>=D>:4A.337370?-6Q96{`E|4A}C`|Qs{Mk|J+~r>|o,wHv>Vw}!c{H!|Gb|*Ca5}J||,U{t+{CN[!M65YXOY_*B,Y[Z9XaX[QYJYLXPYuZ%XcZ8LY[SYPYKZM<LMYG9OYqSQYM~[e{UJXmQYyZM_)>YjN1~[f3{aXFY|Yk:48YdH^NZ0|T){jVFYTZNFY^YTYN~[h{nPYMYn3I]`EYUYsYIZEYJ7Yw)YnXPQYH+Z.ZAZY]^Z1Y`YSZFZyGYHXLYG 8Yd#4~[i|+)YH9D?Y^F~Y7|-eYxZ^WHYdYfZQ~[j|3>~[k|3oYmYqY^XYYO=Z*4[]Z/OYLXhZ1YLZIXgYIHYEYK,<Y`YEXIGZI[3YOYcB4SZ!YHZ*&Y{Xi3~[l|JSY`Zz?Z,~[m|O=Yi>??XnYWXmYS617YVYIHZ(Z4[~L4/=~[n|Yu{P)|];YOHHZ}~[o33|a>~[r|aE]DH~[s|e$Zz~[t|kZFY~XhYXZB[`Y}~[u|{SZ&OYkYQYuZ2Zf8D~[v}% ~[w3},Q[X]+YGYeYPIS~[y}4aZ!YN^!6PZ*~[z}?E~[{3}CnZ=~[}}EdDZz/9A3(3S<,YR8.D=*XgYPYcXN3Z5 4)~[~}JW=$Yu.XX~] }KDX`PXdZ4XfYpTJLY[F5]X~[2Yp}U+DZJ::<446[m@~]#3}]1~]%}^LZwZQ5Z`/OT<Yh^ -~]&}jx[ ~m<z!%2+~ly4VY-~o>}p62yz!%2+Xf2+~ly4VY-zQ`z (=] 2z~o2",C={" ":0,"!":1},c=34,i=2,p,s="",u=String.fromCharCode,t=u(12539);while(++c<127)C[u(c)]=c^39&&c^92?i++:0;i=0;while(0<=(c=C[a.charAt(i++)]))if(16==c)if((c=C[a.charAt(i++)])<87){if(86==c)c=1879;while(c--)s+=u(++p)}else s+=s.substr(8272,360);else if(c<86)s+=u(p+=c<51?c-16:(c-55)*92+C[a.charAt(i++)]);else if((c=((c-86)*92+C[a.charAt(i++)])*92+C[a.charAt(i++)])<49152)s+=u(p=c<40960?c:c|57344);else{c&=511;while(c--)s+=t;p=12539}return s')();
+
+var JCT8836 = JCT11280.substring(0, 8836);
+
+exports.EscapeSJIS = EscapeSJIS;
+exports.UnescapeSJIS = UnescapeSJIS;
+exports.EscapeEUCJP = EscapeEUCJP;
+exports.UnescapeEUCJP = UnescapeEUCJP;
+exports.EscapeJIS7 = EscapeJIS7;
+exports.UnescapeJIS7 = UnescapeJIS7;
+exports.EscapeJIS8 = EscapeJIS8;
+exports.UnescapeJIS8 = UnescapeJIS8;
+exports.EscapeUnicode = EscapeUnicode;
+exports.UnescapeUnicode = UnescapeUnicode;
+exports.EscapeUTF7 = EscapeUTF7;
+exports.UnescapeUTF7 = UnescapeUTF7;
+exports.EscapeUTF8 = EscapeUTF8;
+exports.UnescapeUTF8 = UnescapeUTF8;
+exports.EscapeUTF16LE = EscapeUTF16LE;
+exports.UnescapeUTF16LE = UnescapeUTF16LE;
+exports.GetEscapeCodeType = GetEscapeCodeType;
+exports.JCT11280 = JCT11280;
+exports.JCT8836 = JCT8836;
 
 /***/ })
 /******/ ]);

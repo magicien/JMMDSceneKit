@@ -2,10 +2,10 @@
 
 import {
   _BinaryReader,
+  _TextReader,
   SKColor
 } from 'jscenekit'
 import TGAImage from 'TGAImage'
-import _TextReader from '../util/_TextReader'
 import _ToonImages from './_ToonImages'
 
 const _toonImages = _ToonImages
@@ -29,8 +29,9 @@ export default class MMDReader {
    * @param {boolean} [isBinary = true] -
    * @param {boolean} [isBigEndian = false] -
    * @param {string} [encoding = ''] -
+   * @param {boolean} [crossDomain = false] - 
    */
-  constructor(data, directoryPath, isBinary = true, isBigEndian = false, encoding = '') {
+  constructor(data, directoryPath, isBinary = true, isBigEndian = false, encoding = '', crossDomain = false) {
     /**
      *
      * @type {string}
@@ -49,6 +50,12 @@ export default class MMDReader {
      */
     //this.length = data.byteLength
     this.length = data.length
+
+    /**
+     *
+     * @type {boolean}
+     */
+    this.crossDomain = crossDomain
 
     this._reader = null
 
@@ -133,6 +140,10 @@ export default class MMDReader {
         })
       }else{
         const image = new Image()
+        // TODO: check option if it allows cross-domain.
+        // if(this.crossDomain){
+          image.crossOrigin = "anonymous"
+        // }
         image.onload = () => {
           resolve(image)
         }
