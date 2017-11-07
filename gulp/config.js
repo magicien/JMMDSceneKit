@@ -38,7 +38,8 @@ module.exports = {
         libraryTarget: 'commonjs2'
       },
       resolve: {
-        extensions: ['.js']
+        extensions: ['.js'],
+        symlinks: false
       },
       plugins: [
         new webpack.DefinePlugin({'process.env.BROWSER': false})
@@ -57,7 +58,8 @@ module.exports = {
         ]
       },
       externals: {
-        fs: 'fs'
+        fs: 'fs',
+        jscenekit: 'jscenekit'
       }
     },
     web: {
@@ -69,7 +71,8 @@ module.exports = {
         libraryTarget: 'commonjs2'
       },
       resolve: {
-        extensions: ['.js']
+        extensions: ['.js'],
+        symlinks: false
       },
       plugins: [
         new webpack.DefinePlugin({'process.env.BROWSER': true})
@@ -91,6 +94,7 @@ module.exports = {
         Buffer: true
       },
       externals: {
+        jscenekit: 'jscenekit'
         //fs: 'fs'
       }
     }
