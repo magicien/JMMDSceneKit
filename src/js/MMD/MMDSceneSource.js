@@ -340,7 +340,15 @@ export default class MMDSceneSource extends SCNSceneSource {
       })
       return this._workingNode
     }else if(this._fileType === _MMDFileType.pmm){
-      return this._workingScene.rootNode.childNodes.find((node) => node instanceof MMDNode)
+      const node = this._workingScene.rootNode.childNodes.find((_node) => _node instanceof MMDNode)
+      if(node){
+        return node
+      }
+    }else if(this._fileType === _MMDFileType.obj){
+      const node = this._workingScene.rootNode.childNodes.find((_node) => _node instanceof MMDNode)
+      if(node){
+        return node
+      }
     }
     throw new Error('getModel not implemented for the file type')
   }

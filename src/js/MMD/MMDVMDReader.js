@@ -203,7 +203,7 @@ export default class MMDVMDReader extends MMDReader {
 
       const posX = this.readFloat()
       const posY = this.readFloat()
-      const posZ = this.readFloat()
+      const posZ = -this.readFloat()
       const rotate = (new SCNQuaternion(-this.readFloat(), -this.readFloat(), this.readFloat(), this.readFloat())).normalize()
       //console.log(`pos: ${posX}, ${posY}, ${posZ}`)
 

@@ -27,6 +27,10 @@ const _MMDAnimationCompletionBlockKey = 'MMDAnimationCompletionBlockKey'
 const _faceWeightsPattern = /faceWeights\[(\d+)\]/
 
 class DummyNode extends NSObject {
+  setValueForUndefinedKey(key) {
+    return
+  }
+
   valueForUndefinedKey(key) {
     return this
   }
@@ -666,17 +670,11 @@ export default class MMDNode extends SCNNode {
             //console.log(`${this.name} orgQuat ${orgQuat.float32Array()}`)
             quat = quat.cross(orgQuat)
 
-            // FIXME: don't use presentation node
-            //bone.presentation.rotation = this._quatToRotation(quat)
             bone.rotation = this._quatToRotation(quat)
 
             if(bone.isKnee){
-              // FIXME: don't use presentation node
-              //if(bone.presentation.eulerAngles.x < 0){
               if(bone.eulerAngles.x < 0){
                 quat.x = -quat.x
-                // FIXME: don't use presentation node
-                //bone.presentation.rotation = rot
                 bone.rotation = this._quatToRotation(quat)
                 //console.log(`${bone.name} quatToRotation ${bone.rotation.float32Array()}`)
               }
@@ -706,8 +704,8 @@ export default class MMDNode extends SCNNode {
         //console.log(`${this.name} quat ${quat.float32Array()}`)
         const orgQuat = this._rotationToQuat(this.presentation.rotation)
         //console.log(`${this.name} orgQuat ${orgQuat.float32Array()}`)
-        //const newQuat = this.slerp(orgQuat, quat, this.rotateEffectRate)
-        const newQuat = orgQuat.slerp(quat, this.rotateEffectRate)
+        const newQuat = this._slerp(orgQuat, quat, this.rotateEffectRate)
+        //const newQuat = orgQuat.slerp(quat, this.rotateEffectRate)
         const newRot = this._quatToRotation(newQuat)
         // FIXME: don't use presentation
         //this.presentation.rotation = newRot
@@ -921,6 +919,43 @@ export default class MMDNode extends SCNNode {
     }
 
     return rot
+  }
+
+  /**
+   * @access private
+   * @param {SCNVector4} src -
+   * @param {SCNVector4} dst -
+   * @param {number} rate -
+   * @returns {SCNVector4} -
+   */
+  _slerp(src, dst, rate) {
+    let ans = new SCNVector4()
+
+    const dot = src.dot(dst)
+    const inv2 = 1.0 - dot * dot
+    let inv = 0.0
+
+    if(inv2 > 0.0){
+      inv = Math.sqrt(inv2)
+    }
+    if(inv === 0.0){
+      ans.x = src.x
+      ans.y = src.y
+      ans.z = src.z
+      ans.w = src.w
+    }else{
+      const h = Math.acos(dot)
+      const t = h * rate
+      const t0 = Math.sin(h - t) / inv
+      const t1 = Math.sin(t) / inv
+
+      ans.x = src.x * t0 + dst.x * t1
+      ans.y = src.y * t0 + dst.y * t1
+      ans.z = src.z * t0 + dst.z * t1
+      ans.w = src.w * t0 + dst.w * t1
+    }
+
+    return ans
   }
 }
 

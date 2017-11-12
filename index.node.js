@@ -119,6 +119,11 @@ var DummyNode = function (_NSObject) {
   }
 
   _createClass(DummyNode, [{
+    key: 'setValueForUndefinedKey',
+    value: function setValueForUndefinedKey(key) {
+      return;
+    }
+  }, {
     key: 'valueForUndefinedKey',
     value: function valueForUndefinedKey(key) {
       return this;
@@ -806,17 +811,11 @@ var MMDNode = function (_SCNNode) {
               //console.log(`${this.name} orgQuat ${orgQuat.float32Array()}`)
               quat = quat.cross(orgQuat);
 
-              // FIXME: don't use presentation node
-              //bone.presentation.rotation = this._quatToRotation(quat)
               bone.rotation = _this4._quatToRotation(quat);
 
               if (bone.isKnee) {
-                // FIXME: don't use presentation node
-                //if(bone.presentation.eulerAngles.x < 0){
                 if (bone.eulerAngles.x < 0) {
                   quat.x = -quat.x;
-                  // FIXME: don't use presentation node
-                  //bone.presentation.rotation = rot
                   bone.rotation = _this4._quatToRotation(quat);
                   //console.log(`${bone.name} quatToRotation ${bone.rotation.float32Array()}`)
                 }
@@ -849,8 +848,8 @@ var MMDNode = function (_SCNNode) {
           //console.log(`${this.name} quat ${quat.float32Array()}`)
           var orgQuat = this._rotationToQuat(this.presentation.rotation);
           //console.log(`${this.name} orgQuat ${orgQuat.float32Array()}`)
-          //const newQuat = this.slerp(orgQuat, quat, this.rotateEffectRate)
-          var newQuat = orgQuat.slerp(quat, this.rotateEffectRate);
+          var newQuat = this._slerp(orgQuat, quat, this.rotateEffectRate);
+          //const newQuat = orgQuat.slerp(quat, this.rotateEffectRate)
           var newRot = this._quatToRotation(newQuat);
           // FIXME: don't use presentation
           //this.presentation.rotation = newRot
@@ -1093,6 +1092,46 @@ var MMDNode = function (_SCNNode) {
       }
 
       return rot;
+    }
+
+    /**
+     * @access private
+     * @param {SCNVector4} src -
+     * @param {SCNVector4} dst -
+     * @param {number} rate -
+     * @returns {SCNVector4} -
+     */
+
+  }, {
+    key: '_slerp',
+    value: function _slerp(src, dst, rate) {
+      var ans = new _jscenekit.SCNVector4();
+
+      var dot = src.dot(dst);
+      var inv2 = 1.0 - dot * dot;
+      var inv = 0.0;
+
+      if (inv2 > 0.0) {
+        inv = Math.sqrt(inv2);
+      }
+      if (inv === 0.0) {
+        ans.x = src.x;
+        ans.y = src.y;
+        ans.z = src.z;
+        ans.w = src.w;
+      } else {
+        var h = Math.acos(dot);
+        var t = h * rate;
+        var t0 = Math.sin(h - t) / inv;
+        var t1 = Math.sin(t) / inv;
+
+        ans.x = src.x * t0 + dst.x * t1;
+        ans.y = src.y * t0 + dst.y * t1;
+        ans.z = src.z * t0 + dst.z * t1;
+        ans.w = src.w * t0 + dst.w * t1;
+      }
+
+      return ans;
     }
   }], [{
     key: 'Type',
@@ -1627,9 +1666,19 @@ var MMDSceneSource = function (_SCNSceneSource) {
         });
         return this._workingNode;
       } else if (this._fileType === _MMDFileType.pmm) {
-        return this._workingScene.rootNode.childNodes.find(function (node) {
-          return node instanceof _MMDNode2.default;
+        var node = this._workingScene.rootNode.childNodes.find(function (_node) {
+          return _node instanceof _MMDNode2.default;
         });
+        if (node) {
+          return node;
+        }
+      } else if (this._fileType === _MMDFileType.obj) {
+        var _node2 = this._workingScene.rootNode.childNodes.find(function (_node) {
+          return _node instanceof _MMDNode2.default;
+        });
+        if (_node2) {
+          return _node2;
+        }
       }
       throw new Error('getModel not implemented for the file type');
     }
@@ -7029,7 +7078,7 @@ var MMDVMDReader = function (_MMDReader) {
 
         var posX = this.readFloat();
         var posY = this.readFloat();
-        var posZ = this.readFloat();
+        var posZ = -this.readFloat();
         var rotate = new _jscenekit.SCNQuaternion(-this.readFloat(), -this.readFloat(), this.readFloat(), this.readFloat()).normalize();
         //console.log(`pos: ${posX}, ${posY}, ${posZ}`)
 
