@@ -1,6 +1,6 @@
 {
   "name": "jmmdscenekit",
-  "version": "0.0.9",
+  "version": "0.1.2",
   "description": "JavaScript framework for JSceneKit and MikuMikuDance",
   "main": "./index.node.js",
   "browser": {
