@@ -1,6 +1,6 @@
 {
   "name": "jmmdscenekit",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "JavaScript framework for JSceneKit and MikuMikuDance",
   "main": "./index.node.js",
   "browser": {
@@ -45,7 +45,7 @@
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
     "chai": "^4.1.2",
-    "esdoc": "^1.0.3",
+    "esdoc": "^1.0.4",
     "gulp": "^3.9.1",
     "gulp-babel": "^7.0.0",
     "gulp-eslint": "^4.0.0",
