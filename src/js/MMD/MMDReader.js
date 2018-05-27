@@ -31,7 +31,7 @@ export default class MMDReader {
    * @param {string} [encoding = ''] -
    * @param {boolean} [crossDomain = false] - 
    */
-  constructor(data, directoryPath, isBinary = true, isBigEndian = false, encoding = '', crossDomain = false) {
+  constructor(data, directoryPath, isBinary = true, isBigEndian = false, encoding = '', crossDomain = false, options) {
     /**
      *
      * @type {string}
@@ -64,6 +64,8 @@ export default class MMDReader {
     }else{
       this._reader = new _TextReader(data, encoding)
     }
+
+    this._options = options
   }
 
   static get toonTextures() {
@@ -131,8 +133,30 @@ export default class MMDReader {
   }
 
   loadTexture(filePath) {
+    let path = filePath
+    const translator = this._options.get('kSceneSourceURLTranslator')
+    if(translator){
+      path = translator(filePath)
+    }
+
     const promise = new Promise((resolve, reject) => {
-      const fileName = this.directoryPath + filePath
+      // TODO: refactoring
+      if(typeof path === 'object' && typeof path.then === 'function'){
+        path.then((_path) => {
+          const image = new Image()
+          image.crossOrigin = 'anonymous'
+          image.onload = () => {
+            resolve(image)
+          }
+          image.onerror = () => {
+            reject(new Error(`image ${_path} load error`))
+          }
+          image.src = _path
+        })
+        return
+      }
+
+      const fileName = this.directoryPath + path
       if(fileName.endsWith('tga')){
         const tga = TGAImage.imageWithURL(fileName)
         tga.didLoad.then(() => {

@@ -36,7 +36,7 @@ export default class MMDXReader extends MMDReader {
    * @param {Buffer} data -
    * @param {string} directoryPath -
    */
-  constructor(data, directoryPath) {
+  constructor(data, directoryPath, options) {
     // TODO: implement binary x file reader
     const isBinary = false
     const isBigEndian = false
@@ -80,10 +80,12 @@ export default class MMDXReader extends MMDReader {
     this._texcoordArray = []
 
     this._elementArray = []
+
+    this._options = options
   }
 
-  static getNode(data, directoryPath) {
-    const reader = new MMDXReader(data, directoryPath)
+  static getNode(data, directoryPath, options) {
+    const reader = new MMDXReader(data, directoryPath, options)
     return reader._loadXFile()
   }
 

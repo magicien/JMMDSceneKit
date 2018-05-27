@@ -337,7 +337,7 @@ export default class MMDNode extends SCNNode {
     this.type = node.type
     this.isKnee = node.isKnee
     this.ikConstraint = node.ikConstraint // MMDIKConstraint
-    this.ikArray = node.ikArray // [MMDIKConstraint]
+    this.ikArray = node.ikArray || [] // [MMDIKConstraint]
     this.joints = node.joints // [SCNPhysicsBehavior]
     this.vertexCount = node.vertexCount
     this.vertexArray = node.vertexArray
@@ -355,9 +355,9 @@ export default class MMDNode extends SCNNode {
     this.boneInverseMatrixArray = node.boneInverseMatrixArray
     this.rootBone = node.rootBone // MMDNode
     
-    this.rotateEffector = node.rotateEffector // MMDNode
+    this.rotateEffector = node.rotateEffector || null // MMDNode
     this.rotateEffectRate = node.rotateEffectRate
-    this.translateEffector = node.translateEffector // MMDNode
+    this.translateEffector = node.translateEffector || null // MMDNode
     this.translateEffectRate = node.translateEffectRate
     
     this.faceIndexArray = node.faceIndexArray

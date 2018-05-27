@@ -290,7 +290,7 @@ export default class MMDPMMReader extends MMDReader {
    * @param {Buffer} data -
    * @param {string} directoryPath -
    */
-  constructor(data, directoryPath) {
+  constructor(data, directoryPath, options) {
     const isBinary = true
     const isBigEndian = false
     const encoding = 'sjis'
@@ -362,9 +362,9 @@ export default class MMDPMMReader extends MMDReader {
    * @param {CAAnimation[]} [motions = null] -
    * @returns {SCNScene} -
    */
-  static getScene(data, directoryPath, models = null, motions = null) {
-    const reader = new MMDPMMReader(data, directoryPath)
-    const scene = reader.loadPMMFile(models, motions)
+  static getScene(data, directoryPath, options = new Map(), models = null, motions = null) {
+    const reader = new MMDPMMReader(data, directoryPath, options)
+    const scene = reader.loadPMMFile(models, motions, options)
 
     return scene
   }
@@ -375,7 +375,8 @@ export default class MMDPMMReader extends MMDReader {
    * @param {CAAnimation[]} [motions = null] -
    * @returns {?SCNScene} -
    */
-  loadPMMFile(models = null, motions = null) {
+  loadPMMFile(models = null, motions = null, options = new Map()) {
+    this._options = options
     // initialize working variables
     this._workingScene = new SCNScene()
     this._workingScene._dataLoadedPromise = new Promise((resolve, reject) => {

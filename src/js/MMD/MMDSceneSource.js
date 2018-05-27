@@ -43,7 +43,9 @@ const _LoadingOption = {
   overrideAssetURLs: 'kSceneSourceOverrideAssetURLs',
   preserveOriginalTopology: 'kSceneSourcePreserveOriginalTopology',
   strictConformance: 'kSceneSourceStrictConformanceKey',
-  useSafeMode: 'kSceneSourceUseSafeMode' 
+  useSafeMode: 'kSceneSourceUseSafeMode',
+
+  _urlTranslator: 'kSceneSourceURLTranslator'
 }
 
 
@@ -189,22 +191,22 @@ export default class MMDSceneSource extends SCNSceneSource {
     this._checkFileTypeFromData(data)
 
     if(this._fileType === _MMDFileType.pmd){
-      const pmdNode = MMDPMDReader.getNode(data, this._directoryPath)
+      const pmdNode = MMDPMDReader.getNode(data, this._directoryPath, options)
       if(pmdNode){
         this._workingNode = pmdNode
       }
     }else if(this._fileType === _MMDFileType.vmd){
-      const vmdMotion = MMDVMDReader.getMotion(data)
+      const vmdMotion = MMDVMDReader.getMotion(data, this._directoryPath, options)
       if(vmdMotion){
         this._workingAnimationGroup = vmdMotion
       }
     }else if(this._fileType === _MMDFileType.x){
-      const xNode = MMDXReader.getNode(data, this._directoryPath)
+      const xNode = MMDXReader.getNode(data, this._directoryPath, options)
       if(xNode){
         this._workingNode = xNode
       }
     }else if(this._fileType === _MMDFileType.pmx){
-      const pmxNode = MMDPMXReader.getNode(data, this._directoryPath)
+      const pmxNode = MMDPMXReader.getNode(data, this._directoryPath, options)
       if(pmxNode){
         this._workingNode = pmxNode
         pmxNode.didLoad.then(() => {
@@ -212,19 +214,19 @@ export default class MMDSceneSource extends SCNSceneSource {
         })
       }
     }else if(this._fileType === _MMDFileType.vpd){
-      const vpdAnimation = MMDVPDReader.getAnimation(data)
+      const vpdAnimation = MMDVPDReader.getAnimation(data, this._directoryPath, options)
       if(vpdAnimation){
         this.workingAnimationGroup = vpdAnimation
       }
     }else if(this._fileType === _MMDFileType.pmm){
-      const pmmScene = MMDPMMReader.getScene(data, this._directoryPath, models, motions)
+      const pmmScene = MMDPMMReader.getScene(data, this._directoryPath, options, models, motions)
       if(pmmScene){
         pmmScene.rootNode.childNodes.forEach((node) => {
           this._workingScene.rootNode.addChildNode(node)
         })
       }
     }else if(this._fileType === _MMDFileType.vac){
-      const vacNode = MMDVACReader.getNode(data, this._directoryPath)
+      const vacNode = MMDVACReader.getNode(data, this._directoryPath, options)
       if(vacNode){
         this._workingNode = vacNode
       }
@@ -349,8 +351,15 @@ export default class MMDSceneSource extends SCNSceneSource {
       if(node){
         return node
       }
+    }else if(this._workingScene){
+      const node = this._workingScene.rootNode.childNodes.find((_node) => _node instanceof MMDNode)
+      if(node){
+        return node
+      }else{
+        return this._workingScene.rootNode
+      }
     }
-    throw new Error('getModel not implemented for the file type')
+    return this._workingNode
   }
 
   getMotion() {

@@ -453,7 +453,7 @@ var MMDNode = function (_SCNNode) {
       this.type = node.type;
       this.isKnee = node.isKnee;
       this.ikConstraint = node.ikConstraint; // MMDIKConstraint
-      this.ikArray = node.ikArray; // [MMDIKConstraint]
+      this.ikArray = node.ikArray || []; // [MMDIKConstraint]
       this.joints = node.joints; // [SCNPhysicsBehavior]
       this.vertexCount = node.vertexCount;
       this.vertexArray = node.vertexArray;
@@ -471,9 +471,9 @@ var MMDNode = function (_SCNNode) {
       this.boneInverseMatrixArray = node.boneInverseMatrixArray;
       this.rootBone = node.rootBone; // MMDNode
 
-      this.rotateEffector = node.rotateEffector; // MMDNode
+      this.rotateEffector = node.rotateEffector || null; // MMDNode
       this.rotateEffectRate = node.rotateEffectRate;
-      this.translateEffector = node.translateEffector; // MMDNode
+      this.translateEffector = node.translateEffector || null; // MMDNode
       this.translateEffectRate = node.translateEffectRate;
 
       this.faceIndexArray = node.faceIndexArray;
@@ -1156,11 +1156,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _jscenekit = __webpack_require__(0);
 
-var _TGAImage = __webpack_require__(18);
+var _TGAImage = __webpack_require__(17);
 
 var _TGAImage2 = _interopRequireDefault(_TGAImage);
 
@@ -1201,6 +1203,7 @@ var MMDReader = function () {
     var isBigEndian = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
     var encoding = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : '';
     var crossDomain = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : false;
+    var options = arguments[6];
 
     _classCallCheck(this, MMDReader);
 
@@ -1236,6 +1239,8 @@ var MMDReader = function () {
     } else {
       this._reader = new _jscenekit._TextReader(data, encoding);
     }
+
+    this._options = options;
   }
 
   _createClass(MMDReader, [{
@@ -1295,8 +1300,30 @@ var MMDReader = function () {
     value: function loadTexture(filePath) {
       var _this = this;
 
+      var path = filePath;
+      var translator = this._options.get('kSceneSourceURLTranslator');
+      if (translator) {
+        path = translator(filePath);
+      }
+
       var promise = new Promise(function (resolve, reject) {
-        var fileName = _this.directoryPath + filePath;
+        // TODO: refactoring
+        if ((typeof path === 'undefined' ? 'undefined' : _typeof(path)) === 'object' && typeof path.then === 'function') {
+          path.then(function (_path) {
+            var image = new Image();
+            image.crossOrigin = 'anonymous';
+            image.onload = function () {
+              resolve(image);
+            };
+            image.onerror = function () {
+              reject(new Error('image ' + _path + ' load error'));
+            };
+            image.src = _path;
+          });
+          return;
+        }
+
+        var fileName = _this.directoryPath + path;
         if (fileName.endsWith('tga')) {
           var tga = _TGAImage2.default.imageWithURL(fileName);
           tga.didLoad.then(function () {
@@ -1399,7 +1426,7 @@ var _MMDNode = __webpack_require__(1);
 
 var _MMDNode2 = _interopRequireDefault(_MMDNode);
 
-var _MMDPMDReader = __webpack_require__(9);
+var _MMDPMDReader = __webpack_require__(6);
 
 var _MMDPMDReader2 = _interopRequireDefault(_MMDPMDReader);
 
@@ -1407,19 +1434,19 @@ var _MMDPMMReader = __webpack_require__(10);
 
 var _MMDPMMReader2 = _interopRequireDefault(_MMDPMMReader);
 
-var _MMDPMXReader = __webpack_require__(11);
+var _MMDPMXReader = __webpack_require__(12);
 
 var _MMDPMXReader2 = _interopRequireDefault(_MMDPMXReader);
 
-var _MMDVACReader = __webpack_require__(12);
+var _MMDVACReader = __webpack_require__(13);
 
 var _MMDVACReader2 = _interopRequireDefault(_MMDVACReader);
 
-var _MMDVMDReader = __webpack_require__(13);
+var _MMDVMDReader = __webpack_require__(14);
 
 var _MMDVMDReader2 = _interopRequireDefault(_MMDVMDReader);
 
-var _MMDVPDReader = __webpack_require__(14);
+var _MMDVPDReader = __webpack_require__(8);
 
 var _MMDVPDReader2 = _interopRequireDefault(_MMDVPDReader);
 
@@ -1461,7 +1488,9 @@ var _LoadingOption = {
   overrideAssetURLs: 'kSceneSourceOverrideAssetURLs',
   preserveOriginalTopology: 'kSceneSourcePreserveOriginalTopology',
   strictConformance: 'kSceneSourceStrictConformanceKey',
-  useSafeMode: 'kSceneSourceUseSafeMode'
+  useSafeMode: 'kSceneSourceUseSafeMode',
+
+  _urlTranslator: 'kSceneSourceURLTranslator'
 
   // for node
   //import fs from 'fs'
@@ -1532,22 +1561,22 @@ var MMDSceneSource = function (_SCNSceneSource) {
       this._checkFileTypeFromData(data);
 
       if (this._fileType === _MMDFileType.pmd) {
-        var pmdNode = _MMDPMDReader2.default.getNode(data, this._directoryPath);
+        var pmdNode = _MMDPMDReader2.default.getNode(data, this._directoryPath, options);
         if (pmdNode) {
           this._workingNode = pmdNode;
         }
       } else if (this._fileType === _MMDFileType.vmd) {
-        var vmdMotion = _MMDVMDReader2.default.getMotion(data);
+        var vmdMotion = _MMDVMDReader2.default.getMotion(data, this._directoryPath, options);
         if (vmdMotion) {
           this._workingAnimationGroup = vmdMotion;
         }
       } else if (this._fileType === _MMDFileType.x) {
-        var xNode = _MMDXReader2.default.getNode(data, this._directoryPath);
+        var xNode = _MMDXReader2.default.getNode(data, this._directoryPath, options);
         if (xNode) {
           this._workingNode = xNode;
         }
       } else if (this._fileType === _MMDFileType.pmx) {
-        var pmxNode = _MMDPMXReader2.default.getNode(data, this._directoryPath);
+        var pmxNode = _MMDPMXReader2.default.getNode(data, this._directoryPath, options);
         if (pmxNode) {
           this._workingNode = pmxNode;
           pmxNode.didLoad.then(function () {
@@ -1555,19 +1584,19 @@ var MMDSceneSource = function (_SCNSceneSource) {
           });
         }
       } else if (this._fileType === _MMDFileType.vpd) {
-        var vpdAnimation = _MMDVPDReader2.default.getAnimation(data);
+        var vpdAnimation = _MMDVPDReader2.default.getAnimation(data, this._directoryPath, options);
         if (vpdAnimation) {
           this.workingAnimationGroup = vpdAnimation;
         }
       } else if (this._fileType === _MMDFileType.pmm) {
-        var pmmScene = _MMDPMMReader2.default.getScene(data, this._directoryPath, models, motions);
+        var pmmScene = _MMDPMMReader2.default.getScene(data, this._directoryPath, options, models, motions);
         if (pmmScene) {
           pmmScene.rootNode.childNodes.forEach(function (node) {
             _this2._workingScene.rootNode.addChildNode(node);
           });
         }
       } else if (this._fileType === _MMDFileType.vac) {
-        var vacNode = _MMDVACReader2.default.getNode(data, this._directoryPath);
+        var vacNode = _MMDVACReader2.default.getNode(data, this._directoryPath, options);
         if (vacNode) {
           this._workingNode = vacNode;
         }
@@ -1679,8 +1708,17 @@ var MMDSceneSource = function (_SCNSceneSource) {
         if (_node2) {
           return _node2;
         }
+      } else if (this._workingScene) {
+        var _node3 = this._workingScene.rootNode.childNodes.find(function (_node) {
+          return _node instanceof _MMDNode2.default;
+        });
+        if (_node3) {
+          return _node3;
+        } else {
+          return this._workingScene.rootNode;
+        }
       }
-      throw new Error('getModel not implemented for the file type');
+      return this._workingNode;
     }
   }, {
     key: 'getMotion',
@@ -1871,30 +1909,6 @@ exports.default = MMDSceneSource;
 "use strict";
 
 
-/**
- *
- * @access public
- */
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var MMDIKConstraint = function MMDIKConstraint() {
-  _classCallCheck(this, MMDIKConstraint);
-};
-
-exports.default = MMDIKConstraint;
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -1911,7 +1925,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @access private
  * @type {string}
  */
-var _vertexShader = '#version 300 es\n  precision mediump float;\n\n  #define NUM_AMBIENT_LIGHTS __NUM_AMBIENT_LIGHTS__\n  #define NUM_DIRECTIONAL_LIGHTS __NUM_DIRECTIONAL_LIGHTS__\n  #define NUM_DIRECTIONAL_SHADOW_LIGHTS __NUM_DIRECTIONAL_SHADOW_LIGHTS__\n  #define NUM_OMNI_LIGHTS __NUM_OMNI_LIGHTS__\n  #define NUM_SPOT_LIGHTS __NUM_SPOT_LIGHTS__\n  #define NUM_IES_LIGHTS __NUM_IES_LIGHTS__\n  #define NUM_PROBE_LIGHTS __NUM_PROBE_LIGHTS__\n\n  #define NUM_SHADOW_LIGHTS (NUM_DIRECTIONAL_LIGHTS + NUM_DIRECTIONAL_SHADOW_LIGHTS + NUM_OMNI_LIGHTS + NUM_SPOT_LIGHTS)\n  #define NUM_LIGHTS (NUM_AMBIENT_LIGHTS + NUM_DIRECTIONAL_LIGHTS + NUM_DIRECTIONAL_SHADOW_LIGHTS + NUM_OMNI_LIGHTS + NUM_SPOT_LIGHTS + NUM_IES_LIGHTS + NUM_PROBE_LIGHTS)\n\n  #define USE_SHADER_MODIFIER_GEOMETRY __USE_SHADER_MODIFIER_GEOMETRY__\n\n  layout (std140) uniform cameraUniform {\n    vec4 position;\n    mat4 viewTransform;\n    mat4 viewProjectionTransform;\n  } camera;\n\n  layout (std140) uniform materialUniform {\n    vec4 ambient;\n    vec4 diffuse;\n    vec4 specular;\n    vec4 emission;\n    float shininess;\n    float fresnelExponent;\n  } material;\n\n  struct AmbientLight {\n    vec4 color;\n  };\n\n  struct DirectionalLight {\n    vec4 color;\n    vec4 direction; // should use vec4; vec3 might cause problem for the layout\n  };\n\n  struct DirectionalShadowLight {\n    vec4 color;\n    vec4 direction; // should use vec4; vec3 might cause problem for the layout\n    vec4 shadowColor;\n    mat4 viewProjectionTransform;\n    mat4 shadowProjectionTransform;\n  };\n\n  struct OmniLight {\n    vec4 color;\n    vec4 position; // should use vec4; vec3 might cause problem for the layout\n  };\n\n  struct SpotLight {\n    // TODO: implement\n    vec4 color;\n  };\n\n  struct IESLight {\n    // TODO: implement\n    vec4 color;\n  };\n\n  struct ProbeLight {\n    // TODO: implement\n    vec4 color;\n  };\n\n  layout (std140) uniform lightUniform {\n    #if NUM_AMBIENT_LIGHTS > 0\n      AmbientLight ambient[NUM_AMBIENT_LIGHTS];\n    #endif\n    #if NUM_DIRECTIONAL_LIGHTS > 0\n      DirectionalLight directional[NUM_DIRECTIONAL_LIGHTS];\n    #endif\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0\n      DirectionalShadowLight directionalShadow[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n    #endif\n    #if NUM_OMNI_LIGHTS > 0\n      OmniLight omni[NUM_OMNI_LIGHTS];\n    #endif\n    #if NUM_SPOT_LIGHTS > 0\n      SpotLight spot[NUM_SPOT_LIGHTS];\n    #endif\n    #if NUM_IES_LIGHTS > 0\n      IESLight ies[NUM_IES_LIGHTS];\n    #endif\n    #if NUM_PROBE_LIGHTS > 0\n      ProbeLight probe[NUM_PROBE_LIGHTS];\n    #endif\n    #if NUM_LIGHTS == 0\n      vec4 dummy;\n    #endif\n  } light;\n  #if NUM_SHADOW_LIGHTS > 0\n    out vec3 v_light[NUM_SHADOW_LIGHTS];\n  #endif\n  #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0\n    out vec4 v_directionalShadowDepth[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n    out vec4 v_directionalShadowTexcoord[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n  #endif\n  out vec2 v_sptex;\n\n  layout (std140) uniform fogUniform {\n    vec4 color;\n    float startDistance;\n    float endDistance;\n    float densityExponent;\n  } fog;\n\n  #define kSCNTexcoordCount 2\n  struct SCNShaderGeometry {\n    vec3 position;\n    vec3 normal;\n    vec4 tangent;\n    vec4 color;\n    vec2 texcoords[kSCNTexcoordCount];\n  };\n\n  uniform float u_time;\n  //uniform mat3x4[255] skinningJoints;\n  uniform vec4[765] skinningJoints;\n  uniform int numSkinningJoints;\n  uniform mat4 modelTransform;\n\n  in vec3 position;\n  in vec3 normal;\n  in vec3 tangent;\n  in vec4 color;\n  in vec2 texcoord0;\n  in vec2 texcoord1;\n  in vec4 boneIndices;\n  in vec4 boneWeights;\n\n  out vec3 v_position;\n  out vec3 v_normal;\n  out vec3 v_tangent;\n  out vec3 v_bitangent;\n  out vec2 v_texcoord0;\n  out vec2 v_texcoord1;\n  out vec4 v_color;\n  out vec3 v_eye;\n  out float v_fogFactor;\n\n  __USER_CUSTOM_UNIFORM__\n\n  #if USE_SHADER_MODIFIER_GEOMETRY\n  void shaderModifierGeometry(inout SCNShaderGeometry _geometry) {\n    __SHADER_MODIFIER_GEOMETRY__\n  }\n  #endif\n\n  void main() {\n    SCNShaderGeometry _geometry;\n    _geometry.position = position;\n    _geometry.normal = normal;\n    _geometry.tangent = vec4(tangent, 1.0);\n    _geometry.color = color;\n    _geometry.texcoords[0] = texcoord0;\n    _geometry.texcoords[1] = texcoord1;\n    \n    #if USE_SHADER_MODIFIER_GEOMETRY\n      shaderModifierGeometry(_geometry);\n    #endif\n\n    vec3 pos = vec3(0, 0, 0);\n    vec3 nom = vec3(0, 0, 0);\n    vec3 tng = vec3(0, 0, 0);\n    vec4 col = _geometry.color;\n\n    if(numSkinningJoints > 0){\n      for(int i=0; i<numSkinningJoints; i++){\n        float weight = boneWeights[i];\n        if(int(boneIndices[i]) < 0){\n          continue;\n        }\n        int idx = int(boneIndices[i]) * 3;\n        mat4 jointMatrix = transpose(mat4(skinningJoints[idx],\n                                          skinningJoints[idx+1],\n                                          skinningJoints[idx+2],\n                                          vec4(0, 0, 0, 1)));\n        pos += (jointMatrix * vec4(_geometry.position, 1.0)).xyz * weight;\n        nom += (mat3(jointMatrix) * _geometry.normal) * weight;\n        tng += (mat3(jointMatrix) * _geometry.tangent.xyz) * weight;\n      }\n    }else{\n      mat4 jointMatrix = transpose(mat4(skinningJoints[0],\n                                        skinningJoints[1],\n                                        skinningJoints[2],\n                                        vec4(0, 0, 0, 1)));\n      pos = (jointMatrix * vec4(_geometry.position, 1.0)).xyz;\n      nom = mat3(jointMatrix) * _geometry.normal;\n      tng = mat3(jointMatrix) * _geometry.tangent.xyz;\n    }\n    v_position = pos;\n    v_normal = normalize(nom);\n    v_tangent = normalize(tng);\n    v_bitangent = cross(v_tangent, v_normal);\n\n    vec3 viewVec = camera.position.xyz - pos;\n    v_eye = viewVec;\n\n    v_color = material.emission;\n\n    // Lighting\n    int numLights = 0;\n\n    v_color.rgb = material.emission.rgb;\n\n    #if NUM_AMBIENT_LIGHTS > 0\n      for(int i=0; i<NUM_AMBIENT_LIGHTS; i++){\n        v_color.rgb += light.ambient[i].color.rgb * material.ambient.rgb;\n      }\n    #endif\n\n    #if NUM_DIRECTIONAL_LIGHTS > 0\n      if(!useToon){\n        for(int i=0; i<NUM_DIRECTIONAL_LIGHTS; i++){\n          v_light[numLights + i] = -light.directional[i].direction.xyz;\n\n          vec4 diffuseColor = material.diffuse * vec4(light.directional[i].color.rgb, 1.0);\n          vec3 lightVec = normalize(v_light[numLights + i]);\n          float diffuse = clamp(dot(lightVec, _surface.normal), 0.0f, 1.0f);\n          v_color.rgb += diffuse * diffuseColor.rgb;\n          //v_color.a = diffuseColor.a;\n          v_color = clamp(v_color, 0.0f, 1.0f);\n        }\n      }\n      v_color.a = material.diffuse.a;\n\n      numLights += NUM_DIRECTIONAL_LIGHTS;\n    #endif\n\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0\n      if(!useToon){\n        for(int i=0; i<NUM_DIRECTIONAL_SHADOW_LIGHTS; i++){\n          v_light[numLights + i] = -light.directionalShadow[i].direction.xyz;\n          v_directionalShadowDepth[i] = light.directionalShadow[i].viewProjectionTransform * vec4(pos, 1.0);\n          v_directionalShadowTexcoord[i] = light.directionalShadow[i].shadowProjectionTransform * vec4(pos, 1.0);\n\n          vec4 diffuseColor = material.diffuse * vec4(light.directionalShadow[i].color.rgb, 1.0);\n          vec3 lightVec = normalize(v_light[numLights + i]);\n          float diffuse = clamp(dot(lightVec, _surface.normal), 0.0f, 1.0f);\n          v_color.rgb += diffuse * diffuseColor.rgb;\n          v_color.a = diffuseColor.a;\n          v_color = clamp(v_color, 0.0f, 1.0f);\n        }\n      }\n      v_color.a = material.diffuse.a;\n\n      numLights += NUM_DIRECTIONAL_SHADOW_LIGHTS;\n    #endif\n\n    if(useSphereMap){\n      if(useSubTexture){\n        v_sptex = \n      }else{\n        vec2 normalWV = vec2(camera.viewTransform * vec4(v_normal, 1.0));\n        v_sptex.x = normalWV.x * 0.5 + 0.5;\n        v_sptex.y = normalWV.y * (-0.5) + 0.5;\n      }\n    }\n\n    #if NUM_OMNI_LIGHTS > 0\n      for(int i=0; i<NUM_OMNI_LIGHTS; i++){\n        v_light[numLights + i] = light.omni[i].position.xyz - pos;\n      }\n      numLights += NUM_OMNI_LIGHTS;\n    #endif\n\n    #if NUM_SPOT_LIGHTS > 0\n      for(int i=0; i<NUM_SPOT_LIGHTS; i++){\n        v_light[numLights + i] = light.spot[i].position.xyz - pos;\n      }\n      numLights += NUM_SPOT_LIGHTS;\n    #endif\n\n    #if NUM_IES_LIGHTS > 0\n      // TODO: implement\n    #endif\n\n    #if NUM_PROBE_LIGHTS > 0\n      // TODO: implement\n    #endif\n\n    float distance = length(viewVec);\n    v_fogFactor = clamp((distance - fog.startDistance) / (fog.endDistance - fog.startDistance), 0.0, 1.0);\n\n    v_texcoord0 = _geometry.texcoords[0];\n    v_texcoord1 = _geometry.texcoords[1];\n    gl_Position = camera.viewProjectionTransform * vec4(pos, 1.0);\n  }\n';
+var _vertexShader = '#version 300 es\n  precision mediump float;\n\n  #define NUM_AMBIENT_LIGHTS __NUM_AMBIENT_LIGHTS__\n  #define NUM_DIRECTIONAL_LIGHTS __NUM_DIRECTIONAL_LIGHTS__\n  #define NUM_DIRECTIONAL_SHADOW_LIGHTS __NUM_DIRECTIONAL_SHADOW_LIGHTS__\n  #define NUM_OMNI_LIGHTS __NUM_OMNI_LIGHTS__\n  #define NUM_SPOT_LIGHTS __NUM_SPOT_LIGHTS__\n  #define NUM_IES_LIGHTS __NUM_IES_LIGHTS__\n  #define NUM_PROBE_LIGHTS __NUM_PROBE_LIGHTS__\n\n  #define NUM_SHADOW_LIGHTS (NUM_DIRECTIONAL_LIGHTS + NUM_DIRECTIONAL_SHADOW_LIGHTS + NUM_OMNI_LIGHTS + NUM_SPOT_LIGHTS)\n  #define NUM_LIGHTS (NUM_AMBIENT_LIGHTS + NUM_DIRECTIONAL_LIGHTS + NUM_DIRECTIONAL_SHADOW_LIGHTS + NUM_OMNI_LIGHTS + NUM_SPOT_LIGHTS + NUM_IES_LIGHTS + NUM_PROBE_LIGHTS)\n\n  #define USE_SHADER_MODIFIER_GEOMETRY __USE_SHADER_MODIFIER_GEOMETRY__\n\n  layout (std140) uniform cameraUniform {\n    vec4 position;\n    mat4 viewTransform;\n    mat4 viewProjectionTransform;\n  } camera;\n\n  layout (std140) uniform materialUniform {\n    vec4 ambient;\n    vec4 diffuse;\n    vec4 specular;\n    vec4 emission;\n    float shininess;\n    float fresnelExponent;\n  } material;\n\n  struct AmbientLight {\n    vec4 color;\n  };\n\n  struct DirectionalLight {\n    vec4 color;\n    vec4 direction; // should use vec4; vec3 might cause problem for the layout\n  };\n\n  struct DirectionalShadowLight {\n    vec4 color;\n    vec4 direction; // should use vec4; vec3 might cause problem for the layout\n    vec4 shadowColor;\n    mat4 viewProjectionTransform;\n    mat4 shadowProjectionTransform;\n  };\n\n  struct OmniLight {\n    vec4 color;\n    vec4 position; // should use vec4; vec3 might cause problem for the layout\n  };\n\n  struct SpotLight {\n    // TODO: implement\n    vec4 color;\n  };\n\n  struct IESLight {\n    // TODO: implement\n    vec4 color;\n  };\n\n  struct ProbeLight {\n    // TODO: implement\n    vec4 color;\n  };\n\n  layout (std140) uniform lightUniform {\n    #if NUM_AMBIENT_LIGHTS > 0\n      AmbientLight ambient[NUM_AMBIENT_LIGHTS];\n    #endif\n    #if NUM_DIRECTIONAL_LIGHTS > 0\n      DirectionalLight directional[NUM_DIRECTIONAL_LIGHTS];\n    #endif\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0\n      DirectionalShadowLight directionalShadow[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n    #endif\n    #if NUM_OMNI_LIGHTS > 0\n      OmniLight omni[NUM_OMNI_LIGHTS];\n    #endif\n    #if NUM_SPOT_LIGHTS > 0\n      SpotLight spot[NUM_SPOT_LIGHTS];\n    #endif\n    #if NUM_IES_LIGHTS > 0\n      IESLight ies[NUM_IES_LIGHTS];\n    #endif\n    #if NUM_PROBE_LIGHTS > 0\n      ProbeLight probe[NUM_PROBE_LIGHTS];\n    #endif\n    #if NUM_LIGHTS == 0\n      vec4 dummy;\n    #endif\n  } light;\n  #if NUM_SHADOW_LIGHTS > 0\n    out vec3 v_light[NUM_SHADOW_LIGHTS];\n  #endif\n  #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0\n    out vec4 v_directionalShadowDepth[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n    out vec4 v_directionalShadowTexcoord[NUM_DIRECTIONAL_SHADOW_LIGHTS];\n  #endif\n  out vec2 v_sptex;\n\n  layout (std140) uniform fogUniform {\n    vec4 color;\n    float startDistance;\n    float endDistance;\n    float densityExponent;\n  } fog;\n\n  #define kSCNTexcoordCount 2\n  struct SCNShaderGeometry {\n    vec3 position;\n    vec3 normal;\n    vec4 tangent;\n    vec4 color;\n    vec2 texcoords[kSCNTexcoordCount];\n  };\n\n  uniform float u_time;\n  //uniform mat3x4[255] skinningJoints;\n  uniform vec4[765] skinningJoints;\n  uniform int numSkinningJoints;\n  uniform mat4 modelTransform;\n\n  in vec3 position;\n  in vec3 normal;\n  in vec3 tangent;\n  in vec4 color;\n  in vec2 texcoord0;\n  in vec2 texcoord1;\n  in vec4 boneIndices;\n  in vec4 boneWeights;\n\n  out vec3 v_position;\n  out vec3 v_normal;\n  out vec3 v_tangent;\n  out vec3 v_bitangent;\n  out vec2 v_texcoord0;\n  out vec2 v_texcoord1;\n  out vec4 v_color;\n  out vec3 v_eye;\n  out float v_fogFactor;\n\n  __USER_CUSTOM_UNIFORM__\n\n  #if USE_SHADER_MODIFIER_GEOMETRY\n  void shaderModifierGeometry(inout SCNShaderGeometry _geometry) {\n    __SHADER_MODIFIER_GEOMETRY__\n  }\n  #endif\n\n  void main() {\n    SCNShaderGeometry _geometry;\n    _geometry.position = position;\n    _geometry.normal = normal;\n    _geometry.tangent = vec4(tangent, 1.0);\n    _geometry.color = color;\n    _geometry.texcoords[0] = texcoord0;\n    _geometry.texcoords[1] = texcoord1;\n    \n    #if USE_SHADER_MODIFIER_GEOMETRY\n      shaderModifierGeometry(_geometry);\n    #endif\n\n    vec3 pos = vec3(0, 0, 0);\n    vec3 nom = vec3(0, 0, 0);\n    vec3 tng = vec3(0, 0, 0);\n    vec4 col = _geometry.color;\n\n    if(numSkinningJoints > 0){\n      for(int i=0; i<numSkinningJoints; i++){\n        float weight = boneWeights[i];\n        if(int(boneIndices[i]) < 0){\n          continue;\n        }\n        int idx = int(boneIndices[i]) * 3;\n        mat4 jointMatrix = transpose(mat4(skinningJoints[idx],\n                                          skinningJoints[idx+1],\n                                          skinningJoints[idx+2],\n                                          vec4(0, 0, 0, 1)));\n        pos += (jointMatrix * vec4(_geometry.position, 1.0)).xyz * weight;\n        nom += (mat3(jointMatrix) * _geometry.normal) * weight;\n        tng += (mat3(jointMatrix) * _geometry.tangent.xyz) * weight;\n      }\n    }else{\n      mat4 jointMatrix = transpose(mat4(skinningJoints[0],\n                                        skinningJoints[1],\n                                        skinningJoints[2],\n                                        vec4(0, 0, 0, 1)));\n      pos = (jointMatrix * vec4(_geometry.position, 1.0)).xyz;\n      nom = mat3(jointMatrix) * _geometry.normal;\n      tng = mat3(jointMatrix) * _geometry.tangent.xyz;\n    }\n    v_position = pos;\n    v_normal = normalize(nom);\n    v_tangent = normalize(tng);\n    v_bitangent = cross(v_tangent, v_normal);\n\n    vec3 viewVec = camera.position.xyz - pos;\n    v_eye = viewVec;\n\n    v_color = material.emission;\n\n    // Lighting\n    int numLights = 0;\n\n    v_color.rgb = material.emission.rgb;\n\n    #if NUM_AMBIENT_LIGHTS > 0\n      for(int i=0; i<NUM_AMBIENT_LIGHTS; i++){\n        v_color.rgb += light.ambient[i].color.rgb * material.ambient.rgb;\n      }\n    #endif\n\n    #if NUM_DIRECTIONAL_LIGHTS > 0\n      if(!useToon){\n        for(int i=0; i<NUM_DIRECTIONAL_LIGHTS; i++){\n          v_light[numLights + i] = -light.directional[i].direction.xyz;\n\n          vec4 diffuseColor = material.diffuse * vec4(light.directional[i].color.rgb, 1.0);\n          vec3 lightVec = normalize(v_light[numLights + i]);\n          float diffuse = clamp(dot(lightVec, _surface.normal), 0.0f, 1.0f);\n          v_color.rgb += diffuse * diffuseColor.rgb;\n          //v_color.a = diffuseColor.a;\n          v_color = clamp(v_color, 0.0f, 1.0f);\n        }\n      }\n      v_color.a = material.diffuse.a;\n\n      numLights += NUM_DIRECTIONAL_LIGHTS;\n    #endif\n\n    #if NUM_DIRECTIONAL_SHADOW_LIGHTS > 0\n      if(!useToon){\n        for(int i=0; i<NUM_DIRECTIONAL_SHADOW_LIGHTS; i++){\n          v_light[numLights + i] = -light.directionalShadow[i].direction.xyz;\n          v_directionalShadowDepth[i] = light.directionalShadow[i].viewProjectionTransform * vec4(pos, 1.0);\n          v_directionalShadowTexcoord[i] = light.directionalShadow[i].shadowProjectionTransform * vec4(pos, 1.0);\n\n          vec4 diffuseColor = material.diffuse * vec4(light.directionalShadow[i].color.rgb, 1.0);\n          vec3 lightVec = normalize(v_light[numLights + i]);\n          float diffuse = clamp(dot(lightVec, _surface.normal), 0.0f, 1.0f);\n          v_color.rgb += diffuse * diffuseColor.rgb;\n          v_color.a = diffuseColor.a;\n          v_color = clamp(v_color, 0.0f, 1.0f);\n        }\n      }\n      v_color.a = material.diffuse.a;\n\n      numLights += NUM_DIRECTIONAL_SHADOW_LIGHTS;\n    #endif\n\n    if(useSphereMap){\n      if(useSubTexture){\n        // TODO: implement\n      }else{\n        vec2 normalWV = vec2(camera.viewTransform * vec4(v_normal, 1.0));\n        v_sptex.x = normalWV.x * 0.5 + 0.5;\n        v_sptex.y = normalWV.y * (-0.5) + 0.5;\n      }\n    }\n\n    #if NUM_OMNI_LIGHTS > 0\n      for(int i=0; i<NUM_OMNI_LIGHTS; i++){\n        v_light[numLights + i] = light.omni[i].position.xyz - pos;\n      }\n      numLights += NUM_OMNI_LIGHTS;\n    #endif\n\n    #if NUM_SPOT_LIGHTS > 0\n      for(int i=0; i<NUM_SPOT_LIGHTS; i++){\n        v_light[numLights + i] = light.spot[i].position.xyz - pos;\n      }\n      numLights += NUM_SPOT_LIGHTS;\n    #endif\n\n    #if NUM_IES_LIGHTS > 0\n      // TODO: implement\n    #endif\n\n    #if NUM_PROBE_LIGHTS > 0\n      // TODO: implement\n    #endif\n\n    float distance = length(viewVec);\n    v_fogFactor = clamp((distance - fog.startDistance) / (fog.endDistance - fog.startDistance), 0.0, 1.0);\n\n    v_texcoord0 = _geometry.texcoords[0];\n    v_texcoord1 = _geometry.texcoords[1];\n    gl_Position = camera.viewProjectionTransform * vec4(pos, 1.0);\n  }\n';
 
 /**
  * @access private
@@ -1949,308 +1963,31 @@ var MMDProgram = function (_SCNProgram) {
 exports.default = MMDProgram;
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var _MMDFragmentShader = '\n  uniform float useTexture;\n  uniform float useToon;\n  uniform float useSphereMap;\n  uniform float useSubtexture;\n\n  uniform float spadd;\n\n  uniform sampler2D sphereTexture;\n\n  uniform vec4 textureAddValue;\n  uniform vec4 textureMulValue;\n  uniform vec4 sphereAddValue;\n  uniform vec4 sphereMulValue;\n  uniform vec4 materialToon;\n  uniform float parthf;\n  uniform float transp;\n\n  #pragma transparent\n  #pragma body\n\n  vec4 debugColor;\n\n  // linear to sRGB\n  //vec4 materialDiffuse = pow(_surface.diffuse, vec4(1.0/2.2));\n  //vec4 materialSpecular = pow(_surface.specular, vec4(1.0/2.2));\n  //vec4 materialEmission = pow(_surface.emission, vec4(1.0/2.2));\n  //vec3 lightAmbient = pow(_lightingContribution.ambient, vec3(1.0/2.2));\n  //vec3 lightSpecular = pow(_lightingContribution.specular, vec3(1.0/2.2));\n  vec4 materialDiffuse = _surface.diffuse;\n  vec4 materialSpecular = _surface.specular;\n  vec4 materialEmission = _surface.emission;\n  vec3 lightAmbient = _lightingContribution.ambient;\n  vec3 lightSpecular = _lightingContribution.specular;\n\n  vec3 lightDirection = -scn_lights.direction0.xyz;\n\n  // light direction in view space\n  vec3 lightDir = normalize((u_viewTransform * vec4(lightDirection, 0.0)).xyz);\n\n  //vec4 diffuseColor = materialDiffuse * vec4(lightDiffuse, 1.0);\n  vec4 diffuseColor = vec4(0, 0, 0, 1);\n  // This is not typo; use materialDiffuse for ambientColor.\n  vec3 ambientColor = materialDiffuse.rgb * lightAmbient.rgb + materialEmission.rgb;\n  vec3 specularColor = materialSpecular.rgb * lightSpecular.rgb;\n\n  vec3 n = normalize(_surface.normal);\n\n  #define SKII1 1500.0\n  #define SKII2 8000.0\n  #define Toon 3.0\n\n  _output.color.rgb = ambientColor.rgb;\n  if(useToon <= 0.0){\n    _output.color.rgb += diffuseColor.rgb;\n  }\n  _output.color.a = diffuseColor.a;\n  _output.color = clamp(_output.color, vec4(0), vec4(1));\n\n  vec2 spTex;\n  if(useSphereMap > 0.0){\n    if(useSubtexture > 0.0){\n      spTex = _surface.specularTexcoord;\n    }else{\n      spTex.x = n.x * 0.5 + 0.5;\n      spTex.y = -n.y * 0.5 + 0.5;\n    }\n  }\n\n\n\n\n\n  //vec3 halfVector = normalize(normalize(_surface.view) - normalize(lightDir));\n  //vec3 specular = pow(max(0.0, dot(halfVector, n)), _surface.shininess) * specularColor;\n  vec4 shadowColor = vec4(ambientColor, _output.color.a);\n\n\n\n\n\n\n\n  if(useTexture > 0.0){\n    //_output.color *= texture(u_multiplyTexture, _surface.multiplyTexcoord);\n    vec4 texColor = texture(u_multiplyTexture, _surface.multiplyTexcoord);\n    texColor.rgb = mix(vec3(1), texColor.rgb * textureMulValue.rgb + textureAddValue.rgb, textureMulValue.a + textureAddValue.a);\n    _output.color *= texColor;\n    shadowColor *= texColor;\n  }\n  //debugColor = shadowColor;\n\n  if(useSphereMap > 0.0){\n    vec4 texColor = texture(sphereTexture, spTex);\n    if(spadd > 0.0){\n      texColor.rgb = mix(vec3(0), texColor.rgb * sphereMulValue.rgb + sphereAddValue.rgb, sphereMulValue.a + sphereAddValue.a);\n      _output.color.rgb += texColor.rgb;\n      shadowColor.rgb += texColor.rgb;\n    }else{\n      texColor.rgb = mix(vec3(1), texColor.rgb * sphereMulValue.rgb + sphereAddValue.rgb, sphereMulValue.a + sphereAddValue.a);\n      _output.color.rgb *= texColor.rgb;\n      shadowColor.rgb *= texColor.rgb;\n    }\n    _output.color.a *= texColor.a;\n    shadowColor.a *= texColor.a;\n  }\n  _output.color.rgb += specularColor;\n\n  vec4 zCalcTex = scn_lights.shadowMatrix0 * u_inverseViewTransform * vec4(_surface.position, 1.0);\n  zCalcTex /= zCalcTex.w;\n  vec2 transTexCoord;\n  transTexCoord.x = (1.0 + zCalcTex.x) * 0.5;\n  transTexCoord.y = (1.0 - zCalcTex.y) * 0.5;\n\n  debugColor = vec4(1.0, 0.0, 0.0, 1.0);\n  if(0.0 <= transTexCoord.x && transTexCoord.x <= 1.0\n    && 0.0 <= transTexCoord.y && transTexCoord.y <= 1.0){\n    float comp;\n    float depth = convDepth(texture(u_shadowTexture0, transTexCoord));\n    if(parthf > 0.0){\n      //debugColor = vec4(1.0, 0.0, 0.0, 1.0);\n      //comp = 1.0 - clamp(max(zCalcTex.z - texture(u_shadowTexture0, transTexCoord).r, 0.0) * SKII2 * transTexCoord.y - 0.3, 0.0, 1.0);\n      comp = 1.0 - clamp(max(zCalcTex.z - depth, 0.0) * SKII2 * transTexCoord.y - 0.3, 0.0, 1.0);\n    }else{\n      //debugColor = vec4(0.0, 1.0, 0.0, 1.0);\n      //comp = 1.0 - clamp(max(zCalcTex.z - texture(u_shadowTexture0, transTexCoord).r, 0.0) * SKII1 - 0.3, 0.0, 1.0);\n      comp = 1.0 - clamp(max(zCalcTex.z - depth, 0.0) * SKII1 - 0.3, 0.0, 1.0);\n    }\n    if(useToon > 0.0){\n      //debugColor = vec4(0.0, 0.0, 1.0, 1.0);\n      float lightNormal = dot(n, -lightDir) * Toon;\n      comp = min(clamp(lightNormal, 0.0, 1.0), comp);\n      //_output.color *= texture(u_transparentTexture, vec2(0, 0.5 + lightNormal * 0.5));\n      shadowColor.rgb *= materialToon.rgb;\n    }\n    debugColor = shadowColor;\n    //_output.color.rgb += specularColor.rgb;\n\n    _output.color = mix(shadowColor, _output.color, comp);\n    if(transp > 0.0){\n      _output.color.a = 0.5;\n    }\n  }\n\n  \n\n\n  //_output.color.rgb *= _output.color.a;\n\n  // sRGB to linear\n  //_output.color = pow(_output.color, vec4(2.2));\n\n\n\n\n\n  // DEBUG\n\n  //if(useTexture > 0.0){\n  //  _output.color = texture(u_multiplyTexture, _surface.multiplyTexcoord);\n  //}\n\n  //_output.color.rgb = ambientColor;\n  //_output.color.a = 1.0;\n\n  //_output.color.rgb = _lightingContribution.specular;\n  //_output.color.a = 1.0;\n\n  //if(useToon > 0.0){\n  //  float lightNormal = dot(n, -lightDir);\n  //  _output.color = texture(u_transparentTexture, vec2(0, 0.5 + lightNormal * 0.5));\n  //}\n\n  //_output.color = debugColor;\n  //_output.color = materialToon;\n  //_output.color = vec4(ambientColor, 1.0);\n  //_output.color = shadowColor;\n';
-
-exports.default = _MMDFragmentShader;
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var _dataUrls = ['data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAD1JREFUWAnt1UENACAMA0Ag+JdWS0Aw0c/VQJfrY/O8jGJWsftXO4AAAQIECBDYSaof2QQECBAgQIBAXeAC0JEGqCKc/58AAAAASUVORK5CYII=', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAD5JREFUWAnt1bENACAMAzBA/H9kj2CliCeyOA+kcobO+zKCWcHuX+0AAgQIECBAYJ+q6Ec2AQECBAgQIBAXaFUyBvgWZ9yCAAAAAElFTkSuQmCC', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAD1JREFUWAnt1UENACAMA0Ag+DdQsUAw0c/VQJfrY/O8jGJWsftXO4AAAQIECBDYSaof2QQECBAgQIBAXeAC/+gGD8FBA34AAAAASUVORK5CYII=', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAD9JREFUWAnt1bENACAMAzBA/H8pAytTQTyRxXkglTO010sLZgS7f7UDCBAgQIAAgXn2in5kExAgQIAAAQJxgQsutAcTsTp79gAAAABJRU5ErkJggg==', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAXVJREFUWAntVtFuAyEMg4r//96p63qNTQzhjtOp26S+gLQmxI4dWHu6vNlKH1y3D3rTeg2wbmDdwLqBdQPrBtYNrBsohxcSvSDlnJLySLJy0juUOKgl56P2xio02Z695WBqbtGwM3vWTON0BnNAj2JDv/FTKulxrxCN3UmGJBusoZqgq2l/06ktNvGYg489gn1I35I6gMwByBQ9rKMLS10uhG0zQw6OuOD4H8uoY+8cRSuUdP9CtS6aG0pjFScxGk/gYTDiMKdrjxwIAzy+XcKOBBIPqtPu1V2klXkN1rKZXMWYy8xgKWXWKr+1W62kHxuARFEbzASyQmIulkYSB3XlwmZ9tR8DPPEL6CeowPgpIVR73m0yLTsSu1VVjBh87TkgIcWRcr1Tn+J1R2QcH0QR/Y/8bC6/kj7AGfHPQ0AYbjsDbvEd0Jr/k4Rex53+2HAG8jsg5zPSKHW6k0wk+CkPpw+cssXf5y9nmHnTgwBEnTF5wL0ALDJrOqmNWLMAAAAASUVORK5CYII=', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAl5JREFUWAntlb9qVEEUxr+ZvbtZTRAUUVHsFCwiCKJYWmjpI1jY2fkGPoC+h62FIiJ2FrYRAxY2ioQgGI0b3ST7Z8bfmbl33cgaI6IX4c7u3Dlz5sz5vvnm7lkX125E1dh8jdgJuiHQKPCfK+CKX/+InJNc96dxhdw+Fq0UhLJj29S1eACQQFiLgzy3ONeWWselzkVp8xFzhIxDRgMqy4rljX1SnKafkrafM/+cfQG/EVNbLvbvR/kF7PM58fYzaeuJtHBTGq8CdJLNT6W5Kxk0fGAjzQiFNXzHmEDK9vmj2CQevSbfGfrZnGP4Supeznb/HjEQ9gfxXYNA6EW5/STkBFsP6Y/ZuAiBWzmxBWssDV5kgpsPwIOEPyzNX5eGy3TW7ACdC3nNCJidSL6H0BviD5Uq9KQDt8mFwuErBHp3INABYwUH0oiTuXlGu98RG49w+ktIDbmwjs+ayWeDXZMRRIEUb/KzJzJ2INS9Km3cxWfxFoPfzaHaCUywwHN7+i8woFgmIM2emr07pqSpY4RmteFSoj1raacvcgW/2yJKDJZ23zVaTvrtHvQ3V4vFmgm0z9VMAHXtFa61NQQaBYoYxvn/i2pln/y18fvcnLNqWVmQKa/ZclZyk5ms5N/hK+Oqt97WivVPqwoh0McKVLyY7AB+1afJZBr2nAbPIDwByN0zWnfyvpVs70tfOVbz4t3bl4nANGBMtZtTVzU8qWG8jUzFf2r84dS2kogkRYxUJjMZIeHNB7niy8ZHwsuTpWEWwhTYH5n5iibq2RWY9P+ucbj8nUA2P8NGgdoV+AaTnOoWJjozfwAAAABJRU5ErkJggg==', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAADJJREFUWAnt0EENAAAIAzHAv2cgmODTGbil2bt4XD22L+0AAQIECBAgQIAAAQIECBAgME2IBDzy317fAAAAAElFTkSuQmCC', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAADJJREFUWAnt0EENAAAIAzHAv2cgmODTGbil2bt4XD22L+0AAQIECBAgQIAAAQIECBAgME2IBDzy317fAAAAAElFTkSuQmCC', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAADJJREFUWAnt0EENAAAIAzHAv2cgmODTGbil2bt4XD22L+0AAQIECBAgQIAAAQIECBAgME2IBDzy317fAAAAAElFTkSuQmCC', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAADJJREFUWAnt0EENAAAIAzHAv2cgmODTGbil2bt4XD22L+0AAQIECBAgQIAAAQIECBAgME2IBDzy317fAAAAAElFTkSuQmCC'];
-
-var _ToonImages = [];
-var _iteratorNormalCompletion = true;
-var _didIteratorError = false;
-var _iteratorError = undefined;
-
-try {
-  for (var _iterator = _dataUrls[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-    var data = _step.value;
-
-    var image = new Image();
-    image.src = data;
-    _ToonImages.push(image);
-  }
-} catch (err) {
-  _didIteratorError = true;
-  _iteratorError = err;
-} finally {
-  try {
-    if (!_iteratorNormalCompletion && _iterator.return) {
-      _iterator.return();
-    }
-  } finally {
-    if (_didIteratorError) {
-      throw _iteratorError;
-    }
-  }
-}
-
-exports.default = _ToonImages;
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.MMD_CAMERA_ROTZ_NODE_NAME = exports.MMD_CAMERA_ROTY_NODE_NAME = exports.MMD_CAMERA_ROTX_NODE_NAME = exports.MMD_CAMERA_NODE_NAME = exports.MMD_CAMERA_ROOT_NODE_NAME = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _jscenekit = __webpack_require__(0);
-
-var _MMDNode2 = __webpack_require__(1);
-
-var _MMDNode3 = _interopRequireDefault(_MMDNode2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var MMD_CAMERA_ROOT_NODE_NAME = exports.MMD_CAMERA_ROOT_NODE_NAME = 'MMDCameraRoot';
-var MMD_CAMERA_NODE_NAME = exports.MMD_CAMERA_NODE_NAME = 'MMDCamera';
-var MMD_CAMERA_ROTX_NODE_NAME = exports.MMD_CAMERA_ROTX_NODE_NAME = 'MMDCameraRotX';
-var MMD_CAMERA_ROTY_NODE_NAME = exports.MMD_CAMERA_ROTY_NODE_NAME = 'MMDCameraRotY';
-var MMD_CAMERA_ROTZ_NODE_NAME = exports.MMD_CAMERA_ROTZ_NODE_NAME = 'MMDCameraRotZ';
 
 /**
  *
  * @access public
- * @extends {MMDNode}
  */
 
-var MMDCameraNode = function (_MMDNode) {
-  _inherits(MMDCameraNode, _MMDNode);
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-  /**
-   *
-   * @access public
-   * @param {string} [name = MMD_CAMERA_ROOT_NODE_NAME] -
-   * @constructor
-   */
-  function MMDCameraNode() {
-    var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : MMD_CAMERA_ROOT_NODE_NAME;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-    _classCallCheck(this, MMDCameraNode);
+var MMDIKConstraint = function MMDIKConstraint() {
+  _classCallCheck(this, MMDIKConstraint);
+};
 
-    var _this = _possibleConstructorReturn(this, (MMDCameraNode.__proto__ || Object.getPrototypeOf(MMDCameraNode)).call(this));
-
-    _this.name = name;
-
-    /** @type {MMDNode} */
-    _this.cameraNode = new _MMDNode3.default();
-
-    var camera = new _jscenekit.SCNCamera();
-    _this.cameraNode.name = MMD_CAMERA_NODE_NAME;
-    _this.cameraNode.camera = camera;
-
-    // TODO: set default values of MikuMikuDance: ex) fov
-    camera.yFov = 30.0;
-    camera.automaticallyAdjustsZRange = true;
-
-    /** @type {MMDNode} */
-    _this.rotYNode = new _MMDNode3.default();
-
-    _this.rotYNode.name = MMD_CAMERA_ROTY_NODE_NAME;
-    _this.addChildNode(_this.rotYNode);
-
-    /** @type {MMDNode} */
-    _this.rotXNode = new _MMDNode3.default();
-
-    _this.rotXNode.name = MMD_CAMERA_ROTX_NODE_NAME;
-    _this.rotYNode.addChildNode(_this.rotXNode);
-
-    /** @type {MMDNode} */
-    _this.rotZNode = new _MMDNode3.default();
-
-    _this.rotZNode.name = MMD_CAMERA_ROTZ_NODE_NAME;
-    _this.rotXNode.addChildNode(_this.rotZNode);
-
-    _this.rotZNode.addChildNode(_this.cameraNode);
-
-    var technique = new _jscenekit.SCNTechnique({
-      sequence: ['pass_scene', 'pass_edge'],
-      passes: {
-        pass_scene: {
-          colorStates: {
-            clear: true,
-            clearColor: 'sceneBackground'
-          },
-          draw: 'DRAW_SCENE',
-          blendStates: {
-            enable: true
-          },
-          inputs: {
-            depth: 'DEPTH',
-            color: 'COLOR'
-          },
-          outputs: {
-            color: 'COLOR',
-            depth: 'DEPTH'
-          }
-        },
-        pass_edge: {
-          colorStates: {
-            clear: false
-          },
-          blendStates: {
-            enable: true
-          },
-          depthStates: {
-            clear: false,
-            enableWrite: true,
-            func: 'less'
-          },
-          cullMode: 'front',
-          draw: 'DRAW_SCENE',
-          program: 'doesntexist',
-          metalVertexShader: 'pass_edge_vertex',
-          metalFragmentShader: 'pass_edge_fragment',
-          inputs: {},
-          outputs: {
-            color: 'COLOR',
-            depth: 'DEPTH'
-          }
-        }
-      },
-      targets: {
-        symbols: {
-          screenSize: {
-            type: 'float'
-          },
-          vertexSymbol: {
-            semantic: 'vertex'
-          },
-          normalSymbol: {
-            semantic: 'normal'
-          }
-        }
-      }
-    });
-    camera.technique = technique;
-    return _this;
-  }
-
-  _createClass(MMDCameraNode, [{
-    key: 'getCameraNode',
-
-
-    /**
-     * @access public
-     * @returns {SCNNode} -
-     */
-    value: function getCameraNode() {
-      return this.cameraNode;
-    }
-
-    /**
-     * @access public
-     * @returns {SCNCamera} -
-     */
-
-  }, {
-    key: 'getCamera',
-    value: function getCamera() {
-      return this.cameraNode.camera;
-    }
-  }, {
-    key: 'rotX',
-    get: function get() {
-      //return this.rotXNode.eulerAngles.x
-      var value = this.rotXNode.rotation.w;
-      if (this.rotXNode.rotation.x < 0) {
-        return -value;
-      }
-      return value;
-    },
-    set: function set(newValue) {
-      //const euler = this.rotXNode.eulerAngles
-      //euler.x = newValue
-      //this.rotXNode.eulerAngles = euler
-      this.rotXNode.rotation = new _jscenekit.SCNVector4(1, 0, 0, newValue);
-    }
-  }, {
-    key: 'rotY',
-    get: function get() {
-      //return this.rotYNode.eulerAngles.y
-      var value = this.rotYNode.rotation.w;
-      if (this.rotYNode.rotation.y < 0) {
-        return -value;
-      }
-      return value;
-    },
-    set: function set(newValue) {
-      //const euler = this.rotYNode.eulerAngles
-      //euler.y = newValue
-      //this.rotYNode.eulerAngles = euler
-      this.rotYNode.rotation = new _jscenekit.SCNVector4(0, 1, 0, newValue);
-    }
-  }, {
-    key: 'rotZ',
-    get: function get() {
-      //return this.rotZNode.eulerAngles.z
-      var value = this.rotZNode.rotation.w;
-      if (this.rotZNode.rotation.z < 0) {
-        return -value;
-      }
-      return value;
-    },
-    set: function set(newValue) {
-      //const euler = this.rotZNode.eulerAngles
-      //euler.z = newValue
-      //this.rotZNode.eulerAngles = euler
-      this.rotZNode.rotation = new _jscenekit.SCNVector4(0, 0, 1, newValue);
-    }
-  }, {
-    key: 'distance',
-    get: function get() {
-      return this.cameraNode.position.z;
-    },
-    set: function set(newValue) {
-      this.cameraNode.position.z = newValue;
-    }
-  }, {
-    key: 'angle',
-    get: function get() {
-      return this.cameraNode.camera.yFov;
-    },
-    set: function set(newValue) {
-      this.cameraNode.camera.yFov = newValue;
-    }
-  }]);
-
-  return MMDCameraNode;
-}(_MMDNode3.default);
-
-exports.default = MMDCameraNode;
+exports.default = MMDIKConstraint;
 
 /***/ }),
-/* 9 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2266,7 +2003,7 @@ var _MMDNode = __webpack_require__(1);
 
 var _MMDNode2 = _interopRequireDefault(_MMDNode);
 
-var _MMDProgram = __webpack_require__(5);
+var _MMDProgram = __webpack_require__(4);
 
 var _MMDProgram2 = _interopRequireDefault(_MMDProgram);
 
@@ -2274,7 +2011,7 @@ var _MMDReader2 = __webpack_require__(2);
 
 var _MMDReader3 = _interopRequireDefault(_MMDReader2);
 
-var _MMDIKConstraint = __webpack_require__(4);
+var _MMDIKConstraint = __webpack_require__(5);
 
 var _MMDIKConstraint2 = _interopRequireDefault(_MMDIKConstraint);
 
@@ -3042,6 +2779,228 @@ var MMDPMDReader = function (_MMDReader) {
 exports.default = MMDPMDReader;
 
 /***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var _dataUrls = ['data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAD1JREFUWAnt1UENACAMA0Ag+JdWS0Aw0c/VQJfrY/O8jGJWsftXO4AAAQIECBDYSaof2QQECBAgQIBAXeAC0JEGqCKc/58AAAAASUVORK5CYII=', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAD5JREFUWAnt1bENACAMAzBA/H9kj2CliCeyOA+kcobO+zKCWcHuX+0AAgQIECBAYJ+q6Ec2AQECBAgQIBAXaFUyBvgWZ9yCAAAAAElFTkSuQmCC', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAD1JREFUWAnt1UENACAMA0Ag+DdQsUAw0c/VQJfrY/O8jGJWsftXO4AAAQIECBDYSaof2QQECBAgQIBAXeAC/+gGD8FBA34AAAAASUVORK5CYII=', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAD9JREFUWAnt1bENACAMAzBA/H8pAytTQTyRxXkglTO010sLZgS7f7UDCBAgQIAAgXn2in5kExAgQIAAAQJxgQsutAcTsTp79gAAAABJRU5ErkJggg==', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAXVJREFUWAntVtFuAyEMg4r//96p63qNTQzhjtOp26S+gLQmxI4dWHu6vNlKH1y3D3rTeg2wbmDdwLqBdQPrBtYNrBsohxcSvSDlnJLySLJy0juUOKgl56P2xio02Z695WBqbtGwM3vWTON0BnNAj2JDv/FTKulxrxCN3UmGJBusoZqgq2l/06ktNvGYg489gn1I35I6gMwByBQ9rKMLS10uhG0zQw6OuOD4H8uoY+8cRSuUdP9CtS6aG0pjFScxGk/gYTDiMKdrjxwIAzy+XcKOBBIPqtPu1V2klXkN1rKZXMWYy8xgKWXWKr+1W62kHxuARFEbzASyQmIulkYSB3XlwmZ9tR8DPPEL6CeowPgpIVR73m0yLTsSu1VVjBh87TkgIcWRcr1Tn+J1R2QcH0QR/Y/8bC6/kj7AGfHPQ0AYbjsDbvEd0Jr/k4Rex53+2HAG8jsg5zPSKHW6k0wk+CkPpw+cssXf5y9nmHnTgwBEnTF5wL0ALDJrOqmNWLMAAAAASUVORK5CYII=', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAl5JREFUWAntlb9qVEEUxr+ZvbtZTRAUUVHsFCwiCKJYWmjpI1jY2fkGPoC+h62FIiJ2FrYRAxY2ioQgGI0b3ST7Z8bfmbl33cgaI6IX4c7u3Dlz5sz5vvnm7lkX125E1dh8jdgJuiHQKPCfK+CKX/+InJNc96dxhdw+Fq0UhLJj29S1eACQQFiLgzy3ONeWWselzkVp8xFzhIxDRgMqy4rljX1SnKafkrafM/+cfQG/EVNbLvbvR/kF7PM58fYzaeuJtHBTGq8CdJLNT6W5Kxk0fGAjzQiFNXzHmEDK9vmj2CQevSbfGfrZnGP4Supeznb/HjEQ9gfxXYNA6EW5/STkBFsP6Y/ZuAiBWzmxBWssDV5kgpsPwIOEPyzNX5eGy3TW7ACdC3nNCJidSL6H0BviD5Uq9KQDt8mFwuErBHp3INABYwUH0oiTuXlGu98RG49w+ktIDbmwjs+ayWeDXZMRRIEUb/KzJzJ2INS9Km3cxWfxFoPfzaHaCUywwHN7+i8woFgmIM2emr07pqSpY4RmteFSoj1raacvcgW/2yJKDJZ23zVaTvrtHvQ3V4vFmgm0z9VMAHXtFa61NQQaBYoYxvn/i2pln/y18fvcnLNqWVmQKa/ZclZyk5ms5N/hK+Oqt97WivVPqwoh0McKVLyY7AB+1afJZBr2nAbPIDwByN0zWnfyvpVs70tfOVbz4t3bl4nANGBMtZtTVzU8qWG8jUzFf2r84dS2kogkRYxUJjMZIeHNB7niy8ZHwsuTpWEWwhTYH5n5iibq2RWY9P+ucbj8nUA2P8NGgdoV+AaTnOoWJjozfwAAAABJRU5ErkJggg==', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAADJJREFUWAnt0EENAAAIAzHAv2cgmODTGbil2bt4XD22L+0AAQIECBAgQIAAAQIECBAgME2IBDzy317fAAAAAElFTkSuQmCC', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAADJJREFUWAnt0EENAAAIAzHAv2cgmODTGbil2bt4XD22L+0AAQIECBAgQIAAAQIECBAgME2IBDzy317fAAAAAElFTkSuQmCC', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAADJJREFUWAnt0EENAAAIAzHAv2cgmODTGbil2bt4XD22L+0AAQIECBAgQIAAAQIECBAgME2IBDzy317fAAAAAElFTkSuQmCC', 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAADJJREFUWAnt0EENAAAIAzHAv2cgmODTGbil2bt4XD22L+0AAQIECBAgQIAAAQIECBAgME2IBDzy317fAAAAAElFTkSuQmCC'];
+
+var _ToonImages = [];
+var _iteratorNormalCompletion = true;
+var _didIteratorError = false;
+var _iteratorError = undefined;
+
+try {
+  for (var _iterator = _dataUrls[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+    var data = _step.value;
+
+    var image = new Image();
+    image.src = data;
+    _ToonImages.push(image);
+  }
+} catch (err) {
+  _didIteratorError = true;
+  _iteratorError = err;
+} finally {
+  try {
+    if (!_iteratorNormalCompletion && _iterator.return) {
+      _iterator.return();
+    }
+  } finally {
+    if (_didIteratorError) {
+      throw _iteratorError;
+    }
+  }
+}
+
+exports.default = _ToonImages;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _MMDReader2 = __webpack_require__(2);
+
+var _MMDReader3 = _interopRequireDefault(_MMDReader2);
+
+var _jscenekit = __webpack_require__(0);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/**
+ *
+ * @access public
+ * @extends {MMDReader}
+ */
+var MMDVPDReader = function (_MMDReader) {
+  _inherits(MMDVPDReader, _MMDReader);
+
+  /**
+   * 
+   * @access public
+   * @constructor
+   * @param {Buffer} data -
+   * @param {string} directoryPath -
+   */
+  function MMDVPDReader(data, directoryPath) {
+    _classCallCheck(this, MMDVPDReader);
+
+    var isBinary = false;
+    var isBigEndian = false;
+    var encoding = 'sjis';
+
+    /**
+     * @access private
+     * @type {CAAnimationGroup}
+     */
+    var _this = _possibleConstructorReturn(this, (MMDVPDReader.__proto__ || Object.getPrototypeOf(MMDVPDReader)).call(this, data, directoryPath, isBinary, isBigEndian, encoding));
+
+    _this.workingAnimationGroup = null;
+    return _this;
+  }
+
+  /**
+   * @access public
+   * @param {Buffer} data -
+   * @param {string} [directoryPath = ''] -
+   * @returns {?CAAnimationGroup} -
+   */
+
+
+  _createClass(MMDVPDReader, [{
+    key: 'loadVPDFile',
+
+
+    /**
+     * @access private
+     * @returns {?CAAnimationGroup} -
+     */
+    value: function loadVPDFile() {
+      var lines = this.binaryData.split('\r\n');
+
+      this.workingAnimationGroup = new _jscenekit.CAAnimationGroup();
+      this.workingAnimationGroup.animations = [];
+
+      var magic = lines[0];
+      if (magic !== 'Vocaloid Pose Data file') {
+        console.error('Unknown file format: ' + magic);
+        return null;
+      }
+
+      var modelName = lines[2].split(';')[0];
+      var numBonesText = lines[3].split(';')[0];
+      var numBones = parseInt(numBonesText);
+      if (isNaN(numBones)) {
+        return null;
+      }
+
+      var line = 5;
+      for (var boneNo = 0; boneNo < numBones; boneNo++) {
+        var boneName = lines[line + 0].split('{')[1];
+        var posText = lines[line + 1].split(';')[0].split(',');
+        var rotText = lines[line + 2].split(';')[0].split(',');
+
+        var posX = this.getFloatFromText(posText[0]);
+        var posY = this.getFloatFromText(posText[1]);
+        var posZ = this.getFloatFromText(posText[2]);
+        var pos = new _jscenekit.SCNVector3(posX, posY, posZ);
+
+        var rotX = this.getFloatFromText(rotText[0]);
+        var rotY = this.getFloatFromText(rotText[1]);
+        var rotZ = this.getFloatFromText(rotText[2]);
+        var rotW = this.getFloatFromText(rotText[3]);
+        var rot = new _jscenekit.SCNVector4(-rotX, -rotY, rotZ, rotW);
+
+        var posMotion = new _jscenekit.CAKeyframeAnimation('/' + boneName + '.transform.translation');
+        var rotMotion = new _jscenekit.CAKeyframeAnimation('/' + boneName + '.transform.quaternion');
+
+        posMotion.values = [pos];
+        rotMotion.values = [rot];
+
+        posMotion.keyTimes = [0.0];
+        rotMotion.keyTimes = [0.0];
+
+        this.workingAnimationGroup.animations.push(posMotion);
+        this.workingANimationGroup.animations.push(rotMotion);
+
+        line += 5;
+      }
+
+      this.workingAnimationGroup.duration = 0;
+      this.workingAnimationGroup.usesSceneTimeBase = false;
+      this.workingAnimationGroup.isRemovedOnCompletion = false;
+      this.workingAnimationGroup.fillMode = _jscenekit.kCAFillModeForwards;
+
+      return this.workingAnimationGroup;
+    }
+
+    /**
+     * @access private
+     * @param {string} text -
+     * @returns {Float} -
+     */
+
+  }, {
+    key: 'getFloatFromText',
+    value: function getFloatFromText(text) {
+      var value = parseFloat(text);
+      if (!isNaN(value)) {
+        return value;
+      }
+      return 0;
+    }
+  }], [{
+    key: 'getAnimation',
+    value: function getAnimation(data) {
+      var directoryPath = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+
+      var reader = new MMDVPDReader(data, directoryPath);
+      var animation = reader.loadVPDFile();
+
+      return animation;
+    }
+  }]);
+
+  return MMDVPDReader;
+}(_MMDReader3.default);
+
+exports.default = MMDVPDReader;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var _MMDFragmentShader = '\n  uniform float useTexture;\n  uniform float useToon;\n  uniform float useSphereMap;\n  uniform float useSubtexture;\n\n  uniform float spadd;\n\n  uniform sampler2D sphereTexture;\n\n  uniform vec4 textureAddValue;\n  uniform vec4 textureMulValue;\n  uniform vec4 sphereAddValue;\n  uniform vec4 sphereMulValue;\n  uniform vec4 materialToon;\n  uniform float parthf;\n  uniform float transp;\n\n  #pragma transparent\n  #pragma body\n\n  vec4 debugColor;\n\n  // linear to sRGB\n  //vec4 materialDiffuse = pow(_surface.diffuse, vec4(1.0/2.2));\n  //vec4 materialSpecular = pow(_surface.specular, vec4(1.0/2.2));\n  //vec4 materialEmission = pow(_surface.emission, vec4(1.0/2.2));\n  //vec3 lightAmbient = pow(_lightingContribution.ambient, vec3(1.0/2.2));\n  //vec3 lightSpecular = pow(_lightingContribution.specular, vec3(1.0/2.2));\n  vec4 materialDiffuse = _surface.diffuse;\n  vec4 materialSpecular = _surface.specular;\n  vec4 materialEmission = _surface.emission;\n  vec3 lightAmbient = _lightingContribution.ambient;\n  vec3 lightSpecular = _lightingContribution.specular;\n\n  vec3 lightDirection = -scn_lights.direction0.xyz;\n\n  // light direction in view space\n  vec3 lightDir = normalize((u_viewTransform * vec4(lightDirection, 0.0)).xyz);\n\n  //vec4 diffuseColor = materialDiffuse * vec4(lightDiffuse, 1.0);\n  vec4 diffuseColor = vec4(0, 0, 0, 1);\n  // This is not typo; use materialDiffuse for ambientColor.\n  vec3 ambientColor = materialDiffuse.rgb * lightAmbient.rgb + materialEmission.rgb;\n  vec3 specularColor = materialSpecular.rgb * lightSpecular.rgb;\n\n  vec3 n = normalize(_surface.normal);\n\n  #define SKII1 1500.0\n  #define SKII2 8000.0\n  #define Toon 3.0\n\n  _output.color.rgb = ambientColor.rgb;\n  if(useToon <= 0.0){\n    _output.color.rgb += diffuseColor.rgb;\n  }\n  _output.color.a = diffuseColor.a;\n  _output.color = clamp(_output.color, vec4(0), vec4(1));\n\n  vec2 spTex;\n  if(useSphereMap > 0.0){\n    if(useSubtexture > 0.0){\n      spTex = _surface.specularTexcoord;\n    }else{\n      spTex.x = n.x * 0.5 + 0.5;\n      spTex.y = -n.y * 0.5 + 0.5;\n    }\n  }\n\n\n\n\n\n  //vec3 halfVector = normalize(normalize(_surface.view) - normalize(lightDir));\n  //vec3 specular = pow(max(0.0, dot(halfVector, n)), _surface.shininess) * specularColor;\n  vec4 shadowColor = vec4(ambientColor, _output.color.a);\n\n\n\n\n\n\n\n  if(useTexture > 0.0){\n    //_output.color *= texture(u_multiplyTexture, _surface.multiplyTexcoord);\n    vec4 texColor = texture(u_multiplyTexture, _surface.multiplyTexcoord);\n    texColor.rgb = mix(vec3(1), texColor.rgb * textureMulValue.rgb + textureAddValue.rgb, textureMulValue.a + textureAddValue.a);\n    _output.color *= texColor;\n    shadowColor *= texColor;\n  }\n  //debugColor = shadowColor;\n\n  if(useSphereMap > 0.0){\n    vec4 texColor = texture(sphereTexture, spTex);\n    if(spadd > 0.0){\n      texColor.rgb = mix(vec3(0), texColor.rgb * sphereMulValue.rgb + sphereAddValue.rgb, sphereMulValue.a + sphereAddValue.a);\n      _output.color.rgb += texColor.rgb;\n      shadowColor.rgb += texColor.rgb;\n    }else{\n      texColor.rgb = mix(vec3(1), texColor.rgb * sphereMulValue.rgb + sphereAddValue.rgb, sphereMulValue.a + sphereAddValue.a);\n      _output.color.rgb *= texColor.rgb;\n      shadowColor.rgb *= texColor.rgb;\n    }\n    _output.color.a *= texColor.a;\n    shadowColor.a *= texColor.a;\n  }\n  _output.color.rgb += specularColor;\n\n  vec4 zCalcTex = scn_lights.shadowMatrix0 * u_inverseViewTransform * vec4(_surface.position, 1.0);\n  zCalcTex /= zCalcTex.w;\n  vec2 transTexCoord;\n  transTexCoord.x = (1.0 + zCalcTex.x) * 0.5;\n  transTexCoord.y = (1.0 - zCalcTex.y) * 0.5;\n\n  debugColor = vec4(1.0, 0.0, 0.0, 1.0);\n  if(0.0 <= transTexCoord.x && transTexCoord.x <= 1.0\n    && 0.0 <= transTexCoord.y && transTexCoord.y <= 1.0){\n    float comp;\n    float depth = convDepth(texture(u_shadowTexture0, transTexCoord));\n    if(parthf > 0.0){\n      //debugColor = vec4(1.0, 0.0, 0.0, 1.0);\n      //comp = 1.0 - clamp(max(zCalcTex.z - texture(u_shadowTexture0, transTexCoord).r, 0.0) * SKII2 * transTexCoord.y - 0.3, 0.0, 1.0);\n      comp = 1.0 - clamp(max(zCalcTex.z - depth, 0.0) * SKII2 * transTexCoord.y - 0.3, 0.0, 1.0);\n    }else{\n      //debugColor = vec4(0.0, 1.0, 0.0, 1.0);\n      //comp = 1.0 - clamp(max(zCalcTex.z - texture(u_shadowTexture0, transTexCoord).r, 0.0) * SKII1 - 0.3, 0.0, 1.0);\n      comp = 1.0 - clamp(max(zCalcTex.z - depth, 0.0) * SKII1 - 0.3, 0.0, 1.0);\n    }\n    if(useToon > 0.0){\n      //debugColor = vec4(0.0, 0.0, 1.0, 1.0);\n      float lightNormal = dot(n, -lightDir) * Toon;\n      comp = min(clamp(lightNormal, 0.0, 1.0), comp);\n      //_output.color *= texture(u_transparentTexture, vec2(0, 0.5 + lightNormal * 0.5));\n      shadowColor.rgb *= materialToon.rgb;\n    }\n    debugColor = shadowColor;\n    //_output.color.rgb += specularColor.rgb;\n\n    _output.color = mix(shadowColor, _output.color, comp);\n    if(transp > 0.0){\n      _output.color.a = 0.5;\n    }\n  }\n\n  \n\n\n  //_output.color.rgb *= _output.color.a;\n\n  // sRGB to linear\n  //_output.color = pow(_output.color, vec4(2.2));\n\n\n\n\n\n  // DEBUG\n\n  //if(useTexture > 0.0){\n  //  _output.color = texture(u_multiplyTexture, _surface.multiplyTexcoord);\n  //}\n\n  //_output.color.rgb = ambientColor;\n  //_output.color.a = 1.0;\n\n  //_output.color.rgb = _lightingContribution.specular;\n  //_output.color.a = 1.0;\n\n  //if(useToon > 0.0){\n  //  float lightNormal = dot(n, -lightDir);\n  //  _output.color = texture(u_transparentTexture, vec2(0, 0.5 + lightNormal * 0.5));\n  //}\n\n  //_output.color = debugColor;\n  //_output.color = materialToon;\n  //_output.color = vec4(ambientColor, 1.0);\n  //_output.color = shadowColor;\n';
+
+exports.default = _MMDFragmentShader;
+
+/***/ }),
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3066,7 +3025,7 @@ var _MMDSceneSource = __webpack_require__(3);
 
 var _MMDSceneSource2 = _interopRequireDefault(_MMDSceneSource);
 
-var _MMDCameraNode = __webpack_require__(8);
+var _MMDCameraNode = __webpack_require__(11);
 
 var _MMDCameraNode2 = _interopRequireDefault(_MMDCameraNode);
 
@@ -3349,7 +3308,7 @@ var MMDPMMReader = function (_MMDReader) {
    * @param {Buffer} data -
    * @param {string} directoryPath -
    */
-  function MMDPMMReader(data, directoryPath) {
+  function MMDPMMReader(data, directoryPath, options) {
     _classCallCheck(this, MMDPMMReader);
 
     var isBinary = true;
@@ -3438,11 +3397,14 @@ var MMDPMMReader = function (_MMDReader) {
      * @returns {?SCNScene} -
      */
     value: function loadPMMFile() {
+      var models = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
       var _this2 = this;
 
-      var models = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
       var motions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : new Map();
 
+      this._options = options;
       // initialize working variables
       this._workingScene = new _jscenekit.SCNScene();
       this._workingScene._dataLoadedPromise = new Promise(function (resolve, reject) {
@@ -5038,11 +5000,12 @@ var MMDPMMReader = function (_MMDReader) {
   }], [{
     key: 'getScene',
     value: function getScene(data, directoryPath) {
-      var models = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
-      var motions = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : new Map();
+      var models = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+      var motions = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
 
-      var reader = new MMDPMMReader(data, directoryPath);
-      var scene = reader.loadPMMFile(models, motions);
+      var reader = new MMDPMMReader(data, directoryPath, options);
+      var scene = reader.loadPMMFile(models, motions, options);
 
       return scene;
     }
@@ -5063,6 +5026,251 @@ exports.default = MMDPMMReader;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.MMD_CAMERA_ROTZ_NODE_NAME = exports.MMD_CAMERA_ROTY_NODE_NAME = exports.MMD_CAMERA_ROTX_NODE_NAME = exports.MMD_CAMERA_NODE_NAME = exports.MMD_CAMERA_ROOT_NODE_NAME = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _jscenekit = __webpack_require__(0);
+
+var _MMDNode2 = __webpack_require__(1);
+
+var _MMDNode3 = _interopRequireDefault(_MMDNode2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var MMD_CAMERA_ROOT_NODE_NAME = exports.MMD_CAMERA_ROOT_NODE_NAME = 'MMDCameraRoot';
+var MMD_CAMERA_NODE_NAME = exports.MMD_CAMERA_NODE_NAME = 'MMDCamera';
+var MMD_CAMERA_ROTX_NODE_NAME = exports.MMD_CAMERA_ROTX_NODE_NAME = 'MMDCameraRotX';
+var MMD_CAMERA_ROTY_NODE_NAME = exports.MMD_CAMERA_ROTY_NODE_NAME = 'MMDCameraRotY';
+var MMD_CAMERA_ROTZ_NODE_NAME = exports.MMD_CAMERA_ROTZ_NODE_NAME = 'MMDCameraRotZ';
+
+/**
+ *
+ * @access public
+ * @extends {MMDNode}
+ */
+
+var MMDCameraNode = function (_MMDNode) {
+  _inherits(MMDCameraNode, _MMDNode);
+
+  /**
+   *
+   * @access public
+   * @param {string} [name = MMD_CAMERA_ROOT_NODE_NAME] -
+   * @constructor
+   */
+  function MMDCameraNode() {
+    var name = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : MMD_CAMERA_ROOT_NODE_NAME;
+
+    _classCallCheck(this, MMDCameraNode);
+
+    var _this = _possibleConstructorReturn(this, (MMDCameraNode.__proto__ || Object.getPrototypeOf(MMDCameraNode)).call(this));
+
+    _this.name = name;
+
+    /** @type {MMDNode} */
+    _this.cameraNode = new _MMDNode3.default();
+
+    var camera = new _jscenekit.SCNCamera();
+    _this.cameraNode.name = MMD_CAMERA_NODE_NAME;
+    _this.cameraNode.camera = camera;
+
+    // TODO: set default values of MikuMikuDance: ex) fov
+    camera.yFov = 30.0;
+    camera.automaticallyAdjustsZRange = true;
+
+    /** @type {MMDNode} */
+    _this.rotYNode = new _MMDNode3.default();
+
+    _this.rotYNode.name = MMD_CAMERA_ROTY_NODE_NAME;
+    _this.addChildNode(_this.rotYNode);
+
+    /** @type {MMDNode} */
+    _this.rotXNode = new _MMDNode3.default();
+
+    _this.rotXNode.name = MMD_CAMERA_ROTX_NODE_NAME;
+    _this.rotYNode.addChildNode(_this.rotXNode);
+
+    /** @type {MMDNode} */
+    _this.rotZNode = new _MMDNode3.default();
+
+    _this.rotZNode.name = MMD_CAMERA_ROTZ_NODE_NAME;
+    _this.rotXNode.addChildNode(_this.rotZNode);
+
+    _this.rotZNode.addChildNode(_this.cameraNode);
+
+    var technique = new _jscenekit.SCNTechnique({
+      sequence: ['pass_scene', 'pass_edge'],
+      passes: {
+        pass_scene: {
+          colorStates: {
+            clear: true,
+            clearColor: 'sceneBackground'
+          },
+          draw: 'DRAW_SCENE',
+          blendStates: {
+            enable: true
+          },
+          inputs: {
+            depth: 'DEPTH',
+            color: 'COLOR'
+          },
+          outputs: {
+            color: 'COLOR',
+            depth: 'DEPTH'
+          }
+        },
+        pass_edge: {
+          colorStates: {
+            clear: false
+          },
+          blendStates: {
+            enable: true
+          },
+          depthStates: {
+            clear: false,
+            enableWrite: true,
+            func: 'less'
+          },
+          cullMode: 'front',
+          draw: 'DRAW_SCENE',
+          program: 'doesntexist',
+          metalVertexShader: 'pass_edge_vertex',
+          metalFragmentShader: 'pass_edge_fragment',
+          inputs: {},
+          outputs: {
+            color: 'COLOR',
+            depth: 'DEPTH'
+          }
+        }
+      },
+      targets: {
+        symbols: {
+          screenSize: {
+            type: 'float'
+          },
+          vertexSymbol: {
+            semantic: 'vertex'
+          },
+          normalSymbol: {
+            semantic: 'normal'
+          }
+        }
+      }
+    });
+    camera.technique = technique;
+    return _this;
+  }
+
+  _createClass(MMDCameraNode, [{
+    key: 'getCameraNode',
+
+
+    /**
+     * @access public
+     * @returns {SCNNode} -
+     */
+    value: function getCameraNode() {
+      return this.cameraNode;
+    }
+
+    /**
+     * @access public
+     * @returns {SCNCamera} -
+     */
+
+  }, {
+    key: 'getCamera',
+    value: function getCamera() {
+      return this.cameraNode.camera;
+    }
+  }, {
+    key: 'rotX',
+    get: function get() {
+      //return this.rotXNode.eulerAngles.x
+      var value = this.rotXNode.rotation.w;
+      if (this.rotXNode.rotation.x < 0) {
+        return -value;
+      }
+      return value;
+    },
+    set: function set(newValue) {
+      //const euler = this.rotXNode.eulerAngles
+      //euler.x = newValue
+      //this.rotXNode.eulerAngles = euler
+      this.rotXNode.rotation = new _jscenekit.SCNVector4(1, 0, 0, newValue);
+    }
+  }, {
+    key: 'rotY',
+    get: function get() {
+      //return this.rotYNode.eulerAngles.y
+      var value = this.rotYNode.rotation.w;
+      if (this.rotYNode.rotation.y < 0) {
+        return -value;
+      }
+      return value;
+    },
+    set: function set(newValue) {
+      //const euler = this.rotYNode.eulerAngles
+      //euler.y = newValue
+      //this.rotYNode.eulerAngles = euler
+      this.rotYNode.rotation = new _jscenekit.SCNVector4(0, 1, 0, newValue);
+    }
+  }, {
+    key: 'rotZ',
+    get: function get() {
+      //return this.rotZNode.eulerAngles.z
+      var value = this.rotZNode.rotation.w;
+      if (this.rotZNode.rotation.z < 0) {
+        return -value;
+      }
+      return value;
+    },
+    set: function set(newValue) {
+      //const euler = this.rotZNode.eulerAngles
+      //euler.z = newValue
+      //this.rotZNode.eulerAngles = euler
+      this.rotZNode.rotation = new _jscenekit.SCNVector4(0, 0, 1, newValue);
+    }
+  }, {
+    key: 'distance',
+    get: function get() {
+      return this.cameraNode.position.z;
+    },
+    set: function set(newValue) {
+      this.cameraNode.position.z = newValue;
+    }
+  }, {
+    key: 'angle',
+    get: function get() {
+      return this.cameraNode.camera.yFov;
+    },
+    set: function set(newValue) {
+      this.cameraNode.camera.yFov = newValue;
+    }
+  }]);
+
+  return MMDCameraNode;
+}(_MMDNode3.default);
+
+exports.default = MMDCameraNode;
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -5070,7 +5278,7 @@ var _MMDNode = __webpack_require__(1);
 
 var _MMDNode2 = _interopRequireDefault(_MMDNode);
 
-var _MMDProgram = __webpack_require__(5);
+var _MMDProgram = __webpack_require__(4);
 
 var _MMDProgram2 = _interopRequireDefault(_MMDProgram);
 
@@ -5078,11 +5286,11 @@ var _MMDReader2 = __webpack_require__(2);
 
 var _MMDReader3 = _interopRequireDefault(_MMDReader2);
 
-var _MMDIKConstraint = __webpack_require__(4);
+var _MMDIKConstraint = __webpack_require__(5);
 
 var _MMDIKConstraint2 = _interopRequireDefault(_MMDIKConstraint);
 
-var _MMDFragmentShader2 = __webpack_require__(6);
+var _MMDFragmentShader2 = __webpack_require__(9);
 
 var _MMDFragmentShader3 = _interopRequireDefault(_MMDFragmentShader2);
 
@@ -6694,7 +6902,7 @@ var MMDPMXReader = function (_MMDReader) {
 exports.default = MMDPMXReader;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6854,7 +7062,7 @@ var MMDVACReader = function (_MMDReader) {
 exports.default = MMDVACReader;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6874,7 +7082,7 @@ var _MMDReader2 = __webpack_require__(2);
 
 var _MMDReader3 = _interopRequireDefault(_MMDReader2);
 
-var _constants = __webpack_require__(19);
+var _constants = __webpack_require__(18);
 
 var _jscenekit = __webpack_require__(0);
 
@@ -7631,172 +7839,6 @@ var MMDVMDReader = function (_MMDReader) {
 exports.default = MMDVMDReader;
 
 /***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _MMDReader2 = __webpack_require__(2);
-
-var _MMDReader3 = _interopRequireDefault(_MMDReader2);
-
-var _jscenekit = __webpack_require__(0);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- *
- * @access public
- * @extends {MMDReader}
- */
-var MMDVPDReader = function (_MMDReader) {
-  _inherits(MMDVPDReader, _MMDReader);
-
-  /**
-   * 
-   * @access public
-   * @constructor
-   * @param {Buffer} data -
-   * @param {string} directoryPath -
-   */
-  function MMDVPDReader(data, directoryPath) {
-    _classCallCheck(this, MMDVPDReader);
-
-    var isBinary = false;
-    var isBigEndian = false;
-    var encoding = 'sjis';
-
-    /**
-     * @access private
-     * @type {CAAnimationGroup}
-     */
-    var _this = _possibleConstructorReturn(this, (MMDVPDReader.__proto__ || Object.getPrototypeOf(MMDVPDReader)).call(this, data, directoryPath, isBinary, isBigEndian, encoding));
-
-    _this.workingAnimationGroup = null;
-    return _this;
-  }
-
-  /**
-   * @access public
-   * @param {Buffer} data -
-   * @param {string} [directoryPath = ''] -
-   * @returns {?CAAnimationGroup} -
-   */
-
-
-  _createClass(MMDVPDReader, [{
-    key: 'loadVPDFile',
-
-
-    /**
-     * @access private
-     * @returns {?CAAnimationGroup} -
-     */
-    value: function loadVPDFile() {
-      var lines = this.binaryData.split('\r\n');
-
-      this.workingAnimationGroup = new _jscenekit.CAAnimationGroup();
-      this.workingAnimationGroup.animations = [];
-
-      var magic = lines[0];
-      if (magic !== 'Vocaloid Pose Data file') {
-        console.error('Unknown file format: ' + magic);
-        return null;
-      }
-
-      var modelName = lines[2].split(';')[0];
-      var numBonesText = lines[3].split(';')[0];
-      var numBones = parseInt(numBonesText);
-      if (isNaN(numBones)) {
-        return null;
-      }
-
-      var line = 5;
-      for (var boneNo = 0; boneNo < numBones; boneNo++) {
-        var boneName = lines[line + 0].split('{')[1];
-        var posText = lines[line + 1].split(';')[0].split(',');
-        var rotText = lines[line + 2].split(';')[0].split(',');
-
-        var posX = this.getFloatFromText(posText[0]);
-        var posY = this.getFloatFromText(posText[1]);
-        var posZ = this.getFloatFromText(posText[2]);
-        var pos = new _jscenekit.SCNVector3(posX, posY, posZ);
-
-        var rotX = this.getFloatFromText(rotText[0]);
-        var rotY = this.getFloatFromText(rotText[1]);
-        var rotZ = this.getFloatFromText(rotText[2]);
-        var rotW = this.getFloatFromText(rotText[3]);
-        var rot = new _jscenekit.SCNVector4(-rotX, -rotY, rotZ, rotW);
-
-        var posMotion = new _jscenekit.CAKeyframeAnimation('/' + boneName + '.transform.translation');
-        var rotMotion = new _jscenekit.CAKeyframeAnimation('/' + boneName + '.transform.quaternion');
-
-        posMotion.values = [pos];
-        rotMotion.values = [rot];
-
-        posMotion.keyTimes = [0.0];
-        rotMotion.keyTimes = [0.0];
-
-        this.workingAnimationGroup.animations.push(posMotion);
-        this.workingANimationGroup.animations.push(rotMotion);
-
-        line += 5;
-      }
-
-      this.workingAnimationGroup.duration = 0;
-      this.workingAnimationGroup.usesSceneTimeBase = false;
-      this.workingAnimationGroup.isRemovedOnCompletion = false;
-      this.workingAnimationGroup.fillMode = _jscenekit.kCAFillModeForwards;
-
-      return this.workingAnimationGroup;
-    }
-
-    /**
-     * @access private
-     * @param {string} text -
-     * @returns {Float} -
-     */
-
-  }, {
-    key: 'getFloatFromText',
-    value: function getFloatFromText(text) {
-      var value = parseFloat(text);
-      if (!isNaN(value)) {
-        return value;
-      }
-      return 0;
-    }
-  }], [{
-    key: 'getAnimation',
-    value: function getAnimation(data) {
-      var directoryPath = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-
-      var reader = new MMDVPDReader(data, directoryPath);
-      var animation = reader.loadVPDFile();
-
-      return animation;
-    }
-  }]);
-
-  return MMDVPDReader;
-}(_MMDReader3.default);
-
-exports.default = MMDVPDReader;
-
-/***/ }),
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7851,7 +7893,7 @@ var MMDXReader = function (_MMDReader) {
    * @param {Buffer} data -
    * @param {string} directoryPath -
    */
-  function MMDXReader(data, directoryPath) {
+  function MMDXReader(data, directoryPath, options) {
     _classCallCheck(this, MMDXReader);
 
     // TODO: implement binary x file reader
@@ -7897,6 +7939,8 @@ var MMDXReader = function (_MMDReader) {
     _this._texcoordArray = [];
 
     _this._elementArray = [];
+
+    _this._options = options;
     return _this;
   }
 
@@ -8515,8 +8559,8 @@ var MMDXReader = function (_MMDReader) {
     }
   }], [{
     key: 'getNode',
-    value: function getNode(data, directoryPath) {
-      var reader = new MMDXReader(data, directoryPath);
+    value: function getNode(data, directoryPath, options) {
+      var reader = new MMDXReader(data, directoryPath, options);
       return reader._loadXFile();
     }
   }]);
@@ -8533,214 +8577,107 @@ exports.default = MMDXReader;
 "use strict";
 
 
-var _MMDFragmentShader2 = __webpack_require__(6);
+var _MMDPMDReader = __webpack_require__(6);
 
-var _MMDFragmentShader3 = _interopRequireDefault(_MMDFragmentShader2);
+var _MMDPMDReader2 = _interopRequireDefault(_MMDPMDReader);
+
+var _MMDVPDReader = __webpack_require__(8);
+
+var _MMDVPDReader2 = _interopRequireDefault(_MMDVPDReader);
+
+var _MMDProgram = __webpack_require__(4);
+
+var _MMDProgram2 = _interopRequireDefault(_MMDProgram);
 
 var _ToonImages2 = __webpack_require__(7);
 
 var _ToonImages3 = _interopRequireDefault(_ToonImages2);
 
-var _MMDCameraNode = __webpack_require__(8);
-
-var _MMDCameraNode2 = _interopRequireDefault(_MMDCameraNode);
-
-var _MMDIKConstraint = __webpack_require__(4);
-
-var _MMDIKConstraint2 = _interopRequireDefault(_MMDIKConstraint);
-
-var _MMDIKController = __webpack_require__(17);
-
-var _MMDIKController2 = _interopRequireDefault(_MMDIKController);
-
 var _MMDNode = __webpack_require__(1);
 
 var _MMDNode2 = _interopRequireDefault(_MMDNode);
 
-var _MMDPMDReader = __webpack_require__(9);
+var _MMDFragmentShader2 = __webpack_require__(9);
 
-var _MMDPMDReader2 = _interopRequireDefault(_MMDPMDReader);
-
-var _MMDPMMReader = __webpack_require__(10);
-
-var _MMDPMMReader2 = _interopRequireDefault(_MMDPMMReader);
-
-var _MMDPMXReader = __webpack_require__(11);
-
-var _MMDPMXReader2 = _interopRequireDefault(_MMDPMXReader);
-
-var _MMDProgram = __webpack_require__(5);
-
-var _MMDProgram2 = _interopRequireDefault(_MMDProgram);
-
-var _MMDReader = __webpack_require__(2);
-
-var _MMDReader2 = _interopRequireDefault(_MMDReader);
-
-var _MMDScene = __webpack_require__(20);
-
-var _MMDScene2 = _interopRequireDefault(_MMDScene);
+var _MMDFragmentShader3 = _interopRequireDefault(_MMDFragmentShader2);
 
 var _MMDSceneSource = __webpack_require__(3);
 
 var _MMDSceneSource2 = _interopRequireDefault(_MMDSceneSource);
 
-var _MMDVACReader = __webpack_require__(12);
+var _MMDScene = __webpack_require__(19);
 
-var _MMDVACReader2 = _interopRequireDefault(_MMDVACReader);
+var _MMDScene2 = _interopRequireDefault(_MMDScene);
 
-var _MMDVMDReader = __webpack_require__(13);
+var _MMDPMXReader = __webpack_require__(12);
 
-var _MMDVMDReader2 = _interopRequireDefault(_MMDVMDReader);
-
-var _MMDVPDReader = __webpack_require__(14);
-
-var _MMDVPDReader2 = _interopRequireDefault(_MMDVPDReader);
+var _MMDPMXReader2 = _interopRequireDefault(_MMDPMXReader);
 
 var _MMDXReader = __webpack_require__(15);
 
 var _MMDXReader2 = _interopRequireDefault(_MMDXReader);
 
-var _BinaryParser = __webpack_require__(21);
+var _MMDPMMReader = __webpack_require__(10);
 
-var _BinaryParser2 = _interopRequireDefault(_BinaryParser);
+var _MMDPMMReader2 = _interopRequireDefault(_MMDPMMReader);
 
-var _ecl = __webpack_require__(22);
+var _MMDIKController = __webpack_require__(20);
+
+var _MMDIKController2 = _interopRequireDefault(_MMDIKController);
+
+var _MMDVMDReader = __webpack_require__(14);
+
+var _MMDVMDReader2 = _interopRequireDefault(_MMDVMDReader);
+
+var _MMDVACReader = __webpack_require__(13);
+
+var _MMDVACReader2 = _interopRequireDefault(_MMDVACReader);
+
+var _MMDCameraNode = __webpack_require__(11);
+
+var _MMDCameraNode2 = _interopRequireDefault(_MMDCameraNode);
+
+var _MMDIKConstraint = __webpack_require__(5);
+
+var _MMDIKConstraint2 = _interopRequireDefault(_MMDIKConstraint);
+
+var _MMDReader = __webpack_require__(2);
+
+var _MMDReader2 = _interopRequireDefault(_MMDReader);
+
+var _ecl = __webpack_require__(21);
 
 var _ecl2 = _interopRequireDefault(_ecl);
+
+var _BinaryParser = __webpack_require__(22);
+
+var _BinaryParser2 = _interopRequireDefault(_BinaryParser);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /*global exports*/
-exports._MMDFragmentShader = _MMDFragmentShader3.default;
+exports.MMDPMDReader = _MMDPMDReader2.default;
+exports.MMDVPDReader = _MMDVPDReader2.default;
+exports.MMDProgram = _MMDProgram2.default;
 exports._ToonImages = _ToonImages3.default;
+exports.MMDNode = _MMDNode2.default;
+exports._MMDFragmentShader = _MMDFragmentShader3.default;
+exports.MMDSceneSource = _MMDSceneSource2.default;
+exports.MMDScene = _MMDScene2.default;
+exports.MMDPMXReader = _MMDPMXReader2.default;
+exports.MMDXReader = _MMDXReader2.default;
+exports.MMDPMMReader = _MMDPMMReader2.default;
+exports.MMDIKController = _MMDIKController2.default;
+exports.MMDVMDReader = _MMDVMDReader2.default;
+exports.MMDVACReader = _MMDVACReader2.default;
 exports.MMDCameraNode = _MMDCameraNode2.default;
 exports.MMDIKConstraint = _MMDIKConstraint2.default;
-exports.MMDIKController = _MMDIKController2.default;
-exports.MMDNode = _MMDNode2.default;
-exports.MMDPMDReader = _MMDPMDReader2.default;
-exports.MMDPMMReader = _MMDPMMReader2.default;
-exports.MMDPMXReader = _MMDPMXReader2.default;
-exports.MMDProgram = _MMDProgram2.default;
 exports.MMDReader = _MMDReader2.default;
-exports.MMDScene = _MMDScene2.default;
-exports.MMDSceneSource = _MMDSceneSource2.default;
-exports.MMDVACReader = _MMDVACReader2.default;
-exports.MMDVMDReader = _MMDVMDReader2.default;
-exports.MMDVPDReader = _MMDVPDReader2.default;
-exports.MMDXReader = _MMDXReader2.default;
-exports.BinaryParser = _BinaryParser2.default;
 exports.ecl = _ecl2.default;
+exports.BinaryParser = _BinaryParser2.default;
 
 /***/ }),
 /* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _MMDNode = __webpack_require__(1);
-
-var _MMDNode2 = _interopRequireDefault(_MMDNode);
-
-__webpack_require__(0);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var _sharedController = null;
-
-/**
- *
- * @access public
- * @implements {SCNSceneRendererDelegate}
- */
-
-var MMDIKController = function () {
-  _createClass(MMDIKController, null, [{
-    key: 'sharedController',
-    get: function get() {
-      if (_sharedController === null) {
-        _sharedController = new MMDIKController();
-      }
-      return _sharedController;
-    }
-
-    /**
-     *
-     * @access private
-     * @constructor
-     */
-
-  }]);
-
-  function MMDIKController() {
-    _classCallCheck(this, MMDIKController);
-  }
-
-  /**
-   * update IK constraint for the given renderer
-   * @access public
-   * @param {SCNSceneRenderer} renderer -
-   * @returns {void}
-   */
-
-
-  _createClass(MMDIKController, [{
-    key: 'rendererDidApplyAnimationsAtTime',
-
-
-    /**
-     * apply IK constraint after animations are applied
-     * @access public
-     * @param {SCNSceneRenderer} renderer -
-     * @param {TimeInterval} time -
-     */
-    value: function rendererDidApplyAnimationsAtTime(renderer, time) {
-      MMDIKController.updateIK(renderer);
-    }
-  }], [{
-    key: 'updateIK',
-    value: function updateIK(renderer) {
-      if (renderer.scene) {
-        MMDIKController.applyIKRecursive(renderer.scene.rootNode);
-      }
-    }
-
-    /**
-     * apply IK constraint recursively
-     * @access public
-     * @param {SCNNode} node -
-     * @returns {void}
-     */
-
-  }, {
-    key: 'applyIKRecursive',
-    value: function applyIKRecursive(node) {
-      if (node instanceof _MMDNode2.default) {
-        node.updateIK();
-      }
-
-      node.childNodes.forEach(function (childNode) {
-        MMDIKController.applyIKRecursive(childNode);
-      });
-    }
-  }]);
-
-  return MMDIKController;
-}();
-
-exports.default = MMDIKController;
-
-/***/ }),
-/* 18 */
 /***/ (function(module, exports) {
 
 module.exports =
@@ -11426,7 +11363,7 @@ module.exports = Array.isArray || function (arr) {
 /******/ ]);
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11439,7 +11376,7 @@ exports.MMD_CAMERA_ROTY_NODE_NAME = 'MMD_CAMERA_ROTY_NODE';
 exports.MMD_CAMERA_ROTZ_NODE_NAME = 'MMD_CAMERA_ROTZ_NODE';
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11535,176 +11472,114 @@ var MMDScene = function (_SCNScene) {
 exports.default = MMDScene;
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+  value: true
 });
-//+ Jonas Raoni Soares Silva
-//@ http://jsfromhell.com/classes/binary-parser [rev. #1]
 
-var BinaryParser = function BinaryParser(bigEndian, allowExceptions) {
-	this.bigEndian = bigEndian, this.allowExceptions = allowExceptions;
-};
-exports.default = BinaryParser;
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _MMDNode = __webpack_require__(1);
+
+var _MMDNode2 = _interopRequireDefault(_MMDNode);
+
+__webpack_require__(0);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var _sharedController = null;
+
+/**
+ *
+ * @access public
+ * @implements {SCNSceneRendererDelegate}
+ */
+
+var MMDIKController = function () {
+  _createClass(MMDIKController, null, [{
+    key: 'sharedController',
+    get: function get() {
+      if (_sharedController === null) {
+        _sharedController = new MMDIKController();
+      }
+      return _sharedController;
+    }
+
+    /**
+     *
+     * @access private
+     * @constructor
+     */
+
+  }]);
+
+  function MMDIKController() {
+    _classCallCheck(this, MMDIKController);
+  }
+
+  /**
+   * update IK constraint for the given renderer
+   * @access public
+   * @param {SCNSceneRenderer} renderer -
+   * @returns {void}
+   */
 
 
-var p = BinaryParser.prototype;
+  _createClass(MMDIKController, [{
+    key: 'rendererDidApplyAnimationsAtTime',
 
-p.encodeFloat = function (number, precisionBits, exponentBits) {
-	var bias = Math.pow(2, exponentBits - 1) - 1,
-	    minExp = -bias + 1,
-	    maxExp = bias,
-	    minUnnormExp = minExp - precisionBits,
-	    status = isNaN(n = parseFloat(number)) || n == -Infinity || n == +Infinity ? n : 0,
-	    exp = 0,
-	    len = 2 * bias + 1 + precisionBits + 3,
-	    bin = new Array(len),
-	    signal = (n = status !== 0 ? 0 : n) < 0,
-	    n = Math.abs(n),
-	    intPart = Math.floor(n),
-	    floatPart = n - intPart,
-	    i,
-	    lastBit,
-	    rounded,
-	    j,
-	    result;
-	for (i = len; i; bin[--i] = 0) {}
-	for (i = bias + 2; intPart && i; bin[--i] = intPart % 2, intPart = Math.floor(intPart / 2)) {}
-	for (i = bias + 1; floatPart > 0 && i; (bin[++i] = ((floatPart *= 2) >= 1) - 0) && --floatPart) {}
-	for (i = -1; ++i < len && !bin[i];) {}
-	if (bin[(lastBit = precisionBits - 1 + (i = (exp = bias + 1 - i) >= minExp && exp <= maxExp ? i + 1 : bias + 1 - (exp = minExp - 1))) + 1]) {
-		if (!(rounded = bin[lastBit])) for (j = lastBit + 2; !rounded && j < len; rounded = bin[j++]) {}
-		for (j = lastBit + 1; rounded && --j >= 0; (bin[j] = !bin[j] - 0) && (rounded = 0)) {}
-	}
-	for (i = i - 2 < 0 ? -1 : i - 3; ++i < len && !bin[i];) {}
 
-	(exp = bias + 1 - i) >= minExp && exp <= maxExp ? ++i : exp < minExp && (exp != bias + 1 - len && exp < minUnnormExp && this.warn("encodeFloat::float underflow"), i = bias + 1 - (exp = minExp - 1));
-	(intPart || status !== 0) && (this.warn(intPart ? "encodeFloat::float overflow" : "encodeFloat::" + status), exp = maxExp + 1, i = bias + 2, status == -Infinity ? signal = 1 : isNaN(status) && (bin[i] = 1));
-	for (n = Math.abs(exp + bias), j = exponentBits + 1, result = ""; --j; result = n % 2 + result, n = n >>= 1) {}
-	for (n = 0, j = 0, i = (result = (signal ? "1" : "0") + result + bin.slice(i, i + precisionBits).join("")).length, r = []; i; n += (1 << j) * result.charAt(--i), j == 7 && (r[r.length] = String.fromCharCode(n), n = 0), j = (j + 1) % 8) {}
-	r[r.length] = n ? String.fromCharCode(n) : "";
-	return (this.bigEndian ? r.reverse() : r).join("");
-};
-p.encodeInt = function (number, bits, signed) {
-	var max = Math.pow(2, bits),
-	    r = [];
-	(number >= max || number < -(max >> 1)) && this.warn("encodeInt::overflow") && (number = 0);
-	number < 0 && (number += max);
-	for (; number; r[r.length] = String.fromCharCode(number % 256), number = Math.floor(number / 256)) {}
-	for (bits = -(-bits >> 3) - r.length; bits--; r[r.length] = "\0") {}
-	return (this.bigEndian ? r.reverse() : r).join("");
-};
-p.decodeFloat = function (data, precisionBits, exponentBits) {
-	var b = ((b = new this.Buffer(this.bigEndian, data)).checkBuffer(precisionBits + exponentBits + 1), b),
-	    bias = Math.pow(2, exponentBits - 1) - 1,
-	    signal = b.readBits(precisionBits + exponentBits, 1),
-	    exponent = b.readBits(precisionBits, exponentBits),
-	    significand = 0,
-	    divisor = 2,
-	    curByte = b.buffer.length + (-precisionBits >> 3) - 1,
-	    byteValue,
-	    startBit,
-	    mask;
-	do {
-		for (byteValue = b.buffer[++curByte], startBit = precisionBits % 8 || 8, mask = 1 << startBit; mask >>= 1; byteValue & mask && (significand += 1 / divisor), divisor *= 2) {}
-	} while (precisionBits -= startBit);
-	return exponent == (bias << 1) + 1 ? significand ? NaN : signal ? -Infinity : +Infinity : (1 + signal * -2) * (exponent || significand ? !exponent ? Math.pow(2, -bias + 1) * significand : Math.pow(2, exponent - bias) * (1 + significand) : 0);
-};
-p.decodeInt = function (data, bits, signed) {
-	var b = new this.Buffer(this.bigEndian, data),
-	    x = b.readBits(0, bits),
-	    max = Math.pow(2, bits);
-	return signed && x >= max / 2 ? x - max : x;
-};
+    /**
+     * apply IK constraint after animations are applied
+     * @access public
+     * @param {SCNSceneRenderer} renderer -
+     * @param {TimeInterval} time -
+     */
+    value: function rendererDidApplyAnimationsAtTime(renderer, time) {
+      MMDIKController.updateIK(renderer);
+    }
+  }], [{
+    key: 'updateIK',
+    value: function updateIK(renderer) {
+      if (renderer.scene) {
+        MMDIKController.applyIKRecursive(renderer.scene.rootNode);
+      }
+    }
 
-var p2 = (p.Buffer = function (bigEndian, buffer) {
-	this.bigEndian = bigEndian || 0, this.buffer = [], this.setBuffer(buffer);
-}).prototype;
+    /**
+     * apply IK constraint recursively
+     * @access public
+     * @param {SCNNode} node -
+     * @returns {void}
+     */
 
-p2.readBits = function (start, length) {
-	//shl fix: Henri Torgemane ~1996 (compressed by Jonas Raoni)
-	function shl(a, b) {
-		for (++b; --b; a = ((a %= 0x7fffffff + 1) & 0x40000000) == 0x40000000 ? a * 2 : (a - 0x40000000) * 2 + 0x7fffffff + 1) {}
-		return a;
-	}
-	if (start < 0 || length <= 0) return 0;
-	this.checkBuffer(start + length);
-	for (var offsetLeft, offsetRight = start % 8, curByte = this.buffer.length - (start >> 3) - 1, lastByte = this.buffer.length + (-(start + length) >> 3), diff = curByte - lastByte, sum = (this.buffer[curByte] >> offsetRight & (1 << (diff ? 8 - offsetRight : length)) - 1) + (diff && (offsetLeft = (start + length) % 8) ? (this.buffer[lastByte++] & (1 << offsetLeft) - 1) << (diff-- << 3) - offsetRight : 0); diff; sum += shl(this.buffer[lastByte++], (diff-- << 3) - offsetRight)) {}
-	return sum;
-};
-p2.setBuffer = function (data) {
-	if (data) {
-		for (var l, i = l = data.length, b = this.buffer = new Array(l); i; b[l - i] = data.charCodeAt(--i)) {}
-		this.bigEndian && b.reverse();
-	}
-};
-p2.hasNeededBits = function (neededBits) {
-	return this.buffer.length >= -(-neededBits >> 3);
-};
-p2.checkBuffer = function (neededBits) {
-	if (!this.hasNeededBits(neededBits)) throw new Error("checkBuffer::missing bytes");
-};
+  }, {
+    key: 'applyIKRecursive',
+    value: function applyIKRecursive(node) {
+      if (node instanceof _MMDNode2.default) {
+        node.updateIK();
+      }
 
-p.warn = function (msg) {
-	if (this.allowExceptions) throw new Error(msg);
-	return 1;
-};
-p.toSmall = function (data) {
-	return this.decodeInt(data, 8, true);
-};
-p.fromSmall = function (number) {
-	return this.encodeInt(number, 8, true);
-};
-p.toByte = function (data) {
-	return this.decodeInt(data, 8, false);
-};
-p.fromByte = function (number) {
-	return this.encodeInt(number, 8, false);
-};
-p.toShort = function (data) {
-	return this.decodeInt(data, 16, true);
-};
-p.fromShort = function (number) {
-	return this.encodeInt(number, 16, true);
-};
-p.toWord = function (data) {
-	return this.decodeInt(data, 16, false);
-};
-p.fromWord = function (number) {
-	return this.encodeInt(number, 16, false);
-};
-p.toInt = function (data) {
-	return this.decodeInt(data, 32, true);
-};
-p.fromInt = function (number) {
-	return this.encodeInt(number, 32, true);
-};
-p.toDWord = function (data) {
-	return this.decodeInt(data, 32, false);
-};
-p.fromDWord = function (number) {
-	return this.encodeInt(number, 32, false);
-};
-p.toFloat = function (data) {
-	return this.decodeFloat(data, 23, 8);
-};
-p.fromFloat = function (number) {
-	return this.encodeFloat(number, 23, 8);
-};
-p.toDouble = function (data) {
-	return this.decodeFloat(data, 52, 11);
-};
-p.fromDouble = function (number) {
-	return this.encodeFloat(number, 52, 11);
-};
+      node.childNodes.forEach(function (childNode) {
+        MMDIKController.applyIKRecursive(childNode);
+      });
+    }
+  }]);
+
+  return MMDIKController;
+}();
+
+exports.default = MMDIKController;
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11991,6 +11866,175 @@ exports.UnescapeUTF16LE = UnescapeUTF16LE;
 exports.GetEscapeCodeType = GetEscapeCodeType;
 exports.JCT11280 = JCT11280;
 exports.JCT8836 = JCT8836;
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+//+ Jonas Raoni Soares Silva
+//@ http://jsfromhell.com/classes/binary-parser [rev. #1]
+
+var BinaryParser = function BinaryParser(bigEndian, allowExceptions) {
+	this.bigEndian = bigEndian, this.allowExceptions = allowExceptions;
+};
+exports.default = BinaryParser;
+
+
+var p = BinaryParser.prototype;
+
+p.encodeFloat = function (number, precisionBits, exponentBits) {
+	var bias = Math.pow(2, exponentBits - 1) - 1,
+	    minExp = -bias + 1,
+	    maxExp = bias,
+	    minUnnormExp = minExp - precisionBits,
+	    status = isNaN(n = parseFloat(number)) || n == -Infinity || n == +Infinity ? n : 0,
+	    exp = 0,
+	    len = 2 * bias + 1 + precisionBits + 3,
+	    bin = new Array(len),
+	    signal = (n = status !== 0 ? 0 : n) < 0,
+	    n = Math.abs(n),
+	    intPart = Math.floor(n),
+	    floatPart = n - intPart,
+	    i,
+	    lastBit,
+	    rounded,
+	    j,
+	    result;
+	for (i = len; i; bin[--i] = 0) {}
+	for (i = bias + 2; intPart && i; bin[--i] = intPart % 2, intPart = Math.floor(intPart / 2)) {}
+	for (i = bias + 1; floatPart > 0 && i; (bin[++i] = ((floatPart *= 2) >= 1) - 0) && --floatPart) {}
+	for (i = -1; ++i < len && !bin[i];) {}
+	if (bin[(lastBit = precisionBits - 1 + (i = (exp = bias + 1 - i) >= minExp && exp <= maxExp ? i + 1 : bias + 1 - (exp = minExp - 1))) + 1]) {
+		if (!(rounded = bin[lastBit])) for (j = lastBit + 2; !rounded && j < len; rounded = bin[j++]) {}
+		for (j = lastBit + 1; rounded && --j >= 0; (bin[j] = !bin[j] - 0) && (rounded = 0)) {}
+	}
+	for (i = i - 2 < 0 ? -1 : i - 3; ++i < len && !bin[i];) {}
+
+	(exp = bias + 1 - i) >= minExp && exp <= maxExp ? ++i : exp < minExp && (exp != bias + 1 - len && exp < minUnnormExp && this.warn("encodeFloat::float underflow"), i = bias + 1 - (exp = minExp - 1));
+	(intPart || status !== 0) && (this.warn(intPart ? "encodeFloat::float overflow" : "encodeFloat::" + status), exp = maxExp + 1, i = bias + 2, status == -Infinity ? signal = 1 : isNaN(status) && (bin[i] = 1));
+	for (n = Math.abs(exp + bias), j = exponentBits + 1, result = ""; --j; result = n % 2 + result, n = n >>= 1) {}
+	for (n = 0, j = 0, i = (result = (signal ? "1" : "0") + result + bin.slice(i, i + precisionBits).join("")).length, r = []; i; n += (1 << j) * result.charAt(--i), j == 7 && (r[r.length] = String.fromCharCode(n), n = 0), j = (j + 1) % 8) {}
+	r[r.length] = n ? String.fromCharCode(n) : "";
+	return (this.bigEndian ? r.reverse() : r).join("");
+};
+p.encodeInt = function (number, bits, signed) {
+	var max = Math.pow(2, bits),
+	    r = [];
+	(number >= max || number < -(max >> 1)) && this.warn("encodeInt::overflow") && (number = 0);
+	number < 0 && (number += max);
+	for (; number; r[r.length] = String.fromCharCode(number % 256), number = Math.floor(number / 256)) {}
+	for (bits = -(-bits >> 3) - r.length; bits--; r[r.length] = "\0") {}
+	return (this.bigEndian ? r.reverse() : r).join("");
+};
+p.decodeFloat = function (data, precisionBits, exponentBits) {
+	var b = ((b = new this.Buffer(this.bigEndian, data)).checkBuffer(precisionBits + exponentBits + 1), b),
+	    bias = Math.pow(2, exponentBits - 1) - 1,
+	    signal = b.readBits(precisionBits + exponentBits, 1),
+	    exponent = b.readBits(precisionBits, exponentBits),
+	    significand = 0,
+	    divisor = 2,
+	    curByte = b.buffer.length + (-precisionBits >> 3) - 1,
+	    byteValue,
+	    startBit,
+	    mask;
+	do {
+		for (byteValue = b.buffer[++curByte], startBit = precisionBits % 8 || 8, mask = 1 << startBit; mask >>= 1; byteValue & mask && (significand += 1 / divisor), divisor *= 2) {}
+	} while (precisionBits -= startBit);
+	return exponent == (bias << 1) + 1 ? significand ? NaN : signal ? -Infinity : +Infinity : (1 + signal * -2) * (exponent || significand ? !exponent ? Math.pow(2, -bias + 1) * significand : Math.pow(2, exponent - bias) * (1 + significand) : 0);
+};
+p.decodeInt = function (data, bits, signed) {
+	var b = new this.Buffer(this.bigEndian, data),
+	    x = b.readBits(0, bits),
+	    max = Math.pow(2, bits);
+	return signed && x >= max / 2 ? x - max : x;
+};
+
+var p2 = (p.Buffer = function (bigEndian, buffer) {
+	this.bigEndian = bigEndian || 0, this.buffer = [], this.setBuffer(buffer);
+}).prototype;
+
+p2.readBits = function (start, length) {
+	//shl fix: Henri Torgemane ~1996 (compressed by Jonas Raoni)
+	function shl(a, b) {
+		for (++b; --b; a = ((a %= 0x7fffffff + 1) & 0x40000000) == 0x40000000 ? a * 2 : (a - 0x40000000) * 2 + 0x7fffffff + 1) {}
+		return a;
+	}
+	if (start < 0 || length <= 0) return 0;
+	this.checkBuffer(start + length);
+	for (var offsetLeft, offsetRight = start % 8, curByte = this.buffer.length - (start >> 3) - 1, lastByte = this.buffer.length + (-(start + length) >> 3), diff = curByte - lastByte, sum = (this.buffer[curByte] >> offsetRight & (1 << (diff ? 8 - offsetRight : length)) - 1) + (diff && (offsetLeft = (start + length) % 8) ? (this.buffer[lastByte++] & (1 << offsetLeft) - 1) << (diff-- << 3) - offsetRight : 0); diff; sum += shl(this.buffer[lastByte++], (diff-- << 3) - offsetRight)) {}
+	return sum;
+};
+p2.setBuffer = function (data) {
+	if (data) {
+		for (var l, i = l = data.length, b = this.buffer = new Array(l); i; b[l - i] = data.charCodeAt(--i)) {}
+		this.bigEndian && b.reverse();
+	}
+};
+p2.hasNeededBits = function (neededBits) {
+	return this.buffer.length >= -(-neededBits >> 3);
+};
+p2.checkBuffer = function (neededBits) {
+	if (!this.hasNeededBits(neededBits)) throw new Error("checkBuffer::missing bytes");
+};
+
+p.warn = function (msg) {
+	if (this.allowExceptions) throw new Error(msg);
+	return 1;
+};
+p.toSmall = function (data) {
+	return this.decodeInt(data, 8, true);
+};
+p.fromSmall = function (number) {
+	return this.encodeInt(number, 8, true);
+};
+p.toByte = function (data) {
+	return this.decodeInt(data, 8, false);
+};
+p.fromByte = function (number) {
+	return this.encodeInt(number, 8, false);
+};
+p.toShort = function (data) {
+	return this.decodeInt(data, 16, true);
+};
+p.fromShort = function (number) {
+	return this.encodeInt(number, 16, true);
+};
+p.toWord = function (data) {
+	return this.decodeInt(data, 16, false);
+};
+p.fromWord = function (number) {
+	return this.encodeInt(number, 16, false);
+};
+p.toInt = function (data) {
+	return this.decodeInt(data, 32, true);
+};
+p.fromInt = function (number) {
+	return this.encodeInt(number, 32, true);
+};
+p.toDWord = function (data) {
+	return this.decodeInt(data, 32, false);
+};
+p.fromDWord = function (number) {
+	return this.encodeInt(number, 32, false);
+};
+p.toFloat = function (data) {
+	return this.decodeFloat(data, 23, 8);
+};
+p.fromFloat = function (number) {
+	return this.encodeFloat(number, 23, 8);
+};
+p.toDouble = function (data) {
+	return this.decodeFloat(data, 52, 11);
+};
+p.fromDouble = function (number) {
+	return this.encodeFloat(number, 52, 11);
+};
 
 /***/ })
 /******/ ]);

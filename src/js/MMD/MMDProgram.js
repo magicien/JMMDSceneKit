@@ -265,7 +265,7 @@ const _vertexShader =
 
     if(useSphereMap){
       if(useSubTexture){
-        v_sptex = 
+        // TODO: implement
       }else{
         vec2 normalWV = vec2(camera.viewTransform * vec4(v_normal, 1.0));
         v_sptex.x = normalWV.x * 0.5 + 0.5;
