@@ -5,9 +5,6 @@ var webpack = require('webpack-stream');
 var config = require('../config');
 var exec = require('child_process').exec;
 
-gulp.task('webpack', ['webpack:create-main', 'webpack:build-web', 'webpack:build-node'])
-gulp.task('webpack:web', ['webpack:create-main', 'webpack:build-web'])
-gulp.task('webpcak:node', ['webpack:create-main', 'webpack:build-node'])
 
 gulp.task('webpack:create-main', function(cb) {
   exec('./src/create_main.sh', function(err, stdout, stderr) {
@@ -33,3 +30,7 @@ gulp.task('webpack:build-node', function(cb) {
       .pipe(gulp.dest(conf.output.path));
 })
 
+export const webpackTask = gulp.parallel('webpack:build-web', 'webpack:build-node')
+gulp.task('webpack', webpackTask)
+gulp.task('webpack:web', gulp.series('webpack:create-main', 'webpack:build-web'))
+gulp.task('webpcak:node', gulp.series('webpack:create-main', 'webpack:build-node'))

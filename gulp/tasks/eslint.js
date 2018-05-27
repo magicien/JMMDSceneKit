@@ -9,7 +9,7 @@ gulp.task('eslint', function() {
     .pipe(eslint.failAfterError());
 });
 
-gulp.task('lint', ['eslint']);
+gulp.task('lint', gulp.task('eslint'));
 
 gulp.task('eslint-quiet', function() {
   config.eslint.opts.quiet = true
@@ -19,4 +19,4 @@ gulp.task('eslint-quiet', function() {
     .pipe(eslint.failAfterError());
 });
 
-gulp.task('lint-quiet', ['eslint-quiet']);
+gulp.task('lint-quiet', gulp.task('eslint-quiet'));

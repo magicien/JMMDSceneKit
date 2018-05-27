@@ -11,6 +11,7 @@ const _dataUrls = [
   'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAADJJREFUWAnt0EENAAAIAzHAv2cgmODTGbil2bt4XD22L+0AAQIECBAgQIAAAQIECBAgME2IBDzy317fAAAAAElFTkSuQmCC'
 ]
 
+const Image = window ? window.Image : (class Image {}) // node doesn't have Image
 const _ToonImages = []
 for(const data of _dataUrls){
   const image = new Image()
